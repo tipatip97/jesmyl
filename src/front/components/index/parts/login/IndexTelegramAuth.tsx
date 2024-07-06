@@ -1,32 +1,28 @@
 import { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import useToast from '../../../../complect/modal/useToast';
 import mylib from '../../../../complect/my-lib/MyLib';
 import SendButton from '../../../../complect/sends/send-button/SendButton';
+import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../models';
-import { RootState } from '../../../../shared/store';
 import { soki } from '../../../../soki';
-import di from '../../Index.store';
+import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
 import useIndexNav from '../../complect/useIndexNav';
-import indexStorage from '../../indexStorage';
-import { removePullRequisites } from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
 import { LoginIndex } from './IndexLoginAuth';
 import { TgNativeAuth } from './TgNativeAuth';
-
-const errorsSelector = (state: RootState) => state.index.errors;
+import { useAuthErrors } from './atoms';
 
 export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => void }) {
-  const dispatch = useDispatch();
   const [authCode, setAuthCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSendTgCode, setIsSendTgCode] = useState(false);
+  const setAuth = useSetAuth();
+  const [, setCurrentApp] = useCurrentApp();
 
   const connectionNode = useConnectionState();
-  const errors = useSelector(errorsSelector);
+  const [errors] = useAuthErrors();
   const { navigate } = useIndexNav();
   const error = (message: string | nil) => message && <div className="login-error-message">{message}</div>;
   const [toastNode, showToast] = useToast({ mood: 'ko' });
@@ -43,9 +39,8 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
 
   const setAuthData = async (auth: LocalSokiAuth) => {
     if (auth) {
-      dispatch(di.auth(auth));
-      indexStorage.set('auth', auth);
-      dispatch(di.currentApp('cm'));
+      setAuth(auth);
+      setCurrentApp('cm');
       removePullRequisites();
     }
   };

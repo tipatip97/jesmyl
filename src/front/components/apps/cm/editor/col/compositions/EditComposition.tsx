@@ -7,7 +7,7 @@ import {
   IconMusicNote03SolidRounded,
   IconMusicNote03StrokeRounded,
 } from '../../../../../../complect/the-icon/icons/music-note-03';
-import useAuth from '../../../../../index/useAuth';
+import { useAuth } from '../../../../../index/molecules';
 import useConnectionState from '../../../../../index/useConnectionState';
 import { CmNavData } from '../../../Cm.model';
 import useCmNav from '../../../base/useCmNav';

@@ -1,4 +1,7 @@
+import { atom } from '../../../complect/atoms';
 import { Exer } from '../../../complect/exer/Exer';
-import adminStorage from './adminStorage';
+import { ExecRule } from '../../../complect/exer/Exer.model';
 
-export const adminExer = new Exer('admin', adminStorage);
+const adminExerAtom = atom<ExecRule[]>([], 'admin', 'rules');
+
+export const adminExer = new Exer('admin', adminExerAtom);

@@ -5,7 +5,7 @@ import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
-import useAuth from '../../../../index/useAuth';
+import { useAuth } from '../../../../index/molecules';
 import { GamerRoomMember } from '../../Gamer.model';
 import GamerRoomMemberList from '../../complect/GamerRoomMemberList';
 import useGamerMembersCanPlay from '../../complect/rooms/hooks/members-can-play';

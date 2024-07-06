@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { AppName } from '../../../app/App.model';
-import useAuth from '../../../components/index/useAuth';
+import { useAuth } from '../../../components/index/molecules';
 import useConnectionState from '../../../components/index/useConnectionState';
 import PhaseContainerConfigurer from '../../phase-container/PhaseContainerConfigurer';
 import { PhaseContainerConfigurerProps } from '../../phase-container/PhaseContainerConfigurer.model';

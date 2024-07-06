@@ -2,8 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Exer } from '../../../complect/exer/Exer';
 import { GamerPassport, GamerState } from './Gamer.model';
 import gamerStorage from './gamerStorage';
+import { atom } from '../../../complect/atoms';
+import { ExecRule } from '../../../complect/exer/Exer.model';
 
-export const gamerExer = new Exer('gamer', gamerStorage);
+const gamerExerAtom = atom<ExecRule[]>([], 'gamer', 'rules');
+
+export const gamerExer = new Exer('gamer', gamerExerAtom);
 
 const initialState: GamerState = {
   rooms: [],

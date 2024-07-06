@@ -1,26 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { LocalSokiAuth } from '../../../../models';
 import TheButton from '../../../../complect/Button';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import LoadIndicatedContent from '../../../../complect/load-indicated-content/LoadIndicatedContent';
 import mylib from '../../../../complect/my-lib/MyLib';
-import { RootState } from '../../../../shared/store';
+import { LocalSokiAuth } from '../../../../models';
 import { soki } from '../../../../soki';
-import { AuthMode, ClientAuthorizationData, ServerAuthorizeInSystem, ClientRegisterData } from '../../Index.model';
-import di from '../../Index.store';
+import { AuthMode, ClientAuthorizationData, ClientRegisterData, ServerAuthorizeInSystem } from '../../Index.model';
+import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import useIndexNav from '../../complect/useIndexNav';
-import indexStorage from '../../indexStorage';
-import { removePullRequisites } from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
-
-const errorsSelector = (state: RootState) => state.index.errors;
+import { useAuthErrors } from './atoms';
 
 export default function IndexLoginAuth() {
-  const dispatch = useDispatch();
+  const setAuth = useSetAuth();
+  const [, setCurrentApp] = useCurrentApp();
   const [nick, setNick] = useState('');
   const [passw, setPassword] = useState('');
   const [rpassw, setRPassword] = useState('');
@@ -28,7 +24,7 @@ export default function IndexLoginAuth() {
   const [isInProcess, setIsInProscess] = useState(1);
 
   const connectionNode = useConnectionState();
-  const errors = useSelector(errorsSelector);
+  const [errors, setErrors] = useAuthErrors();
   const { navigate } = useIndexNav();
   const error = (message: string | nil) => message && <div className="login-error-message">{message}</div>;
 
@@ -55,9 +51,8 @@ export default function IndexLoginAuth() {
   };
 
   const setAuthData = async (auth: LocalSokiAuth) => {
-    dispatch(di.auth(auth));
-    indexStorage.set('auth', auth);
-    dispatch(di.currentApp('cm'));
+    setAuth(auth);
+    setCurrentApp('cm');
     removePullRequisites();
   };
 
@@ -74,28 +69,22 @@ export default function IndexLoginAuth() {
   };
 
   useEffect(() => {
-    dispatch(
-      di.setError({
-        scope: 'login',
-        message: /[^\w._]/.test(nick)
-          ? 'Недопустимые символы'
-          : nick.length < 3
-            ? 'Минимум 3 символа'
-            : nick.length > 20
-              ? 'Максимум 20 символов'
-              : null,
-      }),
-    );
-  }, [nick, dispatch]);
+    setErrors({
+      login: /[^\w._]/.test(nick)
+        ? 'Недопустимые символы'
+        : nick.length < 3
+          ? 'Минимум 3 символа'
+          : nick.length > 20
+            ? 'Максимум 20 символов'
+            : null,
+    });
+  }, [nick, setErrors]);
 
   useEffect(() => {
-    dispatch(
-      di.setError({
-        scope: 'rpassw',
-        message: mode === 'register' && rpassw !== passw ? 'Пароли не совпадают' : null,
-      }),
-    );
-  }, [passw, rpassw, mode, dispatch]);
+    setErrors({
+      rpassw: mode === 'register' && rpassw !== passw ? 'Пароли не совпадают' : null,
+    });
+  }, [passw, rpassw, mode, setErrors]);
 
   return (
     <LoginIndex
@@ -172,22 +161,16 @@ export default function IndexLoginAuth() {
                       removePullRequisites();
                       setAuthData(authorization.value);
                     } else {
-                      dispatch(
-                        di.setError({
-                          scope: 'login',
-                          message: authorization?.value || 'Неизвестная ошибка',
-                        }),
-                      );
+                      setErrors({
+                        login: authorization?.value || 'Неизвестная ошибка',
+                      });
                       setIsInProscess(2);
                     }
                   },
                   errorMessage => {
-                    dispatch(
-                      di.setError({
-                        scope: 'login',
-                        message: errorMessage,
-                      }),
-                    );
+                    setErrors({
+                      login: errorMessage,
+                    });
                     setIsInProscess(2);
                   },
                 );

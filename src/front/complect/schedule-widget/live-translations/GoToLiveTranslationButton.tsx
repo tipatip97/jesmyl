@@ -5,8 +5,6 @@ import IconButton from '../../the-icon/IconButton';
 export const ScheduleWidgetGoToLiveTranslationButton = () => {
   const indexNav = useIndexNav();
 
-  if (indexNav.appRouteData.schTranslationComws === undefined) return;
-
   return (
     <>
       <IconButton

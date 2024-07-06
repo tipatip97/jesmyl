@@ -1,4 +1,4 @@
-import { useAtomValue } from '../../../scoped-storages/atoms/useAtom';
+import { useAtomValue } from '../../../atoms';
 import { ScheduleWidgetMarkdownLiveTranslation } from '../MarkdownLive';
 import { markdownTranslationAtom } from './atoms';
 

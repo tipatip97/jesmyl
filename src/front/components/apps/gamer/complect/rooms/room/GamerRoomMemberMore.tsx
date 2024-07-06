@@ -1,7 +1,7 @@
 import { bottomPopupContentPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
 import { IconPlusSignStrokeRounded } from '../../../../../../complect/the-icon/icons/plus-sign';
 import { IconUserBlock01StrokeRounded } from '../../../../../../complect/the-icon/icons/user-block-01';
-import useAuth from '../../../../../index/useAuth';
+import { useAuth } from '../../../../../index/molecules';
 import { GamerRoomMember } from '../../../Gamer.model';
 import { useGamerRoomActions } from '../hooks/actions';
 import { useGamerCurrentRoom } from './hooks/current-room';

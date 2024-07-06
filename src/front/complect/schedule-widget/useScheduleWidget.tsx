@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { appAttsStore } from '../../components/complect/appScheduleAttrsStorage';
-import useAuth from '../../components/index/useAuth';
+import { useAuth } from '../../components/index/molecules';
+import { useIndexSchedules } from '../../components/index/molecules';
 import {
   LocalSokiAuth,
   ScheduleWidgetRegType,
@@ -9,26 +9,20 @@ import {
   scheduleWidgetRegTypeRights,
   scheduleWidgetUserRights,
 } from '../../models';
-import { RootState } from '../../shared/store';
 import mylib, { MyLib } from '../my-lib/MyLib';
 import { strongScopeMakerBuilder } from '../strong-control/useStrongControl';
 import {
   IScheduleWidget,
   IScheduleWidgetRole,
   IScheduleWidgetUser,
-  ScheduleStorage,
   ScheduleWidgetAppAtts,
   ScheduleWidgetAttRefs,
 } from './ScheduleWidget.model';
 import ScheduleKeyValueListAtt from './atts/attachments/key-value/KeyValueListAtt';
 import { scheduleOwnAtts } from './atts/attachments/ownAtts';
 
-const schedulesSelector = (state: RootState): ScheduleStorage => state.index.schedules;
-
-export const useSchedules: () => ScheduleStorage = () => useSelector(schedulesSelector);
-
 export default function useScheduleWidget(schedulew?: number, schedule?: IScheduleWidget) {
-  const schedules = useSchedules();
+  const schedules = useIndexSchedules();
 
   const ret = {
     schedule:

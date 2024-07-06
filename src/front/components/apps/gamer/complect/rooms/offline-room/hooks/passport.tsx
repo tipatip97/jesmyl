@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../shared/store';
-import useAuth from '../../../../../../index/useAuth';
+import { useAuth } from '../../../../../../index/molecules';
 import { GamerPassport } from '../../../../Gamer.model';
 
 const passportSelector = (state: RootState) => state.gamer.passport;

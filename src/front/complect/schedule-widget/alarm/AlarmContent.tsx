@@ -1,16 +1,16 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
-import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
-import mylib from '../../my-lib/MyLib';
-import IconButton from '../../the-icon/IconButton';
 import { IconArrowRight01StrokeRounded } from '../../../complect/the-icon/icons/arrow-right-01';
 import { IconCalendar01StrokeRounded } from '../../../complect/the-icon/icons/calendar-01';
 import { IconLeftToRightListDashStrokeRounded } from '../../../complect/the-icon/icons/left-to-right-list-dash';
 import { IconSmileStrokeRounded } from '../../../complect/the-icon/icons/smile';
+import { useIndexSchedules } from '../../../components/index/molecules';
+import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
+import mylib from '../../my-lib/MyLib';
+import IconButton from '../../the-icon/IconButton';
 import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
-import { useSchedules } from '../useScheduleWidget';
 import ScheduleAlarmDay from './AlarmDay';
 import { ScheduleWidgetAlarmInfoContent } from './InfoContent';
 
@@ -54,7 +54,7 @@ export default function ScheduleWidgetAlarmContent({
   onGoTo: () => void;
   observeSchw?: number;
 }) {
-  const schedules = useSchedules();
+  const schedules = useIndexSchedules();
   const now = Date.now();
   const [isFullOpen, setIsFullOpen] = useState(false);
 

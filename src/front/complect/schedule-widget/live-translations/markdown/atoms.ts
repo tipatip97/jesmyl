@@ -1,3 +1,3 @@
-import { atom } from '../../../scoped-storages/atoms/atom';
+import { atom } from '../../../atoms';
 
 export const markdownTranslationAtom = atom('');

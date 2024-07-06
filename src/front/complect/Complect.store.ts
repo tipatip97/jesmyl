@@ -1,17 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FixedResizerLines } from '../components/apps/+complect/translations/complect/model';
 import { ComplectState, ComplectStorage } from './Complect.model';
-import { FullContentOpenMode } from './fullscreen-content/useFullContent';
 import { JStorage } from './JStorage';
 import { NavigationStorage } from './nav-configurer/Navigation.model';
-import { FixedResizerLines } from '../components/apps/+complect/translations/complect/model';
 
 export const complectStorage = new JStorage<NavigationStorage<ComplectStorage>, ComplectState>('complect');
 
 const initialState: ComplectState = {
-  fullscreenContentOpenMode: null,
   isAbsoluteFloatPopupOpen: false,
   isAbsoluteBottomPopupOpen: false,
-  isFullscreen: false,
   isNumberSearch: false,
   numAbsoluteBottomPopupUpdates: 0,
   numExerUpdates: 0,
@@ -40,12 +37,6 @@ export const slice = createSlice({
     isTranslationTextVisible: (state, action: PayloadAction<boolean | und>) => {
       state.isTranslationTextVisible = action.payload ?? !state.isTranslationTextVisible;
     },
-    setFullscreenContentOpenMode: (state, action: PayloadAction<FullContentOpenMode>) => {
-      state.fullscreenContentOpenMode = action.payload;
-    },
-    switchComplectFullscreen: (state, action: PayloadAction<boolean | nil>) => {
-      state.isFullscreen = action.payload ?? !state.isFullscreen;
-    },
     switchAbsoluteFloatPopupOpen: (state, action: PayloadAction<boolean | nil>) => {
       state.isAbsoluteFloatPopupOpen = action.payload ?? !state.isAbsoluteFloatPopupOpen;
     },
@@ -68,12 +59,10 @@ export const slice = createSlice({
 });
 
 export const {
-  setFullscreenContentOpenMode,
   switchAbsoluteFloatPopupOpen,
   switchAbsoluteBottomPopupOpen,
   riseUpAbsoluteBottomPopupUpdates,
   switchIsNumberSearch,
-  switchComplectFullscreen,
   riseUpExerUpdates,
 } = slice.actions;
 

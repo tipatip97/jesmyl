@@ -50,7 +50,9 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     if (this.rule === undefined) return;
 
     this.title = mylib.stringTemplater(
-      mylib.func(this.rule.title).call(this.args) || this.rule.shortTitle || 'Неизвестное правило',
+      (mylib.isFunc(this.rule.title) ? this.rule.title(this.args ?? {}) : this.rule.title) ||
+        this.rule.shortTitle ||
+        'Неизвестное правило',
       this.args,
     );
   }

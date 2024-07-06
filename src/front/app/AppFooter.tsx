@@ -4,7 +4,7 @@ import { ExerStorage } from '../complect/exer/Exer.model';
 import { useCheckIsAccessed } from '../complect/exer/hooks/check-is-accessed';
 import { INavigationConfig } from '../complect/nav-configurer/Navigation.model';
 import useIndexNav from '../components/index/complect/useIndexNav';
-import useAuth from '../components/index/useAuth';
+import { useAuth } from '../components/index/molecules';
 import { RoutePhasePoint } from '../components/router/Router.model';
 import navConfigurers from '../shared/navConfigurers';
 import { AppName } from './App.model';

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { AppName, appNames } from '../../../../app/App.model';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import useToast from '../../../../complect/modal/useToast';
@@ -15,32 +14,27 @@ import { IconPaintBoardStrokeRounded } from '../../../../complect/the-icon/icons
 import { IconSourceCodeCircleStrokeRounded } from '../../../../complect/the-icon/icons/source-code-circle';
 import { IconTextStrokeRounded } from '../../../../complect/the-icon/icons/text';
 import useApps from '../../../../complect/useApps';
-import { RootState } from '../../../../shared/store';
 import { soki } from '../../../../soki';
-import di from '../../Index.store';
+import { useAppFontFamilyAtom, useAuth } from '../../molecules';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { indexSimpleValIsPlayAnimations, indexSimpleValIsUseNativeKeyboard } from '../../complect/index.simpleValues';
 import useIndexNav from '../../complect/useIndexNav';
-import useAuth from '../../useAuth';
+import { useIndexStatistic } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
 import { Visitor } from './Visitor';
 import { Visits } from './Visits';
 
-const statisticSelector = (state: RootState) => state.index.statistic;
-const appFontFamilySelector = (state: RootState) => state.index.appFontFamily;
-
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 
 export default function IndexSettings() {
   const auth = useAuth();
-  const dispatch = useDispatch();
-  const statistic = useSelector(statisticSelector);
+  const statistic = useIndexStatistic();
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [modalNode, toast] = useToast();
   const { appConfigs } = useApps();
   const { goTo } = useIndexNav();
-  const appFontFamily = useSelector(appFontFamilySelector);
+  const [appFontFamily, setAppFontFamily] = useAppFontFamilyAtom();
 
   useEffect(() => {
     soki.send({ subscribe: 'statistic' }, 'index');
@@ -89,7 +83,7 @@ export default function IndexSettings() {
       box={
         <FontFamilySelector
           fontFamily={appFontFamily}
-          onSelect={it => dispatch(di.appFontFamily(it))}
+          onSelect={setAppFontFamily}
         />
       }
     />,

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
 import useToast from '../../../../../../../complect/modal/useToast';
 import { RootState } from '../../../../../../../shared/store';
-import useAuth from '../../../../../../index/useAuth';
+import { useAuth } from '../../../../../../index/molecules';
 import di, { gamerExer } from '../../../../Gamer.store';
 import gamerStorage from '../../../../gamerStorage';
 import useGamerNav from '../../../../useGamerNav';

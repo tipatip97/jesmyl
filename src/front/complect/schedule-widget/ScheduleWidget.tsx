@@ -8,7 +8,7 @@ import { IconFile02StrokeRounded } from '../../complect/the-icon/icons/file-02';
 import { IconPlusSignStrokeRounded } from '../../complect/the-icon/icons/plus-sign';
 import { IconSchoolReportCardStrokeRounded } from '../../complect/the-icon/icons/school-report-card';
 import { IconShapesStrokeRounded } from '../../complect/the-icon/icons/shapes';
-import useAuth from '../../components/index/useAuth';
+import { useAuth } from '../../components/index/molecules';
 import ShareEvaButton from '../ShareEvaButton';
 import { useIsRememberExpand } from '../expand/useIsRememberExpand';
 import mylib from '../my-lib/MyLib';

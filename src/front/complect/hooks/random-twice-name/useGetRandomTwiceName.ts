@@ -1,9 +1,6 @@
-import { useSelector } from 'react-redux';
+import { useIndexNounPronsWords } from '../../../components/index/molecules';
 import { NounPronsType, makeTwiceKnownName } from '../../../models';
-import { RootState } from '../../../shared/store';
 import mylib from '../../my-lib/MyLib';
-
-const storageSelector = (state: RootState) => state.index.nounPronsWords;
 
 export const makeRandomTwiceName = (
   storage?: NounPronsType,
@@ -26,7 +23,7 @@ export const makeRandomTwiceName = (
 };
 
 export const useGetRandomTwiceName = () => {
-  const storage = useSelector(storageSelector);
+  const storage = useIndexNounPronsWords();
 
   return (topPronoun?: string | nil, topNoun?: string | nil) => makeRandomTwiceName(storage, topPronoun, topNoun);
 };

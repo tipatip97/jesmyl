@@ -13,11 +13,20 @@ import {
   SokiSubscribtionName,
 } from '../back/complect/soki/soki.model';
 import environment from '../back/environments/environment';
+import { AppName } from './app/App.model';
+import { Molecule } from './complect/atoms';
 import { JStorage } from './complect/JStorage';
 import mylib from './complect/my-lib/MyLib';
 import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-shareds';
+import {
+  getAuthValue,
+  getCurrentAppValue,
+  getUpdateRequisitesValue,
+  setAuthValue,
+  setUpdateRequisitesValue,
+} from './components/index/molecules';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
-import indexStorage from './components/index/indexStorage';
+import { indexMolecule } from './components/index/molecules';
 import { appStorage } from './shared/jstorages';
 
 const version = { ...versionNum };
@@ -49,8 +58,12 @@ export class SokiTrip {
     ...onGetSharedScheduleWidgetData,
   };
 
+  private molecules: Partial<{ [Key in AppName]: Molecule<any, Key> }> = {
+    index: indexMolecule,
+  };
+
   async appName() {
-    return await indexStorage.getOr('currentApp', 'cm');
+    return await getCurrentAppValue();
   }
 
   onClose = () => {
@@ -102,7 +115,7 @@ export class SokiTrip {
             return;
           }
 
-          if (event.liveData !== undefined) indexStorage.set('liveData', event.liveData);
+          if (event.liveData !== undefined) indexMolecule.set('liveData', event.liveData);
 
           if (event.authorized !== undefined) {
             this.isConnected = true;
@@ -115,26 +128,31 @@ export class SokiTrip {
           if (event.execs && event.appName) {
             const execs = event.execs;
             const appStore = appStorage[event.appName];
-            const contents = mylib.clone(appStore.properties);
+            const molecule = this.molecules[event.appName];
+            const contents = mylib.clone({ ...appStore.properties, ...molecule?.values() });
+
             Executer.executeReals(contents, event.execs.list)
               .then(fixes => {
-                appStore.refreshAreas(fixes, contents);
+                if (molecule !== undefined) fixes.forEach(fix => molecule.set(fix, contents[fix]));
+                else appStore.refreshAreas(fixes, contents);
+
                 this.setLastUpdates(event.appName!, [null, null, execs.lastUpdate, null]);
               })
               .catch();
           }
 
-          if (event.statistic) indexStorage.refreshAreas(['statistic'], event as never);
+          if (event.statistic) indexMolecule.set('statistic', event.statistic);
 
           if (event.sharedData !== undefined)
             this.onGetSharedData[event.sharedData.key]?.(event.sharedData.value as never);
 
           if (event.download) {
-            const appStore = appStorage[event.appName];
+            const store = this.molecules[event.appName] ?? appStorage[event.appName];
+
             try {
-              appStore.set(event.download.key, JSON.parse(event.download.value));
+              store.set(event.download.key, JSON.parse(event.download.value));
             } catch (error) {
-              appStore.set(event.download.key, event.download.value);
+              store.set(event.download.key, event.download.value);
             }
           }
         }
@@ -152,27 +170,27 @@ export class SokiTrip {
   }
 
   setLastUpdates(appName: SokiAppName, pullCortage: SokiClientUpdateCortage) {
-    indexStorage.set('updateRequisites', (prev = {}) => {
+    setUpdateRequisitesValue((prev = {}) => {
       const [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5] = pullCortage;
 
       return {
         ...prev,
-        index: [indexLastUpdate || prev.index?.[0] || 0, indexRulesMd5 || prev.index?.[1] || undefined],
-        [appName]: [appLastUpdate || prev[appName]?.[0] || 0, appRulesMd5 || prev[appName]?.[1] || undefined],
+        index: [indexLastUpdate || prev?.index?.[0] || 0, indexRulesMd5 || prev?.index?.[1] || undefined],
+        [appName]: [appLastUpdate || prev?.[appName]?.[0] || 0, appRulesMd5 || prev?.[appName]?.[1] || undefined],
       };
     });
   }
 
   onUnregister() {
-    indexStorage.rem('auth');
-    indexStorage.rem('updateRequisites');
+    setAuthValue({ level: 0 });
+    setUpdateRequisitesValue(null);
   }
 
   async pullCurrentAppData(appName: SokiAppName) {
     const {
       index: [indexLastUpdate = 0, indexRulesMd5 = ''] = [],
       [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [],
-    } = (await indexStorage.get('updateRequisites')) || {};
+    } = (await getUpdateRequisitesValue()) || {};
 
     this.send(
       {
@@ -183,7 +201,10 @@ export class SokiTrip {
   }
 
   updatedPulledData(pull: PullEventValue) {
-    const update = (pullContents: SimpleKeyValue<string, unknown>[], store: JStorage<unknown, unknown>) => {
+    const update = (
+      pullContents: SimpleKeyValue<string, unknown>[],
+      store: Molecule<unknown> | JStorage<unknown, unknown>,
+    ) => {
       if (!pullContents.length) return;
 
       const fixes: string[] = [];
@@ -192,19 +213,22 @@ export class SokiTrip {
         contents[key] = value;
         fixes.push(key);
       });
-      store.refreshAreas(fixes as never, contents);
+
+      if (store instanceof Molecule) fixes.forEach(fix => store.set(fix as never, contents[fix]));
+      else store.refreshAreas(fixes as never, contents);
     };
+
     const {
       contents: [indexContents, appContents],
       updates,
     } = pull;
-    const appStore = appStorage[pull.appName];
+    const appStore = this.molecules[pull.appName] ?? appStorage[pull.appName];
 
     update(appContents, appStore);
-    update(indexContents, appStorage.index);
+    update(indexContents, this.molecules.index ?? appStorage.index);
 
     appContents.forEach(({ key, value }) => appStore.set(key, value));
-    indexContents.forEach(({ key, value }) => indexStorage.set(key as never, value as never));
+    indexContents.forEach(({ key, value }) => indexMolecule.set(key as never, value as never));
     this.setLastUpdates(pull.appName, updates);
   }
 
@@ -218,11 +242,13 @@ export class SokiTrip {
     const trySend = async () => {
       if (tries-- < 0) return;
       try {
+        const auth = await getAuthValue();
+
         if (this.ws && this.ws.readyState === this.ws.OPEN) {
           const sendEvent: SokiClientEvent = {
             requestId,
             body,
-            auth: await indexStorage.get('auth'),
+            auth: auth.level === 0 ? undefined : auth,
             appName,
             deviceId: await takeDeviceId(),
             version: version.num,

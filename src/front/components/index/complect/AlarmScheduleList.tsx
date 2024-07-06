@@ -1,13 +1,13 @@
-import IconButton from '../../../complect/the-icon/IconButton';
-import { IconCancel01StrokeRounded } from '../../../complect/the-icon/icons/cancel-01';
 import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
 import ScheduleWidgetListPage from '../../../complect/schedule-widget/general/ListPage';
 import ScheduleWidgetPage from '../../../complect/schedule-widget/general/Page';
-import { useSchedules } from '../../../complect/schedule-widget/useScheduleWidget';
+import IconButton from '../../../complect/the-icon/IconButton';
+import { IconCancel01StrokeRounded } from '../../../complect/the-icon/icons/cancel-01';
+import { useIndexSchedules } from '../molecules';
 import useIndexNav from './useIndexNav';
 
 export default function ScheduleWidgetAlarmScheduleList() {
-  const schedules = useSchedules();
+  const schedules = useIndexSchedules();
   const { setAppRouteData, appRouteData, goBack } = useIndexNav();
 
   if (appRouteData.schw !== undefined) {

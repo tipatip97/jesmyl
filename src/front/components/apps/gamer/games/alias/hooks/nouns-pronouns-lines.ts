@@ -1,14 +1,9 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import mylib from '../../../../../../complect/my-lib/MyLib';
-import { RootState } from '../../../../../../shared/store';
-
-const selector = (state: RootState) => state.index.nounPronsWords;
-
-export const useNounsPronouns = () => useSelector(selector);
+import { useIndexNounPronsWords } from '../../../../../index/molecules';
 
 export const useNounsPronounsLines = () => {
-  const randomNounProns = useNounsPronouns();
+  const randomNounProns = useIndexNounPronsWords();
 
   return useMemo(() => {
     return {

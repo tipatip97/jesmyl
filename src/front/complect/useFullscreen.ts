@@ -1,27 +1,10 @@
-import { useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../shared/store';
-import { switchComplectFullscreen } from './Complect.store';
+import { atom, useAtom } from './atoms';
 
-const isFullscreenSelector = (state: RootState) => state.complect.isFullscreen;
+const isFullscreenAtom = atom(false);
 
-export default function useFullScreen(): [boolean, (isFullscreen?: boolean) => void] {
-  const dispatch = useDispatch();
-  const isFullScreen = useSelector(isFullscreenSelector);
-  const isFullScreenRef = useRef(isFullScreen);
-  isFullScreenRef.current = isFullScreen;
+isFullscreenAtom.onValueChange = isFullscreen => {
+  if (isFullscreen) document.body.requestFullscreen();
+  else if (document.fullscreenElement) document.exitFullscreen();
+};
 
-  return [
-    isFullScreen,
-    useCallback(
-      (isFullscreen?: boolean) => {
-        dispatch(switchComplectFullscreen(isFullscreen));
-        try {
-          if (isFullscreen ?? !isFullScreenRef.current) document.body.requestFullscreen();
-          else if (document.fullscreenElement) document.exitFullscreen();
-        } catch (e) {}
-      },
-      [dispatch, isFullScreenRef],
-    ),
-  ];
-}
+export const useFullScreen = () => useAtom(isFullscreenAtom);

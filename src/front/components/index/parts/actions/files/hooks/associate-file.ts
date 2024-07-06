@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import mylib from '../../../../../../complect/my-lib/MyLib';
+import { useIndexFileAssociations } from '../../../../molecules';
 import { MyFileType } from '../model';
-import { useMyFilesAssociates } from './associates';
 
 const extReg = /.*?\.([^.]+$)/;
 
 export const useAssociateTheFileType = () => {
-  const associates = useMyFilesAssociates();
+  const associates = useIndexFileAssociations();
   return useMemo(() => {
     return (file: File): MyFileType => {
       const ext = file.name.replace(extReg, '$1').toLowerCase();

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IconMinusSignStrokeRounded } from '../../../../complect/the-icon/icons/minus-sign';
 import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
-import useFullScreen from '../../../../complect/useFullscreen';
+import { useFullScreen } from '../../../../complect/useFullscreen';
 import { RootState } from '../../../../shared/store';
 import di from '../Cm.store';
 import useCmNav from './useCmNav';

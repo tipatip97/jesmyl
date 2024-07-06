@@ -20,9 +20,9 @@ import { IconMinusSignStrokeRounded } from '../../../../../complect/the-icon/ico
 import { IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/qr-code';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { IconVynil03SolidRounded, IconVynil03StrokeRounded } from '../../../../../complect/the-icon/icons/vynil-03';
-import useFullScreen from '../../../../../complect/useFullscreen';
+import { useFullScreen } from '../../../../../complect/useFullscreen';
 import { RootState } from '../../../../../shared/store';
-import useAuth from '../../../../index/useAuth';
+import { useAuth } from '../../../../index/molecules';
 import { ChordVisibleVariant } from '../../Cm.model';
 import di from '../../Cm.store';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';

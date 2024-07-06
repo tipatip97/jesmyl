@@ -2,7 +2,7 @@ import { memo, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import onBackButton from '../complect/back-button-listener';
 import useIndexNav from '../components/index/complect/useIndexNav';
-import useAuth from '../components/index/useAuth';
+import { useAuth } from '../components/index/molecules';
 import navConfigurers from '../shared/navConfigurers';
 import { RootState } from '../shared/store';
 import { AppName } from './App.model';

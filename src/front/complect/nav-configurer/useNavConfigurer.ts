@@ -12,7 +12,7 @@ import {
 import di from '../../components/router/Router.store';
 import { RootState } from '../../shared/store';
 import mylib from '../my-lib/MyLib';
-import useFullScreen from '../useFullscreen';
+import { useFullScreen } from '../useFullscreen';
 import { NavigationConfig } from './Navigation';
 import { NavigationStorage, UseNavAction } from './Navigation.model';
 

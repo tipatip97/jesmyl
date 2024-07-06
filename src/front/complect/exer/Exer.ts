@@ -1,7 +1,7 @@
 import { Auth } from '../../components/index/Index.model';
 import { ExecutionDict, LocalSokiAuth, SokiAppName, SokiServerEvent } from '../../models';
 import { soki } from '../../soki';
-import { JStorage } from '../JStorage';
+import { Atom } from '../atoms';
 import mylib from '../my-lib/MyLib';
 import { Exec } from './Exec';
 import {
@@ -16,19 +16,19 @@ import {
 export class Exer<Storage extends ExerStorage> {
   appName: SokiAppName;
   execs: Exec<any>[] = [];
-  storage: JStorage<Storage> | nil;
+  atom: Atom<ExecRule[]> | nil;
   key = 'execs' as keyof Storage;
   rules: ExecRule[] = [];
 
-  constructor(appName: SokiAppName, storage: JStorage<Storage, any> | nil) {
-    this.storage = storage;
+  constructor(appName: SokiAppName, atom: Atom<ExecRule[]> | nil) {
+    this.atom = atom;
     this.appName = appName;
 
     this.updateRules();
   }
 
   async updateRules() {
-    this.rules = [...(((await this.storage?.get('rules')) as []) || [])];
+    this.rules = [...((await this.atom?.getStorageValue()) || [])];
   }
 
   clear() {

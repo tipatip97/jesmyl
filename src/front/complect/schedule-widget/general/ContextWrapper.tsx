@@ -1,5 +1,5 @@
 import { ReactNode, useMemo } from 'react';
-import { indexExer } from '../../../components/index/Index.store';
+import { indexExer } from '../../../components/index/IndexExer';
 import { useStrongExerContent } from '../../strong-control/useStrongControl';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 import {

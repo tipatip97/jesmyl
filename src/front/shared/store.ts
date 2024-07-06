@@ -5,12 +5,10 @@ import { cmReducer } from '../components/apps/cm/Cm.store';
 import { gamerReducer } from '../components/apps/gamer/Gamer.store';
 import { leaderReducer } from '../components/apps/leader/Leader.store';
 import { tunerReducer } from '../components/apps/tuner/Tuner.store';
-import { indexReducer } from '../components/index/Index.store';
 import { routerReducer } from '../components/router/Router.store';
 
 export const store = configureStore({
   reducer: {
-    index: indexReducer,
     tuner: tunerReducer,
     gamer: gamerReducer,
     cm: cmReducer,

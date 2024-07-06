@@ -1,11 +1,11 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
-import { useSchedules } from '../../../complect/schedule-widget/useScheduleWidget';
 import { iconPackOfCalendar03 } from '../../../complect/the-icon/icons/calendar-03';
 import { iconPackOfTeacher } from '../../../complect/the-icon/icons/teacher';
 import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../models';
-import useAuth from '../../index/useAuth';
+import { useAuth } from '../../index/molecules';
+import { useIndexSchedules } from '../../index/molecules';
 import { RoutePhasePoint } from '../../router/Router.model';
 import { useLeaderContexts } from './components/contexts/useContexts';
 import GameList from './components/games/GameList';
@@ -32,7 +32,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
     gamew: gamew => ({ path: ['all', 'games', 'game'], data: { gamew } }),
   },
   useIsCanRead: (topContextw: number) => {
-    const schedules = useSchedules();
+    const schedules = useIndexSchedules();
     const contexts = useLeaderContexts();
     const auth = useAuth();
 

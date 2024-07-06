@@ -1,14 +1,12 @@
-import { useSelector } from 'react-redux';
 import * as versionNum from '../../../../back/+version.json';
-import { IconTelegramStrokeRounded } from '../../../complect/the-icon/icons/telegram';
 import QRCode from '../../../complect/qr-code/QRCode';
-import { RootState } from '../../../shared/store';
+import { IconTelegramStrokeRounded } from '../../../complect/the-icon/icons/telegram';
+import { useIndexAppVersion } from '../molecules';
 
 const version = { ...versionNum };
-const appVersionSelector = (state: RootState) => state.index.appVersion;
 
 export default function IndexAbout() {
-  const appVersion = useSelector(appVersionSelector);
+  const appVersion = useIndexAppVersion();
 
   return (
     <div className="flex center">

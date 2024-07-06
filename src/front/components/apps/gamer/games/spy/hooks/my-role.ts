@@ -1,5 +1,5 @@
 import { LocalSokiAuth } from '../../../../../../models';
-import useAuth from '../../../../../index/useAuth';
+import { useAuth } from '../../../../../index/molecules';
 import { SpyRoomState } from '../Spy.model';
 import { unsecretSpyRole } from './locations';
 import { useSpyRoomStateNaked } from './state';

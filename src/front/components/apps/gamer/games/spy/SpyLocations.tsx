@@ -4,7 +4,7 @@ import useIsExpand from '../../../../../complect/expand/useIsExpand';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
-import useAuth from '../../../../index/useAuth';
+import { useAuth } from '../../../../index/molecules';
 import { gamerExer } from '../../Gamer.store';
 import { useSpyLocations } from './hooks/locations';
 

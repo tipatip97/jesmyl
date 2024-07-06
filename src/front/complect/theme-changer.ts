@@ -1,21 +1,21 @@
-import indexStorage from '../components/index/indexStorage';
+import { atom, atomValueSetter, getAtomValue } from './atoms';
 
 const classList = document.body.classList;
 const minTouches = 3;
 const maxTouches = 3;
 let timeout: TimeOut;
-const lsName = 'theme';
+const className = 'reverse-theme';
+
+const isReverseThemeAtom = atom(false, 'complect', className);
 
 (async () => {
-  const bodyClass = await indexStorage.get(lsName);
-  if (bodyClass) classList.add(bodyClass);
+  if (await getAtomValue(isReverseThemeAtom)) classList.add(className);
 })();
 
 const toggleTheme = () => {
-  const className = 'reverse-theme';
   classList.toggle(className);
-  if (!classList.contains(className)) indexStorage.rem(lsName);
-  else indexStorage.set(lsName, className);
+
+  atomValueSetter(isReverseThemeAtom)(classList.contains(className));
 };
 
 const listenThemeChanges = () => {

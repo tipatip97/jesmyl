@@ -5,7 +5,7 @@ import { MyLib } from '../../../../../../complect/my-lib/MyLib';
 import { filesStorage } from '../utils/storage';
 
 interface Props {
-  fontFamily?: string;
+  fontFamily?: string | null;
   onSelect: (fontFamily: string) => void;
 }
 
@@ -23,7 +23,7 @@ export const FontFamilySelector = ({ fontFamily, onSelect }: Props) => {
 
   return (
     <Dropdown
-      id={fontFamily}
+      id={fontFamily ?? undefined}
       items={items}
       undTitle="По умолчанию"
       onSelectId={onSelect}

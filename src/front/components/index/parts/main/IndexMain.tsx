@@ -1,33 +1,30 @@
-import { useSelector } from 'react-redux';
 import { appNames } from '../../../../app/App.model';
 import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
-import IconButton from '../../../../complect/the-icon/IconButton';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
+import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
+import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconAuthorizedStrokeRounded } from '../../../../complect/the-icon/icons/authorized';
 import { IconComputerSettingsStrokeRounded } from '../../../../complect/the-icon/icons/computer-settings';
 import { IconCubeStrokeRounded } from '../../../../complect/the-icon/icons/cube';
 import { IconInformationCircleStrokeRounded } from '../../../../complect/the-icon/icons/information-circle';
 import { IconRefreshStrokeRounded } from '../../../../complect/the-icon/icons/refresh';
 import { IconSettings02StrokeRounded } from '../../../../complect/the-icon/icons/settings-02';
-import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import useApps from '../../../../complect/useApps';
 import { checkIsThereNewSW } from '../../../../serviceWorkerRegistration';
 import navConfigurers from '../../../../shared/navConfigurers';
-import { RootState } from '../../../../shared/store';
+import { useAuth, useCurrentApp } from '../../molecules';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
-import useAuth from '../../useAuth';
 import useConnectionState from '../../useConnectionState';
 import IndexAbout from '../IndexAbout';
 import { IndexProfileInfo } from './ProfileInfo';
 import { UserMore } from './UserMore';
 
 const isNNull = (it: unknown) => it !== null;
-const currentAppSelector = (state: RootState) => state.index.currentApp;
 
 export default function IndexMain() {
-  const currentAppName = useSelector(currentAppSelector);
+  const [currentAppName] = useCurrentApp();
   const [aboutNode, openAbout] = useFullContent(() => <IndexAbout />);
   const { goTo } = navConfigurers.index();
   const [popupNode, openPopup] = useBottomPopup(UserMore);

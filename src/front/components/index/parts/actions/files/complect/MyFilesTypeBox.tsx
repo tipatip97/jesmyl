@@ -3,11 +3,11 @@ import mylib from '../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import TheIcon from '../../../../../../complect/the-icon/TheIcon';
 import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
-import { useMyFilesAssociates } from '../hooks/associates';
+import { TheIconName } from '../../../../../../complect/the-icon/model';
+import { useIndexFileAssociations } from '../../../../molecules';
 import { useRemoveMyFile } from '../hooks/remove-file';
 import { MyFileType } from '../model';
 import { filesStorage } from '../utils/storage';
-import { TheIconName } from '../../../../../../complect/the-icon/model';
 
 export type FileAssociations = Record<
   MyFileType,
@@ -17,7 +17,7 @@ export type FileAssociations = Record<
 const forceUpdater = (it: number) => it + 1;
 
 export const MyFilesTypeBox = ({ type }: { type: MyFileType }) => {
-  const fileAssociations = useMyFilesAssociates();
+  const fileAssociations = useIndexFileAssociations();
   const [files, setFiles] = useState<File[]>([]);
   const [updates, forceUpdate] = useReducer(forceUpdater, 0);
   const removeFile = useRemoveMyFile(type);

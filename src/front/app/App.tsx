@@ -1,22 +1,20 @@
-import { IconArrowShrink02StrokeRounded } from '../complect/the-icon/icons/arrow-shrink-02';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { complectActions, complectStorage } from '../complect/Complect.store';
 import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
 import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
 import { crossApplicationLinkCoder, jesmylHostName } from '../complect/qr-code/useQRMaster';
+import { IconArrowShrink02StrokeRounded } from '../complect/the-icon/icons/arrow-shrink-02';
 import listenThemeChanges from '../complect/theme-changer';
 import useApps from '../complect/useApps';
-import useFullScreen from '../complect/useFullscreen';
-import di from '../components/index/Index.store';
-import indexStorage from '../components/index/indexStorage';
+import { useFullScreen } from '../complect/useFullscreen';
+import { useAppFontFamilyAtom, useCurrentApp } from '../components/index/molecules';
 import { applyFontFamilyFromMyFiles } from '../components/index/parts/actions/files/utils/set-font-family-effect';
 import routerStoreActions from '../components/router/Router.store';
 import routerStorage from '../components/router/routerStorage';
 import navConfigurers from '../shared/navConfigurers';
-import { RootState } from '../shared/store';
 import { appNames } from './App.model';
 import './App.scss';
 import AppFooter from './AppFooter';
@@ -24,18 +22,16 @@ import AppRouter from './AppRouter';
 
 listenThemeChanges();
 
-const currentAppSelector = (state: RootState) => state.index.currentApp;
-const appFontFamilySelector = (state: RootState) => state.index.appFontFamily;
 const emptyArr: [] = [];
 const setIsReady = () => routerStoreActions.isReady(true);
 
 function App() {
   const dispatch = useDispatch();
-  const appName = useSelector(currentAppSelector);
-  const appFontFamily = useSelector(appFontFamilySelector);
+  const [currentApp] = useCurrentApp();
+  const [appFontFamily] = useAppFontFamilyAtom();
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const { goBack, registerBackAction } = navConfigurers[appName]();
+  const { goBack, registerBackAction } = navConfigurers[currentApp]();
   const { jumpToApp } = useApps();
   const [isShowLogo, setIsShowLogo] = useState(true);
 
@@ -54,7 +50,7 @@ function App() {
   }, [goBack, switchFullscreen]);
 
   useEffect(() => {
-    if (appFontFamily === undefined) return;
+    if (appFontFamily == null) return;
     applyFontFamilyFromMyFiles(appFontFamily, window);
     document.body.style.fontFamily = '"' + appFontFamily + '"';
 
@@ -64,7 +60,6 @@ function App() {
   }, [appFontFamily]);
 
   routerStorage.initDispatches(dispatch, routerStoreActions, setIsReady);
-  indexStorage.initDispatches(dispatch, di);
   complectStorage.initDispatches(dispatch, complectActions);
 
   useEffect(() => {
@@ -109,14 +104,14 @@ function App() {
           <JesmylLogo className="no-fade-in-effect" />
         </div>
       )}
-      <div className={`application-container app_${appName}${isFullscreen ? ' fullscreen-mode' : ''}`}>
+      <div className={`application-container app_${currentApp}${isFullscreen ? ' fullscreen-mode' : ''}`}>
         <IconArrowShrink02StrokeRounded
           className="collapse-fullscreen-button pointer"
           onClick={() => switchFullscreen(false)}
         />
         <ABSOLUTE__FLOAT__POPUP onOpen={onOpen} />
-        <AppRouter appName={appName} />
-        <AppFooter appName={appName} />
+        <AppRouter appName={currentApp} />
+        <AppFooter appName={currentApp} />
       </div>
       <KEYBOARD_FLASH {...keyboardProps} />
     </div>

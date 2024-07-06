@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useSchedules } from '../../../../complect/schedule-widget/useScheduleWidget';
 import { soki } from '../../../../soki';
 import { useCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
 import { useScreenTranslationWindows } from '../../../apps/+complect/translations/hooks/windows';
 import BibleTranslatesContextProvider from '../../../apps/bible/translates/TranslatesContext';
-import useAuth from '../../useAuth';
+import { useAuth } from '../../molecules';
+import { useIndexSchedules } from '../../molecules';
 import useIndexNav from '../useIndexNav';
 import { IndexScheduleWidgetBibleTranslations } from './LiveBible';
 import { ScheduleWidgetLiveCmTranslations } from './LiveCm';
@@ -17,7 +17,7 @@ export const IndexScheduleWidgetTranslations = () => {
   const windows = useScreenTranslationWindows();
   const isCm = useCurrentTranslationTextApp() === 'cm';
   const [isCantTranslateLive, setIsCantTranslateLive] = useState(true);
-  const schedules = useSchedules();
+  const schedules = useIndexSchedules();
   const headTitle =
     indexNav.appRouteData.schw === undefined
       ? null

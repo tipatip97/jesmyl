@@ -4,7 +4,7 @@ import useFullContent from '../../../../../complect/fullscreen-content/useFullCo
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconFolderAddStrokeRounded } from '../../../../../complect/the-icon/icons/folder-add';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
-import useAuth from '../../../../index/useAuth';
+import { useAuth } from '../../../../index/molecules';
 import AddContext from './AddContext';
 import MeetingsCreator from './MeetingsCreator';
 

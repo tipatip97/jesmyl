@@ -1,15 +1,15 @@
-import useAuth from '../../../components/index/useAuth';
+import { useAuth } from '../../../components/index/molecules';
+import { useIndexSchedules } from '../../../components/index/molecules';
 import useConnectionState from '../../../components/index/useConnectionState';
 import PhaseContainerConfigurer from '../../phase-container/PhaseContainerConfigurer';
 import { PhaseContainerConfigurerProps } from '../../phase-container/PhaseContainerConfigurer.model';
 import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
 import ScheduleWidget from '../ScheduleWidget';
 import { ScheduleWidgetGoToLiveTranslationButton } from '../live-translations/GoToLiveTranslationButton';
-import { useSchedules } from '../useScheduleWidget';
 import ScheduleCreateWidgetButton from './CreateButton';
 
 export default function ScheduleWidgetListPage(props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'>) {
-  const schedules = useSchedules();
+  const schedules = useIndexSchedules();
   const connectionNode = useConnectionState();
   const auth = useAuth();
 

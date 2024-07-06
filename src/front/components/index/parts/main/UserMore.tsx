@@ -1,24 +1,20 @@
-import { useDispatch } from 'react-redux';
 import { BottomPopupContenter } from '../../../../complect/absolute-popup/bottom-popup/model';
 import { useConfirm } from '../../../../complect/modal/confirm/useConfirm';
 import useQRMaster from '../../../../complect/qr-code/useQRMaster';
-import di from '../../Index.store';
-import useIndexNav from '../../complect/useIndexNav';
-import indexStorage from '../../indexStorage';
-import useAuth, { removePullRequisites } from '../../useAuth';
 import { IconQrCode01StrokeRounded } from '../../../../complect/the-icon/icons/qr-code-01';
 import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
+import { removePullRequisites, useAuthState, useCurrentApp } from '../../molecules';
+import useIndexNav from '../../complect/useIndexNav';
 
 export const UserMore: BottomPopupContenter = (isOpen, _, prepare) => {
-  const dispatch = useDispatch();
   const { nav } = useIndexNav();
-  const auth = useAuth();
+  const [auth, setAuth] = useAuthState();
+  const [, setCurrentApp] = useCurrentApp();
   const { shareQrData, qrNode } = useQRMaster();
 
   const logout = () => {
-    dispatch(di.auth({ level: 0 }));
-    indexStorage.rem('auth');
-    dispatch(di.currentApp('cm'));
+    setAuth({ level: 0 });
+    setCurrentApp('cm');
     removePullRequisites();
     window.location.reload();
   };

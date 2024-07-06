@@ -1,8 +1,8 @@
 import { useReducer, useRef } from 'react';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import PhaseIndexContainer from '../../../complect/PhaseIndexContainer';
+import { useIndexFileAssociations } from '../../../molecules';
 import { MyFilesTypeBox } from './complect/MyFilesTypeBox';
-import { useMyFilesAssociates } from './hooks/associates';
 import { useAddMyFileOnDrop, useAddMyFileOnFileChange } from './hooks/on-add-file';
 
 const onDragOver: CallbackPreventer = event => event.preventDefault();
@@ -13,7 +13,7 @@ export default function IndexMyFiles() {
   const onDrop = useAddMyFileOnDrop(forceUpdate);
   const onChange = useAddMyFileOnFileChange(forceUpdate);
   const inputRef = useRef<HTMLInputElement>(null);
-  const associates = useMyFilesAssociates();
+  const associates = useIndexFileAssociations();
 
   return (
     <PhaseIndexContainer

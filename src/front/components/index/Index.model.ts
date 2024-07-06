@@ -1,4 +1,5 @@
 import { AppName } from '../../app/App.model';
+import { ExecRule } from '../../complect/exer/Exer.model';
 import { ScheduleStorage } from '../../complect/schedule-widget/ScheduleWidget.model';
 import {
   IScheduleWidgetWid,
@@ -18,12 +19,12 @@ export interface IndexState {
   appVersion?: number;
   auth: Auth;
   schedules: ScheduleStorage;
-  errors: Partial<Record<IndexErrorScope, string>>;
   statistic: SokiStatistic | null;
   liveData: Record<SokiClientSubData, unknown>;
   deviceId: string;
   nounPronsWords?: NounPronsType;
   fileAssociations?: FileAssociations;
+  rules: ExecRule[];
   appFontFamily?: string;
 
   updateRequisites?: Partial<
@@ -34,7 +35,7 @@ export interface IndexState {
         string | undefined, // short rules JSON md5
       ]
     >
-  >;
+  > | null;
 }
 
 export type IndexErrorScope = keyof ClientRegisterData;
@@ -64,13 +65,7 @@ export interface IndexStateError {
 }
 
 export interface IndexStorage extends IndexState {
-  currentApp: AppName;
-  rejectedComponents: string[];
-  registeredApps: AppName[];
-  theme: 'reverse-theme';
   rules: [];
-
-  updateOnRefresher: boolean;
 }
 
 export interface JesmylPassport {

@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, PropsWithChildren } from 'react';
 import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-accessed';
-import useAuth from '../../../../index/useAuth';
+import { useAuth } from '../../../../index/molecules';
 import { CorrectsBox } from '../corrects-box/CorrectsBox';
 import { ICorrect } from '../corrects-box/CorrectsBox.model';
 import './EditContainerCorrectsInformer.scss';

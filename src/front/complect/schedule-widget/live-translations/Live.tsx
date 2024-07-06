@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
 import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
+import { ScreenTranslationControlPanelShowMdButton } from '../../../components/apps/+complect/translations/controls/ShowMdButton';
 import BibleTranslationSlide from '../../../components/apps/bible/translations/BibleTranslationSlide';
 import BibleTranslationSlideMiniInfo from '../../../components/apps/bible/translations/BibleTranslationSlideMiniInfo';
 import { CmTranslationSlideMiniInfo } from '../../../components/apps/cm/translation/complect/live/MiniInfo';
 import { CmLiveTranslationScreen } from '../../../components/apps/cm/translation/complect/live/Screen';
+import { useAuth } from '../../../components/index/molecules';
 import { IndexStateSchLiveData, ScheduleWidgetTranslationLiveDataKey } from '../../../components/index/Index.model';
-import indexStorage from '../../../components/index/indexStorage';
-import useAuth from '../../../components/index/useAuth';
+import { useIndexLiveData } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
 import BrutalItem from '../../brutal-item/BrutalItem';
 import mylib from '../../my-lib/MyLib';
-import { useStorageValueGetter } from '../../useStorage';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 import { ScheduleWidgetMarkdownLiveTranslation } from './MarkdownLive';
-import { ScreenTranslationControlPanelShowMdButton } from '../../../components/apps/+complect/translations/controls/ShowMdButton';
 
 interface Props {
   onClose: (isOpen: boolean) => void;
@@ -22,7 +21,7 @@ interface Props {
 }
 
 export const ScheduleWidgetLiveTranslation = ({ onClose, schedule, isShowMarkdownOnly }: Props) => {
-  const liveData: IndexStateSchLiveData = useStorageValueGetter(indexStorage, 'liveData', {} as never);
+  const liveData = useIndexLiveData() as IndexStateSchLiveData;
   const [subscribeData, setSubscribeData] = useState<ScheduleWidgetTranslationLiveDataKey | und>();
   const [messageNode, setMessageNode] = useState<JSX.Element | null>(null);
   const auth = useAuth();

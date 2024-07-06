@@ -1,6 +1,6 @@
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import { useCheckIsAccessed } from '../../../../complect/exer/hooks/check-is-accessed';
-import useAuth from '../../../index/useAuth';
+import { useAuth } from '../../../index/molecules';
 import useCmNav from '../base/useCmNav';
 import './Editor.scss';
 import { editorRouteItems } from './editorNav';

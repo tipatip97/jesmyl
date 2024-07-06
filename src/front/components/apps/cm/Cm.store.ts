@@ -1,9 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { atom } from '../../../complect/atoms';
 import { Exer } from '../../../complect/exer/Exer';
+import { ExecRule } from '../../../complect/exer/Exer.model';
 import { CmState } from './Cm.model';
 import cmStorage from './cmStorage';
 
-export const cmExer = new Exer('cm', cmStorage);
+const cmExerAtom = atom<ExecRule[]>([], 'cm', 'rules');
+
+export const cmExer = new Exer('cm', cmExerAtom);
 
 const initialState: CmState = {
   chordVisibleVariant: 0,

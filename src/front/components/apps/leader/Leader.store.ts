@@ -1,9 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { atom } from '../../../complect/atoms';
 import { Exer } from '../../../complect/exer/Exer';
+import { ExecRule } from '../../../complect/exer/Exer.model';
 import { LeaderState } from './Leader.model';
 import leaderStorage from './leaderStorage';
 
-export const leaderExer = new Exer('leader', leaderStorage);
+const leaderExerAtom = atom<ExecRule[]>([], 'leader', 'rules');
+
+export const leaderExer = new Exer('leader', leaderExerAtom);
 
 const initialState: LeaderState = {
   gameTimers: {},

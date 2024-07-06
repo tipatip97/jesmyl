@@ -6,13 +6,12 @@ import bible from '../components/apps/bible/bibleStorage';
 import cm from '../components/apps/cm/cmStorage';
 import gamer from '../components/apps/gamer/gamerStorage';
 import leader from '../components/apps/leader/leaderStorage';
-import index from '../components/index/indexStorage';
 
 interface Sto {}
 const stub = new JStorage<NavigationStorage<Sto>, unknown>('complect');
 
 export const appStorage: Record<AppName, JStorage<any, any>> = {
-  index,
+  index: stub,
   tuner: stub,
   admin,
   gamer,

@@ -1,16 +1,15 @@
-import { useDispatch } from 'react-redux';
+import { useCallback, useMemo } from 'react';
 import { AppName } from '../app/App.model';
-import di from '../components/index/Index.store';
+import { useCurrentApp } from '../components/index/molecules';
 import { RoutePathVariated } from '../components/router/Router.model';
 import navConfigurers, { NavDataRegister } from '../shared/navConfigurers';
 import { soki } from '../soki';
 import { MyLib } from './my-lib/MyLib';
 import { JumpByLinkAlt } from './nav-configurer/Navigation.model';
 import useNavConfigurer from './nav-configurer/useNavConfigurer';
-import { useCallback, useMemo } from 'react';
 
 export default function useApps() {
-  const dispatch = useDispatch();
+  const [, setCurrentApp] = useCurrentApp();
   const appConfigs = useMemo(() => ({}), []) as Record<AppName, ReturnType<typeof useNavConfigurer>>;
   MyLib.entries(navConfigurers).forEach(([name, config]) => (appConfigs[name] = config()));
 
@@ -23,7 +22,7 @@ export default function useApps() {
       const jump = (phase?: RoutePathVariated<NavData>) => {
         if (appName !== 'index') {
           soki.onAppChange(appName);
-          dispatch(di.currentApp(appName));
+          setCurrentApp(appName);
         }
         const rootPhase = appConfigs[appName].nav.nav.rootPhase;
         if (rootPhase || phase) {
@@ -48,7 +47,7 @@ export default function useApps() {
       else if (jumpRoute === alt.RootPhase) jump();
       else jump(jumpRoute);
     },
-    [appConfigs, dispatch],
+    [appConfigs, setCurrentApp],
   );
 
   return useMemo(() => {
