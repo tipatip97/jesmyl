@@ -6,9 +6,11 @@ export class Molecule<
   StorageName extends string = string,
   Atoms extends { [Key in keyof T]: Atom<T[Key]> } = { [Key in keyof T]: Atom<T[Key]> },
 > {
-  private atoms: Atoms;
+  private atoms = {} as Atoms;
   private newAtom: <Key extends keyof T>(key: Key) => Atom<T[Key]>;
   private keys: (keyof T)[] = [];
+
+  with: (molecule: Molecule<any>) => Molecule<any>;
 
   constructor(values: { [Key in keyof T]: T[Key] }, storageName: StorageName) {
     this.atoms = {
@@ -21,6 +23,7 @@ export class Molecule<
     };
 
     this.newAtom = key => (this.atoms[key] = new Atom(undefined as any, storageName, key as string) as never)!;
+    this.with = molecule => new Molecule({}, '').addAtoms(this.atoms).addAtoms(molecule.atoms);
   }
 
   set = <Key extends keyof T>(key: Key, value: T[Key]) => this.atoms[key].set(value as never);
@@ -35,4 +38,12 @@ export class Molecule<
   };
 
   values = () => this.keys.reduce(this.reduceKeyValues, {} as T);
+
+  private addAtoms(atoms: Atoms) {
+    this.atoms = {
+      ...this.atoms,
+      ...atoms,
+    };
+    return this;
+  }
 }
