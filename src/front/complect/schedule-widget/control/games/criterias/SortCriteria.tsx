@@ -16,8 +16,6 @@ import { IconPencilEdit01StrokeRounded } from '../../../../the-icon/icons/pencil
 import { IconSortingAZ01StrokeRounded } from '../../../../the-icon/icons/sorting-a-z-01';
 import { IScheduleWidgetUser } from '../../../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
-import ScheduleWidgetUserTakePhoto from '../../users/TakePhoto';
-import ScheduleWidgetUserPhoto from '../../users/UserPhoto';
 import ScheduleWidgetRemovableUserFace from '../RemovableUserFace';
 import ScheduleWidgetTeamsCriteriaSorterScreen from './sort/SorterScreen';
 
@@ -124,20 +122,12 @@ export default function ScheduleWidgetSortCriteria({ scope, criteria }: StrongCo
         {!uncriteriedUsers.length || (
           <>
             <h5>Неопределённые участники ({uncriteriedUsers.length} чел)</h5>
-            {filteredUncriteriedUsers.map((user, useri) => {
-              return (
-                <div
-                  key={useri}
-                  className="flex flex-gap margin-gap-v"
-                >
-                  {user.fio}
-                  <ScheduleWidgetUserPhoto
-                    user={user}
-                    justRenderItOnEmpty={<ScheduleWidgetUserTakePhoto user={user} />}
-                  />
-                </div>
-              );
-            })}
+            {filteredUncriteriedUsers.map((user, useri) => (
+              <ScheduleWidgetRemovableUserFace
+                key={user.mi}
+                user={user}
+              />
+            ))}
             <TheButton onClick={() => openSorterScreen()}>Распределить</TheButton>
           </>
         )}
