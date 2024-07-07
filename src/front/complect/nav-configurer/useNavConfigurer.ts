@@ -1,23 +1,20 @@
 import { useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { AppName } from '../../app/App.model';
+import { routerMolecule } from '../../components/router/molecules';
 import {
   RouteCast,
   RoutePathVariated,
   RoutePhasePoint,
   RoutePhasePointVariated,
   RoutePlaceVariated,
-  RouterState,
 } from '../../components/router/Router.model';
-import di from '../../components/router/Router.store';
-import { RootState } from '../../shared/store';
+import { useAtom, useAtomSet, useAtomValue } from '../atoms';
 import mylib from '../my-lib/MyLib';
 import { useFullScreen } from '../useFullscreen';
 import { NavigationConfig } from './Navigation';
 import { NavigationStorage, UseNavAction } from './Navigation.model';
 
-const routerStoreSelector = (state: RootState) => state.router;
-const emptyDict = {};
+const emptyData = {};
 
 export default function useNavConfigurer<Storage, NavDataNative = {}>(
   appName: AppName,
@@ -26,30 +23,27 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
 ) {
   type NavData = Partial<NavDataNative>;
 
-  const dispatch = useDispatch();
   const [isFullScreen, switchFullscreen] = useFullScreen();
-  const routerStore: RouterState = useSelector(routerStoreSelector);
-  const appRouteCast = routerStore[appName];
+  const [indexCast, setIndexRouteCast] = useAtom(routerMolecule.take('index'));
+  const [appRouteCast, setAppRouteCast] = useAtom(routerMolecule.take(appName));
   const route =
     appRouteCast?.last === undefined ? null : appRouteCast.net.find(([phase]) => appRouteCast.last === phase);
-  const appRouteData = (routerStore[`${appName}.data`] as NavData) || emptyDict;
+  const appRouteData = (useAtomValue(routerMolecule.take(`${appName}.data`)) ?? emptyData) as NavDataNative;
+  const setAppRouteData = useAtomSet(routerMolecule.take(`${appName}.data`));
   const routeRef = useRef(route);
   routeRef.current = route;
 
-  const setAppRouteData = useCallback(
+  const updateAppRouteData = useCallback(
     (data: NavData | ((prev?: NavData) => NavData), isPreventSave?: boolean) => {
-      dispatch(
-        di.routerFixNavigateData({
-          appName,
-          isPreventSave,
-          value: {
-            ...appRouteData,
-            ...(mylib.isFunc(data) ? data(appRouteData) : data),
-          },
-        }),
+      setAppRouteData(
+        {
+          ...appRouteData,
+          ...(mylib.isFunc(data) ? data(appRouteData as never) : data),
+        },
+        isPreventSave,
       );
     },
-    [appName, appRouteData, dispatch],
+    [appRouteData, setAppRouteData],
   );
 
   const navigate = useCallback(
@@ -62,7 +56,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
         let net = appRouteCast?.net || [];
         let last = routePath === undefined ? undefined : appRouteCast?.last;
 
-        if (pathSlice && !mylib.isArr(pathSlice)) setAppRouteData(pathSlice.data);
+        if (pathSlice && !mylib.isArr(pathSlice)) updateAppRouteData(pathSlice.data);
 
         if (path) {
           const [generalPhase] = path;
@@ -88,16 +82,10 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
 
         const value: RouteCast = { ...appRouteCast, last, net };
 
-        const fix = {
-          appName,
-          isPreventSave,
-          value,
-        };
-
-        dispatch(di.routerFixNavigateCast(fix));
+        setAppRouteCast(value, isPreventSave);
       }
     },
-    [appName, appRouteCast, dispatch, nav, setAppRouteData],
+    [appRouteCast, nav, setAppRouteCast, updateAppRouteData],
   );
 
   const goBack = useCallback(
@@ -148,24 +136,18 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
         navigate(data ? { path, data } : path, isPreventSave);
 
         if (appName !== 'index') {
-          const indexRouteCast = routerStore.index;
+          const indexRouteCast = indexCast;
           const value: RouteCast = {
             ...indexRouteCast,
             last: undefined,
             net: indexRouteCast?.net ?? [],
           };
 
-          const fix = {
-            appName: 'index' as never,
-            isPreventSave,
-            value,
-          };
-
-          dispatch(di.routerFixNavigateCast(fix));
+          setIndexRouteCast(value, isPreventSave);
         }
       }
     },
-    [appName, dispatch, nav, navigate, routeRef, routerStore.index],
+    [appName, nav, navigate, indexCast, setIndexRouteCast],
   );
 
   const navigateToRoot = useCallback(
@@ -189,9 +171,9 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
     nav,
     route,
     navigateToRoot,
-    appRouteData,
+    appRouteData: appRouteData!,
     navigate,
-    setAppRouteData,
+    setAppRouteData: updateAppRouteData,
     goBack,
     goTo,
     jumpTo,

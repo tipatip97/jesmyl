@@ -12,8 +12,7 @@ import useApps from '../complect/useApps';
 import { useFullScreen } from '../complect/useFullscreen';
 import { useAppFontFamilyAtom, useCurrentApp } from '../components/index/molecules';
 import { applyFontFamilyFromMyFiles } from '../components/index/parts/actions/files/utils/set-font-family-effect';
-import routerStoreActions from '../components/router/Router.store';
-import routerStorage from '../components/router/routerStorage';
+import { useIsReadyRouter } from '../components/router/atoms';
 import navConfigurers from '../shared/navConfigurers';
 import { appNames } from './App.model';
 import './App.scss';
@@ -23,7 +22,6 @@ import AppRouter from './AppRouter';
 listenThemeChanges();
 
 const emptyArr: [] = [];
-const setIsReady = () => routerStoreActions.isReady(true);
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +32,7 @@ function App() {
   const { goBack, registerBackAction } = navConfigurers[currentApp]();
   const { jumpToApp } = useApps();
   const [isShowLogo, setIsShowLogo] = useState(true);
+  const [, setIsReady] = useIsReadyRouter();
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -59,11 +58,10 @@ function App() {
     };
   }, [appFontFamily]);
 
-  routerStorage.initDispatches(dispatch, routerStoreActions, setIsReady);
   complectStorage.initDispatches(dispatch, complectActions);
 
   useEffect(() => {
-    setTimeout(setIsShowLogo, 1200, false);
+    return hookEffectLine().setTimeout(setIsShowLogo, 1200, false).setTimeout(setIsReady, 100, true).effect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, emptyArr);
 

@@ -1,19 +1,16 @@
 import { memo, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import onBackButton from '../complect/back-button-listener';
 import useIndexNav from '../components/index/complect/useIndexNav';
 import { useAuth } from '../components/index/molecules';
+import { useIsReadyRouter } from '../components/router/atoms';
 import navConfigurers from '../shared/navConfigurers';
-import { RootState } from '../shared/store';
 import { AppName } from './App.model';
-
-const routerStoreSelector = (state: RootState) => state.router;
 
 const AppRouter = memo(({ appName }: { appName: AppName }) => {
   const index = useIndexNav();
   const app = navConfigurers[appName || 'index']();
   const auth = useAuth();
-  const routerStore = useSelector(routerStoreSelector);
+  const [isReady] = useIsReadyRouter();
 
   useEffect(() => {
     const indexGoBack = index.goBack;
@@ -26,11 +23,8 @@ const AppRouter = memo(({ appName }: { appName: AppName }) => {
   }, [app.goBack, appName, index.goBack]);
 
   const appContent = useMemo(
-    () =>
-      index.route != null
-        ? null
-        : app.nav.findContent(auth, app.route, () => app.navigateToRoot(), routerStore.isReady),
-    [index.route, app, auth, routerStore.isReady],
+    () => (index.route != null ? null : app.nav.findContent(auth, app.route, () => app.navigateToRoot(), isReady)),
+    [index.route, app, auth, isReady],
   );
 
   const indexContent = useMemo(
