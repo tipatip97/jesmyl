@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import di from '../../../../../complect/Complect.store';
+import { useScreenTranslationConfigsSet } from '../molecules';
 import { ScreenTranslationConfig } from '../model';
 import { useScreenTranslationConfigs } from './configs';
 
 export const useUpdateScreenTranslationConfig = () => {
   const configs = useScreenTranslationConfigs();
-  const dispatch = useDispatch();
+  const set = useScreenTranslationConfigsSet();
 
   return useCallback(
     (configi: number, config: Partial<ScreenTranslationConfig> | null) => {
@@ -15,14 +14,8 @@ export const useUpdateScreenTranslationConfig = () => {
       if (config === null) newConfigs.splice(configi, 1);
       else newConfigs[configi] = { ...newConfigs[configi], ...config };
 
-      dispatch(di.screenTranslationConfigs(newConfigs));
+      set(newConfigs);
     },
-    [configs, dispatch],
+    [configs, set],
   );
-};
-
-export const useSetScreenTranslationCurrentConfigi = () => {
-  const dispatch = useDispatch();
-
-  return useCallback((configi: number) => dispatch(di.currentTranslationConfigi(configi)), [dispatch]);
 };

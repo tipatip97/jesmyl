@@ -1,16 +1,9 @@
-import { ReactNode, useCallback, useState } from 'react';
-import { complectStorage } from '../Complect.store';
+import { ReactNode, useCallback } from 'react';
 import { IconArrowDown01StrokeRounded } from '../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../complect/the-icon/icons/arrow-up-01';
+import { atom, useAtom } from '../atoms';
 
-const isNIs = (is: boolean) => !is;
-let expandes: string[] = [];
-(async () => (expandes = await complectStorage.getOr('rememberExpandes', [])))();
-const clear = (scope: string) => {
-  const scopeIndex = expandes.indexOf(scope);
-  expandes.splice(scopeIndex, 1);
-  complectStorage.set('rememberExpandes', expandes);
-};
+const expandsAtom = atom<Set<string>>(new Set(), 'complect', 'expandes');
 
 export const useIsRememberExpand = (
   scope: string,
@@ -18,27 +11,29 @@ export const useIsRememberExpand = (
   postfix?: ReactNode | ((isExpand: boolean) => ReactNode),
   isSelfExpandOnly?: boolean,
 ): [ReactNode, boolean, (isExpand?: boolean) => void] => {
-  const [isExpand, setIsExpand] = useState(isSelfExpandOnly ? false : expandes.includes(scope));
+  const [expandes, setExpandes] = useAtom(expandsAtom);
 
-  if (isSelfExpandOnly && expandes.includes(scope)) clear(scope);
+  if (isSelfExpandOnly && expandes.has(scope)) {
+    expandes.delete(scope);
+    setExpandes(new Set(expandes));
+  }
+
+  const isExpand = expandes.has(scope);
+
   const switchExpand: (isExpand?: boolean) => void = useCallback(
     isExpand => {
-      if (isSelfExpandOnly) setIsExpand(isExpand ?? isNIs);
-
-      if (expandes.includes(scope)) {
+      if (expandes.has(scope)) {
         if (isExpand === undefined || isExpand === false) {
-          clear(scope);
-          if (!isSelfExpandOnly) setIsExpand(isNIs);
+          expandes.delete(scope);
+          setExpandes(new Set(expandes));
         }
       } else if (!isSelfExpandOnly) {
         if (isExpand === undefined || isExpand === true) {
-          expandes.push(scope);
-          setIsExpand(isNIs);
-          complectStorage.set('rememberExpandes', expandes);
+          setExpandes(new Set(expandes.add(scope)));
         }
       }
     },
-    [isSelfExpandOnly, scope],
+    [expandes, isSelfExpandOnly, scope, setExpandes],
   );
 
   return [

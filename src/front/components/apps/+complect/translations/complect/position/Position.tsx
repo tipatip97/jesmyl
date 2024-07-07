@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled, { RuleSet, css } from 'styled-components';
-import { RootState } from '../../../../../../shared/store';
 import { useUpdateCmCurrentTranslationConfig } from '../../../../cm/translation/complect/controlled/hooks/update-config';
+import { useFixedResizerLines } from '../atoms';
 import { defaultScreenTranslationPositionConfig } from '../defaults';
 import { FixedResizerLines, ScreenTranslationPositionConfig } from '../model';
 import { PositionConfiguratorsResizersHalfWrapperFixer } from './complect/HalfWrapperFixer';
@@ -25,8 +24,6 @@ interface Props {
   wrapperRef: React.RefObject<HTMLDivElement>;
 }
 
-const fixedResizerLinesSelector = (state: RootState) => state.complect.fixedResizerLines;
-
 export const ScreenTranslateCurrentPositionConfigurators = ({
   config,
   resizeOnly,
@@ -42,7 +39,7 @@ export const ScreenTranslateCurrentPositionConfigurators = ({
   const [width, setWidth] = useState(config.width);
   const [height, setHeight] = useState(config.height);
   const rectRef = useRef<HTMLDivElement>(null);
-  const fixedResizerLines = useSelector(fixedResizerLinesSelector);
+  const fixedResizerLines = useFixedResizerLines();
   const [showHalfFixersKeyActiveMode, setShowHalfFixersKeyActiveMode] = useState<ShowHalfFixersKeyActiveMode>(null);
 
   useEffect(() => {
@@ -173,7 +170,7 @@ const Rect = styled.div<{
   $height: number;
   $resizeOnly: ScreenResizerResizeOnly | und;
   $isCantMove: boolean | und;
-  $fixedResizerLines: FixedResizerLines | und;
+  $fixedResizerLines: FixedResizerLines | null;
   $config: ScreenTranslationPositionConfig;
 }>`
   position: absolute;
@@ -184,7 +181,7 @@ const Rect = styled.div<{
   ${props => !props.$isCantMove && !props.$fixedResizerLines && 'cursor: move;'}
 
   ${props => {
-    if (props.$fixedResizerLines !== undefined) {
+    if (props.$fixedResizerLines !== null) {
       const type = props.$fixedResizerLines.type;
       const value = props.$fixedResizerLines.value;
 

@@ -1,5 +1,4 @@
-import { useDispatch } from 'react-redux';
-import { complectActions } from '../../../../../../../../complect/Complect.store';
+import { useFixedResizerLinesSet } from '../../../atoms';
 import { FixedResizerLines, ScreenTranslationPositionConfig } from '../../../model';
 
 const minSize = 2;
@@ -10,9 +9,9 @@ export const usePositionConfiguratorResizerBorderMaker = (
   setOnMove: (callback: ((event: MouseEvent) => void) | null) => void,
   updateConfig: (config: Partial<ScreenTranslationPositionConfig>) => void,
   config: ScreenTranslationPositionConfig,
-  fixedResizerLines: FixedResizerLines | und,
+  fixedResizerLines: FixedResizerLines | null,
 ) => {
-  const dispatch = useDispatch();
+  const setLines = useFixedResizerLinesSet();
 
   return (vert: 'top' | 'bottom' | null, horz: 'left' | 'right' | null) => (
     <div
@@ -25,28 +24,26 @@ export const usePositionConfiguratorResizerBorderMaker = (
               const bottomLim = config.top + config.height;
 
               if (event.ctrlKey) {
-                dispatch(
-                  complectActions.fixedResizerLines({
-                    type: vert ? 'vert' : 'horz',
-                    value:
-                      vert === 'top'
-                        ? config.top
-                        : vert === 'bottom'
-                          ? bottomLim
-                          : horz === 'left'
-                            ? config.left
-                            : rightLim,
-                  }),
-                );
+                setLines({
+                  type: vert ? 'vert' : 'horz',
+                  value:
+                    vert === 'top'
+                      ? config.top
+                      : vert === 'bottom'
+                        ? bottomLim
+                        : horz === 'left'
+                          ? config.left
+                          : rightLim,
+                });
                 return;
               }
 
-              if (fixedResizerLines === undefined) return;
+              if (fixedResizerLines === null) return;
               if (fixedResizerLines.type === 'horz' ? vert : horz) return;
               const newPosition = fixedResizerLines.value;
 
               if (fixedResizerLines.type === 'horz') {
-                dispatch(complectActions.fixedResizerLines(undefined));
+                setLines(null);
 
                 if ((newPosition === config.left && horz === 'left') || (newPosition === rightLim && horz === 'right'))
                   return;
@@ -79,7 +76,7 @@ export const usePositionConfiguratorResizerBorderMaker = (
                     });
                 }
               } else {
-                dispatch(complectActions.fixedResizerLines(undefined));
+                setLines(null);
 
                 if ((newPosition === config.top && vert === 'top') || (newPosition === bottomLim && vert === 'bottom'))
                   return;

@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../shared/store';
-import { switchIsNumberSearch } from './Complect.store';
-import IconButton from './the-icon/IconButton';
 import { IconGridTableStrokeRounded } from '../complect/the-icon/icons/grid-table';
 import { IconSearchVisualStrokeRounded } from '../complect/the-icon/icons/search-visual';
+import { atom, useAtomToggle, useAtomValue } from './atoms';
 import { KeyboardInputPropsType } from './keyboard/Keyboard.model';
 import KeyboardInput from './keyboard/KeyboardInput';
+import IconButton from './the-icon/IconButton';
 
-const isNumberSearchSelector = (state: RootState) => state.complect.isNumberSearch;
+const isNumberSearchAtom = atom(false);
+export const useIsNumberSearch = () => useAtomValue(isNumberSearchAtom);
 
 export default function DebouncedSearchInput(props: {
   initialTerm?: string;
@@ -23,16 +22,16 @@ export default function DebouncedSearchInput(props: {
   type?: KeyboardInputPropsType;
 }) {
   const { initialTerm = '', onSearch, onDebounced, debounce, onTermChange, withoutIcon, className } = props;
-  const dispatch = useDispatch();
   const timeout = useMemo((): { val?: TimeOut } => ({}), []);
-  const isNumberSearch = useSelector(isNumberSearchSelector);
+  const isNumberSearch = useAtomValue(isNumberSearchAtom);
+  const isNumberSearchToggle = useAtomToggle(isNumberSearchAtom);
 
   return (
     <div className={`debounced-input ${className}`}>
       {withoutIcon || (
         <IconButton
           Icon={isNumberSearch ? IconGridTableStrokeRounded : IconSearchVisualStrokeRounded}
-          onClick={() => dispatch(switchIsNumberSearch())}
+          onClick={() => isNumberSearchToggle()}
         />
       )}
       <KeyboardInput

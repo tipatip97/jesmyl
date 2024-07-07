@@ -1,29 +1,25 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { complectActions } from '../../../../../complect/Complect.store';
-import { RootState } from '../../../../../shared/store';
+import { atom, useAtomInkrement, useAtomValue } from '../../../../../complect/atoms';
 import { useScreenTranslationCurrentConfigi } from './configs';
 
 const windows: { readonly wins: readonly (Window | nil)[] } = { wins: [] };
 
-const updatesSelector = (state: RootState) => state.complect.numTranslationsUpdates;
+const numAtom = atom(0);
 
 export const useScreenTranslationWindows = () => {
-  useSelector(updatesSelector);
+  useAtomValue(numAtom);
   return windows.wins;
 };
 
 export const useUpdateScreenTranslationWindows = () => {
-  useSelector(updatesSelector);
-  const dispatch = useDispatch();
+  const setUp = useAtomInkrement(numAtom);
 
   return useCallback(
     (wins: (Window | nil)[]) => {
       (windows as any).wins = wins;
-
-      dispatch(complectActions.riseUpTranslationUpdates());
+      setUp(1);
     },
-    [dispatch],
+    [setUp],
   );
 };
 

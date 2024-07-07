@@ -1,21 +1,13 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { complectActions } from '../../../../../complect/Complect.store';
-import { RootState } from '../../../../../shared/store';
+import { useAtom, useAtomValue } from '../../../../../complect/atoms';
+import { complectMolecule } from '../molecules';
 import { TranslationViewApp } from '../Translations.model';
 
-const currentTranslationTextAppSelector = (state: RootState) => state.complect.currentTranslationTextApp;
-
-export const useCurrentTranslationTextApp = (): TranslationViewApp => useSelector(currentTranslationTextAppSelector);
+export const useCurrentTranslationTextApp = () => useAtom(complectMolecule.take('currentTranslationTextApp'));
+export const useCurrentTranslationTextAppValue = () => useAtomValue(complectMolecule.take('currentTranslationTextApp'));
 
 export const useSwitchCurrentTranslationTextApp = () => {
-  const dispatch = useDispatch();
-  const app = useCurrentTranslationTextApp();
+  const [app, set] = useCurrentTranslationTextApp();
 
-  return useCallback(
-    (setApp?: TranslationViewApp) => {
-      dispatch(complectActions.currentTranslationTextApp(setApp ?? (app === 'cm' ? 'bible' : 'cm')));
-    },
-    [app, dispatch],
-  );
+  return useCallback((setApp?: TranslationViewApp) => set(setApp ?? (app === 'cm' ? 'bible' : 'cm')), [app, set]);
 };

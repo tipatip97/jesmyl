@@ -5,8 +5,8 @@ import { IconArrowRight01StrokeRounded } from '../../../../../complect/the-icon/
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
 import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
+import { useToggleIsScreenTranslationTextVisible } from '../atoms';
 import { useScreenTranslationConfigs } from '../hooks/configs';
-import { useSwitchIsScreenTranslationTextVisible } from '../hooks/is-visible';
 import { useWatchScreenTranslations } from '../hooks/watch-translation';
 import { useScreenTranslationCurrentWindow, useScreenTranslationWindows } from '../hooks/windows';
 import { ScreenTranslationControlPanelShowMdButton } from './ShowMdButton';
@@ -21,7 +21,7 @@ export const ScreenTranslationControlPanel = memo(function ControlPanel({ onNext
   const windows = useScreenTranslationWindows();
   const currWin = useScreenTranslationCurrentWindow();
   const watchTranslation = useWatchScreenTranslations();
-  const switchIsVisible = useSwitchIsScreenTranslationTextVisible();
+  const switchIsVisible = useToggleIsScreenTranslationTextVisible();
 
   return (
     <div className="flex flex-gap between margin-big-gap-t">

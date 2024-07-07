@@ -12,7 +12,7 @@ interface Props {
   wrapperRef: React.RefObject<HTMLDivElement>;
   resizeOnly?: ScreenResizerResizeOnly;
   config: ScreenTranslationPositionConfig;
-  fixedResizerLines: FixedResizerLines | und;
+  fixedResizerLines: FixedResizerLines | null;
   showHalfFixersKeyActiveMode: ShowHalfFixersKeyActiveMode;
 }
 
@@ -100,7 +100,7 @@ const onBoard = `${-size / 2}px`;
 const boardColor = 'white';
 
 const Resizers = styled.div<{
-  $fixedResizerLines: FixedResizerLines | und;
+  $fixedResizerLines: FixedResizerLines | null;
   $config: ScreenTranslationPositionConfig;
   $showHalfFixersKeyActiveMode: ShowHalfFixersKeyActiveMode;
 }>`

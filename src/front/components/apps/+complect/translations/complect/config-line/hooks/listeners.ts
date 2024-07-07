@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
-import { useSwitchIsScreenTranslationTextVisible } from '../../../hooks/is-visible';
+import { useToggleIsScreenTranslationTextVisible } from '../../../atoms';
 import { ScreenTranslationConfig } from '../../../model';
 
 const invokeEach = (cb: () => void) => cb();
@@ -13,7 +13,7 @@ export const useScreenTranslationFaceLineListeners = (
   updateConfig: (configi: number, config: Partial<ScreenTranslationConfig> | null) => void,
   windows: readonly (nil | Window)[],
 ) => {
-  const switchIsVisible = useSwitchIsScreenTranslationTextVisible();
+  const switchIsVisible = useToggleIsScreenTranslationTextVisible();
   const currentConfigiRef = useActualRef(currentConfigi);
 
   useEffect(() => {

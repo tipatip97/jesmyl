@@ -1,22 +1,18 @@
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
+import DebouncedSearchInput, { useIsNumberSearch } from '../../../../../complect/DebouncedSearchInput';
 import LoadIndicatedContent from '../../../../../complect/load-indicated-content/LoadIndicatedContent';
 import mylib from '../../../../../complect/my-lib/MyLib';
-import { RootState } from '../../../../../shared/store';
 import useCmNav from '../../base/useCmNav';
 import useLaterComList from '../../base/useLaterComList';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import { ComFaceList } from '../com/face/list/ComFaceList';
 import { useCcat } from './useCcat';
 
-const isNumberSearchSelector = (state: RootState) => state.complect.isNumberSearch;
-
 export default function TheCat({ all }: { all?: boolean }) {
   const cat = useCcat(all);
   const { laterComs } = useLaterComList();
-  const isNumberSearch = useSelector(isNumberSearchSelector);
+  const isNumberSearch = useIsNumberSearch();
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);

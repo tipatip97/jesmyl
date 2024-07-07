@@ -1,20 +1,19 @@
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { complectActions } from '../../../../../../../complect/Complect.store';
+import { useFixedResizerLinesSet } from '../../atoms';
 
 interface Props {
   prop: 'vert' | 'horz';
 }
 
 export const PositionConfiguratorsResizersHalfWrapperFixer = ({ prop }: Props) => {
-  const dispatch = useDispatch();
+  const setLines = useFixedResizerLinesSet();
 
   return (
     <Fixer
       className={prop}
       onClick={event => {
-        if (event.ctrlKey) dispatch(complectActions.fixedResizerLines({ type: prop, value: 50 }));
-        else dispatch(complectActions.fixedResizerLines(undefined));
+        if (event.ctrlKey) setLines({ type: prop, value: 50 });
+        else setLines(null);
       }}
     />
   );

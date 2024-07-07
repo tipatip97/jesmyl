@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { complectReducer } from '../complect/Complect.store';
 import { strongReducer } from '../complect/strong-control/Strong.store';
 import { gamerReducer } from '../components/apps/gamer/Gamer.store';
 import { leaderReducer } from '../components/apps/leader/Leader.store';
@@ -9,7 +8,6 @@ export const store = configureStore({
   reducer: {
     tuner: tunerReducer,
     gamer: gamerReducer,
-    complect: complectReducer,
     leader: leaderReducer,
     strong: strongReducer,
   },

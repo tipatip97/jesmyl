@@ -1,20 +1,19 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../shared/store';
-import { riseUpExerUpdates } from '../../Complect.store';
+import { atom, useAtomInkrement } from '../../atoms';
 import '../Exec.scss';
 
-const numExerUpdatesSelector = (state: RootState) => state.complect.numExerUpdates;
+const numAtom = atom(0);
 
 export const useExerExec = () => {
-  const dispatch = useDispatch();
-  useSelector(numExerUpdatesSelector);
+  const set = useAtomInkrement(numAtom);
 
   return useCallback(
     <Value>(value?: Value) => {
-      dispatch(riseUpExerUpdates());
+      set(1);
       return value;
     },
-    [dispatch],
+    [set],
   );
 };
+
+export const useRiseUpExerUpdates = () => useAtomInkrement(numAtom);

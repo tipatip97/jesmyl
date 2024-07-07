@@ -5,10 +5,10 @@ import { CmTranslationCurrentScreen } from '../../cm/translation/complect/contro
 import { CurrentForceViweAppContext } from './Translation.contexts';
 import { TranslationTextScreen } from './TranslationTextScreen';
 import { TranslationScreenProps } from './Translations.model';
-import { useCurrentTranslationTextApp } from './hooks/current-app';
+import { useCurrentTranslationTextAppValue } from './hooks/current-app';
 
 export const TranslationScreen = (props: TranslationScreenProps) => {
-  const app = useCurrentTranslationTextApp();
+  const app = useCurrentTranslationTextAppValue();
   const forceViewApp = useContext(CurrentForceViweAppContext);
 
   return (

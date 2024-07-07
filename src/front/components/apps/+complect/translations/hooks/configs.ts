@@ -1,51 +1,41 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { complectActions } from '../../../../../complect/Complect.store';
-import { RootState } from '../../../../../shared/store';
+import { useCurrentTranslationConfigiValue } from '../atoms';
 import { ScreenTranslationConfig } from '../model';
+import { useScreenTranslationConfigsSet, useScreenTranslationConfigsValue } from '../molecules';
 
 const defaultConfig: ScreenTranslationConfig = {
   title: 'Трансляция',
   proportion: 1,
 };
 
-const configsSelector: (state: RootState) => ScreenTranslationConfig[] = state =>
-  state.complect.screenTranslationConfigs;
-
-export const useScreenTranslationConfigs: () => ScreenTranslationConfig[] = () => useSelector(configsSelector);
+export const useScreenTranslationConfigs: () => ScreenTranslationConfig[] = () => useScreenTranslationConfigsValue();
 
 export const useMakeScreenTranslationConfigsFillPack = <Config>(configs: Config[], defaultConfig: Config) => {
-  return useSelector(configsSelector).map((_, configi) => {
+  return useScreenTranslationConfigsValue().map((_, configi) => {
     return configs[configi] ?? defaultConfig;
   });
 };
 
-const currentConfigiSelector = (state: RootState) => state.complect.currentTranslationConfigi;
-
 export const useAddScreenTranslationConfig = () => {
   const configs = useScreenTranslationConfigs();
-  const dispatch = useDispatch();
+  const set = useScreenTranslationConfigsSet();
 
   return useCallback(() => {
-    dispatch(
-      complectActions.screenTranslationConfigs([
-        ...configs,
-        { ...defaultConfig, title: defaultConfig.title + ' №' + (configs.length + 1) },
-      ]),
-    );
+    set([...configs, { ...defaultConfig, title: defaultConfig.title + ' №' + (configs.length + 1) }]);
+
     return configs.length;
-  }, [configs, dispatch]);
+  }, [configs, set]);
 };
 
 export const useRemoveScreenTranslationConfig = () => {
   const configs = useScreenTranslationConfigs();
-  const dispatch = useDispatch();
+  const set = useScreenTranslationConfigsSet();
 
   return useCallback(
     (configi: number) => {
-      dispatch(complectActions.screenTranslationConfigs(configs.toSpliced(configi, 1)));
+      set(configs.toSpliced(configi, 1));
     },
-    [configs, dispatch],
+    [configs, set],
   );
 };
 
@@ -54,7 +44,7 @@ export const useGetScreenTranslationConfig = () => {
   return useCallback((configi: number): ScreenTranslationConfig | nil => configs[configi], [configs]);
 };
 
-export const useScreenTranslationCurrentConfigi: () => number = () => useSelector(currentConfigiSelector);
+export const useScreenTranslationCurrentConfigi: () => number = () => useCurrentTranslationConfigiValue();
 
 export const useScreenTranslationCurrentConfig = (): ScreenTranslationConfig | und =>
   useScreenTranslationConfigs()[useScreenTranslationCurrentConfigi()];

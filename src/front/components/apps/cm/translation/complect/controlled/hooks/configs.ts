@@ -4,7 +4,10 @@ import {
   defaultScreenTranslationTextConfig,
 } from '../../../../../+complect/translations/complect/defaults';
 import { ScreenTranslationBackgroundConfigs } from '../../../../../+complect/translations/complect/model';
-import { useScreenTranslationCurrentConfigi } from '../../../../../+complect/translations/hooks/configs';
+import {
+  useMakeScreenTranslationConfigsFillPack,
+  useScreenTranslationCurrentConfigi,
+} from '../../../../../+complect/translations/hooks/configs';
 import { useAtomValue } from '../../../../../../../complect/atoms';
 import { cmMolecule } from '../../../../molecules';
 import { CmTranslationScreenConfig } from '../model';
@@ -17,7 +20,7 @@ const defaultConfig: CmTranslationScreenConfig & ScreenTranslationBackgroundConf
 };
 
 export const useCmScreenTranslationConfigs = () =>
-  useAtomValue(cmMolecule.take('translationScreenConfigs')) ?? defaultConfig;
+  useMakeScreenTranslationConfigsFillPack(useAtomValue(cmMolecule.take('translationScreenConfigs')), defaultConfig);
 
 export const useCmScreenTranslationConfig = (configi: number | und): CmTranslationScreenConfig | und => {
   const configs = useCmScreenTranslationConfigs();

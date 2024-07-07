@@ -1,9 +1,9 @@
 import { TranslationScreenProps } from '../../../../../+complect/translations/Translations.model';
+import { useIsScreenTranslationTextVisible } from '../../../../../+complect/translations/atoms';
 import {
   useGetScreenTranslationConfig,
   useScreenTranslationCurrentConfigi,
 } from '../../../../../+complect/translations/hooks/configs';
-import { useIsScreenTranslationTextVisible } from '../../../../../+complect/translations/hooks/is-visible';
 import { useComTranslationBlock } from '../../../../atoms';
 import { FontSizeContainProps } from '../../../../base/font-size-contain/FontSizeContain.model';
 import { useCmCurrentComTexts } from '../../hooks/get-com-text';

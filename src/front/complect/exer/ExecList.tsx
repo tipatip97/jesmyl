@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { IconSentStrokeRounded } from '../../complect/the-icon/icons/sent';
 import EditContainerCorrectsInformer from '../../components/apps/cm/editor/edit-container-corrects-informer/EditContainerCorrectsInformer';
-import { riseUpExerUpdates } from '../Complect.store';
 import LoadIndicatedContent from '../load-indicated-content/LoadIndicatedContent';
 import useToast from '../modal/useToast';
 import { Exer } from './Exer';
 import { ExerStorage } from './Exer.model';
-import { useExerExec } from './hooks/useExer';
+import { useExerExec, useRiseUpExerUpdates } from './hooks/useExer';
 
 export default function ExecList<Storage extends ExerStorage>({
   exer,
@@ -16,7 +14,7 @@ export default function ExecList<Storage extends ExerStorage>({
   exer: Exer<Storage>;
   onLoad: () => void;
 }) {
-  const dispatch = useDispatch();
+  const riseUpExerUpdates = useRiseUpExerUpdates();
   const isDisabledSendButton = exer.execs.some(exec => exec.corrects?.errors?.length);
   const [readyState, setReadyState] = useState(1);
   const [toastNode, toast] = useToast();
@@ -53,7 +51,7 @@ export default function ExecList<Storage extends ExerStorage>({
               exer
                 .load()
                 .then(() => {
-                  dispatch(riseUpExerUpdates());
+                  riseUpExerUpdates(1);
                   setReadyState(1);
                 })
                 .catch(error => {

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useSwitchIsScreenTranslationTextVisible } from '../../+complect/translations/hooks/is-visible';
+import { useToggleIsScreenTranslationTextVisible } from '../../+complect/translations/atoms';
 import { useActualRef } from '../../../../complect/useActualRef';
 import { useStorageValueGetter } from '../../../../complect/useStorage';
 import bibleStorage from '../bibleStorage';
@@ -21,7 +21,7 @@ export const useBibleTranslationSlideSyncContentSetter = () => {
   const currentVerseiRef = useActualRef(useBibleAddressVersei());
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const addToHistory = useBibleTranslationAddToHistory();
-  const switchIsVisible = useSwitchIsScreenTranslationTextVisible();
+  const switchIsVisible = useToggleIsScreenTranslationTextVisible();
 
   return useCallback(
     (isReplaceFirstNearVersei = false) => {

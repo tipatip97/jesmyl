@@ -1,17 +1,16 @@
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { complectActions } from '../../../../../../../complect/Complect.store';
+import { useFixedResizerLinesSet } from '../../atoms';
 import { FixedResizerLines, ScreenTranslationPositionConfig } from '../../model';
 
 interface Props {
   prop: 'vert' | 'horz';
-  fixedResizerLines: FixedResizerLines | und;
+  fixedResizerLines: FixedResizerLines | null;
   config: ScreenTranslationPositionConfig;
   updateConfig: (config: Partial<ScreenTranslationPositionConfig>) => void;
 }
 
 export const PositionConfiguratorsResizersHalfFixer = ({ prop, config, fixedResizerLines, updateConfig }: Props) => {
-  const dispatch = useDispatch();
+  const setLines = useFixedResizerLinesSet();
   const positionProp = prop === 'horz' ? 'left' : 'top';
   const sizeProp = prop === 'horz' ? 'width' : 'height';
 
@@ -20,18 +19,16 @@ export const PositionConfiguratorsResizersHalfFixer = ({ prop, config, fixedResi
       className={prop}
       onClick={event => {
         if (event.ctrlKey) {
-          dispatch(
-            complectActions.fixedResizerLines({
-              type: prop,
-              value: config[positionProp] + config[sizeProp] / 2,
-            }),
-          );
+          setLines({
+            type: prop,
+            value: config[positionProp] + config[sizeProp] / 2,
+          });
           return;
         }
 
-        dispatch(complectActions.fixedResizerLines(undefined));
+        setLines(null);
 
-        if (!event.shiftKey || fixedResizerLines === undefined) return;
+        if (!event.shiftKey || fixedResizerLines === null) return;
         const newPosition = fixedResizerLines.value;
 
         updateConfig({

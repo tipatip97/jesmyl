@@ -1,6 +1,6 @@
-import { useIsScreenTranslationTextVisible } from '../../../../+complect/translations/hooks/is-visible';
-import { BibleTranslationScreenConfig } from '../../model';
+import { useIsScreenTranslationTextVisible } from '../../../../+complect/translations/atoms';
 import { useBibleScreenTranslationFontSizeAdapter } from '../../../../../../complect/useFontSizeAdapter';
+import { BibleTranslationScreenConfig } from '../../model';
 
 export const useBibleScreenTranslationFontSizeScreenAdapter = (
   content: string,
