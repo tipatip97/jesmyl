@@ -13,6 +13,8 @@ export const useAtomValue = <Value, Key extends string>(atom: Atom<Value, Key>) 
 };
 
 export const useAtomSet = <Value, Key extends string>(atom: Atom<Value, Key>) => atom.set;
+export const useAtomToggle = <Key extends string>(atom: Atom<boolean, Key>) => atom.toggle;
+
 export const useAtom = <Value, Key extends string>(atom: Atom<Value, Key>) =>
   [useAtomValue(atom), useAtomSet(atom)] as const;
 

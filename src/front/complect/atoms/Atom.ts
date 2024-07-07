@@ -67,6 +67,8 @@ export class Atom<
     this.save(val);
   };
 
+  toggle = (is?: boolean) => this.set((is ?? ((is: boolean) => !is)) as never);
+
   subscribe = (sub: Sunscriber) => {
     this.subs.add(sub);
     return () => {
