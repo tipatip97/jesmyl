@@ -1,28 +1,26 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAtomValue } from '../../../../../complect/atoms';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrowRight02StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-right-02';
 import { IconCalendar03StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-03';
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
-import { RootState } from '../../../../../shared/store';
 import { ComFace } from '../../col/com/face/ComFace';
-import { Exec, ExecVision } from '../CmEditor.model';
+import { useCmEditorExecs } from '../atoms';
+import { ExecVision } from '../CmEditor.model';
 import { EditableCom } from '../col/compositions/EditableCom';
 import { useEditableCols } from '../col/useEditableCols';
 import { EditableMeetingsEvent } from '../meetings/EditableMeetingsEvent';
 import { useEditableMeetings } from '../meetings/useEditableMeetings';
+import { cmEditorMolecule } from '../molecules';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import './ExecsVisor.scss';
 
-const execsSelector: (state: RootState) => Exec[] | und = (state: RootState) => state.cm.execs;
-const rulesSelector = (state: RootState) => state.cm.rules;
-
 export default function ExecsVisor() {
   const [lookList, setLookList] = useState<(number | nil)[]>([]);
-  const execs: Exec[] | und = useSelector(execsSelector);
-  const rules = useSelector(rulesSelector);
+  const [execs] = useCmEditorExecs();
+  const rules = useAtomValue(cmEditorMolecule.take('rules'));
   const cols = useEditableCols();
   const { meetings, goToEvent } = useEditableMeetings();
   const list: ExecVision[] | nil = useMemo(() => {
@@ -104,7 +102,7 @@ export default function ExecsVisor() {
         })
         .sort((a, b) => (b.ts || 0) - (a.ts || 0))
     );
-  }, [cols, execs, meetings, rules]);
+  }, [cols, execs, goToEvent, meetings, rules]);
 
   return (
     <PhaseCmEditorContainer

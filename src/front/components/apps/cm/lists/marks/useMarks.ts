@@ -1,15 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
-import { cmStoreActions } from '../../Cm.store';
+import { useAtom } from '../../../../../complect/atoms';
 import cmStorage from '../../cmStorage';
 import { Com } from '../../col/com/Com';
 import { useCols } from '../../cols/useCols';
-
-const marksSelector = (state: RootState) => state.cm.marks;
+import { cmMolecule } from '../../molecules';
 
 export function useMarks() {
-  const dispatch = useDispatch();
-  const marks = useSelector(marksSelector);
+  const [marks, setMarks] = useAtom(cmMolecule.take('marks'));
   const cols = useCols();
   const unsets: number[] = [];
   const markedComs =
@@ -25,10 +21,7 @@ export function useMarks() {
   const ret = {
     marks: markedComs?.map(com => com.wid),
     markedComs,
-    setMarks: (val: number[]) => {
-      cmStorage.set('marks', val);
-      dispatch(cmStoreActions.marks(val));
-    },
+    setMarks,
     toggleMarked: (comw: number) => (ret.isMarked(comw) ? ret.removeMark(comw) : ret.addMarks(comw)),
     addMarks: (comws: number | number[]) =>
       ret.marks &&

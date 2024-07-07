@@ -1,6 +1,6 @@
 import { FreeExecDict, FreeExecDictUniq } from '../../../../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
-import { cmExer } from '../../../../../Cm.store';
+import { cmExer } from '../../../../../CmExer';
 import { Order } from '../../../../../col/com/order/Order';
 import {
   EditableOrderRegion,

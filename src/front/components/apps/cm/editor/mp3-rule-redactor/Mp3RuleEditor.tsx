@@ -1,13 +1,11 @@
 import { ReactNode, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAtomValue } from '../../../../../complect/atoms';
+import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconEdit02StrokeRounded } from '../../../../../complect/the-icon/icons/edit-02';
-import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import { CmMp3Rule } from '../../../../../models';
-import { RootState } from '../../../../../shared/store';
-
-const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
+import { cmEditorMolecule } from '../molecules';
 
 export default function Mp3RuleEditor(
   props: Partial<CmMp3Rule> & {
@@ -17,7 +15,7 @@ export default function Mp3RuleEditor(
     newRule?: boolean;
   },
 ) {
-  const mp3Rules = useSelector(mp3RulesSelector);
+  const mp3Rules = useAtomValue(cmEditorMolecule.take('mp3Rules'));
   const [url, setUrl] = useState(props.url || '');
   const [attr, setAttr] = useState(props.attr || '');
   const [textQuery, setTextQuery] = useState(props.textQuery || '');

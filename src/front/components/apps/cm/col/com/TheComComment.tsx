@@ -1,18 +1,14 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAtom } from '../../../../../complect/atoms';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconEdit01StrokeRounded } from '../../../../../complect/the-icon/icons/edit-01';
-import { RootState } from '../../../../../shared/store';
-import cmStoreActions from '../../Cm.store';
+import { cmMolecule } from '../../molecules';
 import './Com.scss';
 
-const comCommentsSelector = (state: RootState) => state.cm.comComments;
-
 export default function TheComComment({ comw }: { comw: number }) {
-  const dispatch = useDispatch();
-  const comments = useSelector(comCommentsSelector);
+  const [comments, setComments] = useAtom(cmMolecule.take('comComments'));
   const [isRedact, setIsRedact] = useState(false);
 
   return (
@@ -28,7 +24,7 @@ export default function TheComComment({ comw }: { comw: number }) {
           multiline
           className="full-width bgcolor--2"
           value={comments[comw] ?? ''}
-          onChange={comment => dispatch(cmStoreActions.setComComment({ comw, comment }))}
+          onChange={comment => setComments(prev => ({ ...prev, [comw]: comment }))}
         />
       ) : (
         <div className="white-pre-line padding-big-gap-b">{comments[comw]}</div>

@@ -1,7 +1,6 @@
 import { FreeExecDict } from '../../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../../complect/my-lib/MyLib';
-import { cmExer } from '../../../Cm.store';
-import { Cat } from '../../../col/cat/Cat';
+import { cmExer } from '../../../CmExer';
 import { blockStyles } from '../../../col/com/block-styles/BlockStyles';
 import { StyleBlock } from '../../../col/com/block-styles/StyleBlock';
 import { Com } from '../../../col/com/Com';

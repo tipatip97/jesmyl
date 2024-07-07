@@ -1,6 +1,6 @@
 import { useShowExerLookIcon } from '../../../../../complect/exer/hooks/look-icon';
 import { PhaseContainerProps } from '../../../../../complect/phase-container/PhaseContainerConfigurer.model';
-import { cmExer } from '../../Cm.store';
+import { cmExer } from '../../CmExer';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import './PhaseCmEditorContainer.scss';
 

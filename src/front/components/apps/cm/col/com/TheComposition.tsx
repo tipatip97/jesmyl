@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { DocTitle } from '../../../../../complect/DocTitle';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { useAtom, useAtomValue } from '../../../../../complect/atoms';
 import { Metronome } from '../../../../../complect/metronome/Metronome';
-import { RootState } from '../../../../../shared/store';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useCmNav from '../../base/useCmNav';
 import useLaterComList from '../../base/useLaterComList';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
+import { cmMolecule } from '../../molecules';
 import { Com } from './Com';
 import './Com.scss';
 import { ComTools } from './ComTools';
@@ -18,9 +18,6 @@ import { useCcom } from './useCcom';
 import useComPack from './useComPack';
 import useMigratableComTools from './useMigratableComTools';
 
-const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
-const isMetronomeHideSelector = (state: RootState) => state.cm.isMetronomeHide;
-
 export default function TheComposition() {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const ccom = useCcom();
@@ -28,8 +25,8 @@ export default function TheComposition() {
   const [popupComToolsNode, openPopuComTools] = useBottomPopup(ComTools);
   const { topTools } = useMigratableComTools();
   const [comList] = useComPack(ccom);
-  const playerHideMode = useSelector(playerHideModeSelector);
-  const isMetronomeHide = useSelector(isMetronomeHideSelector);
+  const [playerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
+  const isMetronomeHide = useAtomValue(cmMolecule.take('isMetronomeHide'));
   const comAudio = ccom?.audio.trim();
   const { setAppRouteData } = useCmNav();
   const setCom = (com: Com) => setAppRouteData({ ccomw: com.wid });

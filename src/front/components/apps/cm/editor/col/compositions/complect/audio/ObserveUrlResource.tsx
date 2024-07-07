@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useAtomValue } from '../../../../../../../../complect/atoms';
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../../../../complect/sends/send-button/SendButton';
 import serviceMaster from '../../../../../../../../complect/service/serviceMaster';
 import { CmMp3ContainsPageResult } from '../../../../../../../../models';
-import { RootState } from '../../../../../../../../shared/store';
-
-const mp3RulesSelector = (state: RootState) => state.cm.mp3Rules;
+import { cmEditorMolecule } from '../../../../molecules';
 
 export default function ObserveUrlResource({
   onSuccess,
@@ -19,7 +17,7 @@ export default function ObserveUrlResource({
   const [url, setUrl] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const mp3Rules = useSelector(mp3RulesSelector);
+  const mp3Rules = useAtomValue(cmEditorMolecule.take('mp3Rules'));
 
   useEffect(() => {
     try {

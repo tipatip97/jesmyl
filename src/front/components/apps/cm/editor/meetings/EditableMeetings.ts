@@ -1,5 +1,5 @@
 import { ClientExecutionDict } from '../../../../../complect/exer/Exer.model';
-import { cmExer } from '../../Cm.store';
+import { cmExer } from '../../CmExer';
 import { Meetings } from '../../lists/meetings/Meetings';
 import {
   IExportableMeetings,

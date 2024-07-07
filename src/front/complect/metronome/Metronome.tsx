@@ -1,8 +1,7 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import cmStoreActions from '../../components/apps/cm/Cm.store';
-import { RootState } from '../../shared/store';
+import { cmMolecule } from '../../components/apps/cm/molecules';
+import { useAtom } from '../atoms';
 import { isTouchDevice } from '../device-differences';
 import KeyboardInput from '../keyboard/KeyboardInput';
 import { IconMinusSignCircleBulkRounded } from '../the-icon/icons/minus-sign-circle';
@@ -18,19 +17,16 @@ interface Props {
 
 const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
 var context = new AudioContext();
-const metronomeAccentesSelector: (state: RootState) => string = state => state.cm.metronomeAccentes;
-const metronomeMainSoundSelector: (state: RootState) => string = state => state.cm.metronomeMainSound;
-const metronomeSecondarySoundSelector: (state: RootState) => string = state => state.cm.metronomeSecondarySound;
 let lastTs: number;
 
 export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
-  const dispatch = useDispatch();
   const [userBpm, setUserBpm] = useState(bpm);
   const [userMeterSize, setUserMeterSize] = useState(meterSize);
   const currentDotMemo = useMemo(() => ({ current: 0 }), []);
-  const accentes: ActualRef<string> = useActualRef(useSelector(metronomeAccentesSelector));
-  const metronomeMainSound: string = useSelector(metronomeMainSoundSelector);
-  const metronomeSecondarySound: string = useSelector(metronomeSecondarySoundSelector);
+  const [accentes, setAccentes] = useAtom(cmMolecule.take('metronomeAccentes'));
+  const accentesRef: ActualRef<string> = useActualRef(accentes);
+  const [mainSound, setMainSound] = useAtom(cmMolecule.take('metronomeMainSound'));
+  const [secondarySound, setSecondarySound] = useAtom(cmMolecule.take('metronomeSecondarySound'));
   const actualUserMeterSize = useActualRef(userMeterSize);
   const actualUserBpm = useActualRef(userBpm);
 
@@ -78,7 +74,7 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
       if (curTime < context.currentTime + 0.1) {
         var note = context.createOscillator();
 
-        if (accentes.current[currentDotMemo.current] === '1') note.frequency.value = accentPitch;
+        if (accentesRef.current[currentDotMemo.current] === '1') note.frequency.value = accentPitch;
         else note.frequency.value = secondaryPitch;
 
         note.connect(context.destination);
@@ -115,7 +111,7 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
       accentRangeNode.removeEventListener('input', onSecondaryRangeChange);
       secondaryRangeNode.removeEventListener('input', onAccentRangeChange);
     };
-  }, [accentes, actualUserBpm, actualUserMeterSize, currentDotMemo, isPlay]);
+  }, [accentesRef, actualUserBpm, actualUserMeterSize, currentDotMemo, isPlay]);
 
   return (
     <Main className="com-metronome flex around full-width">
@@ -156,15 +152,13 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
             return (
               <i
                 key={doti}
-                className={`strong-size${accentes.current[doti] === '1' ? ' accent' : ''}`}
+                className={`strong-size${accentesRef.current[doti] === '1' ? ' accent' : ''}`}
                 onClick={() =>
-                  dispatch(
-                    cmStoreActions.metronomeAccentes(
-                      accentes.current
-                        .split('')
-                        .map((num, numi) => (numi === doti ? (num === '1' ? '0' : '1') : num))
-                        .join(''),
-                    ),
+                  setAccentes(
+                    accentesRef.current
+                      .split('')
+                      .map((num, numi) => (numi === doti ? (num === '1' ? '0' : '1') : num))
+                      .join(''),
                   )
                 }
               />
@@ -180,13 +174,11 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
           type="range"
           min="0"
           max="500"
-          defaultValue={metronomeMainSound}
+          defaultValue={mainSound}
           onChange={event => {
             const value = event.currentTarget.value;
             clearTimeout(changeMainSoundTimeout);
-            changeMainSoundTimeout = setTimeout(() => {
-              dispatch(cmStoreActions.metronomeMainSound(`${+value}`));
-            }, 300);
+            changeMainSoundTimeout = setTimeout(() => setMainSound(`${+value}`), 300);
           }}
         />
         <input
@@ -195,13 +187,11 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
           type="range"
           min="0"
           max="500"
-          defaultValue={metronomeSecondarySound}
+          defaultValue={secondarySound}
           onChange={event => {
             const value = event.currentTarget.value;
             clearTimeout(changeSecondarySoundTimeout);
-            changeSecondarySoundTimeout = setTimeout(() => {
-              dispatch(cmStoreActions.metronomeSecondarySound(`${+value}`));
-            }, 300);
+            changeSecondarySoundTimeout = setTimeout(() => setSecondarySound(`${+value}`), 300);
           }}
         />
       </div>

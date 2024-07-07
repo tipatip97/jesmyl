@@ -1,7 +1,7 @@
 import { IconPencilEdit02StrokeRounded } from '../../../../../../../complect/the-icon/icons/pencil-edit-02';
 import { Auth } from '../../../../../../index/Index.model';
 import useCmNav from '../../../../base/useCmNav';
-import { cmExer } from '../../../../Cm.store';
+import { cmExer } from '../../../../CmExer';
 import { MigratableComTool, MigratableComToolName } from '../../../../col/com/Com.model';
 import { editComNavPhasePoint } from '../../../editorNav';
 import { MigratableEditableComToolName } from '../EditableCom.model';

@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAtom } from '../../../../../complect/atoms';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCalendar01SolidSharp } from '../../../../../complect/the-icon/icons/calendar-01';
@@ -7,13 +7,10 @@ import { IconCalendar02StrokeRounded } from '../../../../../complect/the-icon/ic
 import { IconFolder01StrokeRounded } from '../../../../../complect/the-icon/icons/folder-01';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { useActualRef } from '../../../../../complect/useActualRef';
-import { RootState } from '../../../../../shared/store';
-import { cmStoreActions } from '../../Cm.store';
 import useCmNav from '../../base/useCmNav';
+import { cmMolecule } from '../../molecules';
 import { Meetings } from './Meetings';
 import { MeetingsEvent } from './MeetingsEvent';
-
-const favoriteMeetingsSelector = (state: RootState) => state.cm.favoriteMeetings;
 
 export default function MeetingsInner<Meets extends Meetings>({
   meetings,
@@ -26,13 +23,12 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate?: (context: number[]) => void;
   asEventBox?: (event: MeetingsEvent) => ReactNode;
 }) {
-  const dispatch = useDispatch();
   const {
     registerBackAction,
     appRouteData: { eventContext = [] },
     setAppRouteData,
   } = useCmNav();
-  const favorites = useSelector(favoriteMeetingsSelector);
+  const [favorites, setFavorites] = useAtom(cmMolecule.take('favoriteMeetings'));
   const setCurrContextRef = useActualRef((eventContext: number[]) => setAppRouteData({ eventContext }));
   const onContextNavigateRef = useActualRef(onContextNavigate);
   const eventContextRef = useActualRef(eventContext);
@@ -143,14 +139,12 @@ export default function MeetingsInner<Meets extends Meetings>({
                   onClick={e => {
                     e.stopPropagation();
 
-                    dispatch(
-                      cmStoreActions.favoriteMeetings({
-                        ...favorites,
-                        events: isFavorite
-                          ? favorites.events.filter(eventw => eventw !== event.wid)
-                          : [...favorites.events, event.wid],
-                      }),
-                    );
+                    setFavorites({
+                      ...favorites,
+                      events: isFavorite
+                        ? favorites.events.filter(eventw => eventw !== event.wid)
+                        : [...favorites.events, event.wid],
+                    });
                   }}
                 />
               ) : null
@@ -174,14 +168,12 @@ export default function MeetingsInner<Meets extends Meetings>({
                   onClick={e => {
                     e.stopPropagation();
 
-                    dispatch(
-                      cmStoreActions.favoriteMeetings({
-                        ...favorites,
-                        contexts: isFavorite
-                          ? favorites.contexts.filter(context => context !== contextw)
-                          : [...favorites.contexts, contextw],
-                      }),
-                    );
+                    setFavorites({
+                      ...favorites,
+                      contexts: isFavorite
+                        ? favorites.contexts.filter(context => context !== contextw)
+                        : [...favorites.contexts, contextw],
+                    });
                   }}
                 />
               ) : null

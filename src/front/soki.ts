@@ -18,15 +18,17 @@ import { Molecule } from './complect/atoms';
 import { JStorage } from './complect/JStorage';
 import mylib from './complect/my-lib/MyLib';
 import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-shareds';
+import { cmEditorMolecule } from './components/apps/cm/editor/molecules';
+import { cmMolecule } from './components/apps/cm/molecules';
+import { takeDeviceId } from './components/index/complect/takeDeviceId';
 import {
   getAuthValue,
   getCurrentAppValue,
   getUpdateRequisitesValue,
+  indexMolecule,
   setAuthValue,
   setUpdateRequisitesValue,
 } from './components/index/molecules';
-import { takeDeviceId } from './components/index/complect/takeDeviceId';
-import { indexMolecule } from './components/index/molecules';
 import { appStorage } from './shared/jstorages';
 
 const version = { ...versionNum };
@@ -60,6 +62,7 @@ export class SokiTrip {
 
   private molecules: Partial<{ [Key in AppName]: Molecule<any, Key> }> = {
     index: indexMolecule,
+    cm: cmMolecule.with(cmEditorMolecule),
   };
 
   async appName() {

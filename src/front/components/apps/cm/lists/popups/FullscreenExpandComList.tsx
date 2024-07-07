@@ -1,14 +1,12 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
+import styled from 'styled-components';
+import { useAtomValue } from '../../../../../complect/atoms';
 import RollControled from '../../base/RolledContent';
 import { Com } from '../../col/com/Com';
 import ComOrders from '../../col/com/orders/ComOrders';
-import styled from 'styled-components';
-
-const comFontSizeSelector = (state: RootState) => state.cm.comFontSize;
+import { cmMolecule } from '../../molecules';
 
 export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
-  const fontSize = useSelector(comFontSizeSelector);
+  const fontSize = useAtomValue(cmMolecule.take('comFontSize'));
 
   return (
     <ExpandContent className="com-expand-content full-height">

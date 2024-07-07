@@ -1,15 +1,14 @@
-import { useSelector } from 'react-redux';
+import { useAtomValue } from '../../../../../complect/atoms';
 import mylib from '../../../../../complect/my-lib/MyLib';
-import { RootState } from '../../../../../shared/store';
 import { IExportableCols } from '../../cols/Cols.model';
+import { cmMolecule } from '../../molecules';
 import { EditableCols } from './EditableCols';
 
-const colsSelector = (state: RootState) => state.cm.cols;
 let localCols: EditableCols | und;
 let localICols: IExportableCols | und;
 
 export function useEditableCols(): EditableCols | und {
-  const cols = useSelector(colsSelector);
+  const cols = useAtomValue(cmMolecule.take('cols'));
 
   if (!cols) return;
   if (localCols && localICols === cols) return localCols;

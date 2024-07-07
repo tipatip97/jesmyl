@@ -1,13 +1,11 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { useScreenTranslationCurrentConfigi } from '../../../../../+complect/translations/hooks/configs';
-import { cmStoreActions } from '../../../../Cm.store';
+import { useAtom } from '../../../../../../../complect/atoms';
+import { cmMolecule } from '../../../../molecules';
 import { CmTranslationScreenConfig } from '../model';
-import { useCmScreenTranslationConfigs } from './configs';
 
 export const useUpdateCmTranslationConfig = () => {
-  const dispatch = useDispatch();
-  const configs = useCmScreenTranslationConfigs();
+  const [configs, setConfigs] = useAtom(cmMolecule.take('translationScreenConfigs'));
 
   return useCallback(
     (config: Partial<CmTranslationScreenConfig> | null, configi: number) => {
@@ -15,9 +13,9 @@ export const useUpdateCmTranslationConfig = () => {
       if (config === null) {
         newConfigs.splice(configi, 1);
       } else newConfigs[configi] = { ...newConfigs[configi], ...config };
-      dispatch(cmStoreActions.translationScreenConfigs(newConfigs));
+      setConfigs(newConfigs);
     },
-    [configs, dispatch],
+    [configs, setConfigs],
   );
 };
 

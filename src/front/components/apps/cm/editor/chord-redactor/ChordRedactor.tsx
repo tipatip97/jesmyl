@@ -1,20 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useAtomValue } from '../../../../../complect/atoms';
 import TheButton from '../../../../../complect/Button';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
-import { cmExer } from '../../Cm.store';
+import { cmExer } from '../../CmExer';
 import ChordCard from '../../col/com/chord-card/ChordCard';
 import { ChordPack, ChordTrack } from '../../col/com/chord-card/ChordCard.model';
-import { useChords } from '../../col/com/chord-card/useChords';
+import { cmMolecule } from '../../molecules';
 import { correctChordNameReg } from '../Editor.complect';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import ChordRedactableTrack from './ChordRedactableTrack';
 import './ChordRedactor.scss';
 
 export default function ChordRedactor() {
-  const chords = useChords();
+  const chords = useAtomValue(cmMolecule.take('chordTracks'));
   const [currentChord, setCurrentChord] = useState('');
   const [newChordName, setNewChordName] = useState('');
   const [isNewChord, setIsNewChord] = useState(false);

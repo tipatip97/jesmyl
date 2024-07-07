@@ -1,6 +1,6 @@
 import { ClientExecutionDict } from '../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../complect/my-lib/MyLib';
-import { cmExer } from '../../Cm.store';
+import { cmExer } from '../../CmExer';
 import { IExportableMeetingsEvent } from '../../lists/meetings/Meetings.model';
 import { MeetingsEvent } from '../../lists/meetings/MeetingsEvent';
 import { EditableCom } from '../col/compositions/EditableCom';

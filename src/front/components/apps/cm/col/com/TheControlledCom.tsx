@@ -1,17 +1,14 @@
 import { useRef } from 'react';
-import { useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+import { useAtom, useAtomValue } from '../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../complect/backSwipableContainerMaker';
-import { RootState } from '../../../../../shared/store';
 import { ChordVisibleVariant } from '../../Cm.model';
 import RollControled from '../../base/RolledContent';
+import { cmMolecule } from '../../molecules';
 import { Com } from './Com';
 import './Com.scss';
 import TheCom from './TheCom';
 import TheComComment from './TheComComment';
-
-const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
-const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
 
 let onPrevCom: () => void;
 let onNextCom: () => void;
@@ -31,8 +28,8 @@ export default function TheControlledCom({
   chordVisibleVariant: ChordVisibleVariant;
   onComSet: (com: Com) => void;
 }) {
-  const fontSize = useSelector(fontSizeSelector);
-  const isMiniAnchor = useSelector(isMiniAnchorSelector);
+  const fontSize = useAtomValue(cmMolecule.take('comFontSize'));
+  const [isMiniAnchor] = useAtom(cmMolecule.take('isMiniAnchor'));
   const listRef = useRef<HTMLDivElement>(null);
 
   onNextCom = () => {

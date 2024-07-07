@@ -1,15 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../../../shared/store';
-import { cmStoreActions } from '../../../Cm.store';
+import { useComTranslationBlock } from '../../../atoms';
 import { useCmCurrentComTexts } from './get-com-text';
 
-const translationBlockSelector: (state: RootState) => number = state => state.cm.translationBlock;
-
-export const useCmScreenTranslationComCurrentTexti = () => useSelector(translationBlockSelector);
-
 export const useCmScreenTranslationComTextNavigations = () => {
-  const dispatch = useDispatch();
-  const currTexti = useSelector(translationBlockSelector);
+  const [currTexti, setCurrTexti] = useComTranslationBlock();
   const texts = useCmCurrentComTexts();
 
   const state = {
@@ -22,7 +15,7 @@ export const useCmScreenTranslationComTextNavigations = () => {
       if (currTexti > 0) state.setTexti(currTexti - 1);
     },
     setTexti: (blocki: number) => {
-      dispatch(cmStoreActions.translationBlock(blocki));
+      setCurrTexti(blocki);
       const nextd = window.document.getElementById(`translation-window-line-${blocki}`);
 
       if (nextd) {

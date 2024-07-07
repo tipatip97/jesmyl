@@ -7,7 +7,7 @@ import mylib from '../../../../../complect/my-lib/MyLib';
 import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import { useBibleTranslatesContext } from '../../../bible/translates/TranslatesContext';
 import { useBibleShowTranslates } from '../../../bible/translates/hooks';
-import { cmExer } from '../../Cm.store';
+import { cmExer } from '../../CmExer';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
 import { useEditableCols } from '../col/useEditableCols';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';

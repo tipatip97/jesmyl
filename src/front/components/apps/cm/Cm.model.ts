@@ -4,18 +4,8 @@ import { IExportableSetts } from './col/com/block-styles/BlockStyles.model';
 import { ChordPack } from './col/com/chord-card/ChordCard.model';
 import { MigratableComToolName } from './col/com/Com.model';
 import { IExportableCols } from './cols/Cols.model';
-import { CmEditorStoraged } from './editor/CmEditor.model';
 import { IExportableMeetings } from './lists/meetings/Meetings.model';
 import { CmTranslationScreenConfig } from './translation/complect/controlled/model';
-
-export interface CmState extends CmStoraged {
-  translationBlock: number;
-  isCmFullscreen: boolean;
-  rollModeMarks: boolean;
-
-  numComUpdates: number;
-  numAbsolutePopupUpdates: number;
-}
 
 export type CmRollMode = 'pause' | 'play' | null;
 
@@ -26,8 +16,7 @@ export enum ChordVisibleVariant {
 }
 
 export type FavoriteMeetings = Record<'events' | 'contexts', number[]>;
-
-export interface CmStoraged extends CmEditorStoraged {
+export interface CmState {
   cols?: IExportableCols;
   laterComwList: number[];
   chordVisibleVariant: ChordVisibleVariant;
@@ -52,7 +41,7 @@ export interface CmStoraged extends CmEditorStoraged {
 
 export type PlayerHideMode = 'expand' | 'min' | '';
 
-export interface CmStorage extends CmStoraged {
+export interface CmStorage extends CmState {
   settings: IExportableSetts;
   eeStorage: EeStorageStoreType;
   executions: ClientExecutionDict[];

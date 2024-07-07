@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useAtom } from '../../../../../complect/atoms';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
 import { IconApproximatelyEqualSquareStrokeRounded } from '../../../../../complect/the-icon/icons/approximately-equal-square';
@@ -21,10 +21,8 @@ import { IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { IconVynil03SolidRounded, IconVynil03StrokeRounded } from '../../../../../complect/the-icon/icons/vynil-03';
 import { useFullScreen } from '../../../../../complect/useFullscreen';
-import { RootState } from '../../../../../shared/store';
 import { useAuth } from '../../../../index/molecules';
 import { ChordVisibleVariant } from '../../Cm.model';
-import di from '../../Cm.store';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useCmNav from '../../base/useCmNav';
 import useSelectedComs from '../../base/useSelectedComs';
@@ -34,18 +32,13 @@ import {
   spliceMigratableEditableComToolNameList,
 } from '../../editor/col/compositions/complect/MigratableEditableComTools';
 import { useMarks } from '../../lists/marks/useMarks';
+import { cmMolecule } from '../../molecules';
 import { useGoToTranslation } from '../../translation/complect/hooks/go-to-translation';
 import { MigratableComTool, MigratableComToolName, menuComToolNameList } from './Com.model';
 import ChordImagesList from './chord-card/ChordImagesList';
 import { useCcom } from './useCcom';
 
-const comTopToolsSelector = (state: RootState) => state.cm.comTopTools;
-const isMiniAnchorSelector = (state: RootState) => state.cm.isMiniAnchor;
-const playerHideModeSelector = (state: RootState) => state.cm.playerHideMode;
-const isMetronomeHideSelector = (state: RootState) => state.cm.isMetronomeHide;
-
 export default function useMigratableComTools() {
-  const dispatch = useDispatch();
   const ccom = useCcom();
   const auth = useAuth();
   const goToTranslation = useGoToTranslation();
@@ -54,10 +47,10 @@ export default function useMigratableComTools() {
   const { toggleSelectedCom, selectedComPosition: isSelected } = useSelectedComs();
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
-  const comTopTools = useSelector(comTopToolsSelector);
-  const isMiniAnchor = useSelector(isMiniAnchorSelector);
-  const playerHideMode = useSelector(playerHideModeSelector);
-  const isMetronomeHide = useSelector(isMetronomeHideSelector);
+  const [comTopTools, setComTopTools] = useAtom(cmMolecule.take('comTopTools'));
+  const [isMiniAnchor, setIsMiniAnchor] = useAtom(cmMolecule.take('isMiniAnchor'));
+  const [playerHideMode, setPlayerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
+  const [isMetronomeHide, setIsMetronomeHide] = useAtom(cmMolecule.take('isMetronomeHide'));
   const nav = useCmNav();
   const { shareQrData, qrNode } = useQRMaster();
 
@@ -140,9 +133,7 @@ export default function useMigratableComTools() {
                 tool,
                 title: 'Проигрыватель',
                 Icon: playerHideMode ? IconVynil03SolidRounded : IconVynil03StrokeRounded,
-                onClick: () => {
-                  dispatch(di.playerHideMode(playerHideMode ? '' : 'min'));
-                },
+                onClick: () => setPlayerHideMode(playerHideMode ? '' : 'min'),
               }
             );
           case 'hide-metronome':
@@ -151,9 +142,7 @@ export default function useMigratableComTools() {
                 tool,
                 title: 'Метроном',
                 Icon: isMetronomeHide ? IconDashboardSpeed01StrokeRounded : IconDashboardSpeed01SolidRounded,
-                onClick: () => {
-                  dispatch(di.isMetronomeHide(!isMetronomeHide));
-                },
+                onClick: () => setIsMetronomeHide(!isMetronomeHide),
               }
             );
           case 'is-mini-anchor':
@@ -162,9 +151,7 @@ export default function useMigratableComTools() {
                 tool,
                 title: isMiniAnchor ? 'Раскрыть ссылки' : 'Свернуть ссылки',
                 Icon: isMiniAnchor ? IconMinusSignStrokeRounded : IconMenu01StrokeRounded,
-                onClick: () => {
-                  dispatch(di.switchIsMiniAnchor(!isMiniAnchor));
-                },
+                onClick: () => setIsMiniAnchor(!isMiniAnchor),
               }
             );
           case 'share-by-qr':
@@ -193,10 +180,8 @@ export default function useMigratableComTools() {
     topTools: makeToolList(spliceMigratableEditableComToolNameList(comTopTools, auth)),
     menuTools: makeToolList(concatMigratableEditableComToolNameList(menuComToolNameList as never, auth)),
     toggleTopTool: (tool: MigratableComToolName) => {
-      dispatch(
-        di.comTopTools(
-          comTopTools.indexOf(tool) < 0 ? [...comTopTools, tool] : comTopTools.filter(currTool => tool !== currTool),
-        ),
+      setComTopTools(
+        comTopTools.indexOf(tool) < 0 ? [...comTopTools, tool] : comTopTools.filter(currTool => tool !== currTool),
       );
     },
   };

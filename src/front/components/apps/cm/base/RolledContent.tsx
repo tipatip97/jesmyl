@@ -1,19 +1,15 @@
 import { HTMLAttributes, PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useAtom } from '../../../../complect/atoms';
 import { IconMinusSignStrokeRounded } from '../../../../complect/the-icon/icons/minus-sign';
 import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
 import { useFullScreen } from '../../../../complect/useFullscreen';
-import { RootState } from '../../../../shared/store';
-import di from '../Cm.store';
+import { cmMolecule } from '../molecules';
 import useCmNav from './useCmNav';
-
-const speedRollKfSelector = (state: RootState) => state.cm.speedRollKf;
 
 export default function RollControled(props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
   const [isFullscreen] = useFullScreen();
-  const speedRollKf = useSelector(speedRollKfSelector);
-  const dispatch = useDispatch();
+  const [speedRollKf, setSpeedRollKf] = useAtom(cmMolecule.take('speedRollKf'));
   const containerRef = useRef<HTMLDivElement>(null);
   const [isRolling, setIsRolling] = useState(false);
   const { registerBackAction } = useCmNav();
@@ -61,7 +57,7 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
           onClick={event => {
             event.stopPropagation();
             if (speedRollKf <= 1) return;
-            dispatch(di.speedRollKf(speedRollKf - 1));
+            setSpeedRollKf(speedRollKf - 1);
           }}
         />
         <div>{(speedRollKf / 10).toFixed(1)}</div>
@@ -69,7 +65,7 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
           onClick={event => {
             event.stopPropagation();
             if (speedRollKf >= 20) return;
-            dispatch(di.speedRollKf(speedRollKf + 1));
+            setSpeedRollKf(speedRollKf + 1);
           }}
         />
       </div>

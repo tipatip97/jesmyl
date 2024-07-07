@@ -7,7 +7,7 @@ import { iconPackOfPlaylist01 } from '../../../../complect/the-icon/icons/playli
 import { RoutePhasePoint } from '../../../router/Router.model';
 import CmApplication from '../Cm';
 import { CmNavData, CmStorage } from '../Cm.model';
-import { cmExer } from '../Cm.store';
+import { cmExer } from '../CmExer';
 import TheCat from '../col/cat/TheCat';
 import TheComposition from '../col/com/TheComposition';
 import { editorNav } from '../editor/editorNav';

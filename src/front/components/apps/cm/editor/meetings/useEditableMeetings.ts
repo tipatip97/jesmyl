@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
+import { useCallback, useMemo } from 'react';
+import { useAtomValue } from '../../../../../complect/atoms';
 import useCmNav from '../../base/useCmNav';
 import { IExportableMeetings } from '../../lists/meetings/Meetings.model';
+import { cmMolecule } from '../../molecules';
 import { useEditableCols } from '../col/useEditableCols';
 import { editEventNavPhasePoint } from '../editorNav';
 import { EditableMeetings } from './EditableMeetings';
@@ -10,10 +10,9 @@ import { EditableMeetings } from './EditableMeetings';
 let localMeetings: EditableMeetings | nil;
 let localIMeetings: IExportableMeetings | nil;
 
-const meetingsSelector: (state: RootState) => IExportableMeetings | und = (state: RootState) => state.cm.meetings;
-
 export function useEditableMeetings() {
-  const imeetings: IExportableMeetings | und = useSelector(meetingsSelector);
+  const imeetings = useAtomValue(cmMolecule.take('meetings'));
+
   const {
     jumpTo,
     appRouteData: { eventw },
@@ -31,8 +30,11 @@ export function useEditableMeetings() {
   return {
     meetings,
     currentEvent: meetings?.events?.find(meeting => meeting.wid === eventw),
-    goToEvent: (eventw: number) => {
-      jumpTo({ phase: editEventNavPhasePoint, data: { eventw } });
-    },
+    goToEvent: useCallback(
+      (eventw: number) => {
+        jumpTo({ phase: editEventNavPhasePoint, data: { eventw } });
+      },
+      [jumpTo],
+    ),
   };
 }

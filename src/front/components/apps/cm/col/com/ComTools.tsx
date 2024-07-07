@@ -1,23 +1,21 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
+import { useAtom } from '../../../../../complect/atoms';
 import propsOfClicker from '../../../../../complect/clicker/propsOfClicker';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconMinusSignStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign';
 import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign';
+import { IconSlidersHorizontalStrokeRounded } from '../../../../../complect/the-icon/icons/sliders-horizontal';
 import { IconTextFontStrokeRounded } from '../../../../../complect/the-icon/icons/text-font';
-import { RootState } from '../../../../../shared/store';
 import { ChordVisibleVariant } from '../../Cm.model';
-import di from '../../Cm.store';
+import { useNumComUpdates } from '../../atoms';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import { Cols } from '../../cols/Cols';
 import { useCols } from '../../cols/useCols';
+import { cmMolecule } from '../../molecules';
 import { Com } from './Com';
 import { useCcom } from './useCcom';
 import useMigratableComTools from './useMigratableComTools';
-import { IconSlidersHorizontalStrokeRounded } from '../../../../../complect/the-icon/icons/sliders-horizontal';
-
-const fontSizeSelector = (state: RootState) => state.cm.comFontSize;
 
 const catMentions = (cols?: Cols, com?: Com): string[] => {
   if (!cols || !com) return [];
@@ -35,12 +33,12 @@ const catMentions = (cols?: Cols, com?: Com): string[] => {
 };
 
 export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
-  const dispatch = useDispatch();
   const ccom = useCcom();
   const cols = useCols();
-  const fontSize = useSelector(fontSizeSelector);
+  const [fontSize, setFontSize] = useAtom(cmMolecule.take('comFontSize'));
   const [chordVisibleVariant] = useChordVisibleVariant();
   const { menuTools, toggleTopTool, comTopTools, anchorNode } = useMigratableComTools();
+  const [, setNumComUpdates] = useNumComUpdates();
 
   if (!ccom) return null;
 
@@ -60,14 +58,14 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
                     onClick={event => {
                       event.stopPropagation();
                       ccom.transpose(-1);
-                      dispatch(di.riseUpComUpdate());
+                      setNumComUpdates(it => it + 1);
                     }}
                   />
                   <div
                     onClick={event => {
                       event.stopPropagation();
                       ccom.setChordsInitialTon();
-                      dispatch(di.riseUpComUpdate());
+                      setNumComUpdates(it => it + 1);
                     }}
                   >
                     {ccom.firstChord}
@@ -76,7 +74,7 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
                     onClick={event => {
                       event.stopPropagation();
                       ccom.transpose(1);
-                      dispatch(di.riseUpComUpdate());
+                      setNumComUpdates(it => it + 1);
                     }}
                   />
                 </>
@@ -92,14 +90,14 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
                     disabled={fontSize < 0}
                     onClick={event => {
                       event.stopPropagation();
-                      dispatch(di.setComFontSize(fontSize - 1));
+                      setFontSize(fontSize - 1);
                     }}
                   />
                   {fontSize < 0 ? (
                     <div
                       onClick={event => {
                         event.stopPropagation();
-                        dispatch(di.setComFontSize(-fontSize));
+                        setFontSize(-fontSize);
                       }}
                     >
                       auto
@@ -108,7 +106,7 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
                     <div
                       onClick={event => {
                         event.stopPropagation();
-                        dispatch(di.setComFontSize(-fontSize));
+                        setFontSize(-fontSize);
                       }}
                     >
                       {fontSize}
@@ -119,7 +117,7 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
                     disabled={fontSize < 0}
                     onClick={event => {
                       event.stopPropagation();
-                      dispatch(di.setComFontSize(fontSize + 1));
+                      setFontSize(fontSize + 1);
                     }}
                   />
                 </>

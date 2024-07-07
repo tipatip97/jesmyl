@@ -1,27 +1,24 @@
 import { useEffect, useReducer, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+import { useAtom } from '../../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
 import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
 import { IconHelpCircleStrokeRounded } from '../../../../../../complect/the-icon/icons/help-circle';
 import { useActualRef } from '../../../../../../complect/useActualRef';
-import { RootState } from '../../../../../../shared/store';
-import { cmStoreActions } from '../../../Cm.store';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
+import { cmMolecule } from '../../../molecules';
 import { useCloseTranslation } from '../hooks/close-translation copy';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 
-const isShowTranslationInfoSelector = (state: RootState) => state.cm.isShowTranslationInfo;
 const emptyObj = {};
 const forceUpdater = (it: number) => it + 1;
 const style = { padding: '5px' };
 
 export default function TranslationFullscreen() {
-  const dispatch = useDispatch();
   const [forceUpdates, forceUpdate] = useReducer(forceUpdater, 0);
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const isShowInfo = useSelector(isShowTranslationInfoSelector);
+  const [isShowInfo, setIsShowInfo] = useAtom(cmMolecule.take('isShowTranslationInfo'));
   const [swipes, setSwipes] = useState(emptyObj);
 
   const { text, nextText, prevText } = useCmScreenTranslationComTextNavigations();
@@ -74,7 +71,7 @@ export default function TranslationFullscreen() {
           </div>
           <IconCancel01StrokeRounded
             className="close-info-button"
-            onClick={() => dispatch(cmStoreActions.switchShowTranslationInfo(false))}
+            onClick={() => setIsShowInfo(false)}
           />
           <div
             className="bottom-area info-area left"
@@ -116,7 +113,7 @@ export default function TranslationFullscreen() {
             </div>
             <div
               className={`area-button second open-info-button ${isShowCloseButton ? 'show' : ''}`}
-              onClick={() => dispatch(cmStoreActions.switchShowTranslationInfo(!isShowInfo))}
+              onClick={() => setIsShowInfo(!isShowInfo)}
             >
               <IconHelpCircleStrokeRounded />
             </div>

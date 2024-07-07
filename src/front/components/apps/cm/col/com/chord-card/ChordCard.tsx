@@ -1,7 +1,8 @@
+import { useAtomValue } from '../../../../../../complect/atoms';
+import { cmMolecule } from '../../../molecules';
 import { ChordTrack } from './ChordCard.model';
 import './ChordCard.scss';
 import ChordCardTracked from './ChordCardTracked';
-import { useChords } from './useChords';
 
 export default function ChordCard({
   chordName,
@@ -13,7 +14,7 @@ export default function ChordCard({
   customContent?: (card: JSX.Element | null) => JSX.Element;
   bottomPadding?: number;
 }) {
-  const chords = useChords();
+  const chords = useAtomValue(cmMolecule.take('chordTracks'));
   const track = (resource ?? chords)[chordName];
 
   return (

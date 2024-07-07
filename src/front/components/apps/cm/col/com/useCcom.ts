@@ -1,14 +1,11 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
+import { useNumComUpdates } from '../../atoms';
 import useCmNav from '../../base/useCmNav';
 import { useCols } from '../../cols/useCols';
 import { Com } from './Com';
 
-const numComUpdatesSelector = (state: RootState) => state.cm.numComUpdates;
-
 export function useCcom(topComw?: number): Com | und {
-  useSelector(numComUpdatesSelector);
+  useNumComUpdates();
   const cols = useCols();
   const cmNav = useCmNav();
   const comw = topComw ?? cmNav.appRouteData.ccomw;
