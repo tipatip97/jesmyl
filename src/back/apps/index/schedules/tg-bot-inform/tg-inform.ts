@@ -54,6 +54,7 @@ export const indexScheduleSetMessageInform = (
   const now = Date.now();
   const daysLen = schedule.days.length;
   const informBeforeTime = schedule.tgInformTime;
+  const tgChatId = schedule.tgChatId === undefined ? null : isNaN(+schedule.tgChatId) ? null : +schedule.tgChatId;
 
   dayLoop: for (let dayi = 0; dayi < daysLen; dayi++) {
     const day = schedule.days[dayi];
@@ -114,18 +115,29 @@ export const indexScheduleSetMessageInform = (
           },
         };
 
-        for (const user of schedule.ctrl.users) {
-          if (
-            user.tgId === undefined ||
-            user.tgInform === 0 ||
-            !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
-            (event.secret &&
-              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
-          )
-            continue;
+        (async () => {
+          for (const user of schedule.ctrl.users) {
+            if (
+              user.tgId === undefined ||
+              user.tgInform === 0 ||
+              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
+              (event.secret &&
+                !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
+            )
+              continue;
 
-          jesmylTgBot.sendMessage(user.tgId, text, tglogger, options);
-        }
+            try {
+              if (tgChatId !== null) {
+                await jesmylTgBot.bot.getChatMember(tgChatId, user.tgId);
+                return;
+              }
+            } catch (error) {}
+
+            jesmylTgBot.sendMessage(user.tgId, text, tglogger, options);
+          }
+        })();
+
+        if (tgChatId !== null) jesmylTgBot.sendMessage(tgChatId, text, tglogger);
 
         if (event.tgInform !== 0) {
           let auth = invokerAuth;

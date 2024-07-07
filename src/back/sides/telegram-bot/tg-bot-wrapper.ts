@@ -39,6 +39,19 @@ export class JesmylTelegramBotWrapper {
     this.bot = new TgBot(token, options);
 
     this.bot.on('message', (message, metadata) => {
+      if (message.text === '/this-chat-id' && message.from) {
+        this.bot
+          .sendMessage(
+            message.from.id,
+            `${message.chat.title ?? message.chat.last_name} id <code>${message.chat.id}</code>`,
+            {
+              parse_mode: 'HTML',
+            },
+          )
+          .then(() => this.bot.deleteMessage(message.chat.id, message.message_id));
+        return;
+      }
+
       if (this.chatMessagesCallbacks[0] !== undefined) {
         this.chatMessagesCallbacks[0].forEach(cb => cb(message, metadata));
       }

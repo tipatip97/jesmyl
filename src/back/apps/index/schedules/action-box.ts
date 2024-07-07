@@ -139,6 +139,14 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
           },
         },
       },
+      '/tgChatId': {
+        U: {
+          RRej: true,
+          args: {
+            value: '#String',
+          },
+        },
+      },
       '/tgInform': {
         U: {
           args: {

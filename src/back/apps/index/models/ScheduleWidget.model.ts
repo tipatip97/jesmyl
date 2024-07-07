@@ -73,6 +73,7 @@ export interface IScheduleWidget<TheIconName> {
   games?: IScheduleWidgetTeamGames;
   lists: IScheduleWidgetLists<TheIconName>;
   tgInform?: num;
+  tgChatId?: `${number}`;
   tgInformTime: number;
 }
 

@@ -6,15 +6,16 @@ import { IconSettings01StrokeRounded } from '../../../complect/the-icon/icons/se
 import { IconSquareStrokeRounded } from '../../../complect/the-icon/icons/square';
 import { IconUserStrokeRounded } from '../../../complect/the-icon/icons/user';
 import useModal from '../../modal/useModal';
+import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongDropdown from '../../strong-control/StrongDropdown';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import IconButton from '../../the-icon/IconButton';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetRegisterType from './RegisterType';
-import { ScheduleWidgetUserAddByExcel } from './users/excel/AddByExcel';
 import { ScheduleWidgetUserByLinkInvite } from './users/ByLinkInvite';
 import { ScheduleWidgetUserByQrRedactor } from './users/ByQrRedactor';
+import { ScheduleWidgetUserAddByExcel } from './users/excel/AddByExcel';
 import ScheduleWidgetUserList from './users/UserList';
 
 const tgInformTimesItems = [
@@ -61,6 +62,14 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                   postfix="Первый - технический день"
                   confirm={`Сделать первый день ${rights.schedule.withTech ? 'обычным' : 'подготовительным'}?`}
                   className="margin-gap-b"
+                />
+                <StrongEditableField
+                  scope={scope}
+                  fieldName="tgChatId"
+                  value={rights.schedule.tgChatId}
+                  isRedact
+                  setSelfRedact
+                  title="TG-id"
                 />
                 {rights.schedule.tgInform === 0 ? (
                   <StrongEvaButton

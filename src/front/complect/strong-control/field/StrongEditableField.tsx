@@ -180,7 +180,7 @@ export default function StrongEditableField<Key extends string, Value extends st
           className="flex flex-gap"
           onDragStart={onDragStart as never}
         >
-          {props.Icon && <props.Icon className="color--7 self-start" />}
+          {props.title} - {props.Icon && <props.Icon className="color--7 self-start" />}
           {value ? (
             props.multiline ? (
               <StrongEditableFieldMultiline value={value} />
