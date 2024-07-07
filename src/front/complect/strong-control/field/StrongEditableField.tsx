@@ -1,11 +1,11 @@
 import { ReactNode, useEffect, useState } from 'react';
+import { IconAlert01StrokeRounded } from '../../../complect/the-icon/icons/alert-01';
+import { IconCloudUploadStrokeRounded } from '../../../complect/the-icon/icons/cloud-upload';
+import { IconLinkBackwardStrokeRounded } from '../../../complect/the-icon/icons/link-backward';
 import { SokiServerEvent } from '../../../models';
 import KeyboardInput from '../../keyboard/KeyboardInput';
 import useToast from '../../modal/useToast';
 import { TheIconLoading } from '../../the-icon/IconLoading';
-import { IconAlert01StrokeRounded } from '../../../complect/the-icon/icons/alert-01';
-import { IconCloudUploadStrokeRounded } from '../../../complect/the-icon/icons/cloud-upload';
-import { IconLinkBackwardStrokeRounded } from '../../../complect/the-icon/icons/link-backward';
 import { TheIconType } from '../../the-icon/model';
 import useIsRedactArea from '../../useIsRedactArea';
 import { StrongControlProps } from '../Strong.model';
@@ -180,7 +180,7 @@ export default function StrongEditableField<Key extends string, Value extends st
           className="flex flex-gap"
           onDragStart={onDragStart as never}
         >
-          {props.title} - {props.Icon && <props.Icon className="color--7 self-start" />}
+          {props.Icon && <props.Icon className="color--7 self-start" />}
           {value ? (
             props.multiline ? (
               <StrongEditableFieldMultiline value={value} />
@@ -191,7 +191,7 @@ export default function StrongEditableField<Key extends string, Value extends st
               </div>
             )
           ) : (
-            'Без значения'
+            <>{props.title && <>{props.title} - </>}Без значения</>
           )}
           {props.isRedact && props.setSelfRedact && editIcon}
         </div>
