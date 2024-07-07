@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { complectActions, complectStorage } from '../complect/Complect.store';
 import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
@@ -24,7 +22,6 @@ listenThemeChanges();
 const emptyArr: [] = [];
 
 function App() {
-  const dispatch = useDispatch();
   const [currentApp] = useCurrentApp();
   const [appFontFamily] = useAppFontFamilyAtom();
   const [isFullscreen, switchFullscreen] = useFullScreen();
@@ -57,8 +54,6 @@ function App() {
       document.body.style.fontFamily = '';
     };
   }, [appFontFamily]);
-
-  complectStorage.initDispatches(dispatch, complectActions);
 
   useEffect(() => {
     return hookEffectLine().setTimeout(setIsShowLogo, 1200, false).setTimeout(setIsReady, 100, true).effect();

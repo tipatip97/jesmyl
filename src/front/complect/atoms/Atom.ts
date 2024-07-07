@@ -68,6 +68,7 @@ export class Atom<
   };
 
   toggle = (is?: boolean) => this.set((is ?? ((is: boolean) => !is)) as never);
+  inkrement = (ink: number) => this.set((+this.value + ink) as never);
 
   subscribe = (sub: Sunscriber) => {
     this.subs.add(sub);

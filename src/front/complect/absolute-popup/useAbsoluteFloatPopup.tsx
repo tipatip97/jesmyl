@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../shared/store';
-import { switchAbsoluteFloatPopupOpen } from '../Complect.store';
+import { atom, useAtom } from '../atoms';
 import Portal from '../popups/[complect]/Portal';
 import useMountTransition from '../popups/useMountTransition';
 import './AbsolutePopup.scss';
@@ -13,16 +11,15 @@ let isClosed = true;
 let isClosable = true;
 let onOpenPopup: ((close: () => boolean) => void) | und;
 
-const isAbsoluteFloatPopupOpenSelector = (state: RootState) => state.complect.isAbsoluteFloatPopupOpen;
+const isOpenAtom = atom(false);
 
 export default function useAbsoluteFloatPopup() {
-  const dispatch = useDispatch();
-  const isAbsoluteFloatPopupOpen = useSelector(isAbsoluteFloatPopupOpenSelector);
+  const [isAbsoluteFloatPopupOpen, close] = useAtom(isOpenAtom);
 
   const ret = {
     isAbsoluteFloatPopupOpen,
     closeAbsoluteFloatPopup: () => {
-      dispatch(switchAbsoluteFloatPopupOpen(false));
+      close(false);
       if (isFloated) popupContent = null;
       if (isClosed) return false;
       isClosed = true;
@@ -33,7 +30,7 @@ export default function useAbsoluteFloatPopup() {
       isClosed = false;
       onOpenPopup?.(ret.closeAbsoluteFloatPopup);
       popupContent = content;
-      dispatch(switchAbsoluteFloatPopupOpen(true));
+      close(true);
 
       setTimeout(() => {
         if (!floatElement) return;
