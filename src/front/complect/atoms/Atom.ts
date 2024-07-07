@@ -54,14 +54,17 @@ export class Atom<
     this.subs.forEach(this.invokeSubs, this);
   };
 
-  set = (value: Value | ((prev: Value) => Value)) => {
+  set = (value: Value | ((prev: Value) => Value), isPreventSave?: boolean) => {
     const val = mylib.isFunc(value) ? value(this.value) : value;
 
     if (value === undefined) return;
 
     this.onValueChange?.(val);
-    this.save(val);
     this.justSet(val);
+
+    if (isPreventSave === true) return;
+
+    this.save(val);
   };
 
   subscribe = (sub: Sunscriber) => {

@@ -89,7 +89,7 @@ type DebouncedEffectListener = <
 type HookEffectLineReturn = {
   addEventListener: EffectListener;
   addEventDebouncedListener: DebouncedEffectListener;
-  setTimeout: (cb: () => void, time?: number, ...args: any[]) => HookEffectLineReturn;
+  setTimeout: <Args extends any[]>(cb: (...args: Args) => void, time?: number, ...args: Args) => HookEffectLineReturn;
   clearTimeout: (timeout: TimeOut) => HookEffectLineReturn;
   effect: (onUnmount?: () => void) => () => void;
 };
