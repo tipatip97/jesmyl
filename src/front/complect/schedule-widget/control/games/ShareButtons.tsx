@@ -16,62 +16,60 @@ export const ScheduleWidgetShareButtons = function ShareButtons({ prefix }: Prop
   const rights = useScheduleWidgetRightsContext();
 
   return (
-    rights.isCanTotalRedact && (
-      <div className="flex flex-gap">
-        {prefix}
-        <EvaSendButton
-          Icon={IconCloudUploadStrokeRounded}
-          onSend={async () => {
-            const value: Partial<Record<ScheduleWidgetPhotoKey, string>> = {};
-            const users = rights.schedule.ctrl.users;
+    <div className="flex flex-gap">
+      {prefix}
+      <EvaSendButton
+        Icon={IconCloudUploadStrokeRounded}
+        onSend={async () => {
+          const value: Partial<Record<ScheduleWidgetPhotoKey, string>> = {};
+          const users = rights.schedule.ctrl.users;
 
-            for (const user of users) {
-              if (
-                !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
-                scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles)
-              )
-                continue;
+          for (const user of users) {
+            if (
+              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
+              scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles)
+            )
+              continue;
 
-              const key = getScheduleWidgetUserPhotoStorageKey(user, rights.schedule);
-              const photo = await scheduleWidgetPhotosStorage.get(key);
+            const key = getScheduleWidgetUserPhotoStorageKey(user, rights.schedule);
+            const photo = await scheduleWidgetPhotosStorage.get(key);
 
-              if (!photo) continue;
+            if (!photo) continue;
 
-              value[key] = photo;
-            }
+            value[key] = photo;
+          }
 
-            if (!mylib.keys(value).length) return;
+          if (!mylib.keys(value).length) return;
 
-            soki.send(
-              {
-                shareData: {
-                  key: SokiSharedKey.ScheduleWidgetPhotos,
-                  value,
-                },
+          soki.send(
+            {
+              shareData: {
+                key: SokiSharedKey.ScheduleWidgetPhotos,
+                value,
               },
-              'index',
-            );
-          }}
-        />
-        <EvaSendButton
-          Icon={IconCloudDownloadStrokeRounded}
-          onSend={() => {
-            return new Promise((resolve, reject) =>
-              soki
-                .send(
-                  {
-                    getShared: {
-                      prefix: '' + rights.schedule.w,
-                      key: SokiSharedKey.ScheduleWidgetPhotos,
-                    },
+            },
+            'index',
+          );
+        }}
+      />
+      <EvaSendButton
+        Icon={IconCloudDownloadStrokeRounded}
+        onSend={() => {
+          return new Promise((resolve, reject) =>
+            soki
+              .send(
+                {
+                  getShared: {
+                    prefix: '' + rights.schedule.w,
+                    key: SokiSharedKey.ScheduleWidgetPhotos,
                   },
-                  'index',
-                )
-                .on(resolve, reject),
-            );
-          }}
-        />
-      </div>
-    )
+                },
+                'index',
+              )
+              .on(resolve, reject),
+          );
+        }}
+      />
+    </div>
   );
 };
