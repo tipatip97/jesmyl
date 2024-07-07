@@ -3,6 +3,7 @@ import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
+import useToast from '../../../../complect/modal/useToast';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconAuthorizedStrokeRounded } from '../../../../complect/the-icon/icons/authorized';
@@ -14,8 +15,8 @@ import { IconSettings02StrokeRounded } from '../../../../complect/the-icon/icons
 import useApps from '../../../../complect/useApps';
 import { checkIsThereNewSW } from '../../../../serviceWorkerRegistration';
 import navConfigurers from '../../../../shared/navConfigurers';
-import { useAuth, useCurrentApp } from '../../molecules';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
+import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import IndexAbout from '../IndexAbout';
 import { IndexProfileInfo } from './ProfileInfo';
@@ -28,7 +29,8 @@ export default function IndexMain() {
   const [aboutNode, openAbout] = useFullContent(() => <IndexAbout />);
   const { goTo } = navConfigurers.index();
   const [popupNode, openPopup] = useBottomPopup(UserMore);
-  const { appConfigs, jumpToApp } = useApps();
+  const [errorToastNode, errorToast] = useToast({ mood: 'ko' });
+  const { appConfigs, jumpToApp } = useApps(errorToast);
 
   const auth = useAuth();
   const connectionNode = useConnectionState();
@@ -77,6 +79,7 @@ export default function IndexMain() {
         <>
           {popupNode}
           {aboutNode}
+          {errorToastNode}
           <ScheduleWidgetAlarm
             onGoTo={() => goTo('schedules')}
             isForceShow={auth.level >= 50}

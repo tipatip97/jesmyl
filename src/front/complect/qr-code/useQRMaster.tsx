@@ -32,7 +32,8 @@ export const crossApplicationLinkCoder = new LinkCoder<Attrs>(jesmylHostName, 'v
 });
 
 export default function useQRMaster() {
-  const { jumpToApp } = useApps();
+  const [errorToastNode, errorToast] = useToast({ mood: 'ko' });
+  const { jumpToApp } = useApps(errorToast);
   const [qr, setQr] = useState<Html5Qrcode | undefined>();
   const [openError, setOpenError] = useState('');
   const [toastNode, toast] = useToast();
@@ -40,6 +41,7 @@ export default function useQRMaster() {
     return (
       <>
         {toastNode}
+        {errorToastNode}
         <Portal>
           <QRCodeMasterApplication
             controller={top => (controller = top)}

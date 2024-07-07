@@ -6,10 +6,11 @@ import {
   RoutePhase,
   RoutePhasePoint,
 } from '../../components/router/Router.model';
-import { TheIconType, TheIconSelfPack } from '../the-icon/model';
+import { LocalSokiAuth } from '../../models';
 import { Exer } from '../exer/Exer';
 import { ExerStorage } from '../exer/Exer.model';
-import { LocalSokiAuth } from '../../models';
+import { ToastModalConfig } from '../modal/useToast';
+import { TheIconSelfPack, TheIconType } from '../the-icon/model';
 
 export type SetPhasePayload<Phase, SpecialPhase> = Phase | nil | [Phase | nil, SpecialPhase | nil, boolean?];
 
@@ -26,17 +27,19 @@ export type FooterItem<Phase> = null | {
 
 export type NavigationStorage<Storage> = Storage & ExerStorage;
 
-export interface JumpByLinkAlt {
-  Reject: ['REJECT'];
-  RootPhase: ['ROOT_PHASE'];
-}
+export interface JumpByLinkActions {}
 
 type JumpByLink<NavData> = Partial<{
-  [Key in keyof NavData]: (
-    value: NavData[Key],
-    key: Key,
-    alt: JumpByLinkAlt,
-  ) => RoutePathVariated<NavData> | JumpByLinkAlt[keyof JumpByLinkAlt];
+  [Key in keyof NavData]: (event: {
+    value: NavData[Key];
+    key: Key;
+    auth: LocalSokiAuth | null;
+
+    jump: (path: RoutePathVariated<any>) => void;
+    jumpToRoot: () => void;
+    rejectClearRoute: () => void;
+    errorToast: (content?: React.ReactNode, config?: ToastModalConfig) => void;
+  }) => void;
 }>;
 
 export interface INavigationConfig<Storage extends ExerStorage, NavData> {

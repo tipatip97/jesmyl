@@ -7,8 +7,8 @@ import SendButton from '../../../../complect/sends/send-button/SendButton';
 import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../models';
 import { soki } from '../../../../soki';
-import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
 import useIndexNav from '../../complect/useIndexNav';
+import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { LoginIndex } from './IndexLoginAuth';
 import { TgNativeAuth } from './TgNativeAuth';
@@ -48,6 +48,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
   const onAuthSuccess = ({ tgAuthorization }: SokiServerEvent) => {
     if (!tgAuthorization || !tgAuthorization.ok || mylib.isStr(tgAuthorization.value)) return;
     setAuthData(tgAuthorization.value);
+    soki.onConnect();
     navigate(['other']);
   };
 

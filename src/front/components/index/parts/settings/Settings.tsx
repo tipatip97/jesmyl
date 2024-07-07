@@ -15,11 +15,10 @@ import { IconSourceCodeCircleStrokeRounded } from '../../../../complect/the-icon
 import { IconTextStrokeRounded } from '../../../../complect/the-icon/icons/text';
 import useApps from '../../../../complect/useApps';
 import { soki } from '../../../../soki';
-import { useAppFontFamilyAtom, useAuth } from '../../molecules';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { indexSimpleValIsPlayAnimations, indexSimpleValIsUseNativeKeyboard } from '../../complect/index.simpleValues';
 import useIndexNav from '../../complect/useIndexNav';
-import { useIndexStatistic } from '../../molecules';
+import { useAppFontFamilyAtom, useAuth, useIndexStatistic } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
 import { Visitor } from './Visitor';
@@ -32,7 +31,8 @@ export default function IndexSettings() {
   const statistic = useIndexStatistic();
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [modalNode, toast] = useToast();
-  const { appConfigs } = useApps();
+  const [errorToastNode, errorToast] = useToast({ mood: 'ko' });
+  const { appConfigs } = useApps(errorToast);
   const { goTo } = useIndexNav();
   const [appFontFamily, setAppFontFamily] = useAppFontFamilyAtom();
 
@@ -98,6 +98,7 @@ export default function IndexSettings() {
       content={
         <>
           {modalNode}
+          {errorToastNode}
           {settingsList.length ? (
             settingsList.map((button, buttoni) => {
               return <React.Fragment key={buttoni}>{button}</React.Fragment>;

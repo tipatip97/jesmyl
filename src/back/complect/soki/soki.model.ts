@@ -187,7 +187,7 @@ export type SokiServiceCallback = (
   key: string,
   value: any,
   eventData: SokiClientEvent,
-  capsule: SokiCapsule | undefined,
+  getCapsule: () => SokiCapsule | undefined,
   client: WebSocket,
 ) => Promise<any>;
 export type SokiServicePack = Partial<Record<SokiAppName, SokiServiceCallback>>;

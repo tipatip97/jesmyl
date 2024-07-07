@@ -3,6 +3,7 @@ import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFl
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
 import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
+import useToast from '../complect/modal/useToast';
 import { crossApplicationLinkCoder, jesmylHostName } from '../complect/qr-code/useQRMaster';
 import { IconArrowShrink02StrokeRounded } from '../complect/the-icon/icons/arrow-shrink-02';
 import listenThemeChanges from '../complect/theme-changer';
@@ -27,7 +28,8 @@ function App() {
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const { goBack, registerBackAction } = navConfigurers[currentApp]();
-  const { jumpToApp } = useApps();
+  const [errorToastNode, errorToast] = useToast({ mood: 'ko' });
+  const { jumpToApp } = useApps(errorToast);
   const [isShowLogo, setIsShowLogo] = useState(true);
   const [, setIsReady] = useIsReadyRouter();
 
@@ -61,21 +63,20 @@ function App() {
   }, emptyArr);
 
   useEffect(() => {
-    if (window.location.href.startsWith(jesmylHostName)) {
-      const decodeds = crossApplicationLinkCoder.decode(window.location.href);
-      if (decodeds) {
-        const { appName, key, value } = decodeds;
-        if (appName && key && value !== undefined) {
-          window.history.pushState({}, '', jesmylHostName);
-
-          if (appNames.some(name => name === appName)) {
-            jumpToApp(appName, key as never, value);
+    (async () => {
+      if (window.location.href.startsWith(jesmylHostName)) {
+        const decodeds = crossApplicationLinkCoder.decode(window.location.href);
+        if (decodeds) {
+          const { appName, key, value } = decodeds;
+          if (appName && key && value !== undefined) {
+            if (appNames.some(name => name === appName)) {
+              jumpToApp(appName, key as never, value);
+            }
           }
         }
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, emptyArr);
+    })();
+  }, [jumpToApp]);
 
   const onOpen = useCallback((close: () => boolean) => registerBackAction(() => close()), [registerBackAction]);
   const keyboardProps = useMemo(() => {
@@ -92,6 +93,7 @@ function App() {
 
   return (
     <div className={`above-container ${keyboardOpen ? 'keyboard-open' : ''}`}>
+      {errorToastNode}
       {isShowLogo && (
         <div className="jesmyl-smile-box flex center absolute full-width full-height z-index:5">
           <JesmylLogo className="no-fade-in-effect" />

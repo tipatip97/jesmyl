@@ -23,12 +23,16 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
   root: content => <Index content={content} />,
   rootPhase: null,
   jumpByLink: {
-    swInvite: (value, key, alt) => {
-      serviceMaster('index')<string>(key, value);
+    swInvite: async ({ value, key, auth, rejectClearRoute, errorToast }) => {
+      if (!auth || auth.level === 0) return rejectClearRoute();
 
-      return alt.Reject;
+      try {
+        await serviceMaster('index')<string>(key, value);
+      } catch (error) {
+        errorToast('' + (error || 'Ошибка'));
+      }
     },
-    schw: schw => ({ data: { schw }, path: ['other', 'schedules'] }),
+    schw: ({ value: schw, jump }) => jump({ data: { schw }, path: ['other', 'schedules'] }),
   },
   routes: [
     {

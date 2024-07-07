@@ -7,10 +7,10 @@ import LoadIndicatedContent from '../../../../complect/load-indicated-content/Lo
 import mylib from '../../../../complect/my-lib/MyLib';
 import { LocalSokiAuth } from '../../../../models';
 import { soki } from '../../../../soki';
-import { AuthMode, ClientAuthorizationData, ClientRegisterData, ServerAuthorizeInSystem } from '../../Index.model';
-import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import useIndexNav from '../../complect/useIndexNav';
+import { AuthMode, ClientAuthorizationData, ClientRegisterData, ServerAuthorizeInSystem } from '../../Index.model';
+import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { useAuthErrors } from './atoms';
 
@@ -54,6 +54,7 @@ export default function IndexLoginAuth() {
     setAuth(auth);
     setCurrentApp('cm');
     removePullRequisites();
+    soki.onConnect();
   };
 
   const registerInSystem = (state: Omit<ClientRegisterData, 'login'>) => {
