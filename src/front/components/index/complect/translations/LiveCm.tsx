@@ -3,12 +3,12 @@ import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
 import { soki } from '../../../../soki';
 import { useSwitchCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
+import { useComTranslationBlock } from '../../../apps/cm/atoms';
 import useCmNav from '../../../apps/cm/base/useCmNav';
 import { useCols } from '../../../apps/cm/cols/useCols';
 import { useMeetings } from '../../../apps/cm/lists/meetings/useMeetings';
 import CmTranslationControlled from '../../../apps/cm/translation/complect/controlled/CmTranslationControlled';
 import { useCmScreenTranslationConfigs } from '../../../apps/cm/translation/complect/controlled/hooks/configs';
-import { useCmScreenTranslationComCurrentTexti } from '../../../apps/cm/translation/complect/hooks/com-texts';
 import { IndexSchWTranslationLiveDataValue } from '../../Index.model';
 import useIndexNav from '../useIndexNav';
 import { LiveTranslationAppProps } from './model';
@@ -22,10 +22,10 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
   const indexNav = useIndexNav();
   const cmNav = useCmNav();
   const cols = useCols();
-  const currTexti = useCmScreenTranslationComCurrentTexti();
   const [config] = useCmScreenTranslationConfigs();
   const { meetings } = useMeetings();
   const switchCurrApp = useSwitchCurrentTranslationTextApp();
+  const [currTexti] = useComTranslationBlock();
 
   const meeting =
     indexNav.appRouteData.schTranslationEventw == null

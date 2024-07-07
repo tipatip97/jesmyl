@@ -56,8 +56,10 @@ export class Atom<
 
   set = (value: Value | ((prev: Value) => Value)) => {
     const val = mylib.isFunc(value) ? value(this.value) : value;
-    this.onValueChange?.(val);
 
+    if (value === undefined) return;
+
+    this.onValueChange?.(val);
     this.save(val);
     this.justSet(val);
   };

@@ -25,7 +25,7 @@ export interface IndexState {
   nounPronsWords?: NounPronsType;
   fileAssociations?: FileAssociations;
   rules: ExecRule[];
-  appFontFamily?: string;
+  appFontFamily: string | null;
 
   updateRequisites?: Partial<
     Record<

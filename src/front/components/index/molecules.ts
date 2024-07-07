@@ -12,6 +12,10 @@ export const indexMolecule = new Molecule<IndexState>(
     deviceId: '',
     liveData: {},
     rules: [],
+    appFontFamily: null,
+    fileAssociations: {} as never,
+    nounPronsWords: { nouns: {}, pronouns: {} },
+    updateRequisites: {},
   },
   'index',
 );

@@ -1,4 +1,5 @@
 import { SMyLib } from '../../models';
+import mylib from '../my-lib/MyLib';
 import { Atom } from './Atom';
 
 export class Molecule<
@@ -10,9 +11,7 @@ export class Molecule<
   private newAtom: <Key extends keyof T>(key: Key) => Atom<T[Key]>;
   private keys: (keyof T)[] = [];
 
-  with: (molecule: Molecule<any>) => Molecule<any>;
-
-  constructor(values: { [Key in keyof T]: T[Key] }, storageName: StorageName) {
+  constructor(values: Required<{ [Key in keyof T]: T[Key] }>, storageName: StorageName) {
     this.atoms = {
       ...SMyLib.entries(values).reduce((atoms: Atoms, [key, value]) => {
         this.keys.push(key);
@@ -23,12 +22,11 @@ export class Molecule<
     };
 
     this.newAtom = key => (this.atoms[key] = new Atom(undefined as any, storageName, key as string) as never)!;
-    this.with = molecule => new Molecule({}, '').addAtoms(this.atoms).addAtoms(molecule.atoms);
   }
 
-  set = <Key extends keyof T>(key: Key, value: T[Key]) => this.atoms[key].set(value as never);
+  set = <Key extends keyof T>(key: Key, value: T[Key]) => (this.atoms[key] ?? this.newAtom(key)).set(value as never);
 
-  get = <Key extends keyof T>(key: Key): T[Key] => this.atoms[key].get() as never;
+  get = <Key extends keyof T>(key: Key): T[Key] => this.atoms[key]?.get() as never;
 
   take = <Key extends keyof T>(key: Key): NonUndefined<Atoms[Key]> => (this.atoms[key] ?? this.newAtom(key)) as never;
 
@@ -44,6 +42,10 @@ export class Molecule<
       ...this.atoms,
       ...atoms,
     };
+
+    this.keys = Array.from(new Set([...this.keys, ...mylib.keys(atoms)])) as never;
     return this;
   }
+
+  with = <Values>(molecule: Molecule<Values>) => new Molecule({}, '').addAtoms(this.atoms).addAtoms(molecule.atoms);
 }
