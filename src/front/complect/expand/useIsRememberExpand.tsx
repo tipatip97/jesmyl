@@ -9,15 +9,8 @@ export const useIsRememberExpand = (
   scope: string,
   prefix?: ReactNode,
   postfix?: ReactNode | ((isExpand: boolean) => ReactNode),
-  isSelfExpandOnly?: boolean,
 ): [ReactNode, boolean, (isExpand?: boolean) => void] => {
   const [expandes, setExpandes] = useAtom(expandsAtom);
-
-  if (isSelfExpandOnly && expandes.has(scope)) {
-    expandes.delete(scope);
-    setExpandes(new Set(expandes));
-  }
-
   const isExpand = expandes.has(scope);
 
   const switchExpand: (isExpand?: boolean) => void = useCallback(
@@ -27,13 +20,13 @@ export const useIsRememberExpand = (
           expandes.delete(scope);
           setExpandes(new Set(expandes));
         }
-      } else if (!isSelfExpandOnly) {
+      } else {
         if (isExpand === undefined || isExpand === true) {
           setExpandes(new Set(expandes.add(scope)));
         }
       }
     },
-    [expandes, isSelfExpandOnly, scope, setExpandes],
+    [expandes, scope, setExpandes],
   );
 
   return [
