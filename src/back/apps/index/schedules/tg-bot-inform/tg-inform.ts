@@ -98,7 +98,7 @@ export const indexScheduleSetMessageInform = (
               )) +
           '\n\n' +
           (event.tgInform === 0 && event.dsc ? putInTgTag(event.secret ? 'i' : 'code', event.dsc) + '\n\n' : '') +
-          putInTgTag('i', schedule.title);
+          putInTgTag('u', putInTgTag('i', schedule.title));
 
         const text = event.secret ? putInTgTag('tg-spoiler', message) : message;
 
