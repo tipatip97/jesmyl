@@ -1,4 +1,12 @@
 import { ReactNode, useState } from 'react';
+import { IconBookmark01StrokeRounded } from '../../../../complect/the-icon/icons/bookmark-01';
+import { IconCheckmarkSquare02StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-square-02';
+import { IconEdit01StrokeRounded } from '../../../../complect/the-icon/icons/edit-01';
+import { IconEyeStrokeRounded } from '../../../../complect/the-icon/icons/eye';
+import { IconFile01StrokeRounded } from '../../../../complect/the-icon/icons/file-01';
+import { IconPencilEdit01StrokeRounded } from '../../../../complect/the-icon/icons/pencil-edit-01';
+import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
+import { IconSquareStrokeRounded } from '../../../../complect/the-icon/icons/square';
 import {
   CustomAttUseRights,
   ScheduleWidgetRightsCtrl,
@@ -6,27 +14,19 @@ import {
   customAttUseRightsTitles,
   scheduleWidgetUserRights,
 } from '../../../../models';
-import { IconBookmark01StrokeRounded } from '../../../../complect/the-icon/icons/bookmark-01';
-import { IconEdit01StrokeRounded } from '../../../../complect/the-icon/icons/edit-01';
-import { IconEyeStrokeRounded } from '../../../../complect/the-icon/icons/eye';
-import { IconFile01StrokeRounded } from '../../../../complect/the-icon/icons/file-01';
-import { IconPencilEdit01StrokeRounded } from '../../../../complect/the-icon/icons/pencil-edit-01';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
 import StrongClipboardPicker from '../../../strong-control/field/clipboard/Picker';
 import IconButton from '../../../the-icon/IconButton';
+import { theIconFromPack } from '../../../the-icon/TheIcon';
 import { TheIconType } from '../../../the-icon/model';
-import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
 import { ScheduleWidgetAppAttCustomized } from '../../ScheduleWidget.model';
 import ScheduleWidgetIconChange from '../../complect/IconChange';
 import ScheduleWidgetRightControlList from '../../control/RightControlList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetCustomAttTitles from './CustomAttTitles';
-import { IconSquareStrokeRounded } from '../../../../complect/the-icon/icons/square';
-import { IconCheckmarkSquare02StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-square-02';
-import { theIconFromPack } from '../../../the-icon/TheIcon';
 
 const itIt = (it: unknown) => it;
 const itNIt = (it: unknown) => !it;
@@ -209,6 +209,8 @@ export default function ScheduleWidgetCustomAtt(
                   <div key={id}>
                     {(id !== CustomAttUseRights.CheckTitles ||
                       customAttUseRights.checkIsHasIndividualRights(props.tatt.use, CustomAttUseRights.Titles)) &&
+                      (id !== CustomAttUseRights.CheckGames ||
+                        customAttUseRights.checkIsHasIndividualRights(props.tatt.use, CustomAttUseRights.Games)) &&
                       (id !== CustomAttUseRights.CheckUsers ||
                         customAttUseRights.checkIsHasIndividualRights(props.tatt.use, CustomAttUseRights.Users)) && (
                         <StrongEvaButton

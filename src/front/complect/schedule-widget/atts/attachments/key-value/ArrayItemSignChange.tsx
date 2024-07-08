@@ -1,8 +1,8 @@
-import { CustomAttUseTaleId } from '../../../../../models';
-import IconButton from '../../../../the-icon/IconButton';
 import { IconArrowReloadHorizontalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-reload-horizontal';
+import { CustomAttUseTaleId, IScheduleWidgetTeamGame } from '../../../../../models';
 import useModal from '../../../../modal/useModal';
 import StrongDiv from '../../../../strong-control/StrongDiv';
+import IconButton from '../../../../the-icon/IconButton';
 import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser } from '../../../ScheduleWidget.model';
 import KeyValueListAttNumberMember from './KeyValueListAttNumberMember';
 
@@ -11,6 +11,7 @@ export default function ScheduleKeyValueListAttArrayItemKeyChange(props: {
   users: IScheduleWidgetUser[];
   lists: IScheduleWidgetListUnit[] | und;
   roles: IScheduleWidgetRole[] | und;
+  games: IScheduleWidgetTeamGame[] | und;
   theKey: number;
 }) {
   const [modalNode, openModal] = useModal(({ header, body }, closeModal) => {
@@ -37,6 +38,7 @@ export default function ScheduleKeyValueListAttArrayItemKeyChange(props: {
             {props.lists?.map(item => item.mi + CustomAttUseTaleId.Lists).map(map)}
             {props.roles?.map(item => item.mi + CustomAttUseTaleId.Roles).map(map)}
             {props.users?.map(item => item.mi + CustomAttUseTaleId.Users).map(map)}
+            {props.games?.map(item => item.mi + CustomAttUseTaleId.Games).map(map)}
           </>,
         )}
       </>

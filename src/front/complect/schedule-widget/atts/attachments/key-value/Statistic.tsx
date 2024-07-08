@@ -1,8 +1,7 @@
-import { ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
-import { CustomAttUseTaleId } from '../../../../../models';
+import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
+import { CustomAttUseTaleId, ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
 import CopyTextButton from '../../../../CopyTextButton';
 import mylib from '../../../../my-lib/MyLib';
-import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
 
 const itNNil = (it: unknown) => it != null;
@@ -71,6 +70,10 @@ export default function ScheduleKeyValueListAttStatistic(props: {
 
                 if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Lists)) {
                   return rights.schedule.lists.units.find(unit => unit.mi === id)?.title ?? '';
+                }
+
+                if (ScheduleWidgetCleans.checkIsTaleIdUnit(key, CustomAttUseTaleId.Games)) {
+                  return rights.schedule.games?.list.find(unit => unit.mi === id)?.title ?? '';
                 }
               };
 

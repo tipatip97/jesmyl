@@ -1,10 +1,10 @@
-import TheIcon from '../../../the-icon/TheIcon';
-import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
 import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import { IconViewStrokeRounded } from '../../../../complect/the-icon/icons/view';
+import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
 import mylib from '../../../my-lib/MyLib';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import { strongScopeKeyValueSeparator } from '../../../strong-control/useStrongControl';
+import TheIcon from '../../../the-icon/TheIcon';
 import useIsRedactArea from '../../../useIsRedactArea';
 import {
   IScheduleWidget,
@@ -47,8 +47,6 @@ export default function ScheduleWidgetDayEventAtt(
       <TheIcon name={appAtt.icon} />
       {appAtt.title}
     </>,
-    null,
-    props.isPast,
   );
 
   const { isRedact, editIcon, setIsSelfRedact } = useIsRedactArea(true, null, true, true);

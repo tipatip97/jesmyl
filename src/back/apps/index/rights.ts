@@ -63,19 +63,22 @@ export const scheduleWidgetUserRights = new ScheduleWidgetRightsCtrl(textList, r
 ///////////////////////////////
 
 export enum CustomAttUseTaleId {
-  Roles,
+  Roles = 0,
   Lists = 0.1,
   Users = 0.2,
+  Games = 0.3,
 }
 
 export enum CustomAttUseRights {
   Titles = 1,
-  Checkboxes,
-  Roles,
-  Lists,
-  CheckTitles,
-  Users,
-  CheckUsers,
+  Checkboxes = 2,
+  Roles = 3,
+  Lists = 4,
+  CheckTitles = 5,
+  Users = 6,
+  CheckUsers = 7,
+  Games = 8,
+  CheckGames = 9,
 }
 
 export const customAttUseRightsTitles: (ScheduleWidgetRightTexts<CustomAttUseRights> & {
@@ -110,6 +113,15 @@ export const customAttUseRightsTitles: (ScheduleWidgetRightTexts<CustomAttUseRig
     id: CustomAttUseRights.CheckTitles,
     title: 'вып. заголовки',
     top: CustomAttUseRights.Titles,
+  },
+  {
+    id: CustomAttUseRights.Games,
+    title: 'ком. игры',
+  },
+  {
+    id: CustomAttUseRights.CheckGames,
+    title: 'вып. ком. игры',
+    top: CustomAttUseRights.Games,
   },
 ];
 

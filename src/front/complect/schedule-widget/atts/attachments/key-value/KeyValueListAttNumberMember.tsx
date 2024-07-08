@@ -1,6 +1,9 @@
 import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
+import { IconBasketball01StrokeRounded } from '../../../../../complect/the-icon/icons/basketball-01';
+import { IconHelpSquareStrokeRounded } from '../../../../../complect/the-icon/icons/help-square';
 import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
 import { CustomAttUseTaleId } from '../../../../../models';
+import IconButton from '../../../../the-icon/IconButton';
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';
 import { extractScheduleWidgetRole, useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
@@ -29,7 +32,24 @@ export default function KeyValueListAttNumberMember({ value }: { value: number }
         {user.fio || user.nick}
       </div>
     );
+  } else if (ScheduleWidgetCleans.checkIsTaleIdUnit(value, CustomAttUseTaleId.Games)) {
+    const gameMi = Math.trunc(value);
+    const game = rights.schedule.games?.list.find(game => game.mi === gameMi);
+
+    return game === undefined ? (
+      <div className="color--ko">Ком. игра не найдена</div>
+    ) : (
+      <div className="color--3 flex flex-gap">
+        <IconBasketball01StrokeRounded />
+        {game.title}
+      </div>
+    );
   }
 
-  return null;
+  return (
+    <IconButton
+      Icon={IconHelpSquareStrokeRounded}
+      postfix={<span className="color--ko">Неизвестный пункт</span>}
+    />
+  );
 }

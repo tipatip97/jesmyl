@@ -1,10 +1,5 @@
 import { ReactNode } from 'react';
 import ScheduleWidgetCleans from '../../../../../back/apps/index/schedules/utils/Cleans';
-import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
-import mylib, { MyLib } from '../../../my-lib/MyLib';
-import StrongEvaButton from '../../../strong-control/StrongEvaButton';
-import StrongEditableField from '../../../strong-control/field/StrongEditableField';
-import IconButton from '../../../the-icon/IconButton';
 import { IconArrowDown01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-up-01';
 import { IconBookmark03StrokeRounded } from '../../../../complect/the-icon/icons/bookmark-03';
@@ -15,6 +10,11 @@ import { IconNotification01StrokeRounded } from '../../../../complect/the-icon/i
 import { IconNotificationOff01StrokeRounded } from '../../../../complect/the-icon/icons/notification-off-01';
 import { IconSquareStrokeRounded } from '../../../../complect/the-icon/icons/square';
 import { IconViewOffSlashStrokeRounded } from '../../../../complect/the-icon/icons/view-off-slash';
+import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
+import mylib, { MyLib } from '../../../my-lib/MyLib';
+import StrongEvaButton from '../../../strong-control/StrongEvaButton';
+import StrongEditableField from '../../../strong-control/field/StrongEditableField';
+import IconButton from '../../../the-icon/IconButton';
 import useIsRedactArea from '../../../useIsRedactArea';
 import { IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
 import ScheduleWidgetBindAtts from '../../atts/BindAtts';
@@ -64,17 +64,13 @@ export default function ScheduleWidgetDayEvent(props: {
   const eventStartMs = eventFinishMs - eventTm * msInMin;
   const isPastEvent = now > eventFinishMs;
 
-  const [, isExpand, switchIsExpand] = useIsRememberExpand(
-    selfScope,
-    null,
-    null,
-    isPastEvent || props.isPastDay || !rights.isCanReadTitles,
-  );
+  const [, isExpand, switchIsExpand] = useIsRememberExpand(selfScope);
 
   const isCanExpandEvent =
     ((rights.myUser && rights.isCanReadTitles) ||
       (props.event.atts && MyLib.entries(props.event.atts).some(item => item[0] === '[cm]:coms'))) &&
     !props.redact;
+
   const isExpandEvent = (isSelfRedact || isExpand) && isCanExpandEvent;
 
   if (!box) return <>Неизвестный шаблон события</>;

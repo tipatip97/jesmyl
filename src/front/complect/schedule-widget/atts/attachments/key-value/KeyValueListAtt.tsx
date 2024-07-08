@@ -1,25 +1,27 @@
+import Markdown from 'markdown-to-jsx';
 import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
-import {
-  CustomAttUseRights,
-  CustomAttUseTaleId,
-  ScheduleWidgetRightsCtrl,
-  customAttUseRights,
-} from '../../../../../models';
-import mylib from '../../../../my-lib/MyLib';
-import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
-import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
-import { IconArrowMoveLeftDownStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-move-left-down';
-import { IconArrowMoveRightDownStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-move-right-down';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-square-02';
 import { IconDelete02StrokeRounded } from '../../../../../complect/the-icon/icons/delete-02';
 import { IconLeftToRightListDashStrokeRounded } from '../../../../../complect/the-icon/icons/left-to-right-list-dash';
 import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign';
 import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
-import { IconSquareArrowMoveLeftUpStrokeRounded } from '../../../../../complect/the-icon/icons/square-arrow-move-left-up';
-import { IconSquareArrowMoveRightUpStrokeRounded } from '../../../../../complect/the-icon/icons/square-arrow-move-right-up';
 import { IconTextStrokeRounded } from '../../../../../complect/the-icon/icons/text';
+import {
+  CustomAttUseRights,
+  CustomAttUseTaleId,
+  IScheduleWidgetTeamGame,
+  ScheduleWidgetAppAttCustomizableValueItem,
+  ScheduleWidgetRightsCtrl,
+  customAttUseRights,
+} from '../../../../../models';
+import { MoveListItemArrowIcon } from '../../../../MoveListItemArrowIcon';
+import { makeRegExp } from '../../../../makeRegExp';
+import mylib from '../../../../my-lib/MyLib';
+import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
+import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
+import { IconBasketball01StrokeRounded } from '../../../../the-icon/icons/basketball-01';
 import {
   IScheduleWidgetListUnit,
   IScheduleWidgetRole,
@@ -56,9 +58,12 @@ export default function ScheduleKeyValueListAtt({
   const attScope = scope + ' keyValue';
   const rights = useScheduleWidgetRightsContext();
 
+  let subItems: ((item: ScheduleWidgetAppAttCustomizableValueItem, itemScope: string) => ReactNode) | null = null;
+
   let insertionNode = null;
   let checkboxes: ReactNode = null;
   let titles: ReactNode[] | nil = null;
+  let games: ReactNode[] | nil = null;
   let roles: ReactNode[] | nil = null;
   let lists: ReactNode[] | nil = null;
   let users: ReactNode[] | nil = null;
@@ -70,6 +75,7 @@ export default function ScheduleKeyValueListAtt({
   let exclusiveUsers: IScheduleWidgetUser[] = [];
   let exclusiveLists: IScheduleWidgetListUnit[] | und;
   let exclusiveRoles: IScheduleWidgetRole[] | und;
+  let exclusiveGames: IScheduleWidgetTeamGame[] | und;
 
   const userR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
 
@@ -129,13 +135,92 @@ export default function ScheduleKeyValueListAtt({
         .filter(itIt);
     }
 
+    const filterExclusive = (plus: CustomAttUseTaleId) => {
+      return (item: { mi: number; title?: string }) =>
+        item.title && !attValue.values?.some(li => li[0] === item.mi + plus || li[1] === item.mi + plus);
+    };
+
+    if (customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Games)) {
+      exclusiveGames = rights.schedule.games?.list.filter(filterExclusive(CustomAttUseTaleId.Games));
+
+      subItems = ([key, value], itemScope) => {
+        if (!mylib.isNum(key) || !mylib.isArr(value) || rights.schedule.games == null) return;
+        const gameMi = key - CustomAttUseTaleId.Games;
+
+        const game = rights.schedule.games.list.find(game => game.mi === gameMi);
+        if (game == null) return;
+
+        return (
+          <>
+            {game.teams.map(team => {
+              if (value.some(val => (mylib.isStr(val) ? makeRegExp(`/${team.title}/i`).test(val) : false))) return null;
+
+              return (
+                <div key={team.mi}>
+                  <StrongEvaButton
+                    Icon={IconPlusSignStrokeRounded}
+                    scope={itemScope}
+                    fieldName="value list"
+                    fieldValue={
+                      `####${team.title.toUpperCase()}\n\n+ ` +
+                      team.users
+                        .map(({ mi }) => rights.schedule.ctrl.users.find(user => user.mi === mi)?.fio ?? '')
+                        .filter(itIt)
+                        .join('\n+ ')
+                    }
+                    prefix={team.title}
+                  />
+                </div>
+              );
+            })}
+          </>
+        );
+      };
+
+      games = exclusiveGames
+        ?.map(game => {
+          return (
+            <div
+              key={game.mi}
+              className="flex flex-gap margin-gap-v"
+            >
+              {customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.CheckGames) ? (
+                <>
+                  <IconCheckmarkSquare02StrokeRounded />
+                  <IconBasketball01StrokeRounded />
+                  {game.title}
+                  <StrongEvaButton
+                    Icon={IconPlusSignStrokeRounded}
+                    scope={attScope}
+                    fieldName=""
+                    fieldKey={false}
+                    fieldValue={game.mi + CustomAttUseTaleId.Games}
+                  />
+                </>
+              ) : (
+                <>
+                  <IconBasketball01StrokeRounded />
+                  {game.title}
+                  <StrongEvaButton
+                    Icon={IconPlusSignStrokeRounded}
+                    scope={attScope}
+                    fieldName=""
+                    fieldKey={game.mi + CustomAttUseTaleId.Games}
+                    fieldValue={[]}
+                  />
+                </>
+              )}
+            </div>
+          );
+        })
+        .filter(itIt);
+    }
+
     if (customAttUseRights.checkIsHasIndividualRights(att.use, CustomAttUseRights.Roles)) {
       dropdownRoles = rights.schedule.ctrl.roles.filter(role =>
         ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(att.roles, role.cat || 0),
       );
-      exclusiveRoles = dropdownRoles.filter(role => {
-        return role.title && !attValue.values?.some(li => li[0] === role.mi || li[1] === role.mi);
-      });
+      exclusiveRoles = dropdownRoles.filter(filterExclusive(CustomAttUseTaleId.Roles));
 
       roles = exclusiveRoles.map(role => (
         <div
@@ -161,14 +246,7 @@ export default function ScheduleKeyValueListAtt({
       dropdownLists = rights.schedule.lists.units.filter(unit =>
         ScheduleWidgetRightsCtrl.checkIsHasIndividualRights(att.list, unit.cat),
       );
-      exclusiveLists = dropdownLists.filter(unit => {
-        return (
-          unit.title &&
-          !attValue.values?.some(
-            li => li[0] === unit.mi + CustomAttUseTaleId.Lists || li[1] === unit.mi + CustomAttUseTaleId.Lists,
-          )
-        );
-      });
+      exclusiveLists = dropdownLists.filter(filterExclusive(CustomAttUseTaleId.Lists));
 
       lists = exclusiveLists.map(unit => (
         <ScheduleWidgetListUnitFace
@@ -249,7 +327,7 @@ export default function ScheduleKeyValueListAtt({
       </div>
     );
 
-    if (checkboxes || (users || titles || roles || lists || null)?.length) {
+    if (checkboxes || (users || titles || roles || lists || games || null)?.length) {
       insertionNode = (
         <>
           <div className="margin-gap-v color--7">Вставить поле ввода:</div>
@@ -259,6 +337,7 @@ export default function ScheduleKeyValueListAtt({
           <div className="margin-big-gap-v">{roles}</div>
           <div className="margin-big-gap-v">{lists}</div>
           <div className="margin-big-gap-v">{users}</div>
+          <div className="margin-big-gap-v">{games}</div>
         </>
       );
     } else
@@ -269,6 +348,7 @@ export default function ScheduleKeyValueListAtt({
     <div>
       {attValue.values?.map(([key, value, itemMi], itemi, itema) => {
         if (!isRedact && !value) return null;
+
         const itemScope = takeStrongScopeMaker(attScope, ' itemMi/', itemMi);
         let role: IScheduleWidgetRole | und = undefined;
         let generalNode = null;
@@ -355,6 +435,7 @@ export default function ScheduleKeyValueListAtt({
                         users={exclusiveUsers}
                         lists={exclusiveLists}
                         roles={exclusiveRoles}
+                        games={exclusiveGames}
                       />
                     )}
                   </>
@@ -370,7 +451,7 @@ export default function ScheduleKeyValueListAtt({
                       fieldKey={itemMi}
                       className="relative z-index:15 color--7"
                       cud="U"
-                      Icon={itemi > 0 ? IconSquareArrowMoveRightUpStrokeRounded : IconArrowMoveLeftDownStrokeRounded}
+                      Icon={MoveListItemArrowIcon(itemi)}
                     />
                   )}
                   <StrongEvaButton
@@ -417,11 +498,7 @@ export default function ScheduleKeyValueListAtt({
                                 fieldKey={vali}
                                 className="relative z-index:15 color--7"
                                 cud="U"
-                                Icon={
-                                  vali > 0
-                                    ? IconSquareArrowMoveLeftUpStrokeRounded
-                                    : IconArrowMoveRightDownStrokeRounded
-                                }
+                                Icon={MoveListItemArrowIcon(vali)}
                                 mapExecArgs={args => {
                                   return {
                                     ...args,
@@ -453,6 +530,7 @@ export default function ScheduleKeyValueListAtt({
                               value={val}
                               className="mood-for-2 margin-gap-v"
                               isRedact
+                              multiline
                               mapExecArgs={(args, val) => {
                                 while (value.includes(val)) val += '1';
                                 return {
@@ -479,6 +557,8 @@ export default function ScheduleKeyValueListAtt({
                     />
                   )}
 
+                  {subItems?.([key, value, itemMi], itemScope)}
+
                   <StrongEditableField
                     scope={itemScope}
                     fieldName="value list"
@@ -487,6 +567,7 @@ export default function ScheduleKeyValueListAtt({
                     placeholder="Новый подпункт"
                     isRedact={isRedact}
                     setSelfRedact={setSelfRedact}
+                    multiline
                     mapExecArgs={(args, val) => {
                       while ((value as string[]).includes(val)) val += '1';
                       return {
@@ -505,7 +586,7 @@ export default function ScheduleKeyValueListAtt({
                         className="flex flex-gap margin-big-gap-l"
                       >
                         <span className="flex self-start">{vali + 1}.</span>
-                        {mylib.isNum(val) ? <KeyValueListAttNumberMember value={val} /> : <div>{val}</div>}
+                        {mylib.isNum(val) ? <KeyValueListAttNumberMember value={val} /> : <Markdown>{val}</Markdown>}
                       </div>
                     );
                   })}
