@@ -1,28 +1,22 @@
 import { useState } from 'react';
 import { SokiSharedKey } from '../../../../../back/complect/soki/values';
-import { ScheduleWidgetPhotoKey, ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../models';
+import { ScheduleWidgetPhotoKey } from '../../../../models';
 import { soki } from '../../../../soki';
 import Modal from '../../../modal/Modal/Modal';
-import { ModalBody } from '../../../modal/Modal/ModalBody';
-import { ModalHeader } from '../../../modal/Modal/ModalHeader';
 import mylib from '../../../my-lib/MyLib';
 import EvaSendButton from '../../../sends/eva-send-button/EvaSendButton';
 import IconButton from '../../../the-icon/IconButton';
 import { IconCloudDownloadStrokeRounded } from '../../../the-icon/icons/cloud-download';
 import { IconCloudUploadStrokeRounded } from '../../../the-icon/icons/cloud-upload';
 import { IconEyeStrokeRounded } from '../../../the-icon/icons/eye';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { getScheduleWidgetUserPhotoStorageKey, scheduleWidgetPhotosStorage } from '../../storage';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
-import ScheduleWidgetUserPhoto from '../users/UserPhoto';
+import { ScheduleWidgetPhotoGalery } from './PhotoGalery';
+import { checkIsUserPhotoable } from './utils';
 
 interface Props {
   prefix?: React.ReactNode;
 }
-
-const checkIsUserPhotoable = (user: IScheduleWidgetUser) =>
-  scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) &&
-  !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles);
 
 export const ScheduleWidgetShareButtons = function ShareButtons({ prefix }: Props) {
   const rights = useScheduleWidgetRightsContext();
@@ -33,19 +27,7 @@ export const ScheduleWidgetShareButtons = function ShareButtons({ prefix }: Prop
       {prefix}
       {isOpenGalery && (
         <Modal onClose={setIsOpenGalery}>
-          <ModalHeader>Фотографии (локально)</ModalHeader>
-          <ModalBody>
-            {rights.schedule.ctrl.users.map(user => {
-              if (!checkIsUserPhotoable(user)) return null;
-
-              return (
-                <div className="flex center column margin-big-gap-v">
-                  <div>{user.fio}</div>
-                  <ScheduleWidgetUserPhoto user={user} />
-                </div>
-              );
-            })}
-          </ModalBody>
+          <ScheduleWidgetPhotoGalery />
         </Modal>
       )}
       <IconButton
