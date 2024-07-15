@@ -1,27 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
-import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
+import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
-import { justBibleStorageSet } from '../../hooks/storage';
 import { useBibleBookList } from '../../hooks/texts';
 import BibleSearchResults from '../../translations/search/Results';
+import { useBibleTranslationSearchResultSelectedSet } from '../../translations/search/hooks/results';
 import BibleSearchPanelSearchInput from '../../translations/search/input-panel/SearchInput';
 import { useBibleSearchZone } from '../../translations/search/selectors';
 import useBibleNav from '../../useBibleNav';
 
-const resetSelected = () => justBibleStorageSet('translationSearchResultSelected', null);
 const emptyArr: [] = [];
 
 export default function BibleReaderSearchPage() {
   const { goBack, navigateToRoot } = useBibleNav();
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
-  const searchZone = useBibleSearchZone();
+  const [searchZone, setZone] = useBibleSearchZone();
   const bookTitles = useBibleBookList();
   const [innerZone, setInnerZone] = useState<'book' | 'chapter'>('book');
+  const setResultSelected = useBibleTranslationSearchResultSelectedSet();
 
-  useEffect(resetSelected, emptyArr);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setResultSelected(null), emptyArr);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -36,7 +37,7 @@ export default function BibleReaderSearchPage() {
             <IconCheckbox
               checked={searchZone === 'global'}
               postfix="Глобальный поиск"
-              onChange={() => justBibleStorageSet('translationSearchZone', 'global')}
+              onChange={() => setZone('global')}
             />
             <IconCheckbox
               checked={searchZone === 'inner' && innerZone === 'book'}
@@ -46,7 +47,7 @@ export default function BibleReaderSearchPage() {
                 </>
               }
               onChange={() => {
-                justBibleStorageSet('translationSearchZone', 'inner');
+                setZone('inner');
                 setInnerZone('book');
               }}
             />
@@ -61,7 +62,7 @@ export default function BibleReaderSearchPage() {
                 </>
               }
               onChange={() => {
-                justBibleStorageSet('translationSearchZone', 'inner');
+                setZone('inner');
                 setInnerZone('chapter');
               }}
             />

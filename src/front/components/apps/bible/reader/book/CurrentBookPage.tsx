@@ -6,10 +6,10 @@ import { BibleAddressSingle } from '../../address/Single';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
-import { justBibleStorageSet } from '../../hooks/storage';
 import { useBibleBookList } from '../../hooks/texts';
 import BibleTranslatesContextProvider, { useBibleTranslatesContext } from '../../translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../translates/hooks';
+import { useBibleShowTranslatesValue } from '../../translates/hooks';
+import { useBibleSingleAddressSetter } from '../../translations/lists/atoms';
 import useBibleNav from '../../useBibleNav';
 import BibleReaderBook from './BookPage';
 
@@ -27,10 +27,11 @@ function Content() {
   const currentChapteri = useBibleAddressChapteri();
   const currentVersei = useBibleAddressVersei();
   const bookTitles = useBibleBookList();
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const htmlChapters = useBibleTranslatesContext()[showTranslates[0]]?.htmlChapters;
   const [booki, setBooki] = useState(currentBooki);
   const [chapteri, setChapteri] = useState(currentChapteri);
+  const setAddress = useBibleSingleAddressSetter();
 
   const [bookSelectNode, openBookSelect] = useFullContent(() => {
     return (
@@ -64,9 +65,7 @@ function Content() {
               chapter-length={chapter.length}
               onClick={() => {
                 setChapteri(chapteri);
-                justBibleStorageSet('translationBooki', booki);
-                justBibleStorageSet('translationChapteri', chapteri);
-                justBibleStorageSet('translationVersei', 0);
+                setAddress(booki, chapteri, 0);
                 openVerseSelect(true);
               }}
             >
@@ -86,11 +85,7 @@ function Content() {
             <ItemFace
               key={versei}
               className="inline-flex center pointer"
-              onClick={() => {
-                justBibleStorageSet('translationBooki', booki);
-                justBibleStorageSet('translationChapteri', chapteri);
-                justBibleStorageSet('translationVersei', versei);
-              }}
+              onClick={() => setAddress(booki, chapteri, versei)}
             >
               {versei + 1}
             </ItemFace>

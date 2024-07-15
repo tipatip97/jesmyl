@@ -1,8 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import { useSetBibleAddressIndexes } from '../../../hooks/address/address';
 import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
-import { justBibleStorageSet } from '../../../hooks/storage';
-import { useBibleTranslationSearchResultList, useBibleTranslationSearchResultSelected } from '../hooks/results';
+import {
+  useBibleTranslationSearchResultList,
+  useBibleTranslationSearchResultSelectedSet,
+  useBibleTranslationSearchResultSelectedValue,
+} from '../hooks/results';
 import { useBibleSearchTerm } from '../selectors';
 import BibleSearchPanelInput from './Input';
 
@@ -11,14 +14,13 @@ interface Props {
 }
 
 export default function BibleSearchPanelSearchInput({ inputRef }: Props) {
-  const searchTerm = useBibleSearchTerm();
-  const onChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => justBibleStorageSet('translationSearchTerm', event.target.value),
-    [],
-  );
+  const [searchTerm, setTerm] = useBibleSearchTerm();
+  const setResultSelected = useBibleTranslationSearchResultSelectedSet();
+
+  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTerm(event.target.value), [setTerm]);
   const setAddress = useSetBibleAddressIndexes();
-  const resultList = useBibleTranslationSearchResultList();
-  const resultSelected = useBibleTranslationSearchResultSelected();
+  const [resultList] = useBibleTranslationSearchResultList();
+  const resultSelected = useBibleTranslationSearchResultSelectedValue();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
 
   useEffect(() => {
@@ -37,16 +39,15 @@ export default function BibleSearchPanelSearchInput({ inputRef }: Props) {
           case 'Enter':
             inputNode.blur();
             syncSlide();
-            justBibleStorageSet('translationSearchResultSelected', null);
+            setResultSelected(null);
 
             break;
           case 'ArrowUp':
-            if (resultSelected !== null && resultSelected > 0)
-              justBibleStorageSet('translationSearchResultSelected', resultSelected - 1);
+            if (resultSelected !== null && resultSelected > 0) setResultSelected(resultSelected - 1);
             break;
           case 'ArrowDown':
             if (resultSelected === null || resultSelected < resultList.length - 1)
-              justBibleStorageSet('translationSearchResultSelected', (resultSelected ?? -1) + 1);
+              setResultSelected((resultSelected ?? -1) + 1);
             break;
           case 'ArrowLeft':
           case 'ArrowRight':
@@ -60,7 +61,7 @@ export default function BibleSearchPanelSearchInput({ inputRef }: Props) {
         event.preventDefault();
       })
       .effect();
-  }, [inputRef, resultList.length, resultSelected, syncSlide]);
+  }, [inputRef, resultList.length, resultSelected, setResultSelected, syncSlide]);
 
   return (
     <BibleSearchPanelInput

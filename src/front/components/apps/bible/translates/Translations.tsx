@@ -1,11 +1,10 @@
 import { memo } from 'react';
-import { justBibleStorageSet } from '../hooks/storage';
 import BibleModulesTranslationsRedactButton from './Add';
 import { useBibleMyTranslates, useBibleShowTranslates } from './hooks';
 
 export const BibleModulesTranslations = memo(function BibleModules(): JSX.Element {
-  const myTranslates = useBibleMyTranslates();
-  const showTranslates = useBibleShowTranslates();
+  const [myTranslates] = useBibleMyTranslates();
+  const [showTranslates, setShowTranslates] = useBibleShowTranslates();
 
   return (
     <div className="flex flex-gap margin-gap-v">
@@ -18,14 +17,13 @@ export const BibleModulesTranslations = memo(function BibleModules(): JSX.Elemen
             className={'pointer' + (isShow ? ' text-underline' : '') + (showTranslates[0] === tName ? ' color--7' : '')}
             onClick={event => {
               if (!event.ctrlKey) {
-                justBibleStorageSet('showTranslates', [tName]);
+                setShowTranslates([tName]);
                 return;
               }
 
               if (isShow) {
-                if (showTranslates.length > 1)
-                  justBibleStorageSet('showTranslates', prev => prev.filter(name => name !== tName));
-              } else justBibleStorageSet('showTranslates', prev => [...prev, tName]);
+                if (showTranslates.length > 1) setShowTranslates(prev => prev.filter(name => name !== tName));
+              } else setShowTranslates(prev => [...prev, tName]);
             }}
           >
             {tName}

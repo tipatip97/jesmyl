@@ -7,8 +7,8 @@ import {
   useMakeScreenTranslationConfigsFillPack,
   useScreenTranslationCurrentConfigi,
 } from '../../../+complect/translations/hooks/configs';
-import { useStorageValueGetter } from '../../../../../complect/useStorage';
-import bibleStorage from '../../bibleStorage';
+import { useAtomValue } from '../../../../../complect/atoms';
+import { bibleMolecule } from '../../molecules';
 import { BibleTranslationScreenConfig } from '../model';
 
 export const defaultBibleConfig: BibleTranslationScreenConfig = {
@@ -41,7 +41,7 @@ export const defaultBibleConfig: BibleTranslationScreenConfig = {
 
 export const useBibleScreenTranslationConfigs = () =>
   useMakeScreenTranslationConfigsFillPack(
-    useStorageValueGetter(bibleStorage, 'translationScreenConfigs', [defaultBibleConfig]),
+    useAtomValue(bibleMolecule.take('translationScreenConfigs')),
     defaultBibleConfig,
   );
 

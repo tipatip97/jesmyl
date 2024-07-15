@@ -1,5 +1,4 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
-import { justBibleStorageSet } from '../../hooks/storage';
 import { BibleSearchZone } from '../../model';
 import BibleSearchResults from './Results';
 import BibleSearchInputPanel from './input-panel/InputPanel';
@@ -8,16 +7,16 @@ import { useBibleSearchZone } from './selectors';
 export default memo(function BibleSearchPanel(): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const searchZone = useBibleSearchZone();
+  const [searchZone, setZone] = useBibleSearchZone();
 
   const putOnSearchZone = useCallback(
     (zone: BibleSearchZone) => {
       return () => {
-        justBibleStorageSet('translationSearchZone', zone);
+        setZone(zone);
         setTimeout(() => inputRef.current?.select(), 10);
       };
     },
-    [inputRef],
+    [setZone],
   );
 
   useEffect(() => {

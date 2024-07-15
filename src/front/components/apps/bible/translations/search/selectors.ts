@@ -1,6 +1,10 @@
-import { useStorageValueGetter } from '../../../../../complect/useStorage';
-import bibleStorage from '../../bibleStorage';
+import { atom, useAtom } from '../../../../../complect/atoms';
+import { BibleSearchZone } from '../../model';
 
-export const useBibleSearchZone = () => useStorageValueGetter(bibleStorage, 'translationSearchZone', 'global');
-export const useBibleSearchTerm = () => useStorageValueGetter(bibleStorage, 'translationSearchTerm', '');
-export const useBibleAddressTerm = () => useStorageValueGetter(bibleStorage, 'translationAddressTerm', '');
+const searchTermAtom = atom('', 'bible', 'translationSearchTerm');
+const addressTermAtom = atom('', 'bible', 'translationAddressTerm');
+const searchZoneAtom = atom<BibleSearchZone>('global', 'bible', 'translationSearchZone');
+
+export const useBibleSearchZone = () => useAtom(searchZoneAtom);
+export const useBibleSearchTerm = () => useAtom(searchTermAtom);
+export const useBibleAddressTerm = () => useAtom(addressTermAtom);

@@ -3,7 +3,7 @@ import { useBibleTranslationJoinAddress as useBibleTranslationJoinAddressCode } 
 import { useBibleAddressBooki } from '../hooks/address/books';
 import { useBibleAddressChapteri } from '../hooks/address/chapters';
 import { useBibleAddressVersei } from '../hooks/address/verses';
-import { useBibleSlideSyncContentUpdatesNum } from '../hooks/slide-sync';
+import { useBibleSlideSyncValue } from '../hooks/slide-sync';
 import { useBibleJoinedAddressText, useBibleSimpleAddressText as useBibleSingleAddressText } from '../hooks/texts';
 import { BibleTranslationAddress } from '../model';
 
@@ -26,7 +26,7 @@ export const BibleAddress: React.FC<Props> = props => {
   const [cachedJoinAddress, cachedSingleAddress, cachedJoinCode] = useMemo(
     () => [joinAddress, singleAddress, joinCode],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [useBibleSlideSyncContentUpdatesNum()],
+    [useBibleSlideSyncValue()],
   );
 
   if ((props.isShowCachable ? cachedJoinCode : joinCode) == null)

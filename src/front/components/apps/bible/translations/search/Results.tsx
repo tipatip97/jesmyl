@@ -4,12 +4,11 @@ import { useDebounceValue } from '../../../../../complect/useDebounceValue';
 import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
-import { justBibleStorageSet } from '../../hooks/storage';
 import { BibleTranslationSingleAddress } from '../../model';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../translates/hooks';
+import { useBibleShowTranslatesValue } from '../../translates/hooks';
 import BibleSearchResultVerse from './ResultVerse';
-import { useBibleTranslationSearchResultList, useBibleTranslationSearchResultSelected } from './hooks/results';
+import { useBibleTranslationSearchResultList, useBibleTranslationSearchResultSelectedValue } from './hooks/results';
 import { useBibleSearchTerm, useBibleSearchZone } from './selectors';
 
 interface Props {
@@ -32,13 +31,13 @@ const maxItems = 49;
 const sortStringsByLength = (a: string, b: string) => b.length - a.length;
 
 export default function BibleSearchResults({ inputRef, height = '100px', innerZone, onClick: userOnClick }: Props) {
-  const searchZone = useBibleSearchZone();
-  const searchTerm = useDebounceValue(useBibleSearchTerm());
-  const showTranslates = useBibleShowTranslates();
+  const [searchZone] = useBibleSearchZone();
+  const searchTerm = useDebounceValue(useBibleSearchTerm()[0]);
+  const showTranslates = useBibleShowTranslatesValue();
   const lowerChapters = useBibleTranslatesContext()[showTranslates[0]]?.lowerChapters;
   const [list, setList] = useState<JSX.Element[]>([]);
-  const resultSelected = useBibleTranslationSearchResultSelected();
-  const resultList = useBibleTranslationSearchResultList();
+  const resultSelected = useBibleTranslationSearchResultSelectedValue();
+  const [resultList, setResultList] = useBibleTranslationSearchResultList();
   const onClick = useCallback(() => inputRef.current?.focus(), [inputRef]);
   const setJoin = useBibleTranslationJoinAddressSetter();
 
@@ -102,7 +101,7 @@ export default function BibleSearchResults({ inputRef, height = '100px', innerZo
       .flat()
       .slice(0, maxItems + 1);
 
-    justBibleStorageSet('translationSearchResultList', list);
+    setResultList(list);
 
     setList(
       list.map(([booki, chapteri, versei], resulti) => (
@@ -117,7 +116,7 @@ export default function BibleSearchResults({ inputRef, height = '100px', innerZo
         />
       )),
     );
-  }, [currentBooki, currentChapteri, innerZone, lowerChapters, searchTerm, searchZone, userOnClick]);
+  }, [currentBooki, currentChapteri, innerZone, lowerChapters, searchTerm, searchZone, setResultList, userOnClick]);
 
   useEffect(() => {
     if (resultSelected === null || resultList[resultSelected] == null) return;

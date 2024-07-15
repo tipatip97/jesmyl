@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useBibleTranslationAddressIndexesSetter } from '../../hooks/address/address';
 import { useBibleBookList } from '../../hooks/texts';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../translates/hooks';
+import { useBibleShowTranslatesValue } from '../../translates/hooks';
 
 interface Props {
   booki: number;
@@ -21,7 +21,7 @@ export default memo(function BibleSearchResultVerse({
   resulti,
   onClick,
 }: Props): JSX.Element {
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const books = useBibleBookList();
   const textBits =
     useBibleTranslatesContext()[showTranslates[0]]?.chapters?.[booki]?.[chapteri]?.[versei]?.split(splitReg);

@@ -1,10 +1,12 @@
 import { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import { ScreenTranslationControlPanel } from '../../+complect/translations/controls/ControllPanel';
+import { useAtomInkrement } from '../../../../complect/atoms';
 import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
-import { justBibleStorageSet } from '../hooks/storage';
+import { useBibleSlideSyncInkrementer } from '../hooks/slide-sync';
 import { useLoadBibleChaptersCombine } from '../hooks/texts';
+import { bibleVerseiAtom } from './lists/atoms';
 import { BibleModulesTranslations } from '../translates/Translations';
 import BibleTranslationControlledBottomPanel from './BottomPanel';
 import { BibleTranslationControlledTopPanel } from './TopPanel';
@@ -16,15 +18,12 @@ interface Props {
   headTitle: ReactNode;
 }
 
-const onPrev = () => justBibleStorageSet('translationVersei', versei => versei - 1);
-const onNext = () => justBibleStorageSet('translationVersei', versei => versei + 1);
-
 export const BibleTranslationControlled = ({ useNav, head, headTitle }: Props): JSX.Element => {
   useLoadBibleChaptersCombine();
+  const inkSync = useBibleSlideSyncInkrementer();
+  const switchVersei = useAtomInkrement(bibleVerseiAtom);
 
-  useEffect(() => {
-    justBibleStorageSet('translationSlideSyncContentUpdatesNum', num => num + 1);
-  }, []);
+  useEffect(() => inkSync(1), [inkSync]);
 
   useEffect(() => {
     return hookEffectLine()
@@ -55,8 +54,8 @@ export const BibleTranslationControlled = ({ useNav, head, headTitle }: Props): 
           <BibleTranslationControlledTopPanel />
           <BibleModulesTranslations />
           <ScreenTranslationControlPanel
-            onPrev={onPrev}
-            onNext={onNext}
+            onPrev={() => switchVersei(-1)}
+            onNext={() => switchVersei(1)}
           />
           <BibleSearchPanel />
           <BibleTranslationControlledBottomPanel />

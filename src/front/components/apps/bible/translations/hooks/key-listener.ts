@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useAtomSet } from '../../../../../complect/atoms';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import {
   useBibleTranslationAddressIndexesSetter,
@@ -8,18 +9,18 @@ import {
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleTranslationSlideSyncContentSetter } from '../../hooks/slide-sync';
-import { justBibleStorageSet } from '../../hooks/storage';
 import { BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../translates/hooks';
+import { useBibleShowTranslatesValue } from '../../translates/hooks';
 import { useBibleTranslationAddToPlan } from '../archive/plan/hooks/plan';
+import { bibleVerseiAtom } from '../lists/atoms';
 
 export const useBibleScreenTranslationKeyListener = (versei: number, win?: Window) => {
   const [numberCollection, setNumberCollection] = useState('');
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const chapters = useBibleTranslatesContext()[showTranslates[0]]?.chapters;
   const joinAddress = useBibleTranslationJoinAddress();
   const currentJoinAddress = useBibleTranslationJoinAddress();
@@ -27,16 +28,17 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
   const setJoin = useBibleTranslationJoinAddressSetter();
   const addToPlan = useBibleTranslationAddToPlan();
   const setAddress = useBibleTranslationAddressIndexesSetter();
+  const setVersei = useAtomSet(bibleVerseiAtom);
 
   useEffect(() => {
     if (numberCollection === '') return;
     return hookEffectLine()
       .setTimeout(() => {
-        justBibleStorageSet('translationVersei', +numberCollection - 1);
+        setVersei(+numberCollection - 1);
         setNumberCollection('');
       }, 300)
       .effect();
-  }, [numberCollection]);
+  }, [numberCollection, setVersei]);
 
   useEffect(() => {
     return hookEffectLine()
@@ -81,7 +83,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
           if (event.shiftKey || currentJoinAddress === null) {
             const chapter = chapters?.[currentBooki]?.[currentChapteri];
 
-            justBibleStorageSet('translationVersei', versei =>
+            setVersei(versei =>
               dir < 0
                 ? versei > 0
                   ? versei + dir
@@ -150,5 +152,16 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         setJoin(mylib.keys(newJoin).length === 0 ? null : newJoin);
       })
       .effect();
-  }, [chapters, currentBooki, currentChapteri, currentJoinAddress, setAddress, setJoin, syncSlide, versei, win]);
+  }, [
+    chapters,
+    currentBooki,
+    currentChapteri,
+    currentJoinAddress,
+    setAddress,
+    setJoin,
+    setVersei,
+    syncSlide,
+    versei,
+    win,
+  ]);
 };

@@ -1,19 +1,17 @@
 import { useCallback } from 'react';
 import { useToggleIsScreenTranslationTextVisible } from '../../+complect/translations/atoms';
+import { atom, useAtomInkrement, useAtomValue } from '../../../../complect/atoms';
 import { useActualRef } from '../../../../complect/useActualRef';
-import { useStorageValueGetter } from '../../../../complect/useStorage';
-import bibleStorage from '../bibleStorage';
 import { useBibleTranslationAddToHistory } from '../translations/archive/history/hooks/history';
 import { useBibleTranslationJoinAddress } from './address/address';
 import { useBibleAddressBooki } from './address/books';
 import { useBibleAddressChapteri } from './address/chapters';
 import { useBibleAddressVersei } from './address/verses';
-import { justBibleStorageSet } from './storage';
 
-export const useBibleSlideSyncContentUpdatesNum = () =>
-  useStorageValueGetter(bibleStorage, 'translationSlideSyncContentUpdatesNum', 0);
+const inkAtom = atom(0);
 
-const ink = (num: number) => num + 1;
+export const useBibleSlideSyncInkrementer = () => useAtomInkrement(inkAtom);
+export const useBibleSlideSyncValue = () => useAtomValue(inkAtom);
 
 export const useBibleTranslationSlideSyncContentSetter = () => {
   const currentBookiRef = useActualRef(useBibleAddressBooki());
@@ -22,10 +20,11 @@ export const useBibleTranslationSlideSyncContentSetter = () => {
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const addToHistory = useBibleTranslationAddToHistory();
   const switchIsVisible = useToggleIsScreenTranslationTextVisible();
+  const inkSync = useBibleSlideSyncInkrementer();
 
   return useCallback(
     (isReplaceFirstNearVersei = false) => {
-      justBibleStorageSet('translationSlideSyncContentUpdatesNum', ink);
+      inkSync(1);
       switchIsVisible(true);
 
       setTimeout(() => {
@@ -35,6 +34,6 @@ export const useBibleTranslationSlideSyncContentSetter = () => {
         );
       });
     },
-    [addToHistory, currentBookiRef, currentChapteriRef, currentJoinAddress, currentVerseiRef, switchIsVisible],
+    [addToHistory, currentBookiRef, currentChapteriRef, currentJoinAddress, currentVerseiRef, inkSync, switchIsVisible],
   );
 };

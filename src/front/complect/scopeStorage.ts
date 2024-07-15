@@ -20,7 +20,7 @@ export const scopeStorage = <
   type ValueFunc = <Key extends keyof T>(val: T[Key]) => void;
 
   const storage = storageName
-    ? storages[storageName] ?? (storages[storageName] = new JStorage<NavigationStorage<T>, T>(storageName))
+    ? storages[storageName] ?? (storages[storageName] = new JStorage<NavigationStorage<T>>(storageName))
     : null;
 
   const topFuncs = {} as TK;

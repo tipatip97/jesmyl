@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 import { useBibleAddressBooki } from '../hooks/address/books';
 import { useBibleAddressChapteri } from '../hooks/address/chapters';
 import { useBibleAddressVersei } from '../hooks/address/verses';
-import { useBibleSlideSyncContentUpdatesNum } from '../hooks/slide-sync';
+import { useBibleSlideSyncValue } from '../hooks/slide-sync';
 import { useBibleSimpleAddressText } from '../hooks/texts';
 import { BibleTranslationSingleAddress } from '../model';
 
@@ -21,7 +21,7 @@ const Propped: React.FC<Props> = props => {
   const actualAddress = useBibleSimpleAddressText(...props.address!);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const address = useMemo(() => actualAddress, [useBibleSlideSyncContentUpdatesNum()]);
+  const address = useMemo(() => actualAddress, [useBibleSlideSyncValue()]);
 
   return <>{props.children === undefined ? actualAddress : props.children(actualAddress, address)}</>;
 };
@@ -33,7 +33,7 @@ const Current: React.FC<Props> = props => {
   const actualAddress = useBibleSimpleAddressText(currentBooki, currentChapteri, currentVersei);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const address = useMemo(() => actualAddress, [useBibleSlideSyncContentUpdatesNum()]);
+  const address = useMemo(() => actualAddress, [useBibleSlideSyncValue()]);
 
   return <>{props.children === undefined ? actualAddress : props.children(actualAddress, address)}</>;
 };

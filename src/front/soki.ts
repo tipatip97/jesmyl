@@ -18,6 +18,7 @@ import { Molecule } from './complect/atoms';
 import { JStorage } from './complect/JStorage';
 import mylib from './complect/my-lib/MyLib';
 import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-shareds';
+import { bibleMolecule } from './components/apps/bible/molecules';
 import { cmEditorMolecule } from './components/apps/cm/editor/molecules';
 import { cmMolecule } from './components/apps/cm/molecules';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
@@ -63,6 +64,7 @@ export class SokiTrip {
   private molecules: Partial<{ [Key in AppName]: Molecule<any, Key> }> = {
     index: indexMolecule,
     cm: cmMolecule.with(cmEditorMolecule),
+    bible: bibleMolecule,
   };
 
   async appName() {
@@ -204,10 +206,7 @@ export class SokiTrip {
   }
 
   updatedPulledData(pull: PullEventValue) {
-    const update = (
-      pullContents: SimpleKeyValue<string, unknown>[],
-      store: Molecule<unknown> | JStorage<unknown, unknown>,
-    ) => {
+    const update = (pullContents: SimpleKeyValue<string, unknown>[], store: Molecule<unknown> | JStorage<unknown>) => {
       if (!pullContents.length) return;
 
       const fixes: string[] = [];

@@ -1,79 +1,32 @@
-import { JStorage } from '../JStorage';
-import mylib from '../my-lib/MyLib';
+import { useEffect, useState } from 'react';
+import { Atom } from './AnAtom';
 
-const storages: Record<string, JStorage<any>> = {};
-const emptyFunc = () => {};
-const registered = new Set<`${string}/${string}`>();
+const emptyArr = [] as [];
 
-export class Atom<
-  Value,
-  Key extends string = string,
-  Sunscriber extends (value: Value) => void = (value: Value) => void,
-> {
-  private value: Value;
-  private subs = new Set<Sunscriber>();
-  private save: (val: Value) => void = emptyFunc;
-  private key?: Key;
+export const useAtomValue = <Value, Key extends string>(atom: Atom<Value, Key>) => {
+  const state = useState(atom.get());
 
-  storage?: JStorage<Record<string, Value>>;
-  onValueChange?: (value: Value) => void;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => atom.subscribe(state[1]), emptyArr);
 
-  constructor(value: Value, storageName?: string, key?: Key) {
-    this.value = value;
+  return atom.get();
+};
 
-    if (!storageName || !key) return;
+export const useAtomSet = <Value, Key extends string>(atom: Atom<Value, Key>) => atom.set;
+export const useAtomToggle = <Key extends string>(atom: Atom<boolean, Key>) => atom.toggle;
+export const useAtomInkrement = <Key extends string>(atom: Atom<number, Key>) => atom.inkrement;
 
-    const name = `${storageName}/${key}` as const;
+export const useAtom = <Value, Key extends string>(atom: Atom<Value, Key>) =>
+  [useAtomValue(atom), useAtomSet(atom)] as const;
 
-    if (registered.has(name)) throw Error(`Атом ${name} уже зарегистрирован`);
-    registered.add(name);
+export const atom = <Value, Key extends string = string>(
+  value: Value,
+  storageName?: string,
+  key?: Key,
+): Atom<Value, Key> => new Atom(value, storageName, key);
 
-    this.key = key;
-
-    const storage = (this.storage = storages[storageName] ??= new JStorage(storageName));
-
-    this.save = val => storage.set(key, val);
-
-    (async () => {
-      const value = await storage.get(key);
-      if (value === undefined) return;
-      this.justSet(value);
-    })();
-  }
-
-  get = () => this.value;
-  getStorageValue = async () =>
-    this.storage === undefined || this.key === undefined
-      ? this.value
-      : (await this.storage.get(this.key)) ?? this.value;
-
-  invokeSubs = (sub: Sunscriber) => sub(this.value);
-
-  justSet = (value: Value) => {
-    this.value = value;
-    this.subs.forEach(this.invokeSubs, this);
-  };
-
-  set = (value: Value | ((prev: Value) => Value), isPreventSave?: boolean) => {
-    const val = mylib.isFunc(value) ? value(this.value) : value;
-
-    if (value === undefined) return;
-
-    this.onValueChange?.(val);
-    this.justSet(val);
-
-    if (isPreventSave === true) return;
-
-    this.save(val);
-  };
-
-  toggle = (is?: boolean) => this.set((is ?? ((is: boolean) => !is)) as never);
-  inkrement = (ink: number) => this.set((+this.value + ink) as never);
-
-  subscribe = (sub: Sunscriber) => {
-    this.subs.add(sub);
-    return () => {
-      this.subs.delete(sub);
-    };
-  };
-}
+export const getAtomValue = async <Value, Key extends string>(atom: Atom<Value, Key>) => await atom.getStorageValue();
+export const atomValueSetter =
+  <Value, Key extends string = string>(atom: Atom<Value, Key>) =>
+  (value: Value | ((prev: Value) => Value)) =>
+    atom.set(value);

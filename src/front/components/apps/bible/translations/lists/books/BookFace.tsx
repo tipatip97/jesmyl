@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import styled from 'styled-components';
-import { usePutBibleBookiSetter } from '../../../hooks/address/books';
+import { useBibleSingleAddressSetter } from '../atoms';
 
 interface Props {
   titles: [string, string];
@@ -8,13 +8,13 @@ interface Props {
 }
 
 export default memo(function BibleBookFace({ titles, booki }: Props): JSX.Element {
-  const putValSetter = usePutBibleBookiSetter();
+  const setValue = useBibleSingleAddressSetter();
 
   return (
     <Face
       id={'bible-booki-' + booki}
       className="bible-list-face"
-      onClick={putValSetter(booki)}
+      onClick={() => setValue(booki, 0, 0)}
     >
       {booki + 1} <span className="title">{titles[1]}</span>
     </Face>

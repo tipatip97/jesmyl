@@ -1,11 +1,13 @@
 import { useCallback } from 'react';
 import { useScreenTranslationCurrentConfigi } from '../../../+complect/translations/hooks/configs';
-import { justBibleStorageSet } from '../../hooks/storage';
+import { useAtomSet } from '../../../../../complect/atoms';
+import { bibleMolecule } from '../../molecules';
 import { BibleTranslationScreenConfig } from '../model';
 import { useBibleScreenTranslationConfigs } from './configs';
 
 export const useUpdateBibleTranslationConfig = () => {
   const configs: BibleTranslationScreenConfig[] = useBibleScreenTranslationConfigs();
+  const setConfigs = useAtomSet(bibleMolecule.take('translationScreenConfigs'));
 
   return useCallback(
     (config: Partial<BibleTranslationScreenConfig> | null, configi: number) => {
@@ -13,9 +15,9 @@ export const useUpdateBibleTranslationConfig = () => {
       if (config === null) {
         newConfigs.splice(configi, 1);
       } else newConfigs[configi] = { ...newConfigs[configi], ...config };
-      justBibleStorageSet('translationScreenConfigs', newConfigs);
+      setConfigs(newConfigs);
     },
-    [configs],
+    [configs, setConfigs],
   );
 };
 

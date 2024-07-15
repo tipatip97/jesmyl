@@ -1,6 +1,6 @@
-import React, { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useBibleTranslationJoinAddress } from '../hooks/address/address';
-import { useBibleSlideSyncContentUpdatesNum } from '../hooks/slide-sync';
+import { useBibleSlideSyncValue } from '../hooks/slide-sync';
 import BibleTextContentJoined from './Joined';
 import BibleTextContentSingle from './Simple';
 
@@ -13,7 +13,7 @@ export default function BibleTextContent({ isShowCachable, children }: Props): J
   const actualJoinAddress = useBibleTranslationJoinAddress();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const cachableJoinAddress = useMemo(() => actualJoinAddress, [useBibleSlideSyncContentUpdatesNum()]);
+  const cachableJoinAddress = useMemo(() => actualJoinAddress, [useBibleSlideSyncValue()]);
   const joinAddress = isShowCachable ? cachableJoinAddress : actualJoinAddress;
 
   return joinAddress === null ? (

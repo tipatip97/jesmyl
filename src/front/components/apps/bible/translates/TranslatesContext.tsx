@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import bibleStorage from '../bibleStorage';
 import { bibleTitles } from '../hooks/texts';
+import { bibleMolecule } from '../molecules';
 import { BibleTranslate } from './complect';
-import { useBibleShowTranslates } from './hooks';
+import { useBibleShowTranslatesValue } from './hooks';
 
 interface Props {
   children: React.ReactNode;
@@ -49,7 +49,7 @@ const Context = React.createContext<Translates>({});
 export const useBibleTranslatesContext = () => useContext(Context);
 
 export default function BibleTranslatesContextProvider({ children }: Props): JSX.Element {
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const [translates, setTranslates] = useState<Translates>(localTranslates);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export default function BibleTranslatesContextProvider({ children }: Props): JSX
 
             (async () => {
               try {
-                const content = await bibleStorage.get(tName);
+                const content = await bibleMolecule.take(tName).getStorageValue();
                 content && mapChapters(tName, content);
                 loadings[tName] = false;
 

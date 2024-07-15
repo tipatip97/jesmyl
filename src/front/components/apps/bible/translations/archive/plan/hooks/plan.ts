@@ -1,28 +1,34 @@
 import { useCallback } from 'react';
+import { atom, useAtom, useAtomSet, useAtomValue } from '../../../../../../../complect/atoms';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
-import { useStorageValueGetter } from '../../../../../../../complect/useStorage';
-import bibleStorage from '../../../../bibleStorage';
-import { justBibleStorageSet } from '../../../../hooks/storage';
+import { useActualRef } from '../../../../../../../complect/useActualRef';
+import { bibleMolecule } from '../../../../molecules';
 import { BibleTranslationAddress } from '../../../../model';
 
-export const useBibleTranslationPlan = () => useStorageValueGetter(bibleStorage, 'translationPlan', []);
+const planAtom = atom<BibleTranslationAddress[]>([]);
+
+export const useBibleTranslationPlan = () => useAtomValue(bibleMolecule.take('translationPlan'));
 
 export const useBibleTranslationAddToPlan = () => {
-  const plan = useBibleTranslationPlan();
+  const planRef = useActualRef(useAtom(planAtom));
 
   return useCallback(
     (item: BibleTranslationAddress) => {
+      const [plan, setPlan] = planRef.current;
+
       const previ = plan.findIndex(planItem => mylib.isEq(planItem, item));
       const newPlan = [...plan];
       if (previ > -1) newPlan.splice(previ, 1);
       newPlan.unshift(item);
 
-      justBibleStorageSet('translationPlan', newPlan);
+      setPlan(newPlan);
     },
-    [plan],
+    [planRef],
   );
 };
 
 export const useBibleClearTranslationPlanSetter = () => {
-  return useCallback(() => justBibleStorageSet('translationPlan', []), []);
+  const setPlan = useAtomSet(planAtom);
+
+  return useCallback(() => setPlan([]), [setPlan]);
 };

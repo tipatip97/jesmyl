@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { justBibleStorageSet } from '../../hooks/storage';
+import { useBibleSingleAddressSetter } from '../../translations/lists/atoms';
 import BibleReaderChapter from './complect/Chapter';
 
 interface Props {
@@ -10,12 +10,18 @@ interface Props {
   currentVersei?: number;
 }
 
-export default function BibleReaderBook({ chapterList, currentChapteri, currentVersei, currentBooki }: Props): JSX.Element {
+export default function BibleReaderBook({
+  chapterList,
+  currentChapteri,
+  currentVersei,
+  currentBooki,
+}: Props): JSX.Element {
   const listRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
   const isResizingRef = useRef(false);
   const [resizeNum, setResizeNum] = useState(0);
   const [isScrolledToCurrent, setIsScrolledToCurrent] = useState(false);
+  const setAddress = useBibleSingleAddressSetter();
 
   useEffect(() => {
     if (
@@ -74,17 +80,14 @@ export default function BibleReaderBook({ chapterList, currentChapteri, currentV
           const scrollTop = listNode.scrollTop;
 
           if (scrollTop < 0) {
-            justBibleStorageSet('translationChapteri', 0);
-            justBibleStorageSet('translationVersei', 0);
+            setAddress(undefined, 0, 0);
 
             return;
           } else if (scrollTop >= tops[end] - 50) {
             const top = topsMap.get(tops[end]);
 
             if (top === undefined) return;
-
-            justBibleStorageSet('translationChapteri', top.chapteri);
-            justBibleStorageSet('translationVersei', top.versei);
+            setAddress(undefined, top.chapteri, top.versei);
 
             return;
           }
@@ -102,8 +105,7 @@ export default function BibleReaderBook({ chapterList, currentChapteri, currentV
 
               if (top === undefined) return;
 
-              justBibleStorageSet('translationChapteri', top.chapteri);
-              justBibleStorageSet('translationVersei', top.versei);
+              setAddress(undefined, top.chapteri, top.versei);
               break;
             } else if (tops[middle] < scrollTop) start = middle + 1;
             else end = middle - 1;
@@ -111,7 +113,7 @@ export default function BibleReaderBook({ chapterList, currentChapteri, currentV
         }, 10);
       })
       .effect();
-  }, [currentBooki, resizeNum]);
+  }, [currentBooki, resizeNum, setAddress]);
 
   return (
     <>
@@ -129,7 +131,7 @@ export default function BibleReaderBook({ chapterList, currentChapteri, currentV
       </List>
     </>
   );
-};
+}
 
 const List = styled.div`
   position: relative;

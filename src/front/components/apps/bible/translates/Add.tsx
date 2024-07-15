@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import useModal from '../../../../complect/modal/useModal';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconBookDownloadStrokeRounded } from '../../../../complect/the-icon/icons/book-download';
@@ -5,12 +6,13 @@ import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons
 import { IconDelete02StrokeRounded } from '../../../../complect/the-icon/icons/delete-02';
 import { IconPencilEdit02StrokeRounded } from '../../../../complect/the-icon/icons/pencil-edit-02';
 import { soki } from '../../../../soki';
-import bibleStorage from '../bibleStorage';
-import { bibleAllTranslates, bibleDefaultTranslates, translateDescriptions } from './complect';
+import { bibleMolecule } from '../molecules';
+import { bibleAllTranslates, bibleDefaultTranslates, BibleTranslate, translateDescriptions } from './complect';
 import { useBibleMyTranslates } from './hooks';
 
 export default function BibleModulesTranslationsRedactButton(): JSX.Element {
-  const myTranslates = useBibleMyTranslates();
+  const [myTranslates, setMyTranslates] = useBibleMyTranslates();
+  const [translateOnLoad, setTranslateOOnLoad] = useState<BibleTranslate | null>(null);
 
   const [modalNode, openModal] = useModal(({ body, header }) => {
     return (
@@ -33,8 +35,8 @@ export default function BibleModulesTranslationsRedactButton(): JSX.Element {
                   confirm={`Удалить безвозвратно модуль  "${title}"`}
                   prefix={title}
                   onClick={() => {
-                    bibleStorage.set('myTranslates', prev => [...prev].filter(name => name !== tName));
-                    bibleStorage.rem(tName);
+                    setMyTranslates(prev => prev.filter(name => name !== tName));
+                    bibleMolecule.rem(tName);
                   }}
                 />
               );
@@ -50,11 +52,14 @@ export default function BibleModulesTranslationsRedactButton(): JSX.Element {
                   Icon={IconBookDownloadStrokeRounded}
                   className="margin-gap-l margin-gap-v"
                   prefix={title}
-                  onClick={() =>
+                  disabled={translateOnLoad !== null}
+                  onClick={() => {
+                    setTranslateOOnLoad(tName);
                     soki.send({ download: tName }, 'bible').on(() => {
-                      bibleStorage.set('myTranslates', prev => [...prev, tName]);
-                    })
-                  }
+                      setMyTranslates(prev => [...prev, tName]);
+                      setTranslateOOnLoad(null);
+                    });
+                  }}
                 />
               );
             })}

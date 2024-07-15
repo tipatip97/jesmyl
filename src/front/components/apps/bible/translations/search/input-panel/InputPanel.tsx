@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function BibleSearchInputPanel({ inputRef, putOnSearchZone }: Props) {
-  const searchZone = useBibleSearchZone();
+  const [searchZone] = useBibleSearchZone();
 
   return (
     <div className="flex flex-gap margin-big-gap-t">

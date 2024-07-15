@@ -1,5 +1,5 @@
-import React, { ReactNode, useMemo } from 'react';
-import { useBibleSlideSyncContentUpdatesNum } from '../hooks/slide-sync';
+import { ReactNode, useMemo } from 'react';
+import { useBibleSlideSyncValue } from '../hooks/slide-sync';
 import { useBibleJoinedAddressText } from '../hooks/texts';
 import { BibleTranslationJoinAddress } from '../model';
 
@@ -12,7 +12,7 @@ export default function BibleAddressJoined({ joinAddress, children }: Props): JS
   const actualAddress = useBibleJoinedAddressText(joinAddress);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const address = useMemo(() => actualAddress, [useBibleSlideSyncContentUpdatesNum()]);
+  const address = useMemo(() => actualAddress, [useBibleSlideSyncValue()]);
 
   return <>{children === undefined ? actualAddress : children(actualAddress, address)}</>;
 }

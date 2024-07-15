@@ -31,7 +31,7 @@ export default function EERules() {
   const cols = useEditableCols();
   const exec = useExerExec();
   const showTranslates = useBibleShowTranslates();
-  const chapters = useBibleTranslatesContext()[showTranslates[0]]?.chapters;
+  const chapters = useBibleTranslatesContext()[showTranslates[0][0]]?.chapters;
   const [isCheckBible, setIsCheckBible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [store, setStore] = useState<string[]>([]);

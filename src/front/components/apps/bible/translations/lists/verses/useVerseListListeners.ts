@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { useAtomSet } from '../../../../../../complect/atoms';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from '../../../hooks/address/address';
 import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
-import { justBibleStorageSet } from '../../../hooks/storage';
+import { bibleVerseiAtom } from '../atoms';
 import { BibleTranslationJoinAddress } from '../../../model';
 import { verseIdPrefix } from './VerseList';
 
@@ -15,6 +16,7 @@ export const useVerseListListeners = (
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
+  const setVersei = useAtomSet(bibleVerseiAtom);
 
   useEffect(() => {
     if (verseListNodeRef.current === null) return;
@@ -36,7 +38,7 @@ export const useVerseListListeners = (
         if (isDblClick) {
           if (!verseNode.classList.contains('selected')) {
             setJoin(null);
-            justBibleStorageSet('translationVersei', versei);
+            setVersei(versei);
           }
           syncSlide();
           isDblClick = false;
@@ -48,13 +50,13 @@ export const useVerseListListeners = (
         clickTimeout = setTimeout(() => {
           if (!ctrlKey && !shiftKey) {
             setJoin(null);
-            justBibleStorageSet('translationVersei', versei);
+            setVersei(versei);
 
             return;
           }
 
           let newJoin: BibleTranslationJoinAddress | null = { ...currentJoinAddress };
-          justBibleStorageSet('translationVersei', versei);
+          setVersei(versei);
 
           if (currentJoinAddress === null) {
             const verses = ((newJoin[currentBooki] = {} as BibleTranslationJoinAddress[number])[currentChapteri] =
@@ -108,5 +110,14 @@ export const useVerseListListeners = (
       })
       .clearTimeout(clickTimeout)
       .effect();
-  }, [currentBooki, currentChapteri, currentJoinAddress, currentVersei, setJoin, syncSlide, verseListNodeRef]);
+  }, [
+    currentBooki,
+    currentChapteri,
+    currentJoinAddress,
+    currentVersei,
+    setJoin,
+    setVersei,
+    syncSlide,
+    verseListNodeRef,
+  ]);
 };

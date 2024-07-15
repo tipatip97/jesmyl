@@ -1,15 +1,10 @@
-import { AnyAction, CaseReducer, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import Eventer, { EventerValueListeners } from '../../back/complect/Eventer';
 
 export type JStorageListener<Val> = (val: Val) => void;
 
-export class JStorage<Scope, State = Scope> {
+export class JStorage<Scope> {
   private nonCachable: (keyof Scope)[] = [] as never;
   private dbOpen: IDBOpenDBRequest;
-  private isContentInitialized = false;
-  private dispatch?: Dispatch;
-  private actions?: Record<keyof Scope, (val: any) => AnyAction>;
-  private isFirstInit = false;
   private listens: Partial<Record<keyof Scope, EventerValueListeners<Scope[keyof Scope]>>> = {};
 
   properties: Record<keyof Scope, any> = {} as never;
@@ -24,7 +19,6 @@ export class JStorage<Scope, State = Scope> {
 
   private initDB(dbOpen: IDBOpenDBRequest) {
     dbOpen.onupgradeneeded = () => {
-      this.isFirstInit = true;
       const db = dbOpen.result;
       if (!db.objectStoreNames.contains('data')) {
         db.createObjectStore('data');
@@ -37,7 +31,6 @@ export class JStorage<Scope, State = Scope> {
       const val = contents[key] as NonUndefined<Scope[Key]>;
       if (val !== undefined) {
         this.set(key, val);
-        if (this.actions?.[key]) this.dispatch?.(this.actions[key](val));
       }
     });
   }
@@ -63,68 +56,6 @@ export class JStorage<Scope, State = Scope> {
 
   async getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]) {
     return ((await this.get(key)) ?? def) as Promise<NonUndefined<Scope[Key]>>;
-  }
-
-  initializators<Key extends keyof Scope | keyof State>(
-    keys: Key[],
-  ): {
-    [Key in keyof Scope]-?: CaseReducer<
-      State,
-      { payload: Scope[Key] extends undefined ? Scope[Key] | null : Scope[Key]; type: string }
-    >;
-  } {
-    const actions: Record<string, (state: Record<Key, unknown>, action: PayloadAction<unknown>) => void> = {};
-    keys.forEach(
-      key =>
-        (actions[key as string] = (state, action) => {
-          state[key] = action.payload;
-          this.set(key as never, action.payload as never);
-        }),
-    );
-
-    return actions as never;
-  }
-
-  initDispatches(dispatch: Dispatch, actions: Record<keyof Scope, (val: any) => AnyAction>, onInit?: () => AnyAction) {
-    if (this.isContentInitialized) return;
-    else this.isContentInitialized = true;
-
-    this.actions = actions;
-    this.dispatch = dispatch;
-    let tries = 0;
-    let readies = 0;
-
-    setTimeout(() => {
-      if (this.dbOpen.readyState !== 'done') {
-        setTimeout(() => {
-          this.isContentInitialized = false;
-          this.initDispatches(dispatch, actions);
-        });
-        return;
-      }
-      const data = this.dbOpen.result.transaction('data', 'readonly').objectStore('data');
-
-      const keys = data.getAllKeys();
-      keys.onsuccess = () => {
-        if (!keys.result.length && this.isFirstInit && onInit !== undefined) setTimeout(() => dispatch(onInit()), 100);
-
-        keys.result.forEach(key => {
-          if (onInit !== undefined) tries++;
-
-          if (actions[key as keyof Scope] !== undefined) {
-            const value = data.get(key);
-            value.onsuccess = () => {
-              if (value.result !== undefined) {
-                this.properties[key as never] = value.result as never;
-                dispatch(actions[key as keyof Scope](value.result));
-              }
-
-              if (onInit !== undefined && tries === ++readies) dispatch(onInit());
-            };
-          }
-        });
-      };
-    }, 90);
   }
 
   on<Key extends keyof Scope, Value extends Scope[Key], InitialValue>(

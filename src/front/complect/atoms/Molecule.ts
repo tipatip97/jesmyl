@@ -1,6 +1,6 @@
 import { SMyLib } from '../../models';
 import mylib from '../my-lib/MyLib';
-import { Atom } from './Atom';
+import { Atom } from './AnAtom';
 
 export class Molecule<
   T,
@@ -24,11 +24,15 @@ export class Molecule<
     this.newAtom = key => (this.atoms[key] = new Atom(undefined as any, storageName, key as string) as never)!;
   }
 
-  set = <Key extends keyof T>(key: Key, value: T[Key]) => (this.atoms[key] ?? this.newAtom(key)).set(value as never);
+  set = <Key extends keyof T>(key: Key, value: T[Key]) =>
+    (this.atoms[key] === undefined ? this.newAtom(key) : this.atoms[key]).set(value as never);
 
   get = <Key extends keyof T>(key: Key): T[Key] => this.atoms[key]?.get() as never;
 
-  take = <Key extends keyof T>(key: Key): NonUndefined<Atoms[Key]> => (this.atoms[key] ?? this.newAtom(key)) as never;
+  take = <Key extends keyof T>(key: Key): NonUndefined<Atoms[Key]> =>
+    (this.atoms[key] === undefined ? this.newAtom(key) : this.atoms[key]) as never;
+
+  rem = <Key extends keyof T>(key: Key) => this.atoms[key].rem();
 
   private reduceKeyValues = (dict: T, key: keyof T) => {
     dict[key] = this.get(key);

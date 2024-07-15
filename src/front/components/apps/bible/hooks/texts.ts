@@ -5,7 +5,7 @@ import { soki } from '../../../../soki';
 import { BibleTranslationJoinAddress } from '../model';
 import { useBibleTranslatesContext } from '../translates/TranslatesContext';
 import { translateDescriptions } from '../translates/complect';
-import { useBibleShowTranslates } from '../translates/hooks';
+import { useBibleShowTranslatesValue } from '../translates/hooks';
 import { verseTranslateTitleCssClassName } from '../translations/complect';
 import { useBibleAddressBooki } from './address/books';
 
@@ -31,7 +31,7 @@ const itIt = (it: unknown) => it;
 
 export const useBibleCurrentChapterList = () => {
   const currentBooki = useBibleAddressBooki();
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   return useBibleTranslatesContext()[showTranslates[0]]?.chapters?.[currentBooki];
 };
 export const useBibleBookList = () => bibleTitles.titles;
@@ -43,7 +43,7 @@ export const useBibleSingleSlideText = (
   isSetFirstTranslate?: boolean,
   isSetAddress?: boolean,
 ) => {
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const translates = useBibleTranslatesContext();
 
   const verseNum = isSetAddress === false || showTranslates.length > 1 ? '' : versei + 1 + '. ';
@@ -70,7 +70,7 @@ export const useBibleJoinedSlideText = (
   isSetFirstTranslate?: boolean,
   isSetAddress?: boolean,
 ) => {
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const translates = useBibleTranslatesContext();
 
   const pasteText = (chapters: (string[][] | null)[] | und) => {

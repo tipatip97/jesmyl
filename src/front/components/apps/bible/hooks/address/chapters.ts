@@ -1,33 +1,20 @@
 import { useCallback } from 'react';
-import { useStorageSet, useStorageValueGetter } from '../../../../../complect/useStorage';
-import bibleStorage from '../../bibleStorage';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../translates/hooks';
+import { useBibleShowTranslatesValue } from '../../translates/hooks';
+import { useBibleChapteri, useBibleSingleAddressSetter } from '../../translations/lists/atoms';
 import { useBibleAddressBooki } from './books';
 
 export const useBibleAddressChapteri = () => {
-  const justChapteri = useStorageValueGetter(bibleStorage, 'translationChapteri', 0);
+  const [chapteri] = useBibleChapteri();
   const currentBooki = useBibleAddressBooki();
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const chapter = useBibleTranslatesContext()[showTranslates[0]]?.chapters?.[currentBooki];
 
-  return justChapteri < 0
-    ? 0
-    : chapter != null && justChapteri > chapter.length - 1
-      ? chapter.length - 1
-      : justChapteri;
+  return chapteri < 0 ? 0 : chapter != null && chapteri > chapter.length - 1 ? chapter.length - 1 : chapteri;
 };
 
 export const usePutBibleChapteriSetter = () => {
-  const setValue = useStorageSet(bibleStorage);
+  const setAddress = useBibleSingleAddressSetter();
 
-  return useCallback(
-    (chapteri: number) => {
-      return () => {
-        setValue('translationChapteri', chapteri);
-        setValue('translationVersei', 0);
-      };
-    },
-    [setValue],
-  );
+  return useCallback((chapteri: number) => () => setAddress(undefined, chapteri, 0), [setAddress]);
 };

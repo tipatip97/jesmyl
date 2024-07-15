@@ -4,7 +4,7 @@ import { useBibleAddressBooki } from '../../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../../hooks/address/verses';
 import { useBibleTranslatesContext } from '../../../translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../../translates/hooks';
+import { useBibleShowTranslatesValue } from '../../../translates/hooks';
 import { useSetBibleCurrentItems } from '../hooks/set-current-items';
 import BibleVerseFace from './VerseFace';
 import { useVerseListListeners } from './useVerseListListeners';
@@ -17,7 +17,7 @@ export default function BibleVerseList(): JSX.Element {
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
   const currentVersei = useBibleAddressVersei();
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const translates = useBibleTranslatesContext();
 
   const verses = translates[showTranslates[0]]?.chapters?.[currentBooki]?.[currentChapteri];

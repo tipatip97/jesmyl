@@ -1,7 +1,9 @@
-import { useStorageValueGetter } from '../../../../complect/useStorage';
-import bibleStorage from '../bibleStorage';
-import { bibleDefaultTranslates } from './complect';
+import { atom, useAtom, useAtomValue } from '../../../../complect/atoms';
+import { bibleMolecule } from '../molecules';
+import { BibleTranslateLine } from './complect';
 
-export const useBibleMyTranslates = () => useStorageValueGetter(bibleStorage, 'myTranslates', bibleDefaultTranslates);
-export const useBibleShowTranslates = () =>
-  useStorageValueGetter(bibleStorage, 'showTranslates', bibleDefaultTranslates);
+const myTranslatesAtom = atom<BibleTranslateLine>(['rst'], 'bible', 'myTranslates');
+
+export const useBibleMyTranslates = () => useAtom(myTranslatesAtom);
+export const useBibleShowTranslates = () => useAtom(bibleMolecule.take('showTranslates'));
+export const useBibleShowTranslatesValue = () => useAtomValue(bibleMolecule.take('showTranslates'));

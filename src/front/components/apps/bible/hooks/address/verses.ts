@@ -1,15 +1,14 @@
 import { useCallback } from 'react';
-import { useStorageValueGetter } from '../../../../../complect/useStorage';
-import bibleStorage from '../../bibleStorage';
+import { useAtomSet } from '../../../../../complect/atoms';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../translates/hooks';
+import { useBibleShowTranslatesValue } from '../../translates/hooks';
+import { bibleVerseiAtom, useBibleVersei } from '../../translations/lists/atoms';
 import { useBibleTranslationSlideSyncContentSetter } from '../slide-sync';
-import { justBibleStorageSet } from '../storage';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from './address';
 import { useBibleAddressBooki } from './books';
 import { useBibleAddressChapteri } from './chapters';
 
-const useBibleAddressCurrentVersei = () => useStorageValueGetter(bibleStorage, 'translationVersei', 0);
+const useBibleAddressCurrentVersei = () => useBibleVersei()[0];
 
 export const useBibleAddressIsCurrentVersei = (versei: number) => {
   const joinAddress = useBibleTranslationJoinAddress();
@@ -25,7 +24,7 @@ export const useBibleAddressVersei = () => {
   const currentChapteri = useBibleAddressChapteri();
   const currentBooki = useBibleAddressBooki();
   const currentVersei = useBibleAddressCurrentVersei();
-  const showTranslates = useBibleShowTranslates();
+  const showTranslates = useBibleShowTranslatesValue();
   const chapter = useBibleTranslatesContext()[showTranslates[0]]?.chapters?.[currentBooki]?.[currentChapteri];
 
   return currentVersei < 0
@@ -41,13 +40,14 @@ export const usePutBibleAddressVerseiSetter = () => {
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
+  const setVersei = useAtomSet(bibleVerseiAtom);
 
   return useCallback(
     (versei: number, isDblClick: boolean): (() => void) | null => {
       if (isDblClick) syncSlide();
       else setJoin(null);
 
-      justBibleStorageSet('translationVersei', versei);
+      setVersei(versei);
 
       return () => {
         if (currentJoinAddress?.[currentBooki]?.[currentChapteri]?.includes(versei)) {
@@ -55,7 +55,7 @@ export const usePutBibleAddressVerseiSetter = () => {
         }
       };
     },
-    [currentBooki, currentChapteri, currentJoinAddress, setJoin, syncSlide],
+    [currentBooki, currentChapteri, currentJoinAddress, setJoin, setVersei, syncSlide],
   );
 };
 

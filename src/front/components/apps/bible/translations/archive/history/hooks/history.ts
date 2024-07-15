@@ -1,21 +1,22 @@
 import { useCallback } from 'react';
+import { atom, useAtom, useAtomSet, useAtomValue } from '../../../../../../../complect/atoms';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
-import { useStorageValueGetter } from '../../../../../../../complect/useStorage';
-import bibleStorage from '../../../../bibleStorage';
-import { justBibleStorageSet, useBibleStorageSet } from '../../../../hooks/storage';
 import { BibleTranslationAddress } from '../../../../model';
 
-export const useBibleTranslationHistory = () => useStorageValueGetter(bibleStorage, 'translationHistory', []);
+const historyAtom = atom<BibleTranslationAddress[]>([]);
+
+export const useBibleTranslationHistory = () => useAtomValue(historyAtom);
 
 export const useBibleTranslationAddToHistory = () => {
-  const bibleValSet = useBibleStorageSet();
-  const historyRef = useActualRef(useBibleTranslationHistory());
+  const historyRef = useActualRef(useAtom(historyAtom));
 
   return useCallback(
     (item: BibleTranslationAddress, isReplaceFirstNearVersei = false) => {
-      const previ = historyRef.current.findIndex(historyItem => mylib.isEq(historyItem, item, true));
-      const newHistory = [...historyRef.current];
+      const [history, setHistory] = historyRef.current;
+
+      const previ = history.findIndex(historyItem => mylib.isEq(historyItem, item, true));
+      const newHistory = [...history];
       if (previ > -1) newHistory.splice(previ, 1);
 
       if (isReplaceFirstNearVersei && mylib.isArr(newHistory[0])) {
@@ -28,12 +29,14 @@ export const useBibleTranslationAddToHistory = () => {
       newHistory.unshift(item);
       if (newHistory.length > 50) newHistory.length = 50;
 
-      bibleValSet('translationHistory', newHistory);
+      setHistory(newHistory);
     },
-    [bibleValSet, historyRef],
+    [historyRef],
   );
 };
 
 export const useBibleClearTranslationHistorySetter = () => {
-  return useCallback(() => justBibleStorageSet('translationHistory', []), []);
+  const set = useAtomSet(historyAtom);
+
+  return useCallback(() => set([]), [set]);
 };

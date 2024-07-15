@@ -1,5 +1,5 @@
 import { ReactNode, useMemo } from 'react';
-import { useBibleSlideSyncContentUpdatesNum } from '../hooks/slide-sync';
+import { useBibleSlideSyncValue } from '../hooks/slide-sync';
 import { useBibleJoinedSlideText } from '../hooks/texts';
 import { BibleTranslationJoinAddress } from '../model';
 
@@ -12,7 +12,7 @@ export default function BibleTextContentJoined({ joinAddress, children }: Props)
   const text = useBibleJoinedSlideText(joinAddress);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const cachedText = useMemo(() => text, [useBibleSlideSyncContentUpdatesNum()]);
+  const cachedText = useMemo(() => text, [useBibleSlideSyncValue()]);
 
   return <>{children === undefined ? text : children(text, cachedText)}</>;
 }
