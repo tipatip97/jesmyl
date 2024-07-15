@@ -2,7 +2,7 @@ import SourceBased from '../../../../complect/SourceBased';
 import { ClientExecutionDict } from '../../../../complect/exer/Exer.model';
 import mylib from '../../../../complect/my-lib/MyLib';
 import { TeamGameImportable } from '../Leader.model';
-import { leaderExer } from '../Leader.store';
+import { leaderExer } from '../leaderExer';
 import { LeaderContextCreatable, LeaderContextImportable } from './contexts/Contexts.model';
 import { GameTeamExportable } from './games/teams/GameTeams.model';
 import {

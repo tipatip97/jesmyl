@@ -1,13 +1,8 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
+import { useLeaderContexts, useLeaderHumans } from '../../molecules';
 import useLeaderNav from '../../useLeaderNav';
 import { LeaderCleans } from '../LeaderCleans';
 
-const contextsSelector = (state: RootState) => state.leader.contexts;
-const humansSelector = (state: RootState) => state.leader.people?.humans;
-
-export const useLeaderContexts = () => useSelector(contextsSelector);
 export const useLeaderCcontext = () => {
   const contexts = useLeaderContexts();
   const {
@@ -19,7 +14,7 @@ export const useLeaderCcontext = () => {
 
 export default function useLeaderContext() {
   const contexts = useLeaderContexts();
-  const humans = useSelector(humansSelector);
+  const humans = useLeaderHumans();
   const ccontext = useLeaderCcontext();
 
   const contextMembers = useMemo(() => {

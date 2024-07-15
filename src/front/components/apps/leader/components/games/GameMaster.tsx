@@ -2,7 +2,7 @@ import { useState } from 'react';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { TeamGameExportable } from '../../Leader.model';
-import { leaderExer } from '../../Leader.store';
+import { leaderExer } from '../../leaderExer';
 import { useLeaderCcontext } from '../contexts/useContexts';
 import GameTeamListComputer from './GameTeamListComputer';
 import { GameTeamImportable } from './teams/GameTeams.model';

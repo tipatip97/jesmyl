@@ -1,15 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
-import { leaderStoreActions, leaderExer } from '../../Leader.store';
+import { leaderExer } from '../../leaderExer';
+import { useLeaderIsSendingMessagesError, useLeaderSendingComments } from '../../molecules';
 import { SendingComment } from './LeaderComment.model';
 
-const sendingCommentsSelector = (state: RootState) => state.leader.sendingComments;
-const isSendingMessagesErrorsSelector = (state: RootState) => state.leader.isSendingMessagesError;
-
 export default function useLeaderComments() {
-  const dispatch = useDispatch();
-  const sendingComments = useSelector(sendingCommentsSelector);
-  const isSendingMessagesError = useSelector(isSendingMessagesErrorsSelector);
+  const [sendingComments, setSendingComments] = useLeaderSendingComments();
+  const [isSendingMessagesError, setIsSendingMessagesError] = useLeaderIsSendingMessagesError();
 
   const ret = {
     sendingComments,
@@ -21,15 +16,15 @@ export default function useLeaderComments() {
       leaderExer
         .send(execs)
         .then(() => {
-          dispatch(leaderStoreActions.sendingComments([]));
-          dispatch(leaderStoreActions.isSendingMessagesError(false));
+          setSendingComments([]);
+          setIsSendingMessagesError(false);
         })
         .catch(() => {
-          dispatch(leaderStoreActions.isSendingMessagesError(true));
+          setIsSendingMessagesError(true);
         });
     },
     sendComment: (exec: SendingComment) => {
-      dispatch(leaderStoreActions.sendingComments([...(sendingComments || []), exec]));
+      setSendingComments([...(sendingComments || []), exec]);
     },
   };
   return ret;

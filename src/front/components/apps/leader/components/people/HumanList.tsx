@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import mylib from '../../../../../complect/my-lib/MyLib';
@@ -7,14 +6,12 @@ import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSend
 import { IconMinusSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-square';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import useIsRedactArea from '../../../../../complect/useIsRedactArea';
-import { RootState } from '../../../../../shared/store';
+import { useLeaderHumanListSortVariant } from '../../molecules';
 import PhaseLeaderContainer from '../../phase-container/PhaseLeaderContainer';
 import useLeaderContext from '../contexts/useContexts';
 import HumanFace from './HumanFace';
 import { HumansMoreContenter } from './HumansMore';
 import { HumanImportable, HumanListComponentProps } from './People.model';
-
-const humanListSortVariantSelector = (state: RootState) => state.leader.humanListSortVariant;
 
 export default function HumanList({
   isAsPage,
@@ -37,7 +34,7 @@ export default function HumanList({
   const [humansMoreNode, openHumansMore] = useBottomPopup(HumansMoreContenter, {
     fieldLabel,
   });
-  const humanListSortVariant = useSelector(humanListSortVariantSelector);
+  const [humanListSortVariant] = useLeaderHumanListSortVariant();
   const { editIcon, isRedact } = useIsRedactArea(true, null, true, true);
 
   const humanList = useMemo(() => {

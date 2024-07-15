@@ -5,7 +5,6 @@ import admin from '../components/apps/admin/adminStorage';
 import bible from '../components/apps/bible/bibleStorage';
 import cm from '../components/apps/cm/cmStorage';
 import gamer from '../components/apps/gamer/gamerStorage';
-import leader from '../components/apps/leader/leaderStorage';
 
 interface Sto {}
 const stub = new JStorage<NavigationStorage<Sto>, unknown>('complect');
@@ -16,6 +15,6 @@ export const appStorage: Record<AppName, JStorage<any, any>> = {
   admin,
   gamer,
   cm,
-  leader,
+  leader: stub,
   bible,
 };

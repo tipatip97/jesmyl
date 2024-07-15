@@ -2,7 +2,7 @@ import { BottomPopupContenterPreparer } from '../../../../../../complect/absolut
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import { IconUserRemove02StrokeRounded } from '../../../../../../complect/the-icon/icons/user-remove-02';
 import { TeamGameImportable } from '../../../Leader.model';
-import { leaderExer } from '../../../Leader.store';
+import { leaderExer } from '../../../leaderExer';
 import { HumanImportable } from '../../people/People.model';
 import { GameTeamImportable } from './GameTeams.model';
 

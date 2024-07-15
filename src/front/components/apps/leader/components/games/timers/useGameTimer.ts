@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import SourceBased from '../../../../../../complect/SourceBased';
-import { RootState } from '../../../../../../shared/store';
 import { TeamGameImportable } from '../../../Leader.model';
-import { leaderStoreActions } from '../../../Leader.store';
-import leaderStorage from '../../../leaderStorage';
+import { leaderMolecule, useLeaderGameTimers } from '../../../molecules';
 import { LeaderCleans } from '../../LeaderCleans';
 import { GameTimerImportable, StoragedGameTimerDict } from './GameTimer.model';
 
 let runTimeTimers: StoragedGameTimerDict = { news: {} };
 
-const gameTimersSelector = (state: RootState) => state.leader.gameTimers;
 const getBlankTimer = (): GameTimerImportable => {
   return {
     fio: '',
@@ -22,8 +18,7 @@ const getBlankTimer = (): GameTimerImportable => {
 };
 
 export default function useGameTimer(game?: TeamGameImportable, topTimerw?: number) {
-  const dispatch = useDispatch();
-  const timersStorage = useSelector(gameTimersSelector);
+  const [timersStorage, setTimersStorage] = useLeaderGameTimers();
 
   const gameWid = game?.w || 0;
   const newTimer =
@@ -67,7 +62,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
 
       if (runTimer && game.timers?.some(timer => timer.ts === runTimer.ts)) delete runTimeTimers.news[gameWid];
 
-      const timerStore = { ...(await leaderStorage.get('gameTimers')) };
+      const timerStore = { ...(await leaderMolecule.get('gameTimers')) };
       const area = { ...timerStore.news };
 
       area[gameWid] = { ...area[gameWid], [timerTs]: timer };
@@ -77,8 +72,7 @@ export default function useGameTimer(game?: TeamGameImportable, topTimerw?: numb
       if (area[gameWid] && Object.keys(area[gameWid]).length === 0) delete area[gameWid];
       if (Object.keys(timerStore.news || {}).length === 0) delete timerStore.news;
 
-      leaderStorage.set('gameTimers', timerStore);
-      dispatch(leaderStoreActions.gameTimers(timerStore));
+      setTimersStorage(timerStore);
     },
     saveComment: (comment: string) => {
       ret.mapTimer(timer => ({

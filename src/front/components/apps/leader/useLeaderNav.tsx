@@ -1,3 +1,4 @@
+import React from 'react';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
@@ -6,25 +7,26 @@ import { iconPackOfTeacher } from '../../../complect/the-icon/icons/teacher';
 import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../models';
 import { useAuth, useIndexSchedules } from '../../index/molecules';
 import { RoutePhasePoint } from '../../router/Router.model';
-import { useLeaderContexts } from './components/contexts/useContexts';
-import GameList from './components/games/GameList';
-import TheGame from './components/games/TheGame';
-import GroupList from './components/groups/GroupList';
-import TheLeaderGroup from './components/groups/TheGroup';
-import HumanList from './components/people/HumanList';
-import MemberList from './components/people/MemberList';
-import MentorList from './components/people/MentorList';
-import LeaderGeneralPage from './GeneralPage';
-import LeaderApplication from './Leader';
 import { LeaderNavData, LeaderStoraged } from './Leader.model';
-import { leaderExer } from './Leader.store';
-import LeaderSchedule from './LeaderSchedule';
+import { leaderExer } from './leaderExer';
+import { useLeaderContexts } from './molecules';
+
+const LazyGameList = React.lazy(() => import('./components/games/GameList'));
+const LazyTheGame = React.lazy(() => import('./components/games/TheGame'));
+const LazyGroupList = React.lazy(() => import('./components/groups/GroupList'));
+const LazyTheLeaderGroup = React.lazy(() => import('./components/groups/TheGroup'));
+const LazyHumanList = React.lazy(() => import('./components/people/HumanList'));
+const LazyMemberList = React.lazy(() => import('./components/people/MemberList'));
+const LazyMentorList = React.lazy(() => import('./components/people/MentorList'));
+const LazyLeaderGeneralPage = React.lazy(() => import('./GeneralPage'));
+const LazyLeaderApplication = React.lazy(() => import('./Leader'));
+const LazyLeaderSchedule = React.lazy(() => import('./LeaderSchedule'));
 
 export const leaderNavGamePhase: RoutePhasePoint = ['game'];
 
 const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new NavigationConfig('leader', {
   title: 'Лидер',
-  root: content => <LeaderApplication content={content} />,
+  root: content => <LazyLeaderApplication content={content} />,
   rootPhase: 'all',
   exer: leaderExer,
   jumpByLink: {
@@ -56,37 +58,37 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       iconSelfPack: iconPackOfTeacher,
       phase: ['all'],
       title: 'Лидер',
-      node: <LeaderGeneralPage />,
+      node: <LazyLeaderGeneralPage />,
       next: [
         {
           phase: ['humanList'],
-          node: <HumanList isAsPage />,
+          node: <LazyHumanList isAsPage />,
         },
         {
           phase: ['leaderList'],
-          node: <MentorList isAsPage />,
+          node: <LazyMentorList isAsPage />,
         },
         {
           phase: ['memberList'],
-          node: <MemberList isAsPage />,
+          node: <LazyMemberList isAsPage />,
         },
         {
           phase: ['groupList'],
-          node: <GroupList />,
+          node: <LazyGroupList />,
           next: [
             {
               phase: ['group'],
-              node: <TheLeaderGroup />,
+              node: <LazyTheLeaderGroup />,
             },
           ],
         },
         {
           phase: ['games'],
-          node: <GameList />,
+          node: <LazyGameList />,
           next: [
             {
               phase: leaderNavGamePhase,
-              node: <TheGame />,
+              node: <LazyTheGame />,
             },
           ],
         },
@@ -96,7 +98,7 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       iconSelfPack: iconPackOfCalendar03,
       phase: ['schedule'],
       title: 'Мероприятие',
-      node: <LeaderSchedule />,
+      node: <LazyLeaderSchedule />,
     },
   ],
 });

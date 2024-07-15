@@ -1,14 +1,9 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../shared/store';
+import { useLeaderGames } from '../../molecules';
 import useLeaderNav, { leaderNavGamePhase } from '../../useLeaderNav';
 import useLeaderContext from '../contexts/useContexts';
 
-const gamesSelector = (state: RootState) => state.leader.games;
-
-export const useSelectGames = () => useSelector(gamesSelector);
-
 export default function useGames() {
-  const games = useSelectGames();
+  const games = useLeaderGames();
   const ctx = useLeaderContext();
   const {
     jumpTo,

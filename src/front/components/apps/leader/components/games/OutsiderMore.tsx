@@ -6,7 +6,7 @@ import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-
 import { IconUserAdd02StrokeRounded } from '../../../../../complect/the-icon/icons/user-add-02';
 import useModal from '../../../../../complect/modal/useModal';
 import { TeamGameImportable } from '../../Leader.model';
-import { leaderExer } from '../../Leader.store';
+import { leaderExer } from '../../leaderExer';
 import { HumanImportable } from '../people/People.model';
 import { GameTeamImportable } from './teams/GameTeams.model';
 import { IconCancel02StrokeRounded } from '../../../../../complect/the-icon/icons/cancel-02';

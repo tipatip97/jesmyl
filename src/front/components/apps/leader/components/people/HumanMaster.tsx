@@ -4,7 +4,7 @@ import { IconCheckmarkCircle01StrokeRounded } from '../../../../../complect/the-
 import { IconRecordStrokeRounded } from '../../../../../complect/the-icon/icons/record';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
-import { leaderExer } from '../../Leader.store';
+import { leaderExer } from '../../leaderExer';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
 import { HumanExportable, HumanImportable } from './People.model';

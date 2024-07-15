@@ -1,14 +1,10 @@
 import { ReactNode, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import './Leader.scss';
-import { leaderStoreActions } from './Leader.store';
 import useLeaderComments from './components/comments/useLeaderComments';
-import leaderStorage from './leaderStorage';
 
 let prevSentTs: number = 0;
 
 export default function LeaderApplication({ content }: { content: ReactNode }) {
-  const dispatch = useDispatch();
   const { sendAllComments, sendingComments } = useLeaderComments();
 
   useEffect(() => {
@@ -17,8 +13,6 @@ export default function LeaderApplication({ content }: { content: ReactNode }) {
     prevSentTs = now;
     sendAllComments();
   }, [sendingComments]);
-
-  leaderStorage.initDispatches(dispatch, leaderStoreActions);
 
   return <>{content}</>;
 }
