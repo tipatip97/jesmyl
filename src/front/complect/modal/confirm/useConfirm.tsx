@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ThrowEvent } from '../../eventer/ThrowEvent';
 import useModal from '../useModal';
 
@@ -63,7 +63,7 @@ export const useConfirm = () => {
 
   return [
     modalNode,
-    (content: ReactNode, header?: ReactNode) => {
+    useCallback((content: ReactNode, header?: ReactNode) => {
       const confirmResolver = new Promise<boolean>(res => {
         onResolveRef.current = res;
       });
@@ -72,6 +72,6 @@ export const useConfirm = () => {
       setIsModalOpen(true);
 
       return confirmResolver;
-    },
+    }, []),
   ] as const;
 };
