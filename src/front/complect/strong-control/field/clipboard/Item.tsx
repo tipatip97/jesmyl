@@ -1,12 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../shared/store';
-import IconButton from '../../../the-icon/IconButton';
 import { IconCancel01StrokeRounded } from '../../../../complect/the-icon/icons/cancel-01';
+import IconButton from '../../../the-icon/IconButton';
 import { ClipboardStoreItem } from '../../Strong.model';
-import di from '../../Strong.store';
+import { useStrongClipboard } from '../../atoms';
 import StrongEditableFieldMultiline from '../StrongEditableFieldMultiline';
-
-const clipboardSelector = (state: RootState) => state.strong.clipboard;
 
 export default function StrongClipboardItem({
   id,
@@ -17,8 +13,7 @@ export default function StrongClipboardItem({
   item: ClipboardStoreItem;
   id: string;
 }) {
-  const clipboard = useSelector(clipboardSelector);
-  const dispatch = useDispatch();
+  const [clipboard, setClipboard] = useStrongClipboard();
 
   return (
     <div
@@ -42,12 +37,10 @@ export default function StrongClipboardItem({
 
           delete items[id];
 
-          dispatch(
-            di.clipboard({
-              ...clipboard,
-              items,
-            }),
-          );
+          setClipboard({
+            ...clipboard,
+            items,
+          });
         }}
       />
       <StrongEditableFieldMultiline value={item.text} />

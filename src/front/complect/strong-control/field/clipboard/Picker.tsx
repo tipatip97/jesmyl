@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../../shared/store';
-import IconButton from '../../../the-icon/IconButton';
+import { IconTask01StrokeRounded } from '../../../../complect/the-icon/icons/task-01';
 import { KeyboardInputEvent } from '../../../keyboard/Keyboard.model';
 import { useConfirm } from '../../../modal/confirm/useConfirm';
 import useModal from '../../../modal/useModal';
 import { MyLib } from '../../../my-lib/MyLib';
-import di from '../../Strong.store';
+import IconButton from '../../../the-icon/IconButton';
+import { useStrongClipboard } from '../../atoms';
 import './Clipboard.scss';
 import StrongClipboardItem from './Item';
-import { IconTask01StrokeRounded } from '../../../../complect/the-icon/icons/task-01';
 
 let clipboardFocusedElem: (EventTarget & HTMLTextAreaElement) | nil = null;
 let updates = 0;
@@ -47,11 +45,8 @@ export const onStrongFieldBlur = () => {
   });
 };
 
-const clipboardSelector = (state: RootState) => state.strong.clipboard;
-
 export default function StrongClipboardPicker() {
-  const clipboard = useSelector(clipboardSelector);
-  const dispatch = useDispatch();
+  const [clipboard, setClipboard] = useStrongClipboard();
   const [isOpenModal, setIsOpenModal] = useState<boolean | und>();
   const [isCanOpenModal, setIsCanOpenModal] = useState(true);
   const [confirmNode, confirm] = useConfirm();
@@ -91,15 +86,13 @@ export default function StrongClipboardPicker() {
           <div
             className="bgcolor--1 padding-gap border-radius pointer"
             onClick={() => {
-              dispatch(
-                di.clipboard({
-                  ...clipboard,
-                  items: {
-                    ...clipboard.items,
-                    [id]: { text },
-                  },
-                }),
-              );
+              setClipboard({
+                ...clipboard,
+                items: {
+                  ...clipboard.items,
+                  [id]: { text },
+                },
+              });
             }}
           >
             {head}
@@ -178,15 +171,13 @@ export default function StrongClipboardPicker() {
                 </>,
               )
             ) {
-              dispatch(
-                di.clipboard({
-                  ...clipboard,
-                  items: {
-                    ...clipboard.items,
-                    [id]: { text },
-                  },
-                }),
-              );
+              setClipboard({
+                ...clipboard,
+                items: {
+                  ...clipboard.items,
+                  [id]: { text },
+                },
+              });
             }
           }
         }}
