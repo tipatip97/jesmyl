@@ -1,6 +1,6 @@
 import { JStorage } from '../../../complect/JStorage';
 import { NavigationStorage } from '../../../complect/nav-configurer/Navigation.model';
-import { GamerState, GamerStorage } from './Gamer.model';
+import { GamerStoraged } from './Gamer.model';
 
-const gamerStorage = new JStorage<NavigationStorage<GamerStorage>, GamerState>('gamer');
+const gamerStorage = new JStorage<NavigationStorage<GamerStoraged>, GamerStoraged>('gamer');
 export default gamerStorage;

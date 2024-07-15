@@ -1,14 +1,8 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../../shared/store';
 import { useAuth } from '../../../../../../index/molecules';
-import { GamerPassport } from '../../../../Gamer.model';
-
-const passportSelector = (state: RootState) => state.gamer.passport;
-
-export const useGamerOfflineRoomsPassportData: () => GamerPassport | und = () => useSelector(passportSelector);
+import { useGamerOfflineRoomsPassportValue } from '../../../../molecules';
 
 export const useGamerOfflineRoomsPassport = () => {
   const authData = useAuth();
 
-  return useGamerOfflineRoomsPassportData() ?? authData;
+  return useGamerOfflineRoomsPassportValue() ?? authData;
 };

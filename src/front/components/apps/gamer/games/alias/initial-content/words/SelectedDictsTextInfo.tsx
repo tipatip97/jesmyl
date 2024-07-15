@@ -1,6 +1,6 @@
 import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
-import { useAliasPacks } from '../../hooks/packs';
+import { useAliasPacks } from '../../molecules';
 
 export const levelGradationTitles = [
   'Не выбрано',

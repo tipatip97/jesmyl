@@ -1,6 +1,4 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../../shared/store';
+import { useAtomValue } from '../../../../../../../complect/atoms';
+import { gamerMolecule } from '../../../../molecules';
 
-const selector = (state: RootState) => state.gamer.rooms;
-
-export const useGamerRooms = () => useSelector(selector);
+export const useGamerRooms = () => useAtomValue(gamerMolecule.take('rooms'));

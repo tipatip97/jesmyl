@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import mylib from '../../../../../../complect/my-lib/MyLib';
-import { RootState } from '../../../../../../shared/store';
+import { useSpyLocations } from '../molecules';
 import { SpyRoomState } from '../Spy.model';
 import { useSpyRoomStateNaked } from './state';
 
@@ -29,10 +28,6 @@ export const unsecretSpyRole = (word: string | und) => {
 };
 
 (window as any).unsec = unsecretSpyRole;
-
-const locationsSelector = (state: RootState) => state.gamer.locations;
-
-export const useSpyLocations = () => useSelector(locationsSelector);
 
 export const useSpyActualLocations = (locations: string[] | und, strikedLocations: string[] | und) => {
   return useMemo(

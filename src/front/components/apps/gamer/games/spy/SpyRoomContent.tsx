@@ -18,11 +18,12 @@ import SpyRoomLocationsInGame from './SpyRoomLocationsInGame';
 import SpyRoomMemberInStartGameMore from './SpyRoomMemberInStartGameMore';
 import { useSpyFinishGame, useSpyResetResults, useSpyStartGame } from './hooks/actions';
 import { useSpyCurrentLocation } from './hooks/current-location';
-import { useSpyActualLocationsNaked, useSpyLocations } from './hooks/locations';
+import { useSpyActualLocationsNaked } from './hooks/locations';
 import { useSpyMyRole } from './hooks/my-role';
 import { useGamerCurrentRoomSpies } from './hooks/spies';
 import { useSpyRoomState } from './hooks/state';
 import SpyRoomStartedGame from './started/StartedGame';
+import { useSpyLocations } from './molecules';
 
 const defRoundTm = 480;
 const roundTms = [300, defRoundTm, 600, 720].map((id): DropdownItem<number> => {

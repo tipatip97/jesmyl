@@ -3,8 +3,9 @@ import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSend
 import { IconCancelCircleStrokeRounded } from '../../../../../complect/the-icon/icons/cancel-circle';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { useSpyToggleLocation } from './hooks/actions';
-import { useSpyCleanLocations, useSpyLocations } from './hooks/locations';
+import { useSpyCleanLocations } from './hooks/locations';
 import { useSpyRoomStateNaked } from './hooks/state';
+import { useSpyLocations } from './molecules';
 
 export default function SpyRoomLocationsInGame({ amIManager }: { amIManager?: boolean }) {
   const [title, isExpand] = useIsExpand(false, <h2>Локации</h2>);

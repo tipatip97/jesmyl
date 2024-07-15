@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { bottomPopupContentPreparer } from '../../../../../../complect/absolute-popup/bottom-popup/item-preparer';
 import { IconStarStrokeRounded } from '../../../../../../complect/the-icon/icons/star';
 import { GamerGameName, GamerRoomMember } from '../../../Gamer.model';
-import { gamerExer } from '../../../Gamer.store';
+import { gamerExer } from '../../../gamerExer';
 import { useGamerCurrentRoom } from '../room/hooks/current-room';
 import { useGamerUserPossibilities, useMyPossibilitiesCurrentRoom } from '../room/hooks/possibilities';
 

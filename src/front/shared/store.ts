@@ -1,10 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { gamerReducer } from '../components/apps/gamer/Gamer.store';
 
 export const store = configureStore({
-  reducer: {
-    gamer: gamerReducer,
-  },
+  reducer: {},
   middleware: mw => mw({ serializableCheck: false }),
 });
 

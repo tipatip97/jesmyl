@@ -1,30 +1,28 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { GamerGameName, GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from '../../../../Gamer.model';
-import di from '../../../../Gamer.store';
 import gamerStorage from '../../../../gamerStorage';
+import { useGamerOfflineRooms, useGamerRoomwSetter } from '../../../../molecules';
 import useGamerNav from '../../../../useGamerNav';
 import { useGamerOfflineRoomsContext } from './context';
 import { useGamerOfflineRoom } from './current-room';
 import { useGamerOfflineRoomsPassport } from './passport';
-import { useGamerOfflineRooms } from './rooms';
 
 export default function useGamerOfflineRoomsActions() {
-  const dispatch = useDispatch();
   const { goTo } = useGamerNav();
-  const offlineRooms = useGamerOfflineRooms();
   const { readQR } = useGamerOfflineRoomsContext();
   const passport = useGamerOfflineRoomsPassport();
+  const setRoomw = useGamerRoomwSetter();
+  const [offlineRooms, setOfflineRooms] = useGamerOfflineRooms();
 
   const updateCurrentOfflineRoom = useCurrentOfflineRoomUpdater();
 
   const goToOfflineRoom = useCallback(
     (roomWid: number) => {
       gamerStorage.set('roomw', roomWid);
-      dispatch(di.roomw(roomWid));
+      setRoomw(roomWid);
       goTo('offlineRoom');
     },
-    [dispatch, goTo],
+    [goTo, setRoomw],
   );
 
   const setRoomGame = useCallback(
@@ -81,35 +79,33 @@ export default function useGamerOfflineRoomsActions() {
 
       if (!login || !fio) return;
 
-      dispatch(
-        di.offlineRooms([
-          ...(offlineRooms || []),
-          {
-            w: Date.now(),
-            name,
-            members: [
-              {
-                login,
-                name: fio,
-                isInactive: false,
-                status: GamerRoomMemberStatus.Owner,
-              },
-            ],
-            games: {
-              spy: {},
+      setOfflineRooms([
+        ...(offlineRooms || []),
+        {
+          w: Date.now(),
+          name,
+          members: [
+            {
+              login,
+              name: fio,
+              isInactive: false,
+              status: GamerRoomMemberStatus.Owner,
             },
+          ],
+          games: {
+            spy: {},
           },
-        ]),
-      );
+        },
+      ]);
     },
-    [dispatch, offlineRooms, passport],
+    [offlineRooms, passport, setOfflineRooms],
   );
 
   const removeOfflineGame = useCallback(
     async (roomw: number) => {
-      dispatch(di.offlineRooms((offlineRooms || []).filter(({ w }) => w !== roomw)));
+      setOfflineRooms((offlineRooms || []).filter(({ w }) => w !== roomw));
     },
-    [dispatch, offlineRooms],
+    [offlineRooms, setOfflineRooms],
   );
 
   return {
@@ -125,8 +121,7 @@ export default function useGamerOfflineRoomsActions() {
 export const useCurrentOfflineRoomUpdater = () => useOfflineRoomUpdater(useGamerOfflineRoom());
 
 export const useOfflineRoomUpdater = (room: GamerRoom | und) => {
-  const offlineRooms = useGamerOfflineRooms();
-  const dispatch = useDispatch();
+  const [offlineRooms, setOfflineRooms] = useGamerOfflineRooms();
 
   return useCallback(
     (updater: (room: GamerRoom) => GamerRoom | void | nil) => {
@@ -138,10 +133,10 @@ export const useOfflineRoomUpdater = (room: GamerRoom | und) => {
         const roomi = rooms.findIndex(({ w }) => w === roomw);
         if (roomi > -1) {
           rooms[roomi] = newRoom;
-          dispatch(di.offlineRooms(rooms));
+          setOfflineRooms(rooms);
         }
       }
     },
-    [room, dispatch, offlineRooms],
+    [room, offlineRooms, setOfflineRooms],
   );
 };

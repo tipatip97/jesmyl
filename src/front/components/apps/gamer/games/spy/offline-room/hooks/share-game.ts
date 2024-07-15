@@ -4,8 +4,8 @@ import { useGamerOfflineRoomsContext } from '../../../../complect/rooms/offline-
 import { useGamerOfflineRoom } from '../../../../complect/rooms/offline-room/hooks/current-room';
 import { useGamerOfflineRoomsPassport } from '../../../../complect/rooms/offline-room/hooks/passport';
 import { useGamerOfflineRoomsPlayers } from '../../../../complect/rooms/offline-room/hooks/players';
+import { useJoinedOfflineGame } from '../../../../molecules';
 import useGamerNav from '../../../../useGamerNav';
-import { useJoinedOfflineGame } from './join-game';
 import { useGamerOfflineCurrentRoomSpies } from './spies';
 import { useSpyOfflineRoomState } from './state';
 

@@ -5,8 +5,8 @@ import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { useAuth } from '../../../../index/molecules';
-import { gamerExer } from '../../Gamer.store';
-import { useSpyLocations } from './hooks/locations';
+import { gamerExer } from '../../gamerExer';
+import { useSpyLocations } from './molecules';
 
 const incorrectNameReg = /[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i;
 

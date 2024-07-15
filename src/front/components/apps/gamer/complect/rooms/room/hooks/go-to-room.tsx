@@ -1,19 +1,17 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
 import useToast from '../../../../../../../complect/modal/useToast';
-import { RootState } from '../../../../../../../shared/store';
 import { useAuth } from '../../../../../../index/molecules';
-import di, { gamerExer } from '../../../../Gamer.store';
+import { gamerExer } from '../../../../gamerExer';
 import gamerStorage from '../../../../gamerStorage';
+import { useGamerRoomwSetter } from '../../../../molecules';
 import useGamerNav from '../../../../useGamerNav';
 import { useMyPossibilitiesInRoom } from './possibilities';
-
-const roomsSelector = (state: RootState) => state.gamer.rooms;
+import { useGamerRooms } from './rooms';
 
 export default function useGamerOfflineRoomsActions() {
-  const dispatch = useDispatch();
-  const rooms = useSelector(roomsSelector);
+  const rooms = useGamerRooms();
+  const setRoomw = useGamerRoomwSetter();
   const { goTo } = useGamerNav();
   const auth = useAuth();
 
@@ -57,10 +55,10 @@ export default function useGamerOfflineRoomsActions() {
         }
 
         gamerStorage.set('roomw', roomWid);
-        dispatch(di.roomw(roomWid));
+        setRoomw(roomWid);
         goTo('room');
       },
-      [auth.fio, auth.login, auth.nick, dispatch, goTo, memberPossibilities, rooms, toast],
+      [memberPossibilities, rooms, setRoomw, goTo, toast, confirm, auth.login, auth.fio, auth.nick],
     ),
   ] as const;
 }

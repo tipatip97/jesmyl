@@ -1,8 +1,9 @@
-import { useGamerRoomw } from '../../hooks/roomw';
+import { useAtomValue } from '../../../../../../../complect/atoms';
+import { gamerMolecule } from '../../../../molecules';
 import { useGamerRooms } from './rooms';
 
 export const useGamerCurrentRoom = () => {
-  const roomw = useGamerRoomw();
+  const roomw = useAtomValue(gamerMolecule.take('roomw'));
 
   return useGamerRooms()?.find(({ w }) => w === roomw);
 };

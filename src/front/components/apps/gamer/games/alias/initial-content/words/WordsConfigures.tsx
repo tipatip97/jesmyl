@@ -8,8 +8,8 @@ import { IconBook02StrokeRounded } from '../../../../../../../complect/the-icon/
 import { IconBookOpen02StrokeRounded } from '../../../../../../../complect/the-icon/icons/book-open-02';
 import { IconTarget03StrokeRounded } from '../../../../../../../complect/the-icon/icons/target-03';
 import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
-import { useAliasPacks } from '../../hooks/packs';
 import { useAliasRoomState } from '../../hooks/state';
+import { useAliasPacks } from '../../molecules';
 import { AliasRoomLessWordsCompute } from './LessWordsCompute';
 import { AliasSelectedDictsTextInfo, levelGradationTitles } from './SelectedDictsTextInfo';
 

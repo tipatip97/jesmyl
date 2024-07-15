@@ -1,17 +1,13 @@
-import { useSelector } from 'react-redux';
 import { IconCubeStrokeRounded } from '../../../../../../complect/the-icon/icons/cube';
-import { RootState } from '../../../../../../shared/store';
+import { useGamerCurrentOfflineGameName, useGamerOfflineRooms } from '../../../molecules';
 import { gamerOfflineRoomGames } from '../../../useGamerNav';
 import { GamerOfflineRoomListJoinByQr } from './complect/JoinByQr';
 import useGamerOfflineRoomsActions from './hooks/actions';
-import { useGamerOfflineRooms } from './hooks/rooms';
-
-const currentOfflineGameNameSelector = (state: RootState) => state.gamer.currentOfflineGameName;
 
 export default function GamerOfflineRoomList() {
   const { goToOfflineRoom } = useGamerOfflineRoomsActions();
-  const offlineRooms = useGamerOfflineRooms();
-  const currentOfflineGameName = useSelector(currentOfflineGameNameSelector);
+  const [offlineRooms] = useGamerOfflineRooms();
+  const currentOfflineGameName = useGamerCurrentOfflineGameName();
   const currentContent =
     currentOfflineGameName &&
     gamerOfflineRoomGames.find(({ phase: [gameName] }) => gameName === currentOfflineGameName)?.data?.currentNode;

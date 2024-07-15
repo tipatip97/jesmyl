@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import TheButton from '../../../../../complect/Button';
-import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import { useGamerOfflineRooms } from '../../molecules';
 import { useGamerRoomActions } from './hooks/actions';
 import useGamerOfflineRoomsActions from './offline-room/hooks/actions';
-import { useGamerOfflineRooms } from './offline-room/hooks/rooms';
 import { useGamerRooms } from './room/hooks/rooms';
 
 export default function NewGamerRoomScreen({ close, offline }: { close: () => void; offline?: boolean }) {
@@ -12,7 +12,7 @@ export default function NewGamerRoomScreen({ close, offline }: { close: () => vo
   const { createRoom } = useGamerRoomActions();
   const rooms = useGamerRooms();
   const { addOfflineRoom } = useGamerOfflineRoomsActions();
-  const offlineRooms = useGamerOfflineRooms();
+  const [offlineRooms] = useGamerOfflineRooms();
   const [name, setName] = useState('');
 
   return (

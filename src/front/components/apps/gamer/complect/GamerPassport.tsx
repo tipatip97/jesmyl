@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import TheButton from '../../../../complect/Button';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import mylib from '../../../../complect/my-lib/MyLib';
@@ -10,16 +9,16 @@ import { IconQrCodeStrokeRounded } from '../../../../complect/the-icon/icons/qr-
 import { LocalSokiAuth } from '../../../../models';
 import { useAuth } from '../../../index/molecules';
 import { GamerPassport } from '../Gamer.model';
-import di from '../Gamer.store';
+import { useGamerOfflineRoomsPassportSetter, useGamerOfflineRoomsPassportValue } from '../molecules';
 import useGamerNav from '../useGamerNav';
 import PhaseGamerContainer from './PhaseGamerContainer';
-import { useGamerOfflineRoomsPassport, useGamerOfflineRoomsPassportData } from './rooms/offline-room/hooks/passport';
+import { useGamerOfflineRoomsPassport } from './rooms/offline-room/hooks/passport';
 
 export default function TheGamerPassport() {
-  const dispatch = useDispatch();
   const authData = useAuth();
   const passport = useGamerOfflineRoomsPassport();
-  const passportData = useGamerOfflineRoomsPassportData();
+  const passportData = useGamerOfflineRoomsPassportValue();
+  const setPassport = useGamerOfflineRoomsPassportSetter();
   const [isEdit, setIsEdit] = useState(!passport);
   const [fio, setFio] = useState(passport?.fio || '');
   const { nav } = useGamerNav();
@@ -56,13 +55,11 @@ export default function TheGamerPassport() {
                   disabled={!fio || fio === passport?.fio}
                   onClick={() => {
                     setIsEdit(false);
-                    dispatch(
-                      di.passport({
-                        fio,
-                        nick: passportData?.nick,
-                        login: passportData?.login || 'G' + mylib.md5(`${fio} ${Date.now() + Math.random()}`).slice(1),
-                      }),
-                    );
+                    setPassport({
+                      fio,
+                      nick: passportData?.nick,
+                      login: passportData?.login || 'G' + mylib.md5(`${fio} ${Date.now() + Math.random()}`).slice(1),
+                    });
                   }}
                 >
                   {passport ? 'Обновить' : 'Создать'} паспорт
@@ -74,7 +71,7 @@ export default function TheGamerPassport() {
                     confirm
                     onClick={() => {
                       back(authData);
-                      dispatch(di.passport(null));
+                      setPassport(null);
                     }}
                   >
                     Сбросить данные

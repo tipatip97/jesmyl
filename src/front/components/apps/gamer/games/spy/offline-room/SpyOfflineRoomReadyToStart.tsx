@@ -9,7 +9,8 @@ import RoomMemberFace from '../../../complect/GamerRoomMemberFace';
 import useGamerOfflineRoomsActions from '../../../complect/rooms/offline-room/hooks/actions';
 import { useGamerOfflineRoom } from '../../../complect/rooms/offline-room/hooks/current-room';
 import { useGamerOfflineRoomsPlayers } from '../../../complect/rooms/offline-room/hooks/players';
-import { useSpyActualLocations, useSpyLocations, useSpyStrikedLocationsNaked } from '../hooks/locations';
+import { useSpyActualLocations, useSpyStrikedLocationsNaked } from '../hooks/locations';
+import { useSpyLocations } from '../molecules';
 import useSpyOfflineRoomStateUpdaters from './hooks/updaters';
 
 export default function SpyOfflineRoomReadyToStart() {

@@ -4,8 +4,8 @@ import { useCurrentOfflineRoomUpdater } from '../../../../complect/rooms/offline
 import { useGamerOfflineRoomsPlayers } from '../../../../complect/rooms/offline-room/hooks/players';
 import { SpyRoomState } from '../../Spy.model';
 import { secretSpyRole, unsecretSpyRole, useSpyActualLocationsNaked } from '../../hooks/locations';
-import { useJoinedOfflineGame } from './join-game';
 import { useSpyOfflineCurrentRoomState } from './state';
+import { useJoinedOfflineGame } from '../../../../molecules';
 
 export default function useSpyOfflineRoomStateUpdaters() {
   const players = useGamerOfflineRoomsPlayers();

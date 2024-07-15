@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { GamerRoom, GamerRoomMember, GamerRoomMemberLogin } from '../../../Gamer.model';
-import { gamerExer } from '../../../Gamer.store';
+import { gamerExer } from '../../../gamerExer';
 import { useGamerPlayers } from '../../../complect/rooms/hooks/players';
 import { useGamerCurrentRoom } from '../../../complect/rooms/room/hooks/current-room';
 import { AliasGameTeam, GamerAliasRoomState, StartAliasRoundProps } from '../Alias.model';
