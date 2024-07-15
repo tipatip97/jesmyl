@@ -8,7 +8,7 @@ interface Props {
   onClick: () => void;
 }
 
-export default function ScheduleWidgetTeamsCriteriaSorterScreenSortBoxPhoto({ onClick, user }: Props) {
+export const ScheduleWidgetTeamsCriteriaSorterScreenSortBoxPhoto = function SortBoxPhoto({ onClick, user }: Props) {
   return (
     <div
       className="full-height"
@@ -27,7 +27,7 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenSortBoxPhoto({ on
       </StyledPhotoArea>
     </div>
   );
-}
+};
 
 const StyledPhotoArea = styled.div`
   min-height: 300px;

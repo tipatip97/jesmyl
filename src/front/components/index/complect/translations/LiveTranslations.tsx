@@ -17,10 +17,10 @@ export const IndexScheduleWidgetTranslations = () => {
   const isCm = useCurrentTranslationTextAppValue() === 'cm';
   const [isCantTranslateLive, setIsCantTranslateLive] = useState(true);
   const schedules = useIndexSchedules();
-  const headTitle =
+  const schedule =
     indexNav.appRouteData.schw === undefined
       ? null
-      : schedules.list.find(schedule => schedule.w === indexNav.appRouteData.schw)?.title;
+      : schedules.list.find(schedule => schedule.w === indexNav.appRouteData.schw);
 
   const subscribeData = `index-sch-${indexNav.appRouteData.schw}:${auth.login}` as const;
 
@@ -44,7 +44,8 @@ export const IndexScheduleWidgetTranslations = () => {
       isCantTranslateLive={isCantTranslateLive}
       fio={auth.fio}
       subscribeData={subscribeData}
-      headTitle={headTitle}
+      headTitle={schedule?.title}
+      schedule={schedule}
     />
   ) : (
     <BibleTranslatesContextProvider>
@@ -52,7 +53,7 @@ export const IndexScheduleWidgetTranslations = () => {
         isCantTranslateLive={isCantTranslateLive}
         fio={auth.fio}
         subscribeData={subscribeData}
-        headTitle={headTitle}
+        headTitle={schedule?.title}
       />
     </BibleTranslatesContextProvider>
   );

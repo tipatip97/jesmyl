@@ -1,17 +1,26 @@
+import { makeRegExp } from '../../../../complect/makeRegExp';
 import smylib from '../../../../shared/SMyLib';
-import { IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from '../../models/ScheduleWidget.model';
+import {
+  IScheduleWidget,
+  IScheduleWidgetDayEvent,
+  ScheduleWidgetDayListItemTypeBox,
+} from '../../models/ScheduleWidget.model';
 import { CustomAttUseTaleId } from '../../rights';
 
-export default class ScheduleWidgetCleans {
-  static wupsReg = /(\d+)(\.(\d+))?/;
+const singleTitleSymbols = '- ().,/';
+const incorrectsTitleReg = makeRegExp(`/[^${singleTitleSymbols}\\dа-яё]/gi`);
+const notDynamicTitleReg = makeRegExp(`/[^- .,\\dа-яё]/gi`);
+const singlesTitleReg = makeRegExp(`/([${singleTitleSymbols}])(\\1+)/g`);
+const titleLettersNormalizer = (_: string, __: string, letters: string) => letters[0];
 
+export default class ScheduleWidgetCleans {
   static checkIsTaleIdUnit = (num: number, taleId: CustomAttUseTaleId) => Math.trunc(num) + taleId === num;
 
   static computeDayWakeUpTime = <ReturnAs extends 'number' | 'string'>(
     wup: number,
     returnAs: ReturnAs,
   ): ReturnAs extends 'number' ? number : string => {
-    const [, beginHours, , beginMinutes] = ('' + wup).match(this.wupsReg) || [];
+    const [, beginHours, , beginMinutes] = ('' + wup).match(makeRegExp('/(\\d+)(\\.(\\d+))?/')) || [];
     const wakeUpMinutes = +(beginMinutes?.padEnd(2, '0') || 0);
 
     return (
@@ -21,8 +30,10 @@ export default class ScheduleWidgetCleans {
     ) as never;
   };
 
-  static takeEventTm = (event: IScheduleWidgetDayEvent, box?: ScheduleWidgetDayListItemTypeBox) => {
-    return event.tm ?? box?.tm ?? 0;
+  static packDayWakeUpTime = (wupTime: string) => +wupTime.replace(makeRegExp('/\\D+/'), '.');
+
+  static takeEventTm = (event?: IScheduleWidgetDayEvent, box?: ScheduleWidgetDayListItemTypeBox) => {
+    return event?.tm ?? box?.tm ?? 0;
   };
 
   static daysToText = (days: number, isNeedCalculate?: boolean) => {
@@ -46,4 +57,56 @@ export default class ScheduleWidgetCleans {
   };
 
   static termsToText = (termsTo: number) => termsTo + ' ' + smylib.declension(termsTo, 'раз', 'раза', 'раз');
+
+  static attachmentTypeTitleNormalize = (text: string, isWithTopic?: boolean) => {
+    if (isWithTopic) {
+      const notSymboli = text.search(notDynamicTitleReg);
+      const topic = notSymboli < 0 ? '' : text.slice(notSymboli).trim();
+
+      return (
+        (notSymboli < 0 ? text : text.slice(0, notSymboli)).trim() +
+        (topic && `: ${topic.replace(makeRegExp('/^\\(([^)]+)\\)$/'), '$1').replace(makeRegExp(`/^: /`), '')}`)
+      );
+    }
+    return text.replace(incorrectsTitleReg, '').replace(singlesTitleReg, titleLettersNormalizer).trim();
+  };
+
+  static getCurrentDayi(schedule: IScheduleWidget<string>) {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    return (date.getTime() - schedule.start + (schedule.withTech ? smylib.howMs.inDay : 0)) / smylib.howMs.inDay;
+  }
+
+  static getCurrentEventInDay(schedule: IScheduleWidget<string>, dayi: number) {
+    const day = schedule.days[dayi];
+    if (day == null) return undefined;
+
+    const date = new Date();
+    const dateStart = new Date();
+    dateStart.setHours(0, 0, 0, 0);
+    date.setSeconds(0, 0);
+
+    const [hoursStr, minsStr = 0] = ('' + day.wup).split('.');
+
+    let prevMins = +hoursStr * 60 + +minsStr;
+    const nowMins = (date.getTime() - dateStart.getTime()) / smylib.howMs.inMin;
+
+    for (let eventi = 0; eventi < day.list.length; eventi++) {
+      const event = day.list[eventi];
+
+      const tm = this.takeEventTm(event, schedule.types[event.type]);
+
+      prevMins += tm;
+
+      if (nowMins > prevMins && nowMins < prevMins + tm) {
+        return event;
+      }
+    }
+  }
+
+  static getCurrentDayiAndEventi(schedule: IScheduleWidget<string>): [number, IScheduleWidgetDayEvent | und] {
+    const dayi = this.getCurrentDayi(schedule);
+
+    return [dayi, this.getCurrentEventInDay(schedule, dayi)];
+  }
 }

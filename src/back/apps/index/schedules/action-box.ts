@@ -139,13 +139,14 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
           },
         },
       },
-      '/tgChatId': {
+      '/tgChatReqs': {
         U: {
           RRej: true,
           args: {
             value: '#String',
           },
         },
+        onSuccess: onTgInformingChangeSuccess,
       },
       '/tgInform': {
         U: {
@@ -470,10 +471,12 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
       },
       '/types': {
         expected: [],
-        C: {
-          value: {
-            title: '',
-          },
+        C: {},
+        '<addAttTypes>': {
+          setSystems: ['mi'],
+          action: 'addAttTypes',
+          method: 'concat',
+          uniqs: ['title'],
         },
         '/{typei}': {
           scopeNode: 'typei',
@@ -539,6 +542,10 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             U: {},
             setEachInParent: { list: { tgInform: 1 } },
             onSuccess: onTgInformingChangeSuccess,
+            '<action>': {
+              action: 'setDayWup',
+              method: 'set',
+            },
           },
           '/{key}': {
             scopeNode: 'field',
@@ -576,6 +583,12 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               },
             },
             onSuccess: onTgInformingChangeSuccess,
+            '<put schedule>': {
+              action: 'putDayEventList',
+              method: 'set',
+              setItemSystems: ['mi'],
+              onSuccess: onTgInformingChangeSuccess,
+            },
             '/[mi === {eventMi}]': {
               scopeNode: 'eventMi',
               $$var: '$$event',

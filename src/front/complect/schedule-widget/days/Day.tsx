@@ -30,6 +30,7 @@ export interface ScheduleWidgetDayProps {
   scope: string;
   isPrint?: boolean;
   isCanOpenFull?: boolean;
+  isForceOpen?: boolean;
 }
 
 const isNIs = (is: unknown) => !is;
@@ -45,6 +46,7 @@ export default function ScheduleWidgetDay({
   scope,
   isPrint,
   isCanOpenFull,
+  isForceOpen,
 }: ScheduleWidgetDayProps) {
   const date = new Date(indexScheduleGetDayStartMs(schedule, dayi));
   const isPastDay = indexScheduleCheckIsDayIsPast(schedule, dayi);
@@ -195,7 +197,7 @@ export default function ScheduleWidgetDay({
             scope={selfScope}
             scheduleScope={scope}
             isPastDay={isPastDay}
-            isForceExpand={isPrint}
+            isForceExpand={isPrint || isForceOpen}
           />
         </>
       )}

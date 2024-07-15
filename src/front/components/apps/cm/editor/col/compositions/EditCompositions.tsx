@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import DebouncedSearchInput from '../../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
+import { useExerListener } from '../../../../../../complect/exer/hooks/useExer';
 import LoadIndicatedContent from '../../../../../../complect/load-indicated-content/LoadIndicatedContent';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import useCmNav from '../../../base/useCmNav';
@@ -20,7 +20,7 @@ export default function EditCompositions() {
   const zcat: EditableCat | und = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || '');
   const [popupNode, openPopup] = useBottomPopup(EditCompositionsMore);
-  useExerExec();
+  useExerListener();
   const listRef = useRef<HTMLDivElement>(null);
 
   const scrollToCurrent = () => {

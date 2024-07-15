@@ -1,13 +1,15 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import styled from 'styled-components';
-import { scheduleWidgetUserRights } from '../../../models';
-import IconButton from '../../the-icon/IconButton';
 import { IconAttachment01StrokeRounded } from '../../../complect/the-icon/icons/attachment-01';
 import { IconPlusSignStrokeRounded } from '../../../complect/the-icon/icons/plus-sign';
-import useModal from '../../modal/useModal';
+import { scheduleWidgetUserRights } from '../../../models';
+import Modal from '../../modal/Modal/Modal';
+import { ModalBody } from '../../modal/Modal/ModalBody';
+import { ModalFooter } from '../../modal/Modal/ModalFooter';
 import mylib, { MyLib } from '../../my-lib/MyLib';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongDiv from '../../strong-control/StrongDiv';
+import IconButton from '../../the-icon/IconButton';
 import { IScheduleWidget, ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValues } from '../ScheduleWidget.model';
 import {
   takeStrongScopeMaker,
@@ -41,13 +43,17 @@ export default function ScheduleWidgetBindAtts({
   const appAttList = MyLib.entries(appAtts);
   const rights = useScheduleWidgetRightsContext();
   const myUserR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [modalNode, screen] = useModal(({ header, body, footer }, closeModal) => {
-    return (
-      <>
-        {header(<>{forTitle} - Вставить вложение</>)}
-        {body(
-          <>
+  const attEntries = atts ? MyLib.entries(atts) : [];
+
+  return (
+    <>
+      {isModalOpen && (
+        <Modal onClose={setIsModalOpen}>
+          <ModalFooter>{forTitle} - Вставить вложение</ModalFooter>
+
+          <ModalBody>
             {topContent}
             {appAttList.map(([attKey, tatt]) => {
               if (
@@ -78,7 +84,7 @@ export default function ScheduleWidgetBindAtts({
                       };
                     })
                   }
-                  onClick={closeModal}
+                  onClick={() => setIsModalOpen(true)}
                 >
                   <ScheduleWidgetAttFace
                     scope={scope}
@@ -102,31 +108,22 @@ export default function ScheduleWidgetBindAtts({
                 </StrongDiv>
               );
             })}
-          </>,
-        )}
-        {footer(
-          <>
+          </ModalBody>
+
+          <ModalFooter>
             <ScheduleWidgetCustomAttachments
               scope={scheduleScope}
               tatts={schedule.tatts}
             />
-          </>,
-        )}
-      </>
-    );
-  });
-
-  const attEntries = atts ? MyLib.entries(atts) : [];
-
-  return (
-    <>
-      {modalNode}
+          </ModalFooter>
+        </Modal>
+      )}
       <div className="flex flex-gap">
         <IconAttachment01StrokeRounded />
         Вложения
         <IconButton
           Icon={IconPlusSignStrokeRounded}
-          onClick={screen}
+          onClick={() => setIsModalOpen(true)}
         />
       </div>
       <Secs className="flex flex-gap no-scrollbar">

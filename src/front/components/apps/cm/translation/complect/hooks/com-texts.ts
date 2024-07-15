@@ -1,9 +1,10 @@
 import { useComTranslationBlock } from '../../../atoms';
+import { useCmScreenTranslationCurrentConfig } from '../controlled/hooks/configs';
 import { useCmCurrentComTexts } from './get-com-text';
 
 export const useCmScreenTranslationComTextNavigations = () => {
   const [currTexti, setCurrTexti] = useComTranslationBlock();
-  const texts = useCmCurrentComTexts();
+  const texts = useCmCurrentComTexts(useCmScreenTranslationCurrentConfig()?.pushKind);
 
   const state = {
     text: texts && texts[currTexti],

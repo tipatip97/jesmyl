@@ -24,7 +24,7 @@ export const CmLiveTranslationScreen = (props: Props) => {
 
   if (com === undefined) return;
 
-  const texts = com.getOrderedTexts();
+  const texts = com.getOrderedTexts(true, props.config.pushKind);
 
   return window.innerWidth > window.innerHeight ? (
     <CmLiveTranslationSlide
@@ -37,6 +37,7 @@ export const CmLiveTranslationScreen = (props: Props) => {
     <CmLiveTranslationList
       com={com}
       texti={props.texti}
+      config={props.config}
     />
   );
 };

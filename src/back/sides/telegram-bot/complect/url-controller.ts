@@ -1,6 +1,6 @@
 import TelegramBot, { SendMessageOptions } from 'node-telegram-bot-api';
 import { JesmylTelegramBot } from '../tg-bot';
-import { JTgBotCallbackQuery } from '../tg-bot-wrapper';
+import { JTgBotCallbackQuery } from '../model';
 
 const getFullName = ({ first_name, last_name }: { first_name: string; last_name?: string }) =>
   `${first_name}${last_name === undefined ? '' : ` ${last_name}`}`;

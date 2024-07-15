@@ -1,8 +1,8 @@
 import { CallbackQuery, ChatMember, SendMessageOptions } from 'node-telegram-bot-api';
 import smylib from '../../../shared/SMyLib';
 import { jesmylTgBot } from '../bot';
-import { JTgBotCallbackQuery } from '../tg-bot-wrapper';
 import { tglogger } from '../log/log-bot';
+import { JTgBotCallbackQuery } from '../model';
 
 export const supportTelegramAuthorizations: Record<number, () => CallbackQuery> = {};
 const telegramAuthorizationUsers: Record<number, number> = {};

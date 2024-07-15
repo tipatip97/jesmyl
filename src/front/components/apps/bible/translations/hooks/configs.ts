@@ -39,11 +39,9 @@ export const defaultBibleConfig: BibleTranslationScreenConfig = {
   },
 };
 
-const emptyArr: [] = [];
-
 export const useBibleScreenTranslationConfigs = () =>
   useMakeScreenTranslationConfigsFillPack(
-    useStorageValueGetter(bibleStorage, 'translationScreenConfigs', emptyArr),
+    useStorageValueGetter(bibleStorage, 'translationScreenConfigs', [defaultBibleConfig]),
     defaultBibleConfig,
   );
 

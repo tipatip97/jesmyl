@@ -65,11 +65,11 @@ export default function ScheduleWidgetControl({ scope }: StrongComponentProps) {
                 />
                 <StrongEditableField
                   scope={scope}
-                  fieldName="tgChatId"
-                  value={rights.schedule.tgChatId}
+                  fieldName="tgChatReqs"
+                  value={rights.schedule.tgChatReqs}
                   isRedact
                   setSelfRedact
-                  title="TG-id"
+                  title="TG-чат-реквизиты"
                 />
                 {rights.schedule.tgInform === 0 ? (
                   <StrongEvaButton

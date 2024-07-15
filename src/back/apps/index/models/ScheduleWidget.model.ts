@@ -73,7 +73,7 @@ export interface IScheduleWidget<TheIconName> {
   games?: IScheduleWidgetTeamGames;
   lists: IScheduleWidgetLists<TheIconName>;
   tgInform?: num;
-  tgChatId?: `${number}`;
+  tgChatReqs?: `${number}`;
   tgInformTime: number;
 }
 
@@ -172,7 +172,6 @@ export enum IScheduleWidgetTeamGameStrikedMemberState {
 export interface IScheduleWidgetTeamGame {
   title: string;
   teams: IScheduleWidgetTeam[];
-  strikedMembers?: Record<IScheduleWidgetUserMi, IScheduleWidgetTeamGameStrikedMemberState>;
   mi: IScheduleWidgetTeamGameMi;
 }
 

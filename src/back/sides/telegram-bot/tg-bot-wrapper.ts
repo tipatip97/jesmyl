@@ -1,30 +1,16 @@
-import TgBot, { BotCommand, CallbackQuery, InlineKeyboardButton, User } from 'node-telegram-bot-api';
+import TgBot, { BotCommand, InlineKeyboardButton, User } from 'node-telegram-bot-api';
 import Eventer, { EventerCallback, EventerListeners } from '../../complect/Eventer';
 import smylib from '../../shared/SMyLib';
 import { TgLogger } from './log/log-bot';
-import { JesmylTelegramBot } from './tg-bot';
-
-export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
-export type JTgBotCallbackQueryWithoutBot = (
-  query: CallbackQuery,
-  answer: (options: string | FreeAnswerCallbackQueryOptions) => void,
-) => string | void | undefined | Promise<FreeAnswerCallbackQueryOptions | undefined | void | string>;
-export type JTgBotCallbackQuery = (
-  bot: JesmylTelegramBot,
-  query: CallbackQuery,
-  answer: (options: string | FreeAnswerCallbackQueryOptions) => void,
-) => string | void | undefined | Promise<FreeAnswerCallbackQueryOptions | undefined | void | string>;
-export type JTgBotChatMessageCallbackWithoutBot = (message: TgBot.Message, metadata: TgBot.Metadata) => any;
-export type JTgBotChatMessageCallback = (
-  bot: JesmylTelegramBot,
-  message: TgBot.Message,
-  metadata: TgBot.Metadata,
-) => any;
-export type JTgBotPersonalMessageCallback = (
-  bot: JesmylTelegramBotWrapper,
-  message: TgBot.Message,
-  metadata: TgBot.Metadata,
-) => any;
+import {
+  JTgBotCallbackQuery,
+  JTgBotCallbackQueryWithoutBot,
+  JTgBotChatMessageCallback,
+  JTgBotChatMessageCallbackWithoutBot,
+  TgBotWrapperCallbackCatcher,
+  TgBotWrapperMessageCatcher,
+} from './model';
+import { FreeAnswerCallbackQueryOptions, JesmylTelegramBot } from './tg-bot';
 
 export class JesmylTelegramBotWrapper {
   bot: TgBot;
@@ -34,22 +20,20 @@ export class JesmylTelegramBotWrapper {
   private personalMessageListeners: EventerListeners<TgBot.Message> = [];
   private personalQueryListeners: EventerListeners<TgBot.CallbackQuery, void, string | FreeAnswerCallbackQueryOptions> =
     [];
+  private messageCatchers: Set<TgBotWrapperMessageCatcher> = new Set();
+  private callbackCatchers: Set<TgBotWrapperCallbackCatcher> = new Set();
 
-  constructor(token: string, options?: TgBot.ConstructorOptions) {
+  private _message: TgBot.Message = null!;
+  private _cbQuery: TgBot.CallbackQuery = null!;
+  private _cbQueryAnswer = (_options: string | FreeAnswerCallbackQueryOptions) => 'answered' as const;
+
+  constructor(token: string, options: TgBot.ConstructorOptions) {
     this.bot = new TgBot(token, options);
 
-    this.bot.on('message', (message, metadata) => {
-      if (message.text === '/this-chat-id' && message.from) {
-        this.bot
-          .sendMessage(
-            message.from.id,
-            `${message.chat.title ?? message.chat.last_name} id <code>${message.chat.id}</code>`,
-            {
-              parse_mode: 'HTML',
-            },
-          )
-          .then(() => this.bot.deleteMessage(message.chat.id, message.message_id));
-        return;
+    this.bot.on('message', async (message, metadata) => {
+      if (this.messageCatchers.size) {
+        this._message = message;
+        this.messageCatchers.forEach(this.invokeMessageCatcherItem);
       }
 
       if (this.chatMessagesCallbacks[0] !== undefined) {
@@ -68,34 +52,61 @@ export class JesmylTelegramBotWrapper {
     });
 
     this.bot.on('callback_query', async query => {
-      const callback = (options: string | FreeAnswerCallbackQueryOptions) => {
+      const answer = (options: string | FreeAnswerCallbackQueryOptions) => {
+        if (options === '') return 'answered' as const;
+
         this.bot.answerCallbackQuery(
           query.id,
           smylib.isStr(options)
             ? { text: options, callback_query_id: query.id }
             : { show_alert: true, ...options, callback_query_id: query.id },
         );
+
+        return 'answered' as const;
       };
 
+      if (this.callbackCatchers.size) {
+        this._cbQuery = query;
+        this._cbQueryAnswer = answer;
+        this.callbackCatchers.forEach(this.invokeCallbackQueryCatcherItem, this);
+      }
+
       if (query.data && this.fromOptionsOnCallbackQueryCallback[query.data] !== undefined) {
-        const answer = await this.fromOptionsOnCallbackQueryCallback[query.data](query, callback);
-        if (answer !== undefined) {
-          callback(answer);
+        const answerResult = await this.fromOptionsOnCallbackQueryCallback[query.data](query, answer);
+        if (answerResult !== undefined) {
+          answer(answerResult);
           return;
         }
       }
 
       if (query.message !== undefined && this.chatCallbackQueryCallbacks[query.message.chat.id] !== undefined) {
-        const answer = await this.chatCallbackQueryCallbacks[query.message.chat.id](query, callback);
-        if (answer !== undefined) callback(answer);
+        const answerResult = await this.chatCallbackQueryCallbacks[query.message.chat.id](query, answer);
+        if (answerResult !== undefined) answer(answerResult);
       }
 
       if (this.personalQueryListeners.length > 0 && query.from.id === query.message?.chat.id) {
         const event = await Eventer.invoke(this.personalQueryListeners, query);
         if (event.stoppedValue !== undefined && (smylib.isStr(event.stoppedValue) || event.stoppedValue.text))
-          callback(event.stoppedValue);
+          answer(event.stoppedValue);
       }
     });
+  }
+
+  invokeMessageCatcherItem = (cb: TgBotWrapperMessageCatcher) => cb(this._message, this.bot);
+
+  invokeCallbackQueryCatcherItem = (cb: TgBotWrapperCallbackCatcher) =>
+    cb(this._cbQuery, this.bot, this._cbQueryAnswer);
+
+  catchMessages(catcher: TgBotWrapperMessageCatcher) {
+    this.messageCatchers.add(catcher);
+
+    return { register: () => {}, off: () => this.messageCatchers.delete(catcher) };
+  }
+
+  catchCallbackQuery(catcher: TgBotWrapperCallbackCatcher) {
+    this.callbackCatchers.add(catcher);
+
+    return { register: () => {}, off: () => this.callbackCatchers.delete(catcher) };
   }
 
   sendMessage(userOrId: User | number, text: string, logger: TgLogger, options?: TgBot.SendMessageOptions | null) {

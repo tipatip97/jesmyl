@@ -8,7 +8,8 @@ import TgBot, {
 import { Stream } from 'stream';
 import smylib from '../../shared/SMyLib';
 import { TgLogger } from './log/log-bot';
-import { JTgBotCallbackQuery, JTgBotChatMessageCallback, JesmylTelegramBotWrapper } from './tg-bot-wrapper';
+import { JTgBotCallbackQuery, JTgBotChatMessageCallback } from './model';
+import { JesmylTelegramBotWrapper } from './tg-bot-wrapper';
 
 const botName = 'jesmylbot';
 

@@ -1,4 +1,4 @@
-import { makeRegExp } from '../../../../../../complect/makeRegExp';
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
 import SourceBased from '../../../../../../complect/SourceBased';
 import { Com } from '../Com';

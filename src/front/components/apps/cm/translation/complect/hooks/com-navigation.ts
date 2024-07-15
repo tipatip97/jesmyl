@@ -10,7 +10,7 @@ export const useCmScreenTranslationComNavigations = () => {
   const ccom = useCcom();
   const setCom: (com: Com) => void = useCallback((com: Com) => setAppRouteData({ ccomw: com.wid }), [setAppRouteData]);
 
-  const comPack = useComPack(ccom, true);
+  const comPack = useComPack();
   const { setTexti } = useCmScreenTranslationComTextNavigations();
 
   return {

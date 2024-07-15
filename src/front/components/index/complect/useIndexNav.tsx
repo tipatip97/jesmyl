@@ -1,6 +1,8 @@
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
+import ScheduleWidgetListPage from '../../../complect/schedule-widget/general/ListPage';
+import ScheduleWidgetPage from '../../../complect/schedule-widget/general/Page';
 import serviceMaster from '../../../complect/service/serviceMaster';
 import { iconPackOfCircleArrowRight02 } from '../../../complect/the-icon/icons/circle-arrow-right-02';
 import { RoutePhasePoint } from '../../router/Router.model';
@@ -12,7 +14,6 @@ import { IndexAuthorization } from '../parts/login/IndexAuthorization';
 import Main from '../parts/main/IndexMain';
 import { IndexConsole } from '../parts/settings/Console';
 import IndexSettings from '../parts/settings/Settings';
-import ScheduleWidgetAlarmScheduleList from './AlarmScheduleList';
 import { IndexScheduleWidgetTranslations } from './translations/LiveTranslations';
 
 export const indexScheduleWidgetTranslationPagePhase: RoutePhasePoint = ['translation'];
@@ -57,11 +58,17 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
         },
         {
           phase: ['schedules'],
-          node: <ScheduleWidgetAlarmScheduleList />,
+          node: <ScheduleWidgetListPage />,
           next: [
             {
-              phase: indexScheduleWidgetTranslationPagePhase,
-              node: <IndexScheduleWidgetTranslations />,
+              phase: ['schedule'],
+              node: <ScheduleWidgetPage />,
+              next: [
+                {
+                  phase: indexScheduleWidgetTranslationPagePhase,
+                  node: <IndexScheduleWidgetTranslations />,
+                },
+              ],
             },
           ],
         },

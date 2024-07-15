@@ -22,7 +22,7 @@ export class SokiServerTelegram extends SokiServerServices implements SokiServer
     };
 
     let user: User | TelegramNativeAuthUserData;
-    let tgAva: string | null = null;
+    let tgAva: string | nil = null;
     let authTypePrefix = 'TG: ';
 
     if (eventBody.tgNativeAuthorization !== undefined) {

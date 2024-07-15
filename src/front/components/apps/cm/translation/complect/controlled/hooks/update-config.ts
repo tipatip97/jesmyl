@@ -3,6 +3,7 @@ import { useScreenTranslationCurrentConfigi } from '../../../../../+complect/tra
 import { useAtom } from '../../../../../../../complect/atoms';
 import { cmMolecule } from '../../../../molecules';
 import { CmTranslationScreenConfig } from '../model';
+import { defaultCmConfig } from './configs';
 
 export const useUpdateCmTranslationConfig = () => {
   const [configs, setConfigs] = useAtom(cmMolecule.take('translationScreenConfigs'));
@@ -12,14 +13,16 @@ export const useUpdateCmTranslationConfig = () => {
       const newConfigs = [...configs];
       if (config === null) {
         newConfigs.splice(configi, 1);
-      } else newConfigs[configi] = { ...newConfigs[configi], ...config };
+      } else newConfigs[configi] = { ...defaultCmConfig, ...newConfigs[configi], ...config };
       setConfigs(newConfigs);
     },
     [configs, setConfigs],
   );
 };
 
-export const useUpdateCmCurrentTranslationConfig = () => {
+export const useUpdateCmCurrentTranslationConfig = (): ((
+  config: Partial<CmTranslationScreenConfig> | null,
+) => void) => {
   const update = useUpdateCmTranslationConfig();
   const currentConfigi = useScreenTranslationCurrentConfigi();
 

@@ -37,6 +37,18 @@ export const translationPushKinds = [
     10: 46,
     0: 4,
   },
+  {
+    3: 21,
+    0: 2,
+  },
+  {
+    3: 3,
+    5: 23,
+    7: 23,
+    9: 23,
+    11: 23,
+    0: 2,
+  },
 ].map(rule => {
   const rules = MyLib.entries(rule)
     .map(([key, val]) => [+key, val])

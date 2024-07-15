@@ -17,6 +17,8 @@ const onTypeDifferent = (type?: KeyboardInputPropsType, callback?: (value: strin
   return (value: string, prev: string | null) => callback(value || '0', prev);
 };
 
+const stopCb = (event: EventStopper) => event.stopPropagation();
+
 export class KeyboardInputStorage extends KeyboardStorageCallbacks {
   isNeedValuesInitialize = true;
   currentLanguage: KeyboardKeyTranslateLanguage = 'ru';
@@ -70,6 +72,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
         attr-placeholder={props.placeholder}
         onMouseDown={this.onFlashMouseDown}
         onClick={this.onStopPropagation}
+        onTouchStart={stopCb}
       >
         <div
           className="input-keyboard-flash-controlled-char-list"

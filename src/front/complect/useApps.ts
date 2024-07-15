@@ -23,6 +23,8 @@ export default function useApps(errorToast: (content?: React.ReactNode, config?:
       key?: Key,
       value?: NavData[Key],
     ) => {
+      if (appConfigs[appName] === undefined) return;
+
       const jump = (phase: RoutePathVariated<NavData>) => {
         if (appName !== 'index') {
           soki.onAppChange(appName);

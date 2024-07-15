@@ -5,7 +5,7 @@ import { SokiServiceCallback } from '../../complect/soki/soki.model';
 import { packScheduleWidgetInviteLink } from './complect';
 import { ScheduleStorage } from './models/ScheduleWidget.model';
 
-export const indexService: SokiServiceCallback = (key, value, eventData, getCapsule, client) => {
+export const indexService: SokiServiceCallback = (key, value, getCapsule, { client, eventData, requestId }) => {
   return new Promise((resolve, reject) => {
     if (key === 'swInvite') {
       const tryInvite = (authTries: number) => {
@@ -50,6 +50,32 @@ export const indexService: SokiServiceCallback = (key, value, eventData, getCaps
       };
 
       tryInvite(10);
+      return;
+    }
+
+    if (key === 'takeDaySchedule') {
+      const schedules: ScheduleStorage<string> = filer.contents.index['schedules'].data;
+
+      if (schedules.list === undefined) return;
+
+      const chatInstance = value;
+
+      const schedule = schedules.list.find(sch => sch.tgChatReqs?.endsWith('/' + chatInstance));
+
+      if (schedule === undefined) return;
+
+      sokiServer.send(
+        {
+          appName: 'index',
+          service: {
+            key,
+            value: schedule,
+          },
+          requestId,
+        },
+        client,
+      );
+
       return;
     }
 

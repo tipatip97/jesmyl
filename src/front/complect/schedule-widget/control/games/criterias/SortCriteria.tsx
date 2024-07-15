@@ -1,9 +1,5 @@
 import { useMemo, useState } from 'react';
-import {
-  IScheduleWidgetTeamCriteria,
-  ScheduleWidgetUserRoleRight,
-  scheduleWidgetUserRights,
-} from '../../../../../models';
+import { IScheduleWidgetTeamCriteria } from '../../../../../models';
 import TheButton from '../../../../Button';
 import DebouncedSearchInput from '../../../../DebouncedSearchInput';
 import { ExpandableContent } from '../../../../expand/ExpandableContent';
@@ -17,11 +13,14 @@ import { IconSortingAZ01StrokeRounded } from '../../../../the-icon/icons/sorting
 import { IScheduleWidgetUser } from '../../../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
 import ScheduleWidgetRemovableUserFace from '../RemovableUserFace';
+import { checkIsUserPhotoable } from '../utils';
 import ScheduleWidgetTeamsCriteriaSorterScreen from './sort/SorterScreen';
 
 interface Props {
   criteria: IScheduleWidgetTeamCriteria;
 }
+
+const itemIt = <Item,>({ item }: { item: Item }) => item;
 
 export default function ScheduleWidgetSortCriteria({ scope, criteria }: StrongComponentProps & Props) {
   const rights = useScheduleWidgetRightsContext();
@@ -33,11 +32,7 @@ export default function ScheduleWidgetSortCriteria({ scope, criteria }: StrongCo
     const usersForSort: IScheduleWidgetUser[] = [];
 
     rights.schedule.ctrl.users.forEach(user => {
-      if (
-        !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
-        scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadTitles)
-      )
-        return;
+      if (!checkIsUserPhotoable(user)) return;
 
       usersForSort.push(user);
 
@@ -54,11 +49,11 @@ export default function ScheduleWidgetSortCriteria({ scope, criteria }: StrongCo
 
   const [term, setTerm] = useState('');
   const filteredUsers: IScheduleWidgetUser[] = useMemo(
-    () => (!term ? sortedUsers : mylib.searchRate(sortedUsers, term, ['fio']).map(({ item }) => item)),
+    () => (!term ? sortedUsers : mylib.searchRate(sortedUsers, term, ['fio']).map(itemIt)),
     [sortedUsers, term],
   );
   const filteredUncriteriedUsers: IScheduleWidgetUser[] = useMemo(
-    () => (!term ? uncriteriedUsers : mylib.searchRate(uncriteriedUsers, term, ['fio']).map(({ item }) => item)),
+    () => (!term ? uncriteriedUsers : mylib.searchRate(uncriteriedUsers, term, ['fio']).map(itemIt)),
     [uncriteriedUsers, term],
   );
 
@@ -122,7 +117,7 @@ export default function ScheduleWidgetSortCriteria({ scope, criteria }: StrongCo
         {!uncriteriedUsers.length || (
           <>
             <h5>Неопределённые участники ({uncriteriedUsers.length} чел)</h5>
-            {filteredUncriteriedUsers.map((user, useri) => (
+            {filteredUncriteriedUsers.map(user => (
               <ScheduleWidgetRemovableUserFace
                 key={user.mi}
                 user={user}

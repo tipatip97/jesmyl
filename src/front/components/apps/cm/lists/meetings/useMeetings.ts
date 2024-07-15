@@ -4,32 +4,24 @@ import useCmNav from '../../base/useCmNav';
 import { useCols } from '../../cols/useCols';
 import { cmMolecule } from '../../molecules';
 import { Meetings } from './Meetings';
-import { IExportableMeetings } from './Meetings.model';
+import { MeetingsEvent } from './MeetingsEvent';
 
-let localMeetings: Meetings | nil;
-let localIMeetings: IExportableMeetings | nil;
-
-export function useMeetings() {
+export function useMeetings(): {
+  meetings: Meetings | undefined;
+  currentEvent: MeetingsEvent | undefined;
+  goToEvent: (eventw: number) => void;
+} {
   const imeetings = useAtomValue(cmMolecule.take('meetings'));
   const {
     goTo,
     appRouteData: { eventw },
   } = useCmNav();
   const cols = useCols();
-  const meetings = useMemo(() => {
-    if (!cols) return;
-    if (localIMeetings && localIMeetings === imeetings) return localMeetings;
-
-    localMeetings = new Meetings(imeetings, cols);
-    localIMeetings = imeetings;
-    return localMeetings;
-  }, [cols, imeetings]);
+  const meetings = useMemo(() => cols && new Meetings(imeetings, cols), [cols, imeetings]);
 
   return {
     meetings,
     currentEvent: meetings?.events?.find(meeting => meeting.wid === eventw),
-    goToEvent: (eventw: number) => {
-      goTo({ place: 'event', data: { eventw } });
-    },
+    goToEvent: (eventw: number) => goTo({ place: 'event', data: { eventw } }),
   };
 }

@@ -1,12 +1,7 @@
 import { useCallback } from 'react';
 import { useCurrentTranslationConfigiValue } from '../atoms';
 import { ScreenTranslationConfig } from '../model';
-import { useScreenTranslationConfigsSet, useScreenTranslationConfigsValue } from '../molecules';
-
-const defaultConfig: ScreenTranslationConfig = {
-  title: 'Трансляция',
-  proportion: 1,
-};
+import { defaultComplectConfig, useScreenTranslationConfigsSet, useScreenTranslationConfigsValue } from '../molecules';
 
 export const useScreenTranslationConfigs: () => ScreenTranslationConfig[] = () => useScreenTranslationConfigsValue();
 
@@ -21,7 +16,7 @@ export const useAddScreenTranslationConfig = () => {
   const set = useScreenTranslationConfigsSet();
 
   return useCallback(() => {
-    set([...configs, { ...defaultConfig, title: defaultConfig.title + ' №' + (configs.length + 1) }]);
+    set([...configs, { ...defaultComplectConfig, title: defaultComplectConfig.title + ' №' + (configs.length + 1) }]);
 
     return configs.length;
   }, [configs, set]);

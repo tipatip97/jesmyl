@@ -7,7 +7,12 @@ import { LocalSokiAuth } from '../../../../complect/soki/soki.model';
 import smylib from '../../../../shared/SMyLib';
 import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
 import { tglogger } from '../../../../sides/telegram-bot/log/log-bot';
-import { IScheduleWidget, IScheduleWidgetUser } from '../../models/ScheduleWidget.model';
+import {
+  IScheduleWidget,
+  IScheduleWidgetDayEvent,
+  IScheduleWidgetUser,
+  IScheduleWidgetWid,
+} from '../../models/ScheduleWidget.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../rights';
 import ScheduleWidgetCleans from '../utils/Cleans';
 import {
@@ -25,9 +30,11 @@ const getSchedule = (scheduleScalar: number | IScheduleWidget<string>) =>
 
 const jobs: Record<number, nodeSchedule.Job> = {};
 const findUserAdminFunc = (user: IScheduleWidgetUser) =>
-  scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.TotalRedact);
+  scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.TotalRedact) && user.tgId;
 const unsubscribeQueryDataNamePrefix = 'sch-wdgt-unsub:';
 const subscribeQueryDataNamePrefix = 'sch-wdgt-sub:';
+
+const unsubOptions = {} as Record<IScheduleWidgetWid, SendMessageOptions>;
 
 const putInTgTag = (tag: '' | 'b' | 'i' | 'u' | 's' | 'tg-spoiler' | 'code' | 'pre', text: string) =>
   tag === '' ? text : `<${tag}>${text}</${tag}>`;
@@ -54,7 +61,12 @@ export const indexScheduleSetMessageInform = (
   const now = Date.now();
   const daysLen = schedule.days.length;
   const informBeforeTime = schedule.tgInformTime;
-  const tgChatId = schedule.tgChatId === undefined ? null : isNaN(+schedule.tgChatId) ? null : +schedule.tgChatId;
+  const tgChatId =
+    schedule.tgChatReqs === undefined
+      ? null
+      : isNaN(parseInt(schedule.tgChatReqs, 10))
+        ? null
+        : parseInt(schedule.tgChatReqs, 10);
 
   dayLoop: for (let dayi = 0; dayi < daysLen; dayi++) {
     const day = schedule.days[dayi];
@@ -66,43 +78,88 @@ export const indexScheduleSetMessageInform = (
 
     for (let eventi = 0; eventi < day.list.length; eventi++) {
       const event = day.list[eventi];
-      const eventTimeMs = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]) * smylib.howMs.inMin;
+      const eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
+      const eventTimeMs = eventTimeMin * smylib.howMs.inMin;
 
       if (now > indexScheduleGetEventFinishMs(schedule, wakeupMs, dayi, times[eventi]) - eventTimeMs) continue;
 
       const eventStartMs = dayStartMs + wakeupMs + times[eventi] * smylib.howMs.inMin - eventTimeMs;
 
       const minutesRemaning = (eventStartMs - now) / smylib.howMs.inMin;
-      const time =
+
+      let time =
         event.tgInform !== 0 && informBeforeTime > 0
           ? minutesRemaning > informBeforeTime
             ? now + (minutesRemaning - informBeforeTime) * smylib.howMs.inMin + 100
             : minutesRemaning > 0.3
-              ? now + 100
+              ? null
               : eventStartMs
           : eventStartMs;
 
-      jobs[schedule.w] = nodeSchedule.scheduleJob(time, () => {
+      if (time === null) {
+        const prevEvent = day.list[eventi - 1] as IScheduleWidgetDayEvent | und;
+        const prevEventTimeMin =
+          prevEvent && ScheduleWidgetCleans.takeEventTm(prevEvent, schedule.types[prevEvent.type]);
+
+        time =
+          now +
+          100 +
+          (prevEventTimeMin !== undefined && prevEventTimeMin <= informBeforeTime && prevEventTimeMin > 4
+            ? smylib.howMs.inMin
+            : 0);
+      }
+
+      jobs[schedule.w] = nodeSchedule.scheduleJob(time, async () => {
         const timeToEvent = Math.ceil((eventStartMs - Date.now()) / smylib.howMs.inMin);
         const isWithDelay = event.tgInform !== 0 && timeToEvent > 0;
 
-        const message =
-          (isWithDelay
-            ? 'Через ' + timeToEvent + smylib.declension(timeToEvent, ' минуту ', ' минуты ', ' минут ')
-            : '') +
-          (isWithDelay
-            ? putInTgTag('b', schedule.types[event.type].title) + (event.topic ? ': ' + event.topic : '')
-            : putInTgTag(
-                event.secret ? 'b' : 'pre',
-                schedule.types[event.type].title + (event.topic ? ': ' + event.topic : ''),
-              )) +
+        let delayTitlePrefix = '';
+        let nextEventTitle = '';
+
+        const makeTitle = (eventi: number, prefix: string = ''): string => {
+          const event = day.list[eventi];
+
+          if (event == null) return '';
+
+          const eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
+          const title = putInTgTag('b', schedule.types[event.type].title) + (event.topic ? ': ' + event.topic : '');
+
+          return (
+            prefix +
+            (event.secret ? putInTgTag('tg-spoiler', title) : title) +
+            (eventTimeMin === 0 ? makeTitle(eventi + 1, ' / ') : '')
+          );
+        };
+
+        if (isWithDelay) {
+          delayTitlePrefix = 'Через ' + timeToEvent + 'м. ';
+        } else {
+          if (day.list[eventi + 1] != null && eventTimeMin > informBeforeTime) {
+            let timeTo = `через ${eventTimeMin}м.`;
+
+            if (eventTimeMin > 60) {
+              const date = new Date(eventStartMs + eventTimeMs);
+              timeTo = `в ${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
+            }
+
+            nextEventTitle = '\n\n| ' + putInTgTag('i', `${makeTitle(eventi + 1)} - ${timeTo}`);
+          }
+        }
+
+        let title = makeTitle(eventi);
+
+        let message =
+          delayTitlePrefix +
+          title +
+          nextEventTitle +
           '\n\n' +
           (event.tgInform === 0 && event.dsc ? putInTgTag(event.secret ? 'i' : 'code', event.dsc) + '\n\n' : '') +
+          '| ' +
           putInTgTag('u', putInTgTag('i', schedule.title));
 
         const text = event.secret ? putInTgTag('tg-spoiler', message) : message;
 
-        const options: SendMessageOptions = {
+        const options: SendMessageOptions = (unsubOptions[schedule.w] ??= {
           reply_markup: {
             inline_keyboard: [
               [
@@ -113,31 +170,39 @@ export const indexScheduleSetMessageInform = (
               ],
             ],
           },
+        });
+
+        let sendUserMessage = async (tgId: number) => {
+          try {
+            if (tgChatId !== null) {
+              await jesmylTgBot.bot.getChatMember(tgChatId, tgId);
+              return;
+            }
+          } catch (error) {}
+
+          jesmylTgBot.sendMessage(tgId, text, tglogger, options);
         };
 
-        (async () => {
-          for (const user of schedule.ctrl.users) {
-            if (
-              user.tgId === undefined ||
-              user.tgInform === 0 ||
-              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
-              (event.secret &&
-                !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
-            )
-              continue;
+        try {
+          if (tgChatId !== null) await jesmylTgBot.sendMessage(tgChatId, text, tglogger);
+          else
+            sendUserMessage = async (tgId: number) => {
+              jesmylTgBot.sendMessage(tgId, text, tglogger, options);
+            };
+        } catch (error) {}
 
-            try {
-              if (tgChatId !== null) {
-                await jesmylTgBot.bot.getChatMember(tgChatId, user.tgId);
-                return;
-              }
-            } catch (error) {}
+        for (const user of schedule.ctrl.users) {
+          if (
+            user.tgId === undefined ||
+            user.tgInform === 0 ||
+            !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ||
+            (event.secret &&
+              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.ReadSpecials))
+          )
+            continue;
 
-            jesmylTgBot.sendMessage(user.tgId, text, tglogger, options);
-          }
-        })();
-
-        if (tgChatId !== null) jesmylTgBot.sendMessage(tgChatId, text, tglogger);
+          sendUserMessage(user.tgId);
+        }
 
         if (event.tgInform !== 0) {
           let auth = invokerAuth;

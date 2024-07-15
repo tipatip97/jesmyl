@@ -1,41 +1,33 @@
-import { ReactNode } from 'react';
-import { AppName } from '../../../app/App.model';
-import { useAuth } from '../../../components/index/molecules';
+import useIndexNav from '../../../components/index/complect/useIndexNav';
+import { useAuth, useIndexSchedules } from '../../../components/index/molecules';
 import useConnectionState from '../../../components/index/useConnectionState';
 import PhaseContainerConfigurer from '../../phase-container/PhaseContainerConfigurer';
-import { PhaseContainerConfigurerProps } from '../../phase-container/PhaseContainerConfigurer.model';
 import StrongButton from '../../strong-control/StrongButton';
 import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
 import ScheduleWidget from '../ScheduleWidget';
-import { IScheduleWidget } from '../ScheduleWidget.model';
-import useScheduleWidget, { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
-import ScheduleCreateWidgetButton from './CreateButton';
 import { ScheduleWidgetGoToLiveTranslationButton } from '../live-translations/GoToLiveTranslationButton';
+import { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
 
-export default function ScheduleWidgetPage(
-  props: Omit<PhaseContainerConfigurerProps, 'content' | 'className'> & {
-    schedulew: number;
-    schedule?: IScheduleWidget;
-    title: string;
-    appName: AppName;
-    headTitle: ReactNode;
-  },
-) {
-  const { schedule } = useScheduleWidget(props.schedulew);
+export default function ScheduleWidgetPage() {
+  const schedules = useIndexSchedules();
+  const {
+    goBack,
+    appRouteData: { schw },
+  } = useIndexNav();
+  const schedule = schedules.list.find(({ w }) => w === schw);
   const connectionNode = useConnectionState();
   const auth = useAuth();
 
   return (
     <PhaseContainerConfigurer
-      {...props}
+      goBack={goBack}
       className="ScheduleWidgetPage"
-      headTitle={props.headTitle}
+      headTitle={schedule?.title ?? 'Мероприятие'}
       head={
         <span className="flex flex-gap margin-gap">
           {connectionNode}
           <ScheduleWidgetGoToLiveTranslationButton />
           <StrongClipboardPicker />
-          {props.head}
         </span>
       }
       content={
@@ -54,11 +46,7 @@ export default function ScheduleWidgetPage(
             <ScheduleWidget schedule={schedule} />
           )
         ) : (
-          <ScheduleCreateWidgetButton
-            appName={props.appName}
-            title={props.title}
-            schw={props.schedulew}
-          />
+          <div className="flex center color--ko">Мероприятие не найдено</div>
         )
       }
     />

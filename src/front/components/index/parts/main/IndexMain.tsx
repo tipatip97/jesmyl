@@ -6,7 +6,6 @@ import useFullContent from '../../../../complect/fullscreen-content/useFullConte
 import useToast from '../../../../complect/modal/useToast';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import IconButton from '../../../../complect/the-icon/IconButton';
-import { IconAuthorizedStrokeRounded } from '../../../../complect/the-icon/icons/authorized';
 import { IconComputerSettingsStrokeRounded } from '../../../../complect/the-icon/icons/computer-settings';
 import { IconCubeStrokeRounded } from '../../../../complect/the-icon/icons/cube';
 import { IconInformationCircleStrokeRounded } from '../../../../complect/the-icon/icons/information-circle';
@@ -19,6 +18,7 @@ import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import IndexAbout from '../IndexAbout';
+import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthButton';
 import { IndexProfileInfo } from './ProfileInfo';
 import { UserMore } from './UserMore';
 
@@ -84,13 +84,7 @@ export default function IndexMain() {
             onGoTo={() => goTo('schedules')}
             isForceShow={auth.level >= 50}
           />
-          {!auth.nick && (
-            <BrutalItem
-              icon={<IconAuthorizedStrokeRounded />}
-              title="Авторизоваться"
-              onClick={() => goTo('login')}
-            />
-          )}
+          {!auth.nick && <IndexTelegramInlineAuthButton />}
           <BrutalItem
             icon={<IconSettings02StrokeRounded />}
             title="Настройки"

@@ -117,6 +117,30 @@
         cursor: pointer;
       }
 
+      &.in-group {
+        .day-event {
+          border-radius: 0;
+        }
+      }
+
+      &.first-in-group {
+        margin-top: 10px;
+
+        .day-event {
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+      }
+
+      &.last-in-group {
+        margin-bottom: 10px;
+
+        .day-event {
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
+      }
+
       > .insert-panel {
         position: absolute;
         right: 70px;

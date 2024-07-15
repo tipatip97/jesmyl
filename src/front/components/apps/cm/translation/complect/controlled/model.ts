@@ -8,4 +8,5 @@ export type CmTranslationTextScreenConfig = ScreenTranslationPositionConfig & Sc
 
 export interface CmTranslationScreenConfig extends CmTranslationTextScreenConfig, ScreenTranslationBackgroundConfigs {
   subs?: Partial<Record<'next', CmTranslationTextScreenConfig>>;
+  pushKind?: number;
 }

@@ -24,7 +24,7 @@ export default function TheComposition() {
   const { addLaterComw } = useLaterComList();
   const [popupComToolsNode, openPopuComTools] = useBottomPopup(ComTools);
   const { topTools } = useMigratableComTools();
-  const [comList] = useComPack(ccom);
+  const [comList] = useComPack();
   const [playerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
   const isMetronomeHide = useAtomValue(cmMolecule.take('isMetronomeHide'));
   const comAudio = ccom?.audio.trim();

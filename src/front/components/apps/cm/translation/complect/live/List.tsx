@@ -1,15 +1,17 @@
 import { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-import { makeRegExp } from '../../../../../../complect/makeRegExp';
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import RollControled from '../../../base/RolledContent';
 import { useChordVisibleVariant } from '../../../base/useChordVisibleVariant';
 import { Com } from '../../../col/com/Com';
 import ComLine from '../../../col/com/line/ComLine';
 import ComOrders from '../../../col/com/orders/ComOrders';
+import { CmTranslationScreenConfig } from '../controlled/model';
 
 interface Props {
   texti: number;
   com: Com;
+  config: CmTranslationScreenConfig;
 }
 
 const _lineNamePrefix = 'live-translation-line';
@@ -36,7 +38,7 @@ export const CmLiveTranslationList = (props: Props) => {
 
   const querySelector = useMemo(() => {
     let count = 0;
-    const mapLine = props.com.translationMap();
+    const mapLine = props.com.translationMap(props.config.pushKind);
 
     for (let i = 0; i < mapLine.length; i++) {
       if (i >= props.texti) {

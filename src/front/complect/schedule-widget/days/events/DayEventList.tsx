@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
-import StrongDiv from '../../../strong-control/StrongDiv';
-import StrongEvaButton from '../../../strong-control/StrongEvaButton';
-import { TheIconLoading } from '../../../the-icon/IconLoading';
+import ScheduleWidgetCleans from '../../../../../back/apps/index/schedules/utils/Cleans';
 import { IconArrowLeftDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-left-double';
 import { IconCropStrokeRounded } from '../../../../complect/the-icon/icons/crop';
 import { IconDelete01StrokeRounded } from '../../../../complect/the-icon/icons/delete-01';
 import { IconLeftToRightListBulletStrokeRounded } from '../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
+import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
+import StrongDiv from '../../../strong-control/StrongDiv';
+import StrongEvaButton from '../../../strong-control/StrongEvaButton';
+import { TheIconLoading } from '../../../the-icon/IconLoading';
 import useIsRedactArea from '../../../useIsRedactArea';
-import { IScheduleWidgetDay } from '../../ScheduleWidget.model';
+import { IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetEventList from '../../events/EventList';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
@@ -43,7 +44,7 @@ export default function ScheduleWidgetDayEventList({
       <IconLeftToRightListBulletStrokeRounded className="color--7" />
       {' Распорядок'}
     </>,
-    isExpand => isExpand && editIcon,
+    isExpand => (isExpand || isForceExpand) && editIcon,
   );
 
   const usedCounts = useMemo(() => {
@@ -120,6 +121,17 @@ export default function ScheduleWidgetDayEventList({
                 </div>
               );
 
+            const eventTm = ScheduleWidgetCleans.takeEventTm(event, rights.schedule.types[event.type]);
+            const prevEvent = day.list[eventi - 1] as IScheduleWidgetDayEvent | und;
+            const prevTm = ScheduleWidgetCleans.takeEventTm(
+              prevEvent,
+              prevEvent && rights.schedule.types[prevEvent.type],
+            );
+
+            let isFirstInGroup = prevEvent && prevTm !== 0 && eventTm === 0;
+            let isInGroup = prevEvent && prevTm === 0 && eventTm === 0;
+            let isLastInGroup = prevEvent && prevTm === 0 && eventTm !== 0;
+
             const node = (
               <div
                 key={event.mi}
@@ -127,7 +139,10 @@ export default function ScheduleWidgetDayEventList({
                   'day-event-wrapper flex flex-gap' +
                   (moveEventMi === event.mi ? ' move-me' : '') +
                   (isNeighbour ? ' neighbour' : '') +
-                  (eventi === 0 ? ' first' : '')
+                  (eventi === 0 ? ' first' : '') +
+                  (isInGroup ? ' in-group' : '') +
+                  (isFirstInGroup ? ' first-in-group' : '') +
+                  (isLastInGroup ? ' last-in-group' : '')
                 }
                 onClick={
                   moveEventMi === event.mi

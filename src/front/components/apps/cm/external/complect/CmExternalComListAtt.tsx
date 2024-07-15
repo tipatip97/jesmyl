@@ -21,21 +21,19 @@ import { useMeetings } from '../../lists/meetings/useMeetings';
 import { CmComBindAttach } from '../cmExternalAttach';
 import TheComForFullScreen from './TheComForFullScreen';
 
-const itIt = (it: unknown) => it;
-
-const cbStopper: CallbackStopper = event => event.stopPropagation();
-
-export default function CmExternalComListAtt({
-  value,
-  scope,
-  isRedact,
-  switchIsRedact,
-}: {
+interface Props {
   value: CmComBindAttach;
   scope: string;
   isRedact?: boolean;
   switchIsRedact: (is?: boolean) => void;
-}) {
+}
+
+const itIt = (it: unknown) => it;
+
+const cbStopper: CallbackStopper = event => event.stopPropagation();
+const emptyFunc = () => {};
+
+export default function CmExternalComListAtt({ value, scope, isRedact, switchIsRedact }: Props) {
   const [removedComws, setRemovedComws] = useState<number[]>([]);
   const [ccom, setCcom] = useState<Com | und>();
   const cat = useCcat(true);
@@ -49,87 +47,86 @@ export default function CmExternalComListAtt({
 
     return (
       <div className="margin-giant-gap-t">
-        {comws?.map((comw, comwi) => {
-          const com = cat?.coms.find(com => com.wid === comw);
+        {cat &&
+          comws?.map((comw, comwi) => {
+            const com = cat.coms.find(com => com.wid === comw);
 
-          if (com === undefined) return null;
+            if (com === undefined) return null;
 
-          return (
-            <ComFace
-              key={comw}
-              com={com}
-              comi={comwi}
-              importantOnClick={() => {
-                setCcom(com);
-                showComposition();
-              }}
-              description={() => (
-                <div className="flex flex-gap">
-                  {!comwi || (
+            return (
+              <ComFace
+                key={comw}
+                com={com}
+                comi={comwi}
+                importantOnClick={emptyFunc}
+                description={() => (
+                  <div className="flex flex-gap">
+                    {!comwi || (
+                      <StrongEvaButton
+                        scope={scope}
+                        fieldName="listKey move"
+                        fieldKey="comws"
+                        fieldValue={{
+                          find: ['.', '===', comw],
+                          beforei: comwi - 1,
+                        }}
+                        cud="U"
+                        Icon={IconArrowDataTransferVerticalStrokeRounded}
+                        className="color--3 margin-giant-gap-b"
+                      />
+                    )}
                     <StrongEvaButton
                       scope={scope}
-                      fieldName="listKey move"
+                      fieldName="listKey"
                       fieldKey="comws"
-                      fieldValue={{
-                        find: ['.', '===', comw],
-                        beforei: comwi - 1,
-                      }}
-                      cud="U"
-                      Icon={IconArrowDataTransferVerticalStrokeRounded}
-                      className="color--3 margin-giant-gap-b"
+                      fieldValue={['.', '===', comw]}
+                      cud="D"
+                      Icon={IconDelete01StrokeRounded}
+                      onSuccess={
+                        removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
+                      }
+                      className="color--ko"
                     />
-                  )}
-                  <StrongEvaButton
-                    scope={scope}
-                    fieldName="listKey"
-                    fieldKey="comws"
-                    fieldValue={['.', '===', comw]}
-                    cud="D"
-                    Icon={IconDelete01StrokeRounded}
-                    onSuccess={
-                      removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
-                    }
-                    className="color--ko"
-                  />
-                </div>
-              )}
-            />
-          );
-        })}
+                  </div>
+                )}
+              />
+            );
+          })}
         {!uniqRemovedComws.length || (
           <>
             <h2>Удалённые песни</h2>
-            {uniqRemovedComws.map((comw, comwi) => {
-              const com = cat?.coms.find(com => com.wid === comw);
+            {cat &&
+              uniqRemovedComws.map((comw, comwi) => {
+                const com = cat.coms.find(com => com.wid === comw);
 
-              return (
-                com && (
-                  <ComFace
-                    key={com.wid}
-                    com={com}
-                    comi={comwi}
-                    importantOnClick={() => {
-                      setCcom(com);
-                      showComposition();
-                    }}
-                    description={() => (
-                      <StrongEvaButton
-                        scope={scope}
-                        fieldName="listKey"
-                        fieldKey="comws"
-                        fieldValue={comw}
-                        cud="C"
-                        Icon={IconLinkBackwardStrokeRounded}
-                        className="color--ok"
-                        onSuccess={
-                          removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
-                        }
-                      />
-                    )}
-                  />
-                )
-              );
-            })}
+                return (
+                  com && (
+                    <ComFace
+                      key={com.wid}
+                      com={com}
+                      comi={comwi}
+                      importantOnClick={() => {
+                        setCcom(com);
+                        showComposition();
+                      }}
+                      description={() => (
+                        <StrongEvaButton
+                          scope={scope}
+                          fieldName="listKey"
+                          fieldKey="comws"
+                          fieldValue={comw}
+                          cud="C"
+                          Icon={IconLinkBackwardStrokeRounded}
+                          className="color--ok"
+                          onSuccess={
+                            removedComws.includes(comw) ? undefined : () => setRemovedComws(comws => [...comws, comw])
+                          }
+                        />
+                      )}
+                    />
+                  )
+                );
+              })}
           </>
         )}
       </div>

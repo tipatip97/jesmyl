@@ -10,7 +10,6 @@ import { IconSchoolReportCardStrokeRounded } from '../../complect/the-icon/icons
 import { IconShapesStrokeRounded } from '../../complect/the-icon/icons/shapes';
 import { useAuth } from '../../components/index/molecules';
 import ShareEvaButton from '../ShareEvaButton';
-import { useIsRememberExpand } from '../expand/useIsRememberExpand';
 import mylib from '../my-lib/MyLib';
 import { crossApplicationLinkCoder } from '../qr-code/useQRMaster';
 import StrongButton from '../strong-control/StrongButton';
@@ -52,31 +51,29 @@ export default function ScheduleWidget({
 
   const { editIcon, isRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
   const [startTime, setStartTime] = useState(schedule?.start);
-  const [expandNode, isExpand] = useIsRememberExpand(
-    selfScope,
-    <ScheduleWidgetTopicTitle
-      prefix={<IconCalendar03StrokeRounded />}
-      titleBox={schedule ?? {}}
-      altTitle="Мероприятие"
-      topicBox={schedule}
-    />,
-    isExpand =>
-      isExpand && (
-        <span className="flex flex-gap">
-          {schedule && (
-            <ShareEvaButton
-              url={crossApplicationLinkCoder.encode({
-                appName: 'index',
-                key: 'schw',
-                value: schedule.w,
-              })}
-              title={schedule.title}
-              text={`Мероприятие ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`}
-            />
-          )}
-          {editIcon}
-        </span>
-      ),
+  const titleNode = (
+    <div className="flex full-width between">
+      <ScheduleWidgetTopicTitle
+        prefix={<IconCalendar03StrokeRounded />}
+        titleBox={schedule ?? {}}
+        altTitle="Мероприятие"
+        topicBox={schedule}
+      />
+      <span className="flex flex-gap">
+        {schedule && (
+          <ShareEvaButton
+            url={crossApplicationLinkCoder.encode({
+              appName: 'index',
+              key: 'schw',
+              value: schedule.w,
+            })}
+            title={schedule.title}
+            text={`Мероприятие ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`}
+          />
+        )}
+        {editIcon}
+      </span>
+    </div>
   );
 
   const date = useMemo(() => new Date(schedule?.start || Date.now()), [schedule?.start]);
@@ -120,13 +117,9 @@ export default function ScheduleWidget({
   if (blockContent)
     return (
       <div className="margin-sm-gap">
-        <div className="margin-gap-v">{expandNode}</div>
-        {isExpand && (
-          <>
-            <ScheduleWidgetStartTimeText schedule={schedule} />
-            {blockContent}
-          </>
-        )}
+        <div className="margin-gap-v">{titleNode}</div>
+        <ScheduleWidgetStartTimeText schedule={schedule} />
+        {blockContent}
       </div>
     );
 
@@ -147,165 +140,161 @@ export default function ScheduleWidget({
       schedule={schedule}
       rights={rights}
     >
-      <Widget className={'schedule-widget' + (isExpand ? ' expand' : '')}>
-        {expandNode}
-        {isExpand && (
-          <>
-            <div className="margin-big-gap-v">
-              {rights.isCanRedact && isRedact ? (
-                <StrongControlDateTimeExtracter
-                  scope={selfScope}
-                  fieldName="start"
-                  title="Начало"
-                  Icon={IconCalendar03StrokeRounded}
-                  value={dateValue}
-                  takeDate="day"
-                  takeTime="NO"
-                  onComponentsChange={(_, __, ___, date) => setStartTime(date.getTime())}
-                  mapExecArgs={args => ({ ...args, value: startTime })}
-                />
-              ) : (
-                <ScheduleWidgetStartTimeText
-                  schedule={schedule}
-                  date={date}
-                />
-              )}
-              {rights.isCanRead && (
+      <Widget className={'schedule-widget'}>
+        {titleNode}
+        <div className="margin-big-gap-v">
+          {rights.isCanRedact && isRedact ? (
+            <StrongControlDateTimeExtracter
+              scope={selfScope}
+              fieldName="start"
+              title="Начало"
+              Icon={IconCalendar03StrokeRounded}
+              value={dateValue}
+              takeDate="day"
+              takeTime="NO"
+              onComponentsChange={(_, __, ___, date) => setStartTime(date.getTime())}
+              mapExecArgs={args => ({ ...args, value: startTime })}
+            />
+          ) : (
+            <ScheduleWidgetStartTimeText
+              schedule={schedule}
+              date={date}
+            />
+          )}
+          {rights.isCanRead && (
+            <>
+              {isRedact && (
                 <>
-                  {isRedact && (
-                    <>
-                      <StrongEditableField
-                        scope={selfScope}
-                        fieldName="field"
-                        fieldKey="title"
-                        value={schedule}
-                        isRedact
-                        Icon={IconSchoolReportCardStrokeRounded}
-                        title="Заголовок"
-                      />
-                      <StrongEditableField
-                        scope={selfScope}
-                        fieldName="field"
-                        fieldKey="topic"
-                        value={schedule}
-                        isRedact
-                        Icon={IconBookmark03StrokeRounded}
-                        title="Название"
-                      />
-                    </>
-                  )}
-                  {(isRedact || schedule.dsc) && (
-                    <StrongEditableField
-                      scope={selfScope}
-                      fieldName="field"
-                      fieldKey="dsc"
-                      value={schedule}
-                      isRedact={isRedact}
-                      multiline
-                      textClassName=" "
-                      Icon={IconFile02StrokeRounded}
-                      title="Описание"
-                    />
-                  )}
-                  {rights.isCanReadTitles && (
-                    <>
-                      {rights.myUser && <ScheduleWidgetControl scope={selfScope} />}
-                      <ScheduleWidgetLists
-                        scope={selfScope}
-                        scheduleScope={selfScope}
-                      />
-                    </>
-                  )}
-
-                  <ScheduleWidgetMyUserTgInform
+                  <StrongEditableField
                     scope={selfScope}
-                    schedule={schedule}
+                    fieldName="field"
+                    fieldKey="title"
+                    value={schedule}
+                    isRedact
+                    Icon={IconSchoolReportCardStrokeRounded}
+                    title="Заголовок"
                   />
-
-                  <ScheduleWidgetWatchLiveTranslationButton schedule={schedule} />
-
-                  {isRedact && (
-                    <>
-                      <ScheduleWidgetEventList
-                        selectScope=""
-                        selectFieldName=""
-                        scheduleScope={selfScope}
-                        postfix={
-                          <>
-                            Шаблоны событий <IconArrowRight01StrokeRounded />
-                          </>
-                        }
-                        Icon={IconShapesStrokeRounded}
-                        schedule={schedule}
-                      />
-                      <ScheduleWidgetCustomAttachments
-                        scope={selfScope}
-                        tatts={schedule.tatts}
-                      />
-                      {!schedule.days.length && !schedule.tatts.length && !schedule.types.length && (
-                        <ScheduleWidgetCopy schw={schedule.w} />
-                      )}
-                      {!schedule.start || (
-                        <StrongEvaButton
-                          scope={selfScope}
-                          fieldName="days"
-                          Icon={IconPlusSignStrokeRounded}
-                          postfix="Добавить день"
-                          confirm="Дни удалять не возможно! Создать новый?"
-                          className="margin-gap-v"
-                        />
-                      )}
-                      {auth && auth.level >= 80 && (
-                        <StrongEvaButton
-                          scope={initialScheduleScope}
-                          fieldName="list"
-                          cud="D"
-                          className="color--ko"
-                          Icon={IconDelete02StrokeRounded}
-                          confirm="Восстановить расписание будет не возможно. Продолжить?"
-                          postfix="Удалить расписание"
-                          mapExecArgs={args => {
-                            return {
-                              ...args,
-                              schw: schedule.w,
-                            };
-                          }}
-                        />
-                      )}
-                    </>
-                  )}
-                  {rights.myUser === undefined &&
-                    (rights.auth.level > 0 ? (
-                      <StrongButton
-                        scope={takeScheduleStrongScopeMaker(schedule.w)}
-                        fieldName="addMeByLink"
-                        title="Хочу комментить события"
-                        className="margin-giant-gap-t"
-                      />
-                    ) : (
-                      <div className="margin-big-gap-t">
-                        Комментировать события могут только регистрированные пользователи
-                      </div>
-                    ))}
-                  {schedule.days.map((day, dayi) => {
-                    if (dayi === 0 && schedule.withTech && !rights.isCanReadSpecials) return null;
-
-                    return (
-                      <ScheduleWidgetDay
-                        scope={selfScope}
-                        key={dayi}
-                        day={day}
-                        dayi={dayi}
-                        schedule={schedule}
-                        isCanOpenFull
-                      />
-                    );
-                  })}
+                  <StrongEditableField
+                    scope={selfScope}
+                    fieldName="field"
+                    fieldKey="topic"
+                    value={schedule}
+                    isRedact
+                    Icon={IconBookmark03StrokeRounded}
+                    title="Название"
+                  />
                 </>
               )}
-            </div>
-          </>
-        )}
+              {(isRedact || schedule.dsc) && (
+                <StrongEditableField
+                  scope={selfScope}
+                  fieldName="field"
+                  fieldKey="dsc"
+                  value={schedule}
+                  isRedact={isRedact}
+                  multiline
+                  textClassName=" "
+                  Icon={IconFile02StrokeRounded}
+                  title="Описание"
+                />
+              )}
+              {rights.isCanReadTitles && (
+                <>
+                  {rights.myUser && <ScheduleWidgetControl scope={selfScope} />}
+                  <ScheduleWidgetLists
+                    scope={selfScope}
+                    scheduleScope={selfScope}
+                  />
+                </>
+              )}
+
+              <ScheduleWidgetMyUserTgInform
+                scope={selfScope}
+                schedule={schedule}
+              />
+
+              <ScheduleWidgetWatchLiveTranslationButton schedule={schedule} />
+
+              {isRedact && (
+                <>
+                  <ScheduleWidgetEventList
+                    selectScope=""
+                    selectFieldName=""
+                    scheduleScope={selfScope}
+                    postfix={
+                      <>
+                        Шаблоны событий <IconArrowRight01StrokeRounded />
+                      </>
+                    }
+                    Icon={IconShapesStrokeRounded}
+                    schedule={schedule}
+                  />
+                  <ScheduleWidgetCustomAttachments
+                    scope={selfScope}
+                    tatts={schedule.tatts}
+                  />
+                  {!schedule.days.length && !schedule.tatts.length && !schedule.types.length && (
+                    <ScheduleWidgetCopy schw={schedule.w} />
+                  )}
+                  {!schedule.start || (
+                    <StrongEvaButton
+                      scope={selfScope}
+                      fieldName="days"
+                      Icon={IconPlusSignStrokeRounded}
+                      postfix="Добавить день"
+                      confirm="Дни удалять не возможно! Создать новый?"
+                      className="margin-gap-v"
+                    />
+                  )}
+                  {auth && auth.level >= 80 && (
+                    <StrongEvaButton
+                      scope={initialScheduleScope}
+                      fieldName="list"
+                      cud="D"
+                      className="color--ko"
+                      Icon={IconDelete02StrokeRounded}
+                      confirm="Восстановить расписание будет не возможно. Продолжить?"
+                      postfix="Удалить расписание"
+                      mapExecArgs={args => {
+                        return {
+                          ...args,
+                          schw: schedule.w,
+                        };
+                      }}
+                    />
+                  )}
+                </>
+              )}
+              {rights.myUser === undefined &&
+                (rights.auth.level > 0 ? (
+                  <StrongButton
+                    scope={takeScheduleStrongScopeMaker(schedule.w)}
+                    fieldName="addMeByLink"
+                    title="Хочу комментить события"
+                    className="margin-giant-gap-t"
+                  />
+                ) : (
+                  <div className="margin-big-gap-t">
+                    Комментировать события могут только регистрированные пользователи
+                  </div>
+                ))}
+              {schedule.days.map((day, dayi) => {
+                if (dayi === 0 && schedule.withTech && !rights.isCanReadSpecials) return null;
+
+                return (
+                  <ScheduleWidgetDay
+                    scope={selfScope}
+                    key={dayi}
+                    day={day}
+                    dayi={dayi}
+                    schedule={schedule}
+                    isCanOpenFull
+                  />
+                );
+              })}
+            </>
+          )}
+        </div>
       </Widget>
     </ScheduleWidgetContextWrapper>
   );

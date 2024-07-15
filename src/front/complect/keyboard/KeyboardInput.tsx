@@ -29,6 +29,8 @@ let topForceUpdate: () => void = () => {};
 let topOnBlur: () => void = () => {};
 let topOnFocus: (currentInput: KeyboardInputStorage | nil) => void = () => {};
 
+const stopCb = (event: EventStopper) => event.stopPropagation();
+
 export default function KeyboardInput(props: KeyboardInputProps) {
   const input = useMemo(() => new KeyboardInputStorage(), []);
   const [updates, setUpdates] = useState(0);
@@ -185,6 +187,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
           (multiline ? ' multiline' : '') +
           (withoutCloseButton ? ' without-close-button' : '')
         }
+        onTouchStart={stopCb}
       >
         {inputNode}
         {type !== 'button' && value && (

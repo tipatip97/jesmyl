@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import useToast from '../../../../complect/modal/useToast';
 import mylib from '../../../../complect/my-lib/MyLib';
 import SendButton from '../../../../complect/sends/send-button/SendButton';
 import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
+import { useActualRef } from '../../../../complect/useActualRef';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../models';
 import { soki } from '../../../../soki';
 import useIndexNav from '../../complect/useIndexNav';
@@ -45,18 +46,14 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
     }
   };
 
-  const onAuthSuccess = ({ tgAuthorization }: SokiServerEvent) => {
+  const onAuthSuccessRef = useActualRef(({ tgAuthorization }: SokiServerEvent) => {
     if (!tgAuthorization || !tgAuthorization.ok || mylib.isStr(tgAuthorization.value)) return;
     setAuthData(tgAuthorization.value);
     soki.onConnect();
     navigate(['other']);
-  };
+  });
 
-  const onAuthSuccessRef = useRef(onAuthSuccess);
-  onAuthSuccessRef.current = onAuthSuccess;
-
-  const showToastRef = useRef(showToast);
-  showToastRef.current = showToast;
+  const showToastRef = useActualRef(showToast);
 
   return (
     <LoginIndex
@@ -146,7 +143,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                               setAuthCode(codeStr);
                               onAuthSend(codeStr)
                                 .catch(showToast)
-                                .then(event => event && onAuthSuccess(event));
+                                .then(event => event && onAuthSuccessRef.current(event));
                               event.value(codeStr);
                             }
                           } catch (error) {}
@@ -158,7 +155,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                     title="Авторизоваться"
                     className="send-button"
                     disabled={isLoading || authCode.length < 3}
-                    onSuccess={onAuthSuccess}
+                    onSuccess={onAuthSuccessRef.current}
                     onFailure={showToast}
                     onSend={onAuthSend}
                   />

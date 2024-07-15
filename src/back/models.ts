@@ -85,9 +85,9 @@ declare global {
   type ArrayMapCb<T> = (box: T, boxi: number, boxa: T[]) => T;
   type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
   type TimeOut = ReturnType<typeof setTimeout> | und | number;
-  type intStr = `${number}`;
-  type doubleStr = `${number}.${number}`;
-  type numberStr = `${number}${`.${number}` | ''}`;
+  type intStr = `${'-' | ''}${number}`;
+  type doubleStr = `${intStr}.${number}`;
+  type numberStr = `${intStr}${`.${number}` | ''}`;
 
   type EventStopper<With = {}> = { stopPropagation(): void } & With;
   type CallbackStopper = (event: EventStopper) => void;

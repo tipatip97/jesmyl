@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeRegExp } from '../../../../../../complect/makeRegExp';
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import ComLine from '../line/ComLine';
 import { ITheOrderProps } from './Order.model';
 

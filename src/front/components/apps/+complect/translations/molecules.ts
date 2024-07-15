@@ -7,9 +7,14 @@ type Model = {
   currentTranslationTextApp: TranslationViewApp;
 };
 
+export const defaultComplectConfig: ScreenTranslationConfig = {
+  title: 'Трансляция',
+  proportion: 1,
+};
+
 export const complectMolecule = new Molecule<Model>(
   {
-    screenTranslationConfigs: [],
+    screenTranslationConfigs: [defaultComplectConfig],
     currentTranslationTextApp: 'cm',
   },
   'complect',

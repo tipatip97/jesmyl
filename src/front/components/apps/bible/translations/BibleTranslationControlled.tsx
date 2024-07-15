@@ -19,7 +19,7 @@ interface Props {
 const onPrev = () => justBibleStorageSet('translationVersei', versei => versei - 1);
 const onNext = () => justBibleStorageSet('translationVersei', versei => versei + 1);
 
-export default function BibleTranslationControlled({ useNav, head, headTitle }: Props): JSX.Element {
+export const BibleTranslationControlled = ({ useNav, head, headTitle }: Props): JSX.Element => {
   useLoadBibleChaptersCombine();
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function BibleTranslationControlled({ useNav, head, headTitle }: 
       }
     />
   );
-}
+};
 
 const Container = styled.div`
   --size: 50vmin;

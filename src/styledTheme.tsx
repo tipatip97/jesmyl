@@ -1,4 +1,4 @@
-import { makeRegExp } from './front/complect/makeRegExp';
+import { makeRegExp } from './back/complect/makeRegExp';
 import { indexSimpleValIsPlayAnimations } from './front/components/index/complect/index.simpleValues';
 
 const idMap = new Map<readonly [string], string>();

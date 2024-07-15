@@ -7,7 +7,7 @@ export default function Portal({ children }: { children: ReactNode }) {
   const [container] = useState(containerInitState);
 
   useEffect(() => {
-    const parentContainer = document.querySelector('.application-container');
+    const parentContainer = document.querySelector('#root');
     if (parentContainer === null) return;
     parentContainer.appendChild(container);
 

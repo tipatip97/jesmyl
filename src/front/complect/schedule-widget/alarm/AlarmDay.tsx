@@ -1,6 +1,6 @@
-import ScheduleWidgetContextWrapper from '../general/ContextWrapper';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import ScheduleWidgetDay, { ScheduleWidgetDayProps } from '../days/Day';
+import ScheduleWidgetContextWrapper from '../general/ContextWrapper';
 import { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
 
 export default function ScheduleAlarmDay(props: Omit<ScheduleWidgetDayProps, 'scope'>) {
@@ -8,16 +8,19 @@ export default function ScheduleAlarmDay(props: Omit<ScheduleWidgetDayProps, 'sc
 
   return (
     <ScheduleWidgetContextWrapper schedule={props.schedule}>
-      <ScheduleWidgetTopicTitle
-        titleBox={props.schedule}
-        altTitle="Мероприятие"
-        topicBox={props.schedule}
-      />
+      <h3>
+        <ScheduleWidgetTopicTitle
+          titleBox={props.schedule}
+          altTitle="Мероприятие"
+          topicBox={props.schedule}
+        />
+      </h3>
       <ScheduleWidgetDay
         day={props.day}
         dayi={props.dayi}
         schedule={props.schedule}
         scope={scope}
+        isForceOpen={props.isForceOpen}
       />
     </ScheduleWidgetContextWrapper>
   );

@@ -9,7 +9,12 @@ import { useIndexSchedules } from '../../../components/index/molecules';
 import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
 import IconButton from '../../the-icon/IconButton';
-import { IScheduleWidgetDay, IScheduleWidgetDayEvent, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
+import {
+  IScheduleWidget,
+  IScheduleWidgetDay,
+  IScheduleWidgetDayEvent,
+  ScheduleWidgetDayListItemTypeBox,
+} from '../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import ScheduleAlarmDay from './AlarmDay';
 import { ScheduleWidgetAlarmInfoContent } from './InfoContent';
@@ -47,13 +52,14 @@ const makeNextDayFirstEventNode = (
   );
 };
 
-export default function ScheduleWidgetAlarmContent({
-  onGoTo,
-  observeSchw,
-}: {
+interface Props {
   onGoTo: () => void;
   observeSchw?: number;
-}) {
+  schedule?: IScheduleWidget;
+  isJustShowAllDay?: boolean;
+}
+
+export default function ScheduleWidgetAlarmContent({ onGoTo, observeSchw, schedule, isJustShowAllDay }: Props) {
   const schedules = useIndexSchedules();
   const now = Date.now();
   const [isFullOpen, setIsFullOpen] = useState(false);
@@ -70,8 +76,7 @@ export default function ScheduleWidgetAlarmContent({
   }, [updates]);
 
   const scheduleList = useMemo(() => {
-    return [...schedules.list]
-      .sort((a, b) => a.start - b.start)
+    return (schedule ? [schedule] : [...schedules.list].sort((a, b) => a.start - b.start))
       .map(sch => {
         const lastFullDayIndex = mylib.findLastIndex(sch.days, day => day.list.length) ?? -1;
         const days = sch.days.slice(0, lastFullDayIndex + 1) ?? [];
@@ -93,7 +98,7 @@ export default function ScheduleWidgetAlarmContent({
         };
       })
       .filter(itNNull);
-  }, [schedules.list]);
+  }, [schedule, schedules.list]);
 
   const [node, fullValue, observeSchedule]: [ReactNode, FullContentValue | und, (typeof scheduleList)[number] | und] =
     useMemo(() => {
@@ -155,6 +160,7 @@ export default function ScheduleWidgetAlarmContent({
                   day={currDay}
                   dayi={currDayi}
                   schedule={currSchWr.sch}
+                  isForceOpen
                 />
               );
             };
@@ -296,6 +302,7 @@ export default function ScheduleWidgetAlarmContent({
                       day={willSchWr.days[1]}
                       dayi={1}
                       schedule={willSchWr.sch}
+                      isForceOpen
                     />
                   );
                 };
@@ -306,6 +313,7 @@ export default function ScheduleWidgetAlarmContent({
                       day={willSchWr.days[0]}
                       dayi={0}
                       schedule={willSchWr.sch}
+                      isForceOpen
                     />
                   );
                 };
@@ -341,7 +349,9 @@ export default function ScheduleWidgetAlarmContent({
 
   const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
 
-  return (
+  return isJustShowAllDay ? (
+    <>{fullValue?.(() => {}, null)}</>
+  ) : (
     <>
       {fullNode}
       <Alarm

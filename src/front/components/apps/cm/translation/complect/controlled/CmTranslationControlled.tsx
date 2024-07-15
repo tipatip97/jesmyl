@@ -5,12 +5,12 @@ import useNavConfigurer from '../../../../../../complect/nav-configurer/useNavCo
 import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
 import useCmNav from '../../../base/useCmNav';
 import { Com } from '../../../col/com/Com';
+import { ComFaceList } from '../../../col/com/face/list/ComFaceList';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 import { CmTranslationControlPanel } from './ControllPanel';
 import { CmTranslationSlideLine } from './SlideLine';
 import { CmTranslateScreenConfigurations } from './screens/ScreenConfigurations';
-import { ComFaceList } from '../../../col/com/face/list/ComFaceList';
 
 interface Props {
   head?: ReactNode;
@@ -23,14 +23,23 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
   const nav = useCmNav();
   const goBack = useNav().goBack;
 
-  const comPack = useCmScreenTranslationComNavigations();
+  const { comPack } = useCmScreenTranslationComNavigations();
   const setTexti = useCmScreenTranslationComTextNavigations().setTexti;
 
   return (
     <PhaseContainerConfigurer
       goBack={goBack}
       className=""
-      headTitle={headTitle ?? 'Песня'}
+      headTitle={
+        headTitle ? (
+          <>
+            {headTitle}
+            {comPack[1]}
+          </>
+        ) : (
+          'Трансляция' + comPack[1]
+        )
+      }
       head={head}
       content={
         <Container>
@@ -39,7 +48,7 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
             {
               <div className="translation-com-list">
                 <ComFaceList
-                  list={comList ?? comPack.comPack[0]}
+                  list={comList ?? comPack[0]}
                   importantOnClick={com => {
                     nav.setAppRouteData({ ccomw: com.wid });
                     setTexti(0);

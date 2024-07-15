@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 import { useCmCurrentComTexts } from '../hooks/get-com-text';
+import { useCmScreenTranslationCurrentConfig } from './hooks/configs';
 
 export const CmTranslationSlideLine = () => {
   const { currTexti, setTexti } = useCmScreenTranslationComTextNavigations();
-  const texts = useCmCurrentComTexts();
+  const currentConfig = useCmScreenTranslationCurrentConfig();
+  const texts = useCmCurrentComTexts(currentConfig?.pushKind);
 
   return (
     <>

@@ -1,5 +1,7 @@
 const regs: Record<string, RegExp> = {};
-type StrRegExp = `/${string}/${'d' | ''}${'g' | ''}${'i' | ''}${'m' | ''}${'s' | ''}${'u' | ''}${'y' | ''}`;
+export type StrRegExp = `/${string}${string}/${'d' | ''}${'g' | ''}${'i' | ''}${'m' | ''}${'s' | ''}${'u' | ''}${
+  | 'y'
+  | ''}`;
 
 export function makeRegExp(reg: StrRegExp, isResetLastIndex?: boolean) {
   if (regs[reg] === undefined)

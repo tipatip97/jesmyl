@@ -1,8 +1,7 @@
 import { Html5Qrcode } from 'html5-qrcode';
 import { useCallback, useMemo, useState } from 'react';
+import { makeSharedLink } from '../../../back/complect/link-coder/linkMaker';
 import { AppName, appNames } from '../../app/App.model';
-import { SokiAppName } from '../../models';
-import LinkCoder from '../link-coder/LinkCoder';
 import useToast from '../modal/useToast';
 import mylib from '../my-lib/MyLib';
 import { NavigationConfig } from '../nav-configurer/Navigation';
@@ -19,17 +18,7 @@ let controller: (data: QRMasterControllerData) => TimeOut = () => undefined;
 const hrefUrl = new URL(window.location.href);
 export const jesmylHostName = `${hrefUrl.protocol}//${hrefUrl.host}`;
 
-interface Attrs {
-  appName: SokiAppName;
-  key: string;
-  value: any;
-}
-
-export const crossApplicationLinkCoder = new LinkCoder<Attrs>(jesmylHostName, 'value', {
-  appName: 'a',
-  key: 'k',
-  value: 'v',
-});
+export const crossApplicationLinkCoder = makeSharedLink(jesmylHostName);
 
 export default function useQRMaster() {
   const [errorToastNode, errorToast] = useToast({ mood: 'ko' });

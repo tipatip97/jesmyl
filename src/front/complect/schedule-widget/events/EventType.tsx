@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { IconAlert02StrokeRounded } from '../../../complect/the-icon/icons/alert-02';
+import { IconAttachmentStrokeRounded } from '../../../complect/the-icon/icons/attachment';
+import { IconClock01StrokeRounded } from '../../../complect/the-icon/icons/clock-01';
+import { IconEdit02StrokeRounded } from '../../../complect/the-icon/icons/edit-02';
+import { IconSchoolReportCardStrokeRounded } from '../../../complect/the-icon/icons/school-report-card';
 import Dropdown from '../../dropdown/Dropdown';
 import useModal from '../../modal/useModal';
 import { MyLib } from '../../my-lib/MyLib';
@@ -7,23 +12,11 @@ import StrongDiv from '../../strong-control/StrongDiv';
 import StrongDropdown from '../../strong-control/StrongDropdown';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
-import { IconAlert02StrokeRounded } from '../../../complect/the-icon/icons/alert-02';
-import { IconAttachmentStrokeRounded } from '../../../complect/the-icon/icons/attachment';
-import { IconClock01StrokeRounded } from '../../../complect/the-icon/icons/clock-01';
-import { IconEdit02StrokeRounded } from '../../../complect/the-icon/icons/edit-02';
-import { IconSchoolReportCardStrokeRounded } from '../../../complect/the-icon/icons/school-report-card';
 import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
 import ScheduleWidgetBindAtts from '../atts/BindAtts';
 import { AttTranslatorType, attTranslatorTypes } from '../complect/attTranslatorType';
 import { takeStrongScopeMaker } from '../useScheduleWidget';
-
-const singleTitleSymbols = '- ().,/';
-const incorrectsTitleReg = new RegExp(`[^${singleTitleSymbols}а-яё]`, 'ig');
-const singlesTitleReg = new RegExp(`([${singleTitleSymbols}])(\\1+)`, 'g');
-const titleLettersNormalizer = (_: string, __: string, letters: string) => letters[0];
-
-const titleNormalize = (title: string) =>
-  title.replace(incorrectsTitleReg, '').replace(singlesTitleReg, titleLettersNormalizer).trim();
+import { useAttTypeTitleError } from './useAttTypeTitleError';
 
 export default function ScheduleWidgetEventType(props: {
   selectScope: string;
@@ -35,7 +28,8 @@ export default function ScheduleWidgetEventType(props: {
   onSelect?: () => void;
   isRedact?: boolean;
 }) {
-  const [typesError, seTypesError] = useState<(string | nil)[]>([]);
+  const [title, setTitle] = useState(props.typeBox.title);
+  const error = useAttTypeTitleError(title, props.schedule, props.isRedact, props.typei);
   const [attTranslatorType, setAttTranslatorType] = useState(AttTranslatorType.Today);
 
   const selfScope = takeStrongScopeMaker(props.scheduleScope, ' typei/', props.typei);
@@ -92,41 +86,25 @@ export default function ScheduleWidgetEventType(props: {
         <StrongEditableField
           scope={selfScope}
           fieldName="field"
-          value={props.typeBox.title}
+          value={title}
           isRedact={props.isRedact}
           Icon={IconSchoolReportCardStrokeRounded}
           title="Название"
           isImpossibleEmptyValue
-          onChange={value => {
-            const errors = [...typesError];
-            const lowerValue = titleNormalize(value.toLowerCase());
-            if (!lowerValue) {
-              if (value) {
-                errors[props.typei] = 'Нет существенных символов!';
-              } else errors[props.typei] = 'Не должно быть пустым!';
-            } else {
-              const prevTitle = props.schedule.types.find(
-                (schType, schTypei) => schTypei !== props.typei && schType.title.toLowerCase() === lowerValue,
-              );
-              if (prevTitle) errors[props.typei] = `"${prevTitle.title}" уже есть!`;
-              else errors[props.typei] = null;
-            }
-
-            seTypesError(errors);
-          }}
+          onChange={setTitle}
           mapExecArgs={(args, val) => {
-            if (typesError[props.typei]) return;
+            if (error) return;
             return {
               ...args,
-              value: titleNormalize(val),
+              value: val,
               key: 'title',
             };
           }}
         />
-        {typesError[props.typei] && (
+        {error && (
           <div className="flex flex-gap center error-message">
             <IconAlert02StrokeRounded />
-            {typesError[props.typei]}
+            {error}
           </div>
         )}
         <StrongEditableField

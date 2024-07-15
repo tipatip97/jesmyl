@@ -1,10 +1,12 @@
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import { translationPushKinds } from '../../../../col/com/Com.complect';
+import { useCmScreenTranslationCurrentConfig } from '../../../../translation/complect/controlled/hooks/configs';
 import { useEditableCcom } from '../useEditableCcom';
 
 export default function ComOnTranslations() {
   const ccom = useEditableCcom();
   const exec = useExerExec();
+  const currentConfig = useCmScreenTranslationCurrentConfig();
 
   if (!ccom) return null;
 
@@ -21,7 +23,7 @@ export default function ComOnTranslations() {
           </button>
         ))}
       </div>
-      {ccom.getOrderedBlocks().map((lines, linesi) => {
+      {ccom.getOrderedBlocks(currentConfig?.pushKind).map((lines, linesi) => {
         return (
           <div
             key={linesi}

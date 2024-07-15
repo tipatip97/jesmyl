@@ -62,7 +62,30 @@ export default function ScheduleWidgetDayEvent(props: {
     props.eventTimes[props.eventi],
   );
   const eventStartMs = eventFinishMs - eventTm * msInMin;
-  const isPastEvent = now > eventFinishMs;
+  let isPastEvent = now > eventFinishMs;
+
+  if (eventTm === 0) {
+    if (isPastEvent && !props.isPastDay) {
+      let eventTmMs = eventFinishMs;
+      let eventiPlus = 1;
+
+      while (true) {
+        const nextEvent = props.day.list[props.eventi + eventiPlus++];
+        const nextBox = rights.schedule.types[nextEvent.type];
+
+        if (nextEvent == null) break;
+
+        const nextEventTm = ScheduleWidgetCleans.takeEventTm(nextEvent, nextBox);
+
+        if (nextEventTm !== 0) {
+          eventTmMs += nextEventTm * mylib.howMs.inMin;
+          break;
+        }
+      }
+
+      isPastEvent = now > eventTmMs;
+    }
+  }
 
   const [, isExpand, switchIsExpand] = useIsRememberExpand(selfScope);
 
@@ -84,6 +107,7 @@ export default function ScheduleWidgetDayEvent(props: {
   } else {
     const date = new Date(eventStartMs);
     timeMark = `${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
+    timerClassNamePlus = eventTm === 0 ? ' fade-03' : '';
   }
 
   const isCurrentEvent = now > eventStartMs && now < eventFinishMs;

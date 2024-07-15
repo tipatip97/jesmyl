@@ -7,7 +7,6 @@ import useLeaderContext from './contexts/useContexts';
 
 export function CurrentContextSelectPage() {
   const { contexts } = useLeaderContext();
-  // const { nav } = useLeaderNav();
 
   return <>{!contexts?.list?.length || <CurrentContextSelectPageInner list={contexts.list} />}</>;
 }

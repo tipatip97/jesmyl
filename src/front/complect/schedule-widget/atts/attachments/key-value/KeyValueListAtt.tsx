@@ -17,7 +17,7 @@ import {
   customAttUseRights,
 } from '../../../../../models';
 import { MoveListItemArrowIcon } from '../../../../MoveListItemArrowIcon';
-import { makeRegExp } from '../../../../makeRegExp';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../my-lib/MyLib';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';

@@ -35,13 +35,13 @@ export default function LeaderSchedule() {
     <>
       {generalMoreNode}
       <ScheduleWidgetPage
-        appName="leader"
-        goBack={goBack}
-        withoutBackButton
-        schedulew={ccontext.w}
-        onMoreClick={openGeneralMore}
-        headTitle={ccontext.name}
-        title={ccontext.name}
+      // appName="leader"
+      // goBack={goBack}
+      // withoutBackButton
+      // schedulew={ccontext.w}
+      // onMoreClick={openGeneralMore}
+      // headTitle={ccontext.name}
+      // title={ccontext.name}
       />
     </>
   );

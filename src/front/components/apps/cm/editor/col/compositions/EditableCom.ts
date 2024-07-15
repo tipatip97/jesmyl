@@ -874,8 +874,6 @@ export class EditableCom extends Com {
     });
 
     this.translationPushKind = value;
-    this._translationMap = null;
-    this.translationMap();
   }
 
   setAudio(val: string) {

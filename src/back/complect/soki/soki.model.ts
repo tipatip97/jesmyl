@@ -68,9 +68,9 @@ export type SokiClientUpdateCortage = [
 ];
 
 export interface TelegramNativeAuthUserData extends Omit<User, 'language_code' | 'is_bot'> {
-  auth_date: number;
-  photo_url: string;
-  hash: string;
+  auth_date?: number;
+  photo_url?: string | null;
+  hash?: string;
 }
 
 export interface SokiClientEventBody {
@@ -186,9 +186,8 @@ export interface AuthorizeInSystem {
 export type SokiServiceCallback = (
   key: string,
   value: any,
-  eventData: SokiClientEvent,
   getCapsule: () => SokiCapsule | undefined,
-  client: WebSocket,
+  props: SokiServerDoActionProps,
 ) => Promise<any>;
 export type SokiServicePack = Partial<Record<SokiAppName, SokiServiceCallback>>;
 

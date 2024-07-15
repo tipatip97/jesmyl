@@ -153,22 +153,24 @@ export default function ScheduleWidgetUser({
               scope={scope}
               user={user}
             />
-            <div className="margin-big-gap-t">
-              {user.tgInform === 0 ||
-              !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ? (
-                <IconButton
-                  Icon={IconNotificationOff01StrokeRounded}
-                  postfix="Участник не получает TG-уведомления"
-                  disabled
-                />
-              ) : (
-                <IconButton
-                  Icon={IconNotification01StrokeRounded}
-                  postfix="Участник получает TG-уведомления"
-                  disabled
-                />
-              )}
-            </div>
+            {user.tgId != null && (
+              <div className="margin-big-gap-t">
+                {user.tgInform === 0 ||
+                !scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) ? (
+                  <IconButton
+                    Icon={IconNotificationOff01StrokeRounded}
+                    postfix="Участник не получает TG-уведомления"
+                    disabled
+                  />
+                ) : (
+                  <IconButton
+                    Icon={IconNotification01StrokeRounded}
+                    postfix="Участник получает TG-уведомления"
+                    disabled
+                  />
+                )}
+              </div>
+            )}
             <div className="flex center full-width margin-big-gap-t">
               <ScheduleWidgetUserPhoto user={user} />
             </div>

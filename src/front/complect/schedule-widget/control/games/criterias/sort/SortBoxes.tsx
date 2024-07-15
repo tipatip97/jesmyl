@@ -1,11 +1,13 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import styled from 'styled-components';
 import { IScheduleWidgetUserMi } from '../../../../../../models';
 import IconButton from '../../../../../the-icon/IconButton';
 import { IconCheckmarkBadge01StrokeRounded } from '../../../../../the-icon/icons/checkmark-badge-01';
 import { IconMessageQuestionStrokeRounded } from '../../../../../the-icon/icons/message-question';
 import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
+import { useScheduleWidgetRightsContext } from '../../../../useScheduleWidget';
 import ScheduleWidgetTeamsCriteriaSorterScreenHistory from './History';
-import ScheduleWidgetTeamsCriteriaSorterScreenSortBoxPhoto from './SortBoxPhoto';
+import { ScheduleWidgetTeamsCriteriaSorterScreenSortBoxPhoto } from './SortBoxPhoto';
 import { HistoryAdder } from './model';
 
 interface Props {
@@ -25,7 +27,7 @@ interface Props {
 
 const func = () => {};
 
-export default function ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes({
+export const ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes = function SortBoxes({
   uncriteriedUsers,
   usersForSort,
   singleInsertUser,
@@ -37,6 +39,7 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes({
   start,
   stopOnSingleInsert,
 }: Props) {
+  const rights = useScheduleWidgetRightsContext();
   const [unknownUsers, setUnknownUsers] = useState<IScheduleWidgetUserMi[]>([]);
   const [correct, setCorrect] = useState<'left' | 'right' | nil>(null);
 
@@ -46,6 +49,13 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes({
       uncriteriedUsers.find(user => !unknownUsers.includes(user.mi) && !sortedUsers.some(({ mi }) => mi === user.mi))
     );
   }, [sortedUsers, singleInsertUser, uncriteriedUsers, unknownUsers]);
+
+  useEffect(() => {
+    if (rights.schedule.games?.strikedUsers == null) return;
+    const users = rights.schedule.games.strikedUsers;
+
+    setUnknownUsers(prev => [...prev, ...users]);
+  }, [rights.schedule.games]);
 
   const middle = Math.floor((start + end) / 2);
   const currUser: IScheduleWidgetUser | und = sortedUsers[middle];
@@ -149,10 +159,10 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes({
           />
         </div>
 
-        <div className="flex around full-width">
+        <StyledUserNames className="full-width">
           <span>{currUser.fio}</span>
           <span>{insertUser.fio}</span>
-        </div>
+        </StyledUserNames>
 
         <div className="flex around full-width">
           <ScheduleWidgetTeamsCriteriaSorterScreenSortBoxPhoto
@@ -172,4 +182,19 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes({
       </div>
     </>
   );
-}
+};
+
+const StyledUserNames = styled.div`
+  display: grid;
+  grid-template-areas: 'left right';
+  grid-template-columns: 1fr 1fr;
+
+  > * {
+    grid-area: left;
+    text-align: center;
+
+    + * {
+      grid-area: right;
+    }
+  }
+`;

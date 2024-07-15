@@ -1,5 +1,6 @@
 import { Molecule } from '../../../complect/atoms';
 import { CmState } from './Cm.model';
+import { defaultCmConfig } from './translation/complect/controlled/hooks/configs';
 
 export const cmMolecule = new Molecule<CmState>(
   {
@@ -13,7 +14,7 @@ export const cmMolecule = new Molecule<CmState>(
     isShowTranslationInfo: true,
     favoriteMeetings: { contexts: [], events: [] },
     comTopTools: ['mark-com', 'fullscreen-mode'],
-    translationScreenConfigs: [],
+    translationScreenConfigs: [defaultCmConfig],
     comComments: {},
     isMetronomeHide: true,
     metronomeAccentes: '1000',

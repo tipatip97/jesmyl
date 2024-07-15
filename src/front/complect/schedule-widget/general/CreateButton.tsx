@@ -15,9 +15,9 @@ export default function ScheduleCreateWidgetButton({
   schw,
   appName,
 }: {
-  title: string;
-  schw: number;
-  appName: AppName;
+  title?: string;
+  schw?: number;
+  appName?: AppName;
 }) {
   const [title, setTitle] = useState(topTitle);
   const [tosterNode, toast] = useToast();

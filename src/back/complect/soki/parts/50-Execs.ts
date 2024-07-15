@@ -2,7 +2,7 @@ import { WebSocket } from 'ws';
 import smylib, { SMyLib } from '../../../shared/SMyLib';
 import { jesmylChangesBot } from '../../../sides/telegram-bot/jesmylChangesBot';
 import { Executer } from '../../executer/Executer';
-import { ExecutionDict } from '../../executer/Executer.model';
+import { ExecuteFeedbacks, ExecutionDict } from '../../executer/Executer.model';
 import { filer } from '../../filer/Filer';
 import { SokiAuther, sokiAuther } from '../SokiAuther';
 import { LocalSokiAuth, SokiAppName, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
@@ -16,7 +16,7 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
     auth: LocalSokiAuth | nil,
     client?: WebSocket,
     requestId?: string,
-  ) {
+  ): Promise<ExecuteFeedbacks> {
     if (
       auth &&
       auth.login === eventAuth?.login &&
@@ -26,7 +26,7 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
     ) {
       const appConfig = filer.appConfigs[appName];
 
-      if (!appConfig) return;
+      if (!appConfig) return { errorMessage: 'Неизвестное приложение', fixes: [], replacedExecs: [], rules: [] };
 
       const contents = filer.contents[appName];
       const realParents: Record<string, unknown> = {};
@@ -34,7 +34,7 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
       const authLogin = eventAuth?.login ?? '';
       const bag: Record<string, unknown> = {};
 
-      return Executer.execute(appConfig, realParents, execs, auth).then(async props => {
+      return await Executer.execute(appConfig, realParents, execs, auth).then(async props => {
         const lastUpdate = await filer.saveChanges(props.fixes, appName!);
         this.send(
           {

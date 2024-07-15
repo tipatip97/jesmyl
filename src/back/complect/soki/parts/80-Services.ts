@@ -4,10 +4,11 @@ import { SokiServerDoAction, SokiServerDoActionProps, SokiServicePack } from '..
 import { SokiServerConnection } from './70-Connection';
 
 export class SokiServerServices extends SokiServerConnection implements SokiServerDoAction<'ServiceActions'> {
-  async doOnServiceActions({ appName, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
-    if (eventBody.service === undefined || !eventData.appName) return false;
+  async doOnServiceActions(props: SokiServerDoActionProps) {
+    if (props.eventBody.service === undefined || !props.eventData.appName) return false;
+    const { appName, client, eventBody, eventData, requestId } = props;
 
-    const service = eventBody.service;
+    const service = eventBody.service!;
 
     const services: SokiServicePack = {
       cm: cmService,
@@ -30,13 +31,7 @@ export class SokiServerServices extends SokiServerConnection implements SokiServ
       return false;
     }
 
-    services[eventData.appName]?.(
-      eventBody.service.key,
-      eventBody.service.value,
-      eventData,
-      () => this.capsules.get(client),
-      client,
-    )
+    services[eventData.appName]?.(service.key, service.value, () => this.capsules.get(client), props)
       .then(value => {
         this.send(
           {

@@ -3,7 +3,7 @@ import { IScheduleWidgetTeamCriteria } from '../../../../../../models';
 import { StrongComponentProps } from '../../../../../strong-control/Strong.model';
 import StrongButton from '../../../../../strong-control/StrongButton';
 import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
-import ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes from './SortBoxes';
+import { ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes } from './SortBoxes';
 
 interface Props {
   criteria: IScheduleWidgetTeamCriteria;

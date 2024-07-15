@@ -1,4 +1,4 @@
-import { makeRegExp } from '../../../../../complect/makeRegExp';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { BaseNamed } from '../../base/BaseNamed';
 import { blockStyles } from './block-styles/BlockStyles';
@@ -23,7 +23,6 @@ export class Com extends BaseNamed<IExportableCom> {
   number: string = '';
   initialName: string;
   excludedModulations: number[] = [];
-  protected _translationMap?: number[] | null;
   protected _o?: Order[];
   protected _ords?: IExportableOrder[];
   private _chordLabels?: string[][][];
@@ -184,29 +183,27 @@ export class Com extends BaseNamed<IExportableCom> {
     this.updateChordLabels();
   }
 
-  getOrderedTexts(isIncluseEndstars = true) {
-    return this.getOrderedBlocks().map(
+  getOrderedTexts(isIncluseEndstars = true, kind: number | und) {
+    return this.getOrderedBlocks(kind).map(
       (lines, linesi, linesa) =>
         lines?.join('\n') + (isIncluseEndstars && linesa.length - 1 === linesi ? '\n* * *' : ''),
     );
   }
 
-  getOrderedBlocks() {
+  getOrderedBlocks(kind: number | und) {
     const textBeats = this.orders
       ?.reduce((text, ord) => text + (!ord.isRealText() ? '' : (text ? '\n' : '') + ord.repeatedText()), '')
       .split(makeRegExp('/\\n/'));
 
-    const texts = this.translationMap()
+    const texts = this.translationMap(kind)
       .map(peaceSize => textBeats?.splice(0, peaceSize)!)
       .filter(txt => txt);
 
     return texts;
   }
 
-  translationMap() {
-    if (this._translationMap != null) return this._translationMap;
-
-    const kinds = translationPushKinds[this.translationPushKind];
+  translationMap(kind: number | und) {
+    const kinds = translationPushKinds[kind ?? this.translationPushKind];
     let curr = 0;
     const orders = this.orders ?? [];
     const len = orders.length;
@@ -233,7 +230,7 @@ export class Com extends BaseNamed<IExportableCom> {
       curr = 0;
     }
 
-    return (this._translationMap = kinds.clearList());
+    return kinds.clearList();
   }
 
   bracketsTransformed = (() => {
@@ -244,10 +241,10 @@ export class Com extends BaseNamed<IExportableCom> {
       ["'", "'"],
     ];
     const backBrackets = ['`', '`'];
-    const dashReg = /(\s)-+(\s)/g;
-    const openBracketReg = /(\( ?)?("+)( ?\)?)/gs;
-    const closeBracketReg = /\("+ \)$|^\( "+\)/g;
-    const spacesLikeReg = /\s/;
+    const dashReg = makeRegExp(`/(\\s)-+(\\s)/g`);
+    const openBracketReg = makeRegExp(`/(\\( ?)?("+)( ?\\)?)/g`);
+    const closeBracketReg = makeRegExp(`/\\("+ \\)$|^\\( "+\\)/g`);
+    const spacesLikeReg = makeRegExp(`/\\s/`);
 
     return (str = '') => {
       let level = 0;
