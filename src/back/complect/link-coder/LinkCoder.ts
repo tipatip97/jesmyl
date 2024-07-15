@@ -1,4 +1,4 @@
-import mylib, { MyLib } from '../my-lib/MyLib';
+import smylib, { SMyLib } from '../../shared/SMyLib';
 
 const objMarker = '*';
 const objMarkerReg = new RegExp(`\\${objMarker}`);
@@ -18,9 +18,9 @@ export default class LinkCoder<
   private valueKey: ValueKey;
 
   constructor(hostName: string, valueKey: ValueKey, zips: Zips) {
-    MyLib.entries(zips).forEach(([name, value]) => {
+    SMyLib.entries(zips).forEach(([name, value]) => {
       if (name === valueKey) return;
-      if (!mylib.isStr(value)) throw Error(`Значение "${name as never} (${value})" должно быть строкой!`);
+      if (!smylib.isStr(value)) throw Error(`Значение "${name as never} (${value})" должно быть строкой!`);
       if (value.startsWith(objMarker))
         throw Error(`Значение "${name as never} (${value})" не должно начинаться на знак ${objMarker}!`);
     });
@@ -46,14 +46,14 @@ export default class LinkCoder<
   ) {
     const url = new URL(hostName);
 
-    MyLib.entries(args).forEach(([key, val]) => {
+    SMyLib.entries(args).forEach(([key, val]) => {
       if (key === valueKey) return;
       url.searchParams.set(zips[key as keyof Zips] as string, val);
     });
     const value = args[valueKey as string];
 
-    if (mylib.isObj(value)) {
-      MyLib.entries(value).forEach(([key, val]) => {
+    if (smylib.isObj(value)) {
+      SMyLib.entries(value).forEach(([key, val]) => {
         if (val !== undefined) url.searchParams.set(`${objMarker}${key as string}`, stringEncodeValue(val));
       });
     } else url.searchParams.set(zips[valueKey as keyof Zips] as string, stringEncodeValue(value));
@@ -75,7 +75,7 @@ export default class LinkCoder<
   ) {
     try {
       if (!link.startsWith(hostName)) return null;
-      const antiZips = MyLib.entries(zips as Record<string, string>).reduce(
+      const antiZips = SMyLib.entries(zips as Record<string, string>).reduce(
         (zips, [key, val]) => {
           zips[val] = key;
           return zips;
