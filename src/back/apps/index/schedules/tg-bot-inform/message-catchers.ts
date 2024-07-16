@@ -81,8 +81,7 @@ export const scheduleWidgetMessageCatcher = jesmylTgBot.catchMessages(async (mes
   }
 
   try {
-    const fffffffffffffffffffffffrom = 0 ? message.from.id : message.chat.id;
-    await bot.sendMessage(fffffffffffffffffffffffrom, messageText, {
+    await bot.sendMessage(message.chat.id, messageText, {
       parse_mode: 'HTML',
       reply_markup: errors.length ? undefined : markup,
       disable_notification: true,
@@ -108,7 +107,7 @@ jesmylTgBot.catchCallbackQuery(async (query, bot, answer) => {
 
   if (query.message === undefined || query.message.text === undefined || query.data !== parseCbData_) return answer('');
 
-  const ret = (text: string, num?: number) => answer({ text })!;
+  const ret = (text: string) => answer({ text })!;
 
   try {
     findAdminThis.from = query.from;
@@ -176,9 +175,9 @@ jesmylTgBot.catchCallbackQuery(async (query, bot, answer) => {
   if (addAttTypesExecs[0]?.args.value.length) {
     try {
       const { errorMessage } = await sokiServer.execExecs('index', addAttTypesExecs, auth, auth);
-      if (errorMessage) return ret(errorMessage, 1);
+      if (errorMessage) return ret(errorMessage);
     } catch (error) {
-      return ret('' + error, 2);
+      return ret('' + error);
     }
   }
 
@@ -226,9 +225,9 @@ jesmylTgBot.catchCallbackQuery(async (query, bot, answer) => {
 
     try {
       const { errorMessage } = await sokiServer.execExecs('index', addEventsExecs, auth, auth);
-      if (errorMessage) return ret(errorMessage, 3);
+      if (errorMessage) return ret(errorMessage);
     } catch (error) {
-      return ret('' + error, 4);
+      return ret('' + error);
     }
   }
 

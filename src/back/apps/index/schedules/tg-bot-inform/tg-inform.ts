@@ -4,6 +4,7 @@ import { filer } from '../../../../complect/filer/Filer';
 import { SokiAuther } from '../../../../complect/soki/SokiAuther';
 import sokiServer from '../../../../complect/soki/SokiServer';
 import { LocalSokiAuth } from '../../../../complect/soki/soki.model';
+import { convertMd2HTMLMaker } from '../../../../complect/utils';
 import smylib from '../../../../shared/SMyLib';
 import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
 import { tglogger } from '../../../../sides/telegram-bot/log/log-bot';
@@ -36,8 +37,23 @@ const subscribeQueryDataNamePrefix = 'sch-wdgt-sub:';
 
 const unsubOptions = {} as Record<IScheduleWidgetWid, SendMessageOptions>;
 
-const putInTgTag = (tag: '' | 'b' | 'i' | 'u' | 's' | 'tg-spoiler' | 'code' | 'pre', text: string) =>
-  tag === '' ? text : `<${tag}>${text}</${tag}>`;
+type TgTag = '' | 'b' | 'i' | 'u' | 's' | 'tg-spoiler' | 'code' | 'pre';
+const putInTgTag = (tag: TgTag, text: string) => (tag === '' ? text : `<${tag}>${text}</${tag}>`);
+
+const convertMd2HTML = convertMd2HTMLMaker(true);
+
+const openDayScheduleKey = {
+  reply_markup: {
+    inline_keyboard: [
+      [
+        {
+          text: 'Расписание дня',
+          url: 'https://t.me/jesmylbot/jesmylapp',
+        },
+      ],
+    ],
+  },
+};
 
 export const indexScheduleSetMessageInform = (
   scheduleScalar: number | IScheduleWidget<string>,
@@ -142,22 +158,19 @@ export const indexScheduleSetMessageInform = (
               timeTo = `в ${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
             }
 
-            nextEventTitle = '\n\n| ' + putInTgTag('i', `${makeTitle(eventi + 1)} - ${timeTo}`);
+            nextEventTitle = '\n\n● ' + putInTgTag('i', `${makeTitle(eventi + 1)} - ${timeTo}`);
           }
         }
 
-        let title = makeTitle(eventi);
-
-        let message =
+        const text =
           delayTitlePrefix +
-          title +
+          (event.secret ? putInTgTag('tg-spoiler', makeTitle(eventi)) : makeTitle(eventi)) +
+          (event.tgInform === 0 && event.dsc
+            ? '\n\n● ' + putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc))
+            : '') +
           nextEventTitle +
           '\n\n' +
-          (event.tgInform === 0 && event.dsc ? putInTgTag(event.secret ? 'i' : 'code', event.dsc) + '\n\n' : '') +
-          '| ' +
-          putInTgTag('u', putInTgTag('i', schedule.title));
-
-        const text = event.secret ? putInTgTag('tg-spoiler', message) : message;
+          `● ${putInTgTag('u', putInTgTag('i', schedule.title))}`;
 
         const options: SendMessageOptions = (unsubOptions[schedule.w] ??= {
           reply_markup: {
@@ -184,8 +197,14 @@ export const indexScheduleSetMessageInform = (
         };
 
         try {
-          if (tgChatId !== null) await jesmylTgBot.sendMessage(tgChatId, text, tglogger);
-          else
+          if (tgChatId !== null) {
+            const message = await jesmylTgBot.sendMessage(tgChatId, text, tglogger, openDayScheduleKey);
+
+            if (!smylib.isStr(message.value)) {
+              if (await jesmylTgBot.bot.pinChatMessage(tgChatId, message.value.message_id))
+                jesmylTgBot.bot.deleteMessage(tgChatId, message.value.message_id + 1);
+            }
+          } else
             sendUserMessage = async (tgId: number) => {
               jesmylTgBot.sendMessage(tgId, text, tglogger, options);
             };
