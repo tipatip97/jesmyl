@@ -77,8 +77,6 @@ const ecransEncoderReplacer = (all: string) => {
     chars[all] = String.fromCharCode(currCharCode++);
     chars[chars[all]] = all[1];
 
-    console.log(chars);
-
     if (currCharCode !== baseCharCode)
       symbolSearchReg = makeRegExp(`/[${baseSymbol}-${String.fromCharCode(currCharCode)}]/g`);
   }
