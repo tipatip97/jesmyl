@@ -960,12 +960,12 @@ export class Executer {
       list?.forEach(li => {
         if (li[realName] == null) {
           const result = actionBoxSetSystems[name]?.(realName, list);
-          if (result !== undefined) li[realName] = result;
+          if (result !== undefined && li[realName] === undefined) li[realName] = result;
         }
       });
 
       const result = actionBoxSetSystems[name]?.(realName, list);
-      if (result !== undefined) value[realName] = result;
+      if (result !== undefined && value[realName] === undefined) value[realName] = result;
     });
 
     if (smylib.isArr(value)) {
