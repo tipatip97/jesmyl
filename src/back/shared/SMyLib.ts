@@ -74,7 +74,7 @@ export class SMyLib {
   }
 
   static keys<T>(obj: T): T extends Record<infer Key, any> ? Key[] : string[] {
-    return Object.keys(obj || {}) as never;
+    return Object.keys(obj ?? {}) as never;
   }
 
   func(...funcs: any[]) {
