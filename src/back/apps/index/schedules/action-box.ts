@@ -91,8 +91,9 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
     C: {
       RRej: true,
       value: newSchedule,
+      setSystems: ['w'],
       args: {
-        schw: '#Number',
+        schw: '#number',
         title: '#String',
         app: '#String',
       },
@@ -213,6 +214,16 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             scopeNode: 'newUser',
             C: {
               setSystems: ['mi'],
+            },
+            '<action>': {
+              action: 'addNewUser',
+              method: 'push',
+              setSystems: ['mi'],
+              args: {
+                $$vars: {
+                  accessActionWithoutUser: true,
+                },
+              },
             },
           },
           '<add users>': {
@@ -471,9 +482,19 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
       },
       '/types': {
         expected: [],
-        C: {},
+        C: {
+          args: {
+            value: '#Dict',
+          },
+        },
+        U: {
+          method: 'concat',
+          uniqs: ['title'],
+          args: {
+            value: '#List',
+          },
+        },
         '<addAttTypes>': {
-          setSystems: ['mi'],
           action: 'addAttTypes',
           method: 'concat',
           uniqs: ['title'],
@@ -582,6 +603,12 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                 eventMi: '#Number',
               },
             },
+            '<update>': {
+              scopeNode: 'updateDayEventList',
+              U: {
+                setItemSystems: ['mi'],
+              },
+            },
             onSuccess: onTgInformingChangeSuccess,
             '<put schedule>': {
               action: 'putDayEventList',
@@ -629,15 +656,22 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               },
               '/rate': {
                 expected: {},
-                '/{rateMi}': {
+                '/{userMi}': {
                   expected: [0, ''],
-                  scopeNode: 'rateMi',
+                  scopeNode: 'userMi',
+                  args: {
+                    userMi: '#Number',
+                  },
                   '/0': {
                     scopeNode: 'rate',
                     U: {
                       args: {
                         value: '#Number',
                       },
+                    },
+                    '<action>': {
+                      action: 'setDayEventRate',
+                      method: 'set',
                     },
                   },
                   '/1': {
