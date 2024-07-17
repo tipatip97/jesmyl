@@ -22,7 +22,7 @@ import ScheduleWidgetCustomAttachments from './atts/custom/CustomAttachments';
 import ScheduleWidgetStartTimeText from './complect/StartTimeText';
 import ScheduleWidgetTopicTitle from './complect/TopicTitle';
 import ScheduleWidgetControl from './control/Control';
-import ScheduleWidgetDay from './days/Day';
+import { ScheduleWidgetDay } from './days/Day';
 import ScheduleWidgetEventList from './events/EventList';
 import ScheduleWidgetContextWrapper from './general/ContextWrapper';
 import { ScheduleWidgetCopy } from './general/Copy';

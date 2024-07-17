@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import ScheduleWidgetDay, { ScheduleWidgetDayProps } from './Day';
-import { useScheduleWidgetRights } from '../useScheduleWidget';
+import styled from 'styled-components';
 import ScheduleWidgetContextWrapper from '../general/ContextWrapper';
+import { useScheduleWidgetRights } from '../useScheduleWidget';
+import { ScheduleWidgetDay, ScheduleWidgetDayProps } from './Day';
+import { StyledScheduleWidgetDayEvent } from './events/DayEvent';
 
 export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps & { win: typeof window }) {
   const [fontSize, setFontSize] = useState(40);
@@ -34,7 +36,7 @@ export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps
         isCanRedact: false,
       }}
     >
-      <div
+      <StyledForPrint
         className="for-print canvas"
         ref={page}
       >
@@ -42,7 +44,50 @@ export default function ScheduleWidgetPrintableDay(props: ScheduleWidgetDayProps
           {...props}
           isPrint
         />
-      </div>
+      </StyledForPrint>
     </ScheduleWidgetContextWrapper>
   );
 }
+
+const StyledForPrint = styled.div`
+  padding: 30px;
+  font-size: 20px;
+
+  .ScheduleWidgetDay {
+    margin-top: 0;
+
+    .day-title {
+      margin-bottom: 30px;
+      background-color: none;
+      background: none;
+    }
+
+    * {
+      color: black;
+      font-size: 1rem;
+      user-select: text;
+    }
+
+    .hide-on-print {
+      display: none;
+    }
+
+    .not-printable {
+      text-decoration: line-through;
+    }
+
+    ${StyledScheduleWidgetDayEvent} {
+      background: none;
+      background-color: none;
+      padding: 0;
+    }
+  }
+
+  @media print {
+    .ScheduleWidgetDay {
+      .not-printable {
+        display: none;
+      }
+    }
+  }
+`;

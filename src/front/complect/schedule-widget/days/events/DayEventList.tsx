@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import ScheduleWidgetCleans from '../../../../../back/apps/index/schedules/utils/Cleans';
+import styled from 'styled-components';
 import { IconArrowLeftDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-left-double';
 import { IconCropStrokeRounded } from '../../../../complect/the-icon/icons/crop';
 import { IconDelete01StrokeRounded } from '../../../../complect/the-icon/icons/delete-01';
@@ -10,12 +10,12 @@ import StrongDiv from '../../../strong-control/StrongDiv';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import { TheIconLoading } from '../../../the-icon/IconLoading';
 import useIsRedactArea from '../../../useIsRedactArea';
-import { IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
+import { IScheduleWidgetDay } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetEventList from '../../events/EventList';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { indexScheduleGetDayEventTimes } from '../../utils';
-import ScheduleWidgetDayEvent from './DayEvent';
+import ScheduleWidgetDayEvent, { StyledScheduleWidgetDayEvent } from './DayEvent';
 import { ScheduleWidgetDayEventEventActions } from './EventActions';
 
 export default function ScheduleWidgetDayEventList({
@@ -68,7 +68,7 @@ export default function ScheduleWidgetDayEventList({
   }, [isRedact, switchIsExpand]);
 
   return (
-    <div
+    <StyledList
       className={
         'schedule-widget-day-event-list' +
         (isRedact ? ' redact' : '') +
@@ -112,7 +112,7 @@ export default function ScheduleWidgetDayEventList({
                   >
                     {movementBox && (
                       <div className="flex flex-gap fade-05">
-                        <div className="movement-here-title ellipsis nowrap">{movementBox.title}</div>
+                        <StyledMoveTitle className="ellipsis nowrap">{movementBox.title}</StyledMoveTitle>
                         <div className="nowrap">будет здесь</div>
                       </div>
                     )}
@@ -121,28 +121,14 @@ export default function ScheduleWidgetDayEventList({
                 </div>
               );
 
-            const eventTm = ScheduleWidgetCleans.takeEventTm(event, rights.schedule.types[event.type]);
-            const prevEvent = day.list[eventi - 1] as IScheduleWidgetDayEvent | und;
-            const prevTm = ScheduleWidgetCleans.takeEventTm(
-              prevEvent,
-              prevEvent && rights.schedule.types[prevEvent.type],
-            );
-
-            let isFirstInGroup = prevEvent && prevTm !== 0 && eventTm === 0;
-            let isInGroup = prevEvent && prevTm === 0 && eventTm === 0;
-            let isLastInGroup = prevEvent && prevTm === 0 && eventTm !== 0;
-
             const node = (
-              <div
+              <ScheduleWidgetDayEventWrapper
                 key={event.mi}
                 className={
                   'day-event-wrapper flex flex-gap' +
                   (moveEventMi === event.mi ? ' move-me' : '') +
                   (isNeighbour ? ' neighbour' : '') +
-                  (eventi === 0 ? ' first' : '') +
-                  (isInGroup ? ' in-group' : '') +
-                  (isFirstInGroup ? ' first-in-group' : '') +
-                  (isLastInGroup ? ' last-in-group' : '')
+                  (eventi === 0 ? ' first' : '')
                 }
                 onClick={
                   moveEventMi === event.mi
@@ -157,6 +143,7 @@ export default function ScheduleWidgetDayEventList({
                 <ScheduleWidgetDayEvent
                   scope={scope}
                   scheduleScope={scheduleScope}
+                  schedule={rights.schedule}
                   isPastDay={isPastDay}
                   day={day}
                   event={event}
@@ -217,7 +204,7 @@ export default function ScheduleWidgetDayEventList({
                   </>
                 )}
                 {insertControl(eventi + 1)}
-              </div>
+              </ScheduleWidgetDayEventWrapper>
             );
 
             secretTime = 0;
@@ -237,6 +224,104 @@ export default function ScheduleWidgetDayEventList({
           )}
         </>
       )}
-    </div>
+    </StyledList>
   );
 }
+
+const StyledMoveTitle = styled.div`
+  max-width: calc(100vw - 180px);
+`;
+
+const ScheduleWidgetDayEventWrapper = styled.div`
+  position: relative;
+  transition:
+    margin-bottom 0.2s,
+    margin-top 0.2s,
+    opacity 0.7s;
+  margin: 0.3rem 0;
+
+  &.move-me {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
+  > .insert-panel {
+    position: absolute;
+    right: 70px;
+    opacity: 0.5;
+    transition:
+      height 0.7s,
+      opacity 0.2s,
+      right 0.2s;
+    height: 25px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+`;
+
+const StyledList = styled.div`
+  &.redact {
+    ${ScheduleWidgetDayEventWrapper} {
+      margin-bottom: 40px;
+
+      .insert-panel {
+        bottom: -30px;
+      }
+
+      &.first {
+        margin-top: 40px;
+
+        .insert-panel.first {
+          top: -30px;
+        }
+      }
+
+      &.neighbour {
+        margin-bottom: 0.3rem;
+
+        &:not(.first),
+        &.move-me {
+          margin-top: 0.3rem;
+
+          .insert-panel {
+            opacity: 0;
+          }
+        }
+
+        .insert-panel:not(.first) {
+          opacity: 0;
+        }
+      }
+
+      ${StyledScheduleWidgetDayEvent} {
+        .edit-button {
+          display: inline-block;
+          transition: none;
+          margin-right: -40px;
+          width: 0;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+
+  &.event-movement {
+    ${ScheduleWidgetDayEventWrapper} {
+      > .insert-panel {
+        right: 100px;
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+
+  &.individual-replacement {
+    ${ScheduleWidgetDayEventWrapper} {
+      > .insert-panel {
+        right: 10px;
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+`;

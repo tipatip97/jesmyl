@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
-import useIsExpand from '../../../expand/useIsExpand';
+import styled from 'styled-components';
 import { IconFavouriteStrokeRounded } from '../../../../complect/the-icon/icons/favourite';
 import { IconHeartbreakStrokeRounded } from '../../../../complect/the-icon/icons/heartbreak';
 import { IconHelpCircleStrokeRounded } from '../../../../complect/the-icon/icons/help-circle';
 import { IconMessage01StrokeRounded } from '../../../../complect/the-icon/icons/message-01';
+import useIsExpand from '../../../expand/useIsExpand';
 import { MyLib } from '../../../my-lib/MyLib';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
@@ -30,7 +31,7 @@ export default function ScheduleWidgetDayEventRating(
     <>
       <IconFavouriteStrokeRounded />
       Рейтинг события
-      <span className="event-rating-display">{ratingSum}</span>
+      <StyledReitingDisplay>{ratingSum}</StyledReitingDisplay>
     </>,
   );
   const [otherRatesTitleNode, isOtherRatesTitleExpand] = useIsExpand(false, <>Другие оценки</>);
@@ -41,7 +42,7 @@ export default function ScheduleWidgetDayEventRating(
 
   if (isExpand) {
     myRate = (rights.myUser && props.event.rate?.[rights.myUser?.mi]) ?? defRate;
-    if (rights.myUser) rateScope = takeStrongScopeMaker(props.scope, ' rateMi/', rights.myUser.mi);
+    if (rights.myUser) rateScope = takeStrongScopeMaker(props.scope, ' userMi/', rights.myUser.mi);
 
     if (rights.isCanTotalRedact && rights.myUser) {
       let usersRateNode: ReactNode[] | null = null;
@@ -128,14 +129,11 @@ export default function ScheduleWidgetDayEventRating(
                 />
               );
             })}
-            <span
-              className={
-                'event-rating-display margin-gap-l' +
-                (myRate[0] === 0 ? ' color--3' : myRate[0] < 0 ? ' color--ko' : ' color--ok')
-              }
+            <StyledReitingDisplay
+              className={'margin-gap-l' + (myRate[0] === 0 ? ' color--3' : myRate[0] < 0 ? ' color--ko' : ' color--ok')}
             >
               {myRate[0]}
-            </span>
+            </StyledReitingDisplay>
           </div>
           <StrongEditableField
             scope={rateScope}
@@ -154,3 +152,8 @@ export default function ScheduleWidgetDayEventRating(
     </>
   );
 }
+
+const StyledReitingDisplay = styled.span`
+  width: 1.5em;
+  text-align: center;
+`;

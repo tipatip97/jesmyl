@@ -35,10 +35,5 @@ const Button = styled.div`
   cursor: pointer;
   border: var(--color--2) 4px solid;
   border-radius: 2em;
-  padding: 0.5em 2em;
-
-  .the-icon {
-    position: absolute;
-    margin-left: 2px;
-  }
+  padding: 0.5em 2.2em;
 `;

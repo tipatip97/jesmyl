@@ -81,7 +81,8 @@ export default function AliasSpeakerContent() {
                 Icon={IconCheckmarkCircle02StrokeRounded}
                 className="color--ok"
                 disabled={isWordSending}
-                onPointerDown={sendWord('cor')}
+                onMouseDown={isTouchDevice ? undefined : sendWord('cor')}
+                onTouchStart={isTouchDevice ? sendWord('cor') : undefined}
               />
             </AboveButton>
             {myTeam && <div>{score}</div>}
@@ -91,7 +92,8 @@ export default function AliasSpeakerContent() {
                 Icon={IconHelpCircleStrokeRounded}
                 className="color--ko"
                 disabled={isWordSending}
-                onPointerDown={sendWord('inc')}
+                onMouseDown={isTouchDevice ? undefined : sendWord('inc')}
+                onTouchStart={isTouchDevice ? sendWord('inc') : undefined}
               />
             </AboveButton>
           </div>

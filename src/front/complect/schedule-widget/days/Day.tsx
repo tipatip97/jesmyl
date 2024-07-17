@@ -1,15 +1,12 @@
 import { useMemo, useState } from 'react';
-import { renderComponentInNewWindow } from '../../../..';
+import styled from 'styled-components';
 import { IconBookmark03StrokeRounded } from '../../../complect/the-icon/icons/bookmark-03';
-import { IconClock01StrokeRounded } from '../../../complect/the-icon/icons/clock-01';
 import { IconFavouriteStrokeRounded } from '../../../complect/the-icon/icons/favourite';
 import { IconFile02StrokeRounded } from '../../../complect/the-icon/icons/file-02';
-import { IconPrinterStrokeRounded } from '../../../complect/the-icon/icons/printer';
 import { IconViewStrokeRounded } from '../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../complect/the-icon/icons/view-off-slash';
 import useFullContent from '../../fullscreen-content/useFullContent';
 import mylib, { MyLib } from '../../my-lib/MyLib';
-import StrongControlDateTimeExtracter from '../../strong-control/StrongDateTimeExtracter';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import IconButton from '../../the-icon/IconButton';
 import useIsRedactArea from '../../useIsRedactArea';
@@ -17,11 +14,8 @@ import { IScheduleWidget, IScheduleWidgetDay } from '../ScheduleWidget.model';
 import ScheduleAlarmDay from '../alarm/AlarmDay';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import { indexScheduleCheckIsDayIsPast, indexScheduleGetDayStartMs } from '../utils';
-import './Day.scss';
-import ScheduleWidgetPrintableDay from './PrintableDay';
+import ScheduleWidgetDayEditPanel from './DayEditPanel';
 import ScheduleWidgetDayEventList from './events/DayEventList';
-
-const dotReg = /\./;
 
 export interface ScheduleWidgetDayProps {
   day: IScheduleWidgetDay;
@@ -39,7 +33,7 @@ const defaultPrint = {
   title: true,
 };
 
-export default function ScheduleWidgetDay({
+export const ScheduleWidgetDay = function Day({
   day,
   dayi,
   schedule,
@@ -79,7 +73,9 @@ export default function ScheduleWidgetDay({
   ));
 
   return (
-    <div className={'ScheduleWidgetDay relative' + (isPastDay ? ' past' : '') + (isPrint ? ' print' : '')}>
+    <StyledScheduleWidgetDay
+      className={'ScheduleWidgetDay relative' + (isPastDay ? ' past' : '') + (isPrint ? ' print' : '')}
+    >
       {fullDayNode}
       <div
         className={'day-title flex flex-gap padding-gap-v sticky pos-top' + (print.title ? '' : ' not-printable')}
@@ -147,42 +143,15 @@ export default function ScheduleWidgetDay({
                   title="Описание дня"
                 />
               )}
-              {isRedact && (
-                <>
-                  <StrongControlDateTimeExtracter
-                    scope={selfScope}
-                    fieldName="wup"
-                    value={day.wup?.toFixed?.(2).replace(dotReg, ' ') || ''}
-                    Icon={IconClock01StrokeRounded}
-                    title="Начало дня"
-                    takeDate="NO"
-                    takeTime="hour-min"
-                    mapExecArgs={(args, value) => {
-                      return {
-                        ...args,
-                        value: +value.replace(/:/, '.'),
-                      };
-                    }}
-                  />
-                  <IconButton
-                    Icon={IconPrinterStrokeRounded}
-                    className="flex-max margin-gap-v"
-                    onClick={() =>
-                      renderComponentInNewWindow(win => (
-                        <ScheduleWidgetPrintableDay
-                          day={day}
-                          dayi={dayi}
-                          schedule={schedule}
-                          scope={scope}
-                          win={win}
-                        />
-                      ))
-                    }
-                    postfix="Распечатать распорядок дня"
-                  />
-                </>
-              )}
-              {!isRedact && (
+              {isRedact ? (
+                <ScheduleWidgetDayEditPanel
+                  day={day}
+                  dayScope={selfScope}
+                  dayi={dayi}
+                  schedule={schedule}
+                  scope={scope}
+                />
+              ) : (
                 <IconButton
                   Icon={IconFavouriteStrokeRounded}
                   className={'flex-max ' + (dayRating < 0 ? 'color--ko' : dayRating > 0 ? 'color--ok' : 'color--3')}
@@ -201,6 +170,47 @@ export default function ScheduleWidgetDay({
           />
         </>
       )}
-    </div>
+    </StyledScheduleWidgetDay>
   );
-}
+};
+
+export const StyledScheduleWidgetDay = styled.div`
+  &:not(.past) {
+    margin-top: 50px;
+  }
+
+  &.past {
+    filter: grayscale(0.7);
+
+    > .day-title {
+      opacity: 0.5;
+      font-size: 1.1rem;
+    }
+  }
+
+  > .day-title {
+    top: -10px;
+    background-color: var(--color--5);
+    color: var(--color--3);
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  > .edit-day-panel {
+    z-index: 2;
+  }
+
+  > .day-info {
+    margin: 1rem 0;
+
+    .day-topic {
+      color: var(--color--7);
+      font-size: 1.2rem;
+    }
+
+    .day-description {
+      color: var(--color--3);
+      font-size: 0.9rem;
+    }
+  }
+`;

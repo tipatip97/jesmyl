@@ -125,10 +125,6 @@ input[type='button'] {
 :disabled {
   opacity: 0.5;
 
-  &.clickable {
-    cursor: inherit;
-  }
-
   &:not(.clickable) {
     pointer-events: none;
   }

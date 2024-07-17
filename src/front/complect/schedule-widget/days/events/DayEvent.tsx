@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import styled from 'styled-components';
 import ScheduleWidgetCleans from '../../../../../back/apps/index/schedules/utils/Cleans';
 import { IconArrowDown01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-up-01';
@@ -16,7 +17,7 @@ import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
 import IconButton from '../../../the-icon/IconButton';
 import useIsRedactArea from '../../../useIsRedactArea';
-import { IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
 import ScheduleWidgetBindAtts from '../../atts/BindAtts';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetDayEventAtts from '../../events/atts/DayEventAtts';
@@ -29,9 +30,10 @@ const msInMin = mylib.howMs.inMin;
 const mapExecTmArgs = (args: {}) => ({ ...args, techKey: 'tm' });
 const mapExecTgInformArgs = (args: {}) => ({ ...args, techKey: 'tgInform' });
 
-export default function ScheduleWidgetDayEvent(props: {
+interface Props {
   scope: string;
   scheduleScope: string;
+  schedule: IScheduleWidget;
   event: IScheduleWidgetDayEvent;
   eventi: number;
   dayi: number;
@@ -44,11 +46,17 @@ export default function ScheduleWidgetDayEvent(props: {
   isPastDay: boolean;
   isLastEvent: boolean;
   bottomContent: (isRedact: boolean) => ReactNode;
-}) {
+  className?: string;
+  isForceExpand?: boolean;
+  isForceCanRedact?: boolean;
+  isForceHideRating?: boolean;
+}
+
+export default function ScheduleWidgetDayEvent(props: Props) {
   let timeMark = '';
   let timerClassNamePlus = '';
   const rights = useScheduleWidgetRightsContext();
-  const box = rights.schedule.types[props.event.type];
+  const box = props.schedule.types[props.event.type];
   const { editIcon, isRedact, isSelfRedact, setIsSelfRedact } = useIsRedactArea(true, null, rights.isCanRedact, true);
   const selfScope = takeStrongScopeMaker(props.scope, ' eventMi/', props.event.mi);
 
@@ -56,7 +64,7 @@ export default function ScheduleWidgetDayEvent(props: {
   const eventTm = ScheduleWidgetCleans.takeEventTm(props.event, box);
   const wakeupMs = ScheduleWidgetCleans.computeDayWakeUpTime(props.day.wup, 'number');
   const eventFinishMs = indexScheduleGetEventFinishMs(
-    rights.schedule,
+    props.schedule,
     wakeupMs,
     props.dayi,
     props.eventTimes[props.eventi],
@@ -71,7 +79,7 @@ export default function ScheduleWidgetDayEvent(props: {
 
       while (true) {
         const nextEvent = props.day.list[props.eventi + eventiPlus++];
-        const nextBox = rights.schedule.types[nextEvent.type];
+        const nextBox = props.schedule.types[nextEvent.type];
 
         if (nextEvent == null) break;
 
@@ -87,12 +95,20 @@ export default function ScheduleWidgetDayEvent(props: {
     }
   }
 
+  const prevEvent = props.day.list[props.eventi - 1] as IScheduleWidgetDayEvent | und;
+  const prevTm = ScheduleWidgetCleans.takeEventTm(prevEvent, prevEvent && rights.schedule.types[prevEvent.type]);
+
+  let isFirstInGroup = prevEvent && prevTm !== 0 && eventTm === 0;
+  let isInGroup = prevEvent && prevTm === 0 && eventTm === 0;
+  let isLastInGroup = prevEvent && prevTm === 0 && eventTm !== 0;
+
   const [, isExpand, switchIsExpand] = useIsRememberExpand(selfScope);
 
   const isCanExpandEvent =
-    ((rights.myUser && rights.isCanReadTitles) ||
+    props.isForceExpand ??
+    (((rights.myUser && rights.isCanReadTitles) ||
       (props.event.atts && MyLib.entries(props.event.atts).some(item => item[0] === '[cm]:coms'))) &&
-    !props.redact;
+      !props.redact);
 
   const isExpandEvent = (isSelfRedact || isExpand) && isCanExpandEvent;
 
@@ -122,11 +138,15 @@ export default function ScheduleWidgetDayEvent(props: {
 
   return (
     <>
-      <div
+      <StyledScheduleWidgetDayEvent
         className={
-          'day-event relative' +
+          (props.className || '') +
+          ' day-event relative' +
           (props.isPastDay ? '' : isPastEvent ? ' past' : '') +
-          (timeToTitle ? ' margin-big-gap-b' : '')
+          (timeToTitle ? ' margin-big-gap-b' : '') +
+          (isInGroup ? ' in-group' : '') +
+          (isFirstInGroup ? ' first-in-group' : '') +
+          (isLastInGroup ? ' last-in-group' : '')
         }
       >
         <div
@@ -160,18 +180,15 @@ export default function ScheduleWidgetDayEvent(props: {
               topicBox={props.event}
             />
           </div>
-          {rights.isCanRedact ? (
-            (isExpand || isRedact) && editIcon
-          ) : isCanExpandEvent ? (
-            isExpand ? (
-              <IconArrowUp01StrokeRounded />
-            ) : (
-              <IconArrowDown01StrokeRounded />
-            )
-          ) : null}
+          {props.isForceCanRedact ?? rights.isCanRedact
+            ? isExpand || isRedact
+              ? editIcon
+              : (props.event.dsc || MyLib.keys(props.event.atts).length !== 0) && <IconArrowDown01StrokeRounded />
+            : props.isForceExpand ||
+              (isCanExpandEvent ? isExpand ? <IconArrowUp01StrokeRounded /> : <IconArrowDown01StrokeRounded /> : null)}
         </div>
-        {isExpandEvent && (
-          <div className="day-event-content no-scrollbar">
+        {(isExpandEvent || props.isForceExpand) && (
+          <StyledContent className="no-scrollbar">
             <div className="sign-line" />
             {isRedact ? (
               <>
@@ -254,7 +271,7 @@ export default function ScheduleWidgetDayEvent(props: {
               <ScheduleWidgetBindAtts
                 atts={props.event.atts}
                 scope={selfScope}
-                schedule={rights.schedule}
+                schedule={props.schedule}
                 scheduleScope={props.scheduleScope}
                 forTitle={<span className="color--7">{box.title}</span>}
               />
@@ -266,10 +283,10 @@ export default function ScheduleWidgetDayEvent(props: {
                   event={props.event}
                   day={props.day}
                   dayi={props.dayi}
-                  schedule={rights.schedule}
+                  schedule={props.schedule}
                   isPast={isPastEvent || props.isPastDay}
                 />
-                {rights.isCanReadTitles && rights.myUser && (
+                {rights.isCanReadTitles && rights.myUser && !props.isForceHideRating && (
                   <ScheduleWidgetDayEventRating
                     scope={selfScope}
                     event={props.event}
@@ -279,10 +296,88 @@ export default function ScheduleWidgetDayEvent(props: {
             )}
             {props.bottomContent(isRedact)}
             <div className="sign-line" />
-          </div>
+          </StyledContent>
         )}
-      </div>
+      </StyledScheduleWidgetDayEvent>
       {timeToTitle}
     </>
   );
 }
+
+const StyledContent = styled.div`
+  opacity: 0;
+  animation: expand-content 0.5s cubic-bezier(0.39, 0.58, 0.57, 1) forwards;
+  max-height: 0px;
+  overflow: auto;
+
+  @keyframes expand-content {
+    0% {
+      opacity: 0;
+      max-height: 0px;
+    }
+
+    90% {
+      opacity: 1;
+      max-height: 100vh;
+    }
+
+    100% {
+      opacity: 1;
+      max-height: 900vh;
+    }
+  }
+`;
+
+export const StyledScheduleWidgetDayEvent = styled.div`
+  border-radius: 0.5rem;
+  background-color: var(--color--2);
+  padding: 0.7rem;
+  width: 100%;
+  overflow: hidden;
+
+  &.past {
+    filter: grayscale(0.7);
+  }
+
+  .sign-line {
+    opacity: 0.3;
+    margin: 5px 0;
+    background: var(--color--4);
+    width: 100%;
+    height: 1px;
+  }
+
+  > .event-header {
+    height: 1.2em;
+
+    > .left-part {
+      > .time-mark {
+        width: 2.2rem;
+        min-height: 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .edit-button {
+    transition: margin-right 0.2s;
+  }
+
+  &.in-group {
+    border-radius: 0;
+  }
+
+  &.first-in-group {
+    margin-top: 10px;
+
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.last-in-group {
+    margin-bottom: 10px;
+
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+`;
