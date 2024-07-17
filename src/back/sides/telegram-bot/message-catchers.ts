@@ -21,6 +21,7 @@ export const baseMessagesCatcher = jesmylTgBot.catchMessages(async (message, bot
   await bot.sendMessage(message.chat.id, `Дейстаия`, { reply_markup: initScheduleInformMarkup });
   await bot.deleteMessage(message.chat.id, message.message_id);
 });
+
 jesmylTgBot.catchMessages(async (message, bot) => {
   if (message.from === undefined || !message.text?.startsWith('/printMsg')) return;
 

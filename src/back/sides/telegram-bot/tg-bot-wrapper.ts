@@ -117,13 +117,13 @@ export class JesmylTelegramBotWrapper {
           ...options,
         })
         .then(message => res({ ok: true, value: message }))
-        .catch(() => {
+        .catch(error => {
           logger.error(
             `Попытка отправки сообщения неизвестному пользователю\n\n<code>${JSON.stringify(
               userOrId,
               null,
               1,
-            )}</code>\n\n${text}`,
+            )}</code>\n\n${text}\n\n${error}`,
           );
           res({ ok: false, value: 'Бот @jesmylbot не запущен' });
         });
