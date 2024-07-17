@@ -22,6 +22,7 @@ import {
   indexScheduleGetDayStartMs,
   indexScheduleGetEventFinishMs,
 } from '../utils/utils';
+import { makeScheduleWidgetJoinTitle, putInTgTag } from './message-catchers';
 
 let schedules: IScheduleWidget<string>[];
 const getSchedule = (scheduleScalar: number | IScheduleWidget<string>) =>
@@ -37,21 +38,12 @@ const subscribeQueryDataNamePrefix = 'sch-wdgt-sub:';
 
 const unsubOptions = {} as Record<IScheduleWidgetWid, SendMessageOptions>;
 
-type TgTag = '' | 'b' | 'i' | 'u' | 's' | 'tg-spoiler' | 'code' | 'pre';
-const putInTgTag = (tag: TgTag, text: string) => (tag === '' ? text : `<${tag}>${text}</${tag}>`);
-
 const convertMd2HTML = convertMd2HTMLMaker(true);
 
-const openDayScheduleKey = {
+const openDayScheduleKey: SendMessageOptions = {
+  parse_mode: 'HTML',
   reply_markup: {
-    inline_keyboard: [
-      [
-        {
-          text: 'Расписание дня',
-          url: 'https://t.me/jesmylbot/jesmylapp',
-        },
-      ],
-    ],
+    inline_keyboard: [[{ text: 'Расписание дня', url: 'https://t.me/jesmylbot/jesmylapp' }]],
   },
 };
 
@@ -132,21 +124,6 @@ export const indexScheduleSetMessageInform = (
         let delayTitlePrefix = '';
         let nextEventTitle = '';
 
-        const makeTitle = (eventi: number, prefix: string = ''): string => {
-          const event = day.list[eventi];
-
-          if (event == null) return '';
-
-          const eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
-          const title = putInTgTag('b', schedule.types[event.type].title) + (event.topic ? ': ' + event.topic : '');
-
-          return (
-            prefix +
-            (event.secret ? putInTgTag('tg-spoiler', title) : title) +
-            (eventTimeMin === 0 ? makeTitle(eventi + 1, ' / ') : '')
-          );
-        };
-
         if (isWithDelay) {
           delayTitlePrefix = 'Через ' + timeToEvent + 'м. ';
         } else {
@@ -158,13 +135,16 @@ export const indexScheduleSetMessageInform = (
               timeTo = `в ${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
             }
 
-            nextEventTitle = '\n\n● ' + putInTgTag('i', `${makeTitle(eventi + 1)} - ${timeTo}`);
+            nextEventTitle =
+              '\n\n● ' + putInTgTag('i', `${makeScheduleWidgetJoinTitle(schedule, day, eventi + 1)} - ${timeTo}`);
           }
         }
 
         const text =
           delayTitlePrefix +
-          (event.secret ? putInTgTag('tg-spoiler', makeTitle(eventi)) : makeTitle(eventi)) +
+          (event.secret
+            ? putInTgTag('tg-spoiler', makeScheduleWidgetJoinTitle(schedule, day, eventi))
+            : makeScheduleWidgetJoinTitle(schedule, day, eventi)) +
           (event.tgInform === 0 && event.dsc
             ? '\n\n● ' + putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc))
             : '') +
