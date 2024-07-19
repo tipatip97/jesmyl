@@ -1,6 +1,5 @@
 import { WebSocket } from 'ws';
 import smylib from '../../../shared/SMyLib';
-import { tglogger } from '../../../sides/telegram-bot/log/log-bot';
 import { SokiAuther, sokiAuther } from '../SokiAuther';
 import { LocalSokiAuth, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerVisits } from './60-Visits';
@@ -18,12 +17,8 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
 
     if (isDeleted && disconnecter) {
       console.info(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
-      if (disconnecter.auth?.level !== 100) {
-        tglogger.visit(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
-      }
     } else {
       console.info('Disconnected Unknown client');
-      tglogger.visit('Disconnected Unknown client');
     }
   }
 
@@ -38,7 +33,6 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
         nick: '',
       });
       this.send({ authorized: false, appName: eventData.appName }, client);
-      tglogger.visit('Unknown client connected');
       return true;
     }
 
@@ -96,7 +90,6 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
       } connected`;
 
       console.info(infoText);
-      if (eventData.auth?.level !== 100) tglogger.visit(infoText);
 
       if (auth.level !== eventData.auth.level || auth.nick !== eventData.auth.nick || auth.fio !== eventData.auth.fio)
         this.send(

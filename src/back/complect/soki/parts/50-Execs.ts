@@ -126,26 +126,12 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
 
         (async () => {
           try {
-            await tglogger.changes(info(''));
-
-            if (result === undefined || appName !== 'cm') return;
-
-            await jesmylChangesBot.postMessage(info(''), { disable_notification: true });
+            await jesmylChangesBot.postMessage(info(''));
           } catch (error) {
             try {
-              await tglogger.changes(info('', ''));
-
-              if (result === undefined || appName !== 'cm') return;
-
-              await jesmylChangesBot.postMessage(info('', ''), { disable_notification: true });
+              await jesmylChangesBot.postMessage(info('', ''));
             } catch (error) {
-              const alt = '<b><s>JSON слишком большой</s></b>';
-
-              await tglogger.changes(info(alt));
-
-              if (result === undefined || appName !== 'cm') return;
-
-              await jesmylChangesBot.postMessage(info(alt), { disable_notification: true });
+              await jesmylChangesBot.postMessage(info('<b><s>JSON слишком большой</s></b>'));
             }
           }
         })();

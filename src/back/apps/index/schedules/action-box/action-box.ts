@@ -226,8 +226,8 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               `</b> изменео значение прав неизвестных пользователей по умолчанию` +
               (smylib.isNum(args.value)
                 ? ` - ${
-                    scheduleWidgetUserRights.texts[scheduleWidgetUserRights.rightsBalance(args.value)].role?.[0] ??
-                    'Исключённые'
+                    scheduleWidgetUserRights.texts[scheduleWidgetUserRights.rightsBalance(args.value)]?.role?.[0] ??
+                    '<s>Неизвестный</s>'
                   }`
                 : ''),
           },
