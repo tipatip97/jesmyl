@@ -22,7 +22,8 @@ import {
   indexScheduleGetDayStartMs,
   indexScheduleGetEventFinishMs,
 } from '../utils/utils';
-import { makeScheduleWidgetJoinTitle, putInTgTag } from './message-catchers';
+import { makeScheduleWidgetJoinTitle } from './message-catchers';
+import { ScheduleWidgetTgInformCleans } from './cleans';
 
 let schedules: IScheduleWidget<string>[];
 const getSchedule = (scheduleScalar: number | IScheduleWidget<string>) =>
@@ -136,21 +137,28 @@ export const indexScheduleSetMessageInform = (
             }
 
             nextEventTitle =
-              '\n\n● ' + putInTgTag('i', `${makeScheduleWidgetJoinTitle(schedule, day, eventi + 1)} - ${timeTo}`);
+              '\n\n● ' +
+              ScheduleWidgetTgInformCleans.putInTgTag(
+                'i',
+                `${makeScheduleWidgetJoinTitle(schedule, day, eventi + 1)} - ${timeTo}`,
+              );
           }
         }
 
         const text =
           delayTitlePrefix +
           (event.secret
-            ? putInTgTag('tg-spoiler', makeScheduleWidgetJoinTitle(schedule, day, eventi))
+            ? ScheduleWidgetTgInformCleans.putInTgTag('tg-spoiler', makeScheduleWidgetJoinTitle(schedule, day, eventi))
             : makeScheduleWidgetJoinTitle(schedule, day, eventi)) +
           (event.tgInform === 0 && event.dsc
-            ? '\n\n● ' + putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc))
+            ? '\n\n● ' + ScheduleWidgetTgInformCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc))
             : '') +
           nextEventTitle +
           '\n\n' +
-          `● ${putInTgTag('u', putInTgTag('i', schedule.title))}`;
+          `● ${ScheduleWidgetTgInformCleans.putInTgTag(
+            'u',
+            ScheduleWidgetTgInformCleans.putInTgTag('i', schedule.title),
+          )}`;
 
         const options: SendMessageOptions = (unsubOptions[schedule.w] ??= {
           reply_markup: {

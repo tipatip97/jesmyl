@@ -10,6 +10,8 @@ const timeSchLineReg = makeRegExp(`/(${timeRegStr}) (.+)(\\n(?!${timeRegStr}).+)
 const repEInText = (text: string) => text.replace(makeRegExp('/ё/gi'), 'е');
 const extractTitle = ({ title }: { title: string }) => repEInText(title);
 
+type TgTag = '' | 'b' | 'i' | 'u' | 's' | 'tg-spoiler' | 'code' | 'pre';
+
 export class ScheduleWidgetTgInformCleans {
   static text2PreparedText = (text: string) => {
     const lines = text.match(timeSchLineReg);
@@ -118,4 +120,6 @@ export class ScheduleWidgetTgInformCleans {
       }),
     };
   };
+
+  static putInTgTag = (tag: TgTag, text: string) => (tag === '' ? text : `<${tag}>${text}</${tag}>`);
 }

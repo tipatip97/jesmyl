@@ -10,9 +10,6 @@ import { IScheduleWidget, IScheduleWidgetDay, ScheduleStorage } from '../../mode
 import ScheduleWidgetCleans from '../utils/Cleans';
 import { ScheduleWidgetTgInformCleans } from './cleans';
 
-type TgTag = '' | 'b' | 'i' | 'u' | 's' | 'tg-spoiler' | 'code' | 'pre';
-export const putInTgTag = (tag: TgTag, text: string) => (tag === '' ? text : `<${tag}>${text}</${tag}>`);
-
 export const makeScheduleWidgetJoinTitle = (
   schedule: IScheduleWidget<string>,
   day: IScheduleWidgetDay,
@@ -26,11 +23,11 @@ export const makeScheduleWidgetJoinTitle = (
 
   const eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
   const titleInner = schedule.types[event.type].title + (event.topic ? ': ' + event.topic : '');
-  const title = isSimpleText ? titleInner : putInTgTag('b', titleInner);
+  const title = isSimpleText ? titleInner : ScheduleWidgetTgInformCleans.putInTgTag('b', titleInner);
 
   return (
     prefix +
-    (event.secret ? (isSimpleText ? title : putInTgTag('tg-spoiler', title)) : title) +
+    (event.secret ? (isSimpleText ? title : ScheduleWidgetTgInformCleans.putInTgTag('tg-spoiler', title)) : title) +
     (eventTimeMin === 0 ? makeScheduleWidgetJoinTitle(schedule, day, eventi + 1, isSimpleText, ' / ') : '')
   );
 };

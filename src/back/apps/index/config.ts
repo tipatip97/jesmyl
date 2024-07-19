@@ -2,7 +2,7 @@ import { Executer } from '../../complect/executer/Executer';
 import { FilerAppConfig } from '../../complect/filer/Filer.model';
 import { rootDirective } from '../../complect/soki/soki.model';
 import { Application } from './models/Application';
-import { indexSchedulesActionBox } from './schedules/action-box';
+import { indexSchedulesActionBox } from './schedules/action-box/action-box';
 import { indexSchedulesConfig } from './schedules/filer-requirement';
 
 const config: FilerAppConfig = {

@@ -112,23 +112,43 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
         tglogger.error(result.errorMessage);
       } else {
         const fix = result.replacedExecs?.[0]?.track?.[0];
-        const info =
+        const info = (execsAlt: string, indent = ' ') =>
           `<b>${eventData.auth?.fio ?? 'Нет имени'}` +
           (eventData.auth?.nick ? ` t.me/${eventData.auth.nick}` : '') +
           `</b>:\n\n${appName}${fix ? `.${smylib.isStr(fix) ? fix : JSON.stringify(fix)}` : ''}:\n${result.replacedExecs
             .map(this.extractTitle)
             .join('\n\n')}` +
           `\n\n\nJSON изменений:\n<blockquote expandable>` +
-          JSON.stringify(result.replacedExecs, null, ' ') +
+          (execsAlt || JSON.stringify(result?.replacedExecs, null, indent)) +
           `</blockquote>\n\nАвтор:\n<blockquote expandable>` +
           (eventData.auth ? JSON.stringify(eventData.auth, null, ' ') : 'Не авторизоан') +
           `</blockquote>`;
 
-        tglogger.changes(info);
+        (async () => {
+          try {
+            await tglogger.changes(info(''));
 
-        if (result === undefined || appName !== 'cm') return;
+            if (result === undefined || appName !== 'cm') return;
 
-        jesmylChangesBot.postMessage(info, { disable_notification: true });
+            await jesmylChangesBot.postMessage(info(''), { disable_notification: true });
+          } catch (error) {
+            try {
+              await tglogger.changes(info('', ''));
+
+              if (result === undefined || appName !== 'cm') return;
+
+              await jesmylChangesBot.postMessage(info('', ''), { disable_notification: true });
+            } catch (error) {
+              const alt = '<b><s>JSON слишком большой</s></b>';
+
+              await tglogger.changes(info(alt));
+
+              if (result === undefined || appName !== 'cm') return;
+
+              await jesmylChangesBot.postMessage(info(alt), { disable_notification: true });
+            }
+          }
+        })();
       }
     });
 

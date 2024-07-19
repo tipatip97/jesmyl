@@ -58,12 +58,14 @@ export interface ActionBox<Value = any>
 
 export interface ActionCRUD {
   method?: ExecutionMethod;
-  value?: any;
+  value?: ExecuteReplaceableField<any, {}>;
   args?: ExecutionArgs<string | any[]>;
   setSystems?: ActionBoxSetSystems[];
   setItemSystems?: ActionBoxSetSystems[];
   uniqs?: string[];
   RRej?: boolean | number;
+  shortTitle?: string;
+  title?: string | ((args: Record<string, unknown>) => string);
 }
 
 export type ActionBoxSetSystemsFree = keyof typeof actionBoxSetSystems;

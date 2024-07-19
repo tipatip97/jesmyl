@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */
 import md5 from 'md5';
+import { makeRegExp } from '../complect/makeRegExp';
 
 export type StringTemplaterArgs<Adds = {}> = {
   ink: (num: number, post: string, pre: string) => string;
@@ -360,7 +361,7 @@ export class SMyLib {
         if (part === dob) {
         } else if (part === dcb || part === ocb) escLim++;
         else if (this.isStr(part)) {
-          const match = part.match(/^\$(\w+)(!{1,2}|\?{1,2})?(;?)/);
+          const match = part.match(makeRegExp('/^\\$(\\w+)(!{1,2}|\\?{1,2})?(;?)/'));
           const [, topArgName, op, semicolon] = (match || []) as [any, keyof StringTemplaterArgs, string, string];
 
           if (topArgName != null) {
@@ -392,7 +393,7 @@ export class SMyLib {
             }
           } else {
             parti && escLim++;
-            addNorm(part.replace(/^\\/, ''), op);
+            addNorm(part.replace(makeRegExp('/^\\\\/'), ''), op);
           }
         } else addNorm(part);
       });
@@ -400,7 +401,11 @@ export class SMyLib {
       return line;
     };
 
-    return inline((str || '').split(/(\\?\$\w+!{0,2}\?{0,2};?|\\?{{|\\?}{|\\?}})/).filter(s => s))?.join('') || '';
+    return (
+      inline(
+        (str || '').split(makeRegExp('/(\\\\?\\$\\w+!{0,2}\\?{0,2};?|\\\\?{{|\\\\?}{|\\\\?}})/')).filter(s => s),
+      )?.join('') || ''
+    );
   }
 
   newInstance<T>(val: T): T {
