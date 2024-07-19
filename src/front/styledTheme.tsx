@@ -1,5 +1,5 @@
-import { makeRegExp } from './back/complect/makeRegExp';
-import { indexSimpleValIsPlayAnimations } from './front/components/index/complect/index.simpleValues';
+import { makeRegExp } from '../back/complect/makeRegExp';
+import { indexSimpleValIsPlayAnimations } from './components/index/complect/index.simpleValues';
 
 const idMap = new Map<readonly [string], string>();
 const letters: Record<string, string> = { '.': 'o' };

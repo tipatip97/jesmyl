@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { css } from 'styled-components';
-import { renderComponentInNewWindow } from '../../../../../..';
+import { renderComponentInNewWindow } from '../../../../..';
 import { CurrentForceViweAppContext } from '../Translation.contexts';
 import { TranslationScreen } from '../TranslationScreen';
 import { useGetScreenTranslationConfig, useScreenTranslationConfigs } from './configs';

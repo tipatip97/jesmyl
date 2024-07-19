@@ -3,7 +3,6 @@ import WebSocket, { WebSocketServer } from 'ws';
 import { scheduleWidgetMessageCatcher } from '../../apps/index/schedules/tg-bot-inform/message-catchers';
 import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
 import { baseMessagesCatcher } from '../../sides/telegram-bot/message-catchers';
-import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { setServerPolyfills } from '../polyfills';
 import { SokiServerDownloads } from './parts/110-Downloads';
@@ -50,13 +49,11 @@ export class SokiServer extends SokiServerDownloads {
       client.on('close', () => this.onClientDisconnect(client));
     });
 
-    console.info('SokiServer started');
+    console.info('SokiServer started!!!');
   }
 }
 
 const sokiServer = new SokiServer();
-
-supportTelegramBot.getAdmins().finally(() => sokiServer.start());
 
 export default sokiServer;
 

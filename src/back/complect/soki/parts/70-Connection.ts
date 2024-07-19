@@ -1,5 +1,6 @@
 import { WebSocket } from 'ws';
 import smylib from '../../../shared/SMyLib';
+import { tglogger } from '../../../sides/telegram-bot/log/log-bot';
 import { SokiAuther, sokiAuther } from '../SokiAuther';
 import { LocalSokiAuth, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerVisits } from './60-Visits';
@@ -15,8 +16,15 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
 
     this.sendStatistic();
 
-    if (isDeleted && disconnecter) console.info(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
-    else console.info('Disconnected Unknown client');
+    if (isDeleted && disconnecter) {
+      console.info(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
+      if (disconnecter.auth?.level !== 100) {
+        tglogger.visit(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
+      }
+    } else {
+      console.info('Disconnected Unknown client');
+      tglogger.visit('Disconnected Unknown client');
+    }
   }
 
   async doOnConnect({ appName, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
@@ -30,7 +38,7 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
         nick: '',
       });
       this.send({ authorized: false, appName: eventData.appName }, client);
-      console.info('Unknown client connected');
+      tglogger.visit('Unknown client connected');
       return true;
     }
 
@@ -82,11 +90,13 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
       this.clients.set(eventData.deviceId, client);
 
       this.send({ authorized: true, appName }, client);
-      console.info(
-        `Client ${
-          auth.fio !== undefined && auth.fio !== auth.nick ? `${auth.fio} (${auth.nick})` : auth.nick ?? '???'
-        } connected`,
-      );
+
+      const infoText = `Client ${
+        auth.fio !== undefined && auth.fio !== auth.nick ? `${auth.fio} (${auth.nick})` : auth.nick ?? '???'
+      } connected`;
+
+      console.info(infoText);
+      if (eventData.auth?.level !== 100) tglogger.visit(infoText);
 
       if (auth.level !== eventData.auth.level || auth.nick !== eventData.auth.nick || auth.fio !== eventData.auth.fio)
         this.send(

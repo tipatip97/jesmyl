@@ -44,7 +44,7 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
     user.username
       ? member.status === 'creator'
         ? `<code>${user.username}</code>`
-        : `@${user.username}`
+        : `t.me${user.username}`
       : `<i>${prodBot.convertNickFromId(user.id)}</i>`
   }, ${user.id})`;
 

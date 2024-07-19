@@ -205,6 +205,6 @@ export class JesmylTelegramBot {
   }
 
   messageCase = (prefix: `/${string}`, text: string) => {
-    return prefix === text || `${prefix}@${botName}` === text;
+    return prefix === text || `${prefix}t.me/${botName}` === text;
   };
 }

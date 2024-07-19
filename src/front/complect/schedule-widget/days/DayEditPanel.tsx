@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { renderComponentInNewWindow } from '../../../..';
+import { renderComponentInNewWindow } from '../../..';
 import { makeRegExp } from '../../../../back/complect/makeRegExp';
 import { FullContent } from '../../fullscreen-content/FullContent';
 import StrongControlDateTimeExtracter from '../../strong-control/StrongDateTimeExtracter';

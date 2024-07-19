@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { renderComponentInNewWindow } from '../../../../..';
+import { renderComponentInNewWindow } from '../../../..';
 import { BottomPopupContenterPreparer } from '../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
 import { IconEyeStrokeRounded } from '../../../../complect/the-icon/icons/eye';

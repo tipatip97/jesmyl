@@ -10,14 +10,14 @@ export class SokiServerVisits extends SokiServerExecs {
     if (this.lastVisit !== date.toLocaleDateString()) {
       this.statistic.pastVisits[this.lastVisit] = this.statistic.visits.length;
 
-      tglogger.log(
+      tglogger.visit(
         `Посещения за ${this.lastVisit}` +
           ` (${this.statistic.visits.length})\n\n<blockquote expandable>` +
           this.statistic.visits
             .map(
               visit =>
                 `<b>${visit.fio ?? '???'}</b>` +
-                (visit.tgId ? ` @${visit.nick || '-'}` : '') +
+                (visit.tgId ? ` t.me/${visit.nick || '-'}` : '') +
                 ` ${visit.version}` +
                 ` ${visit.deviceId}` +
                 ` ${visit.time}`,
@@ -30,9 +30,14 @@ export class SokiServerVisits extends SokiServerExecs {
       this.lastVisit = date.toLocaleDateString();
     }
 
-    this.statistic.visits.push({
+    const visitInfo = {
       ...visit,
       time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`,
-    });
+    };
+    this.statistic.visits.push(visitInfo);
+    tglogger.visit(
+      `${visitInfo.fio ? `${visitInfo.fio} ` : ''}${visitInfo.nick ? `t.me/${visitInfo.nick} ` : ''}\n\n` +
+        `<blockquote expandable>${JSON.stringify(visitInfo, null, ' ')}</blockquote>`,
+    );
   }
 }

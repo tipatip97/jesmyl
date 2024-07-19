@@ -44,7 +44,7 @@ export const gamerTgQueryParts = {
   join: 'join',
 } as const;
 
-export const makeTgGamerTgQueryData = <const Action = keyof typeof gamerTgQueryParts>(roomw: number, action: Action) =>
+export const makeTgGamerTgQueryData = <Action = keyof typeof gamerTgQueryParts>(roomw: number, action: Action) =>
   `${gamerQueryDataPrefix}${roomw}/${action}` as const;
 
 export const startTgGamerListener = () => {

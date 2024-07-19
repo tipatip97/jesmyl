@@ -168,7 +168,7 @@ export const tgBotUrlController = async (
     } catch (error) {}
 
     adminBot.postMessage(
-      (messageFrom.username ? `@${messageFrom.username}, ` : '') +
+      (messageFrom.username ? `t.me/${messageFrom.username}, ` : '') +
         getFullName(messageFrom) +
         message1Separation +
         `<b>${message.chat.title}</b>:\n` +

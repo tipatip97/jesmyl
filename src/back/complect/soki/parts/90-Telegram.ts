@@ -40,7 +40,7 @@ export class SokiServerTelegram extends SokiServerServices implements SokiServer
     }
 
     tglogger.authorizations(
-      authTypePrefix + user.first_name + ' ' + (user.last_name || '') + (user.username ? ` @${user.username}` : ''),
+      authTypePrefix + user.first_name + ' ' + (user.last_name || '') + (user.username ? ` t.me/${user.username}` : ''),
     );
 
     const auth = await SokiAuther.getTgAuth(user.id, tgAva, sendErrorMessage);

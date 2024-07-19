@@ -28,7 +28,7 @@ nano /etc/systemd/system/jesmyl_soki.service
 
 nano /etc/php/7.4/apache2/php.ini
 
-nano /etc/apache2/sites-available/{DOMAIN}.conf
+nano /etc/apache2/sites-available/jesmyl.ru.conf
 
 nano /etc/apache2/ports.conf
 

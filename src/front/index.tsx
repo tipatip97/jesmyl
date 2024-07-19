@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider } from 'styled-components';
-import App from './front/app/App';
-import { setPolyfills } from './front/complect/polyfills';
-import './front/index.scss';
-import './front/lib.scss';
-import reportWebVitals from './front/reportWebVitals';
-import * as serviceWorkerRegistration from './front/serviceWorkerRegistration';
+import App from './app/App';
+import { setPolyfills } from './complect/polyfills';
+import './index.scss';
+import './lib.scss';
+import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import StyledGlobalStyles from './styledGlobalStyles';
 import { styledDefaultTheme } from './styledTheme';
 
@@ -20,7 +20,7 @@ export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null
     </React.StrictMode>,
   );
 };
-renderApplication(<App />, document.getElementById('root'));
+export const renderRootApp = () => renderApplication(<App />, document.getElementById('root'));
 
 export const renderComponentInNewWindow = (
   reactNode: ReactNode | ((win: typeof window) => ReactNode),

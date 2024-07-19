@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { renderComponentInNewWindow } from '../../../../../..';
+import { renderComponentInNewWindow } from '../../../../..';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
 import { LeaderGroupImportable } from '../groups/Groups.model';

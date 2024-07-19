@@ -49,7 +49,7 @@ const openDayScheduleKey: SendMessageOptions = {
 
 export const indexScheduleSetMessageInform = (
   scheduleScalar: number | IScheduleWidget<string>,
-  invokerAuth?: LocalSokiAuth | null,
+  invokerAuth?: (LocalSokiAuth & { isSystem?: 1 }) | null,
   invokeDayi?: number,
 ) => {
   const schedule = getSchedule(scheduleScalar);
@@ -230,8 +230,8 @@ export const indexScheduleSetMessageInform = (
                   },
                 },
               ],
-              auth,
-              auth,
+              { ...auth, isSystem: 1 },
+              { ...auth, isSystem: 1 },
             )
             .then(() => setTimeout(() => indexScheduleSetMessageInform(schedule.w, invokerAuth, invokeDayi)));
         } else setTimeout(() => indexScheduleSetMessageInform(schedule.w, invokerAuth, invokeDayi));

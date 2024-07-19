@@ -20,7 +20,8 @@
     "typescript": "^5.5.3"
   },
   "scripts": {
-    "relog": "fuser -k 4446/tcp & ts-node /var/www/jesmyl.ru/complect/soki/SokiServer.ts",
+    "relog-js": "fuser -k 4446/tcp & node /var/www/jesmyl.ru/index.js",
+    "relog": "fuser -k 4446/tcp & ts-node /var/www/jesmyl.ru/back.index.ts",
     "re-start": "systemctl restart jesmyl_soki",
     "re-status": "systemctl status jesmyl_soki"
   }

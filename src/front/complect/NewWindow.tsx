@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { renderComponentInNewWindow } from '../..';
+import { renderComponentInNewWindow } from '..';
 
 interface Props {
   target?: string;

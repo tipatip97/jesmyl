@@ -26,6 +26,8 @@ export class TgLogger {
     codeRequest: 841,
     jsonCode: 871,
     test: 1453,
+    visit: 3343,
+    changes: 3383,
   };
 
   constructor(bot: JesmylTelegramBot) {
@@ -51,6 +53,14 @@ export class TgLogger {
 
   log(text: string) {
     return this.bot.postMessage(text, this.replyToScope('log'));
+  }
+
+  visit(text: string) {
+    return this.bot.postMessage(text, this.replyToScope('visit'));
+  }
+
+  changes(text: string) {
+    return this.bot.postMessage(text, this.replyToScope('changes'));
   }
 
   test(text: string) {

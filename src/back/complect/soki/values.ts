@@ -1,4 +1,4 @@
-import { ScheduleWidgetPhotoKey } from '../../../front/models';
+import { ScheduleWidgetPhotoKey } from '../../apps/index/models/ScheduleWidget.model';
 
 export enum SokiSharedKey {
   ScheduleWidgetPhotos = 'ScheduleWidgetPhotos',

@@ -1,6 +1,7 @@
 import { WebSocket } from 'ws';
 import smylib, { SMyLib } from '../../../shared/SMyLib';
 import { jesmylChangesBot } from '../../../sides/telegram-bot/jesmylChangesBot';
+import { tglogger } from '../../../sides/telegram-bot/log/log-bot';
 import { Executer } from '../../executer/Executer';
 import { ExecuteFeedbacks, ExecutionDict } from '../../executer/Executer.model';
 import { filer } from '../../filer/Filer';
@@ -12,8 +13,8 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
   async execExecs(
     appName: SokiAppName,
     execs: ExecutionDict[],
-    eventAuth: LocalSokiAuth | nil,
-    auth: LocalSokiAuth | nil,
+    eventAuth: (LocalSokiAuth & { isSystem?: 1 }) | nil,
+    auth: (LocalSokiAuth & { isSystem?: 1 }) | nil,
     client?: WebSocket,
     requestId?: string,
   ): Promise<ExecuteFeedbacks> {
@@ -106,21 +107,28 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
     if (eventBody.execs === undefined) return false;
 
     this.execExecs(appName, eventBody.execs, eventData.auth, capsule?.auth, client, requestId).then(result => {
-      if (result === undefined || appName !== 'cm') return;
-
-      if (result.errorMessage !== undefined) jesmylChangesBot.postMessage(result.errorMessage);
-      else {
-        jesmylChangesBot.postMessage(
+      if (result.errorMessage !== undefined) {
+        jesmylChangesBot.postMessage(result.errorMessage);
+        tglogger.error(result.errorMessage);
+      } else {
+        const fix = result.replacedExecs?.[0]?.track?.[0];
+        const info =
           `<b>${eventData.auth?.fio ?? 'Нет имени'}` +
-            (eventData.auth?.nick ? ` @${eventData.auth.nick}` : '') +
-            `</b>:\n\n${appName}:\n${result.replacedExecs.map(this.extractTitle).join('\n\n')}` +
-            `\n\n\nJSON изменений:\n<blockquote expandable>` +
-            JSON.stringify(result.replacedExecs, null, ' ') +
-            `</blockquote>\n\nАвтор:\n<blockquote expandable>` +
-            (eventData.auth ? JSON.stringify(eventData.auth, null, ' ') : 'Не авторизоан') +
-            `</blockquote>`,
-          { disable_notification: true },
-        );
+          (eventData.auth?.nick ? ` t.me/${eventData.auth.nick}` : '') +
+          `</b>:\n\n${appName}${fix ? `.${smylib.isStr(fix) ? fix : JSON.stringify(fix)}` : ''}:\n${result.replacedExecs
+            .map(this.extractTitle)
+            .join('\n\n')}` +
+          `\n\n\nJSON изменений:\n<blockquote expandable>` +
+          JSON.stringify(result.replacedExecs, null, ' ') +
+          `</blockquote>\n\nАвтор:\n<blockquote expandable>` +
+          (eventData.auth ? JSON.stringify(eventData.auth, null, ' ') : 'Не авторизоан') +
+          `</blockquote>`;
+
+        tglogger.changes(info);
+
+        if (result === undefined || appName !== 'cm') return;
+
+        jesmylChangesBot.postMessage(info, { disable_notification: true });
       }
     });
 
