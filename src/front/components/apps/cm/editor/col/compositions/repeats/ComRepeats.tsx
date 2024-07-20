@@ -6,9 +6,9 @@ import { IconCancel01StrokeRounded } from '../../../../../../../complect/the-ico
 import { IconFlag03StrokeRounded } from '../../../../../../../complect/the-icon/icons/flag-03';
 import { IconLinkBackwardStrokeRounded } from '../../../../../../../complect/the-icon/icons/link-backward';
 import { IconPinStrokeRounded } from '../../../../../../../complect/the-icon/icons/pin';
+import { OrderRepeats } from '../../../../../../../models';
 import { ChordVisibleVariant } from '../../../../Cm.model';
 import ComLine from '../../../../col/com/line/ComLine';
-import { OrderRepeats } from '../../../../col/com/order/Order.model';
 import TheOrder from '../../../../col/com/order/TheOrder';
 import { EditableOrder } from '../complect/orders/EditableOrder';
 import { useEditableCcom } from '../useEditableCcom';

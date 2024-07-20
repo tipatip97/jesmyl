@@ -6,7 +6,7 @@ import {
   IExportableMeetingsEvent,
   MeetingsContext,
   MeetingsContextMap,
-} from '../../lists/meetings/Meetings.model';
+} from '../../../../../../back/apps/cm/Meetings.model';
 import { EditableCols } from '../col/EditableCols';
 import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 

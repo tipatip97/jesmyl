@@ -1,3 +1,4 @@
+import environment from '../../environments/environment';
 import { jesmylTgBot } from './bot';
 import { prodTelegramBot } from './prod/prod-bot';
 
@@ -39,7 +40,7 @@ export const baseCallbackCatcher = jesmylTgBot.catchCallbackQuery(async (query, 
   await bot.sendMessage(
     query.message.chat.id,
     `1. Для связывания этого чата с JesmyL-мероприятием необходимо ` +
-      `вставить следующую строчку в поле управления мероприятием в приложении https://jesmyl.ru` +
+      `вставить следующую строчку в поле управления мероприятием в приложении ${environment.host}` +
       `\n\n<code>${requisites}</code>\n\n` +
       `2. Закрепите следующее сообщение для быстрого доступа к расписанию дня\n\n` +
       `3. Удалите это сообщение - оно больше не понадобится`,

@@ -1,8 +1,9 @@
 import { FreeExecDict } from '../../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../../complect/my-lib/MyLib';
+import { IExportableCat } from '../../../../../../models';
 import { Cat } from '../../../col/cat/Cat';
 import { catTrackers } from '../../../col/cat/Cat.complect';
-import { CatTracker, ComWrap, IExportableCat } from '../../../col/cat/Cat.model';
+import { CatTracker, ComWrap } from '../../../col/cat/Cat.model';
 import { Com } from '../../../col/com/Com';
 import { CorrectsBox } from '../../corrects-box/CorrectsBox';
 import { EditableCom } from '../compositions/EditableCom';

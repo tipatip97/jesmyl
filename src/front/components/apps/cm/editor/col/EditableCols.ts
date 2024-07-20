@@ -1,5 +1,5 @@
+import { IExportableCols } from '../../../../../models';
 import { Cols } from '../../cols/Cols';
-import { IExportableCols } from '../../cols/Cols.model';
 import { EditableCat } from './categories/EditableCat';
 import { EditableCom } from './compositions/EditableCom';
 

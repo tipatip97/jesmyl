@@ -3,6 +3,7 @@ import smylib from '../../../shared/SMyLib';
 import { jesmylTgBot } from '../bot';
 import { tglogger } from '../log/log-bot';
 import { JTgBotCallbackQuery } from '../model';
+import environment from '../../../environments/environment';
 
 export const supportTelegramAuthorizations: Record<number, () => CallbackQuery> = {};
 const telegramAuthorizationUsers: Record<number, number> = {};
@@ -88,7 +89,7 @@ export const authorizeTelegramCb: JTgBotCallbackQuery = async (prodBot, query, a
           `Твой одноразовый код: <code>${randId}</code>.\n` +
             'Логин: ' +
             (query.from.username || prodBot.convertNickFromId(query.from.id)) +
-            '\n\nЗайди в приложение <a href="https://jesmyl.ru">JesmyL</a>, ' +
+            `\n\nЗайди в приложение <a href="${environment.host}">JesmyL</a>, ` +
             'перейди в раздел Другое - Войти, и введи его в поле ввода.\n\n' +
             `Через ${minutesText} этот код будет упразднён`,
         )

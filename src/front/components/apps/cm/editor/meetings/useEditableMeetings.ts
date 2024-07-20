@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useAtomValue } from '../../../../../complect/atoms';
 import useCmNav from '../../base/useCmNav';
-import { IExportableMeetings } from '../../lists/meetings/Meetings.model';
+import { IExportableMeetings } from '../../../../../../back/apps/cm/Meetings.model';
 import { cmMolecule } from '../../molecules';
 import { useEditableCols } from '../col/useEditableCols';
 import { editEventNavPhasePoint } from '../editorNav';

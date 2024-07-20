@@ -1,5 +1,6 @@
 import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import { IExportableCom, IExportableOrder } from '../../../../../models';
 import { BaseNamed } from '../../base/BaseNamed';
 import { blockStyles } from './block-styles/BlockStyles';
 import { StyleBlock } from './block-styles/StyleBlock';
@@ -11,9 +12,8 @@ import {
   simpleHashChords,
   translationPushKinds,
 } from './Com.complect';
-import { IExportableCom } from './Com.model';
 import { Order } from './order/Order';
-import { IExportableOrder, IExportableOrderTop, OrderTopHeaderBag } from './order/Order.model';
+import { IExportableOrderTop, OrderTopHeaderBag } from './order/Order.model';
 
 export class Com extends BaseNamed<IExportableCom> {
   initial: Record<string, any>;

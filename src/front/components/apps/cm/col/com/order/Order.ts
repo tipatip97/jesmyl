@@ -1,15 +1,14 @@
 import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
 import SourceBased from '../../../../../../complect/SourceBased';
-import { Com } from '../Com';
 import {
-  EditableOrderRegion,
   IExportableOrderFieldValues,
-  IExportableOrderTop,
   InheritancableOrder,
   OrderRepeats,
   SpecielOrderRepeats,
-} from './Order.model';
+} from '../../../../../../models';
+import { Com } from '../Com';
+import { EditableOrderRegion, IExportableOrderTop } from './Order.model';
 
 const emptyArr: [] = [];
 

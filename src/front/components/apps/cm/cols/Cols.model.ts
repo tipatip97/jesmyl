@@ -1,8 +1,7 @@
+import { IExportableCat, IExportableCom } from '../../../../models';
 import { Cat } from '../col/cat/Cat';
-import { IExportableCat } from '../col/cat/Cat.model';
-import { EditableCat } from '../editor/col/categories/EditableCat';
 import { Com } from '../col/com/Com';
-import { IExportableCom } from '../col/com/Com.model';
+import { EditableCat } from '../editor/col/categories/EditableCat';
 import { EditableCom } from '../editor/col/compositions/EditableCom';
 
 export interface ICols {
@@ -23,9 +22,4 @@ export interface IExportableCol {
 export interface IEditableCol {
   com: EditableCom;
   cat: EditableCat;
-}
-
-export interface IExportableCols {
-  coms: IExportableCom[];
-  cats: IExportableCat[];
 }

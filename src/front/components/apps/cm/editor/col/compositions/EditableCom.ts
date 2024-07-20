@@ -1,11 +1,11 @@
 import { FreeExecDict } from '../../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../../complect/my-lib/MyLib';
+import { IExportableCom } from '../../../../../../models';
 import { cmExer } from '../../../CmExer';
 import { blockStyles } from '../../../col/com/block-styles/BlockStyles';
 import { StyleBlock } from '../../../col/com/block-styles/StyleBlock';
 import { Com } from '../../../col/com/Com';
 import { chordDiezEquivalent, gSimpleBemoleChordReg } from '../../../col/com/Com.complect';
-import { IExportableCom } from '../../../col/com/Com.model';
 import { IExportableOrderTop, INewExportableOrder } from '../../../col/com/order/Order.model';
 import { CorrectsBox } from '../../corrects-box/CorrectsBox';
 import {

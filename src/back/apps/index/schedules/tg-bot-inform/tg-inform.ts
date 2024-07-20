@@ -5,7 +5,7 @@ import { SokiAuther } from '../../../../complect/soki/SokiAuther';
 import sokiServer from '../../../../complect/soki/SokiServer';
 import { LocalSokiAuth } from '../../../../complect/soki/soki.model';
 import { convertMd2HTMLMaker } from '../../../../complect/utils';
-import smylib from '../../../../shared/SMyLib';
+import smylib, { SMyLib } from '../../../../shared/SMyLib';
 import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
 import { tglogger } from '../../../../sides/telegram-bot/log/log-bot';
 import {
@@ -13,6 +13,8 @@ import {
   IScheduleWidgetDayEvent,
   IScheduleWidgetUser,
   IScheduleWidgetWid,
+  ScheduleWidgetAttKey,
+  ScheduleWidgetDayEventAttValue,
 } from '../../models/ScheduleWidget.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../rights';
 import ScheduleWidgetCleans from '../utils/Cleans';
@@ -22,8 +24,9 @@ import {
   indexScheduleGetDayStartMs,
   indexScheduleGetEventFinishMs,
 } from '../utils/utils';
-import { makeScheduleWidgetJoinTitle } from './message-catchers';
+import { attInformStorage } from './attInformStorage';
 import { ScheduleWidgetTgInformCleans } from './cleans';
+import { makeScheduleWidgetJoinTitle } from './message-catchers';
 
 let schedules: IScheduleWidget<string>[];
 const getSchedule = (scheduleScalar: number | IScheduleWidget<string>) =>
@@ -47,6 +50,13 @@ const openDayScheduleKey: SendMessageOptions = {
     inline_keyboard: [[{ text: 'Расписание дня', url: 'https://t.me/jesmylbot/jesmylapp' }]],
   },
 };
+
+const mapAttsStorage = ([key, value]: [ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue]) => {
+  return attInformStorage[key]?.(value) ?? '';
+};
+
+const newPointLineMarker = '● ';
+const doubleNl = '\n\n';
 
 export const indexScheduleSetMessageInform = (
   scheduleScalar: number | IScheduleWidget<string>,
@@ -124,10 +134,13 @@ export const indexScheduleSetMessageInform = (
 
         let delayTitlePrefix = '';
         let nextEventTitle = '';
+        let attsText = '';
 
         if (isWithDelay) {
           delayTitlePrefix = 'Через ' + timeToEvent + 'м. ';
         } else {
+          attsText = event.atts !== undefined ? SMyLib.entries(event.atts).map(mapAttsStorage).join('') : '';
+
           if (day.list[eventi + 1] != null && eventTimeMin > informBeforeTime) {
             let timeTo = `через ${eventTimeMin}м.`;
 
@@ -137,11 +150,12 @@ export const indexScheduleSetMessageInform = (
             }
 
             nextEventTitle =
-              '\n\n● ' +
+              newPointLineMarker +
               ScheduleWidgetTgInformCleans.putInTgTag(
                 'i',
                 `${makeScheduleWidgetJoinTitle(schedule, day, eventi + 1)} - ${timeTo}`,
-              );
+              ) +
+              doubleNl;
           }
         }
 
@@ -150,15 +164,16 @@ export const indexScheduleSetMessageInform = (
           (event.secret
             ? ScheduleWidgetTgInformCleans.putInTgTag('tg-spoiler', makeScheduleWidgetJoinTitle(schedule, day, eventi))
             : makeScheduleWidgetJoinTitle(schedule, day, eventi)) +
+          doubleNl +
           (event.tgInform === 0 && event.dsc
-            ? '\n\n● ' + ScheduleWidgetTgInformCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc))
+            ? newPointLineMarker +
+              ScheduleWidgetTgInformCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc)) +
+              doubleNl
             : '') +
+          (attsText ? `${newPointLineMarker}${attsText}` : '') +
           nextEventTitle +
-          '\n\n' +
-          `● ${ScheduleWidgetTgInformCleans.putInTgTag(
-            'u',
-            ScheduleWidgetTgInformCleans.putInTgTag('i', schedule.title),
-          )}`;
+          newPointLineMarker +
+          ScheduleWidgetTgInformCleans.putInTgTag('u', ScheduleWidgetTgInformCleans.putInTgTag('i', schedule.title));
 
         const options: SendMessageOptions = (unsubOptions[schedule.w] ??= {
           reply_markup: {

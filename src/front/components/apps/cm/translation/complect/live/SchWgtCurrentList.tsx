@@ -3,10 +3,10 @@ import {
   IScheduleWidget,
   IScheduleWidgetDayEvent,
 } from '../../../../../../complect/schedule-widget/ScheduleWidget.model';
+import { CmComBindAttach } from '../../../../../../models';
 import { CmTranslationComListContext } from '../../../base/translations/context';
 import { Com } from '../../../col/com/Com';
 import { useCols } from '../../../cols/useCols';
-import { CmComBindAttach } from '../../../external/cmExternalAttach';
 import { useMeetings } from '../../../lists/meetings/useMeetings';
 
 interface Props {

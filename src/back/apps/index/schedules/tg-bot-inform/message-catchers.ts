@@ -111,67 +111,6 @@ jesmylTgBot.catchCallbackQuery(async (query, bot, answer) => {
 
   const ret = (text: string) => answer({ text });
 
-  if (0) {
-    // if (query.data !== undefined && query.data.startsWith(scheduleWidgetEventRaitingTgButtonQueryPrefix)) {
-    //   let schedule,
-    //     dayi = -1;
-    //   try {
-    //     [schedule, dayi] = getScheduleAndTodayiByRequisit(`/${query.chat_instance}`);
-    //   } catch (errorMessage) {
-    //     return ret('' + errorMessage);
-    //   }
-    //   const [, rateStr, eventMiStr] = query.data.split(':');
-    //   const eventMi = +eventMiStr;
-    //   const eventi = schedule.days[dayi].list.findIndex(event => event.mi === eventMi);
-    //   if (eventi < 0) return ret('Событие не найдено');
-    //   const auth = await SokiAuther.getTgAuth(query.from.id);
-    //   if (auth == null) return ret('Не удалось авторизоваться');
-    //   if (schedule.ctrl.users.find(user => user.tgId === auth?.tgId) === undefined) {
-    //     await sokiServer.execExecs(
-    //       'index',
-    //       [
-    //         {
-    //           action: 'addNewUser',
-    //           args: {
-    //             value: {
-    //               ...auth,
-    //             },
-    //           },
-    //         },
-    //       ],
-    //       auth,
-    //       auth,
-    //     );
-    //     schedule = getScheduleByRequisit(`/${query.chat_instance}`);
-    //     if (schedule === undefined) return ret('Не вышло зарегистрироваться');
-    //   }
-    //   const user = schedule.ctrl.users.find(user => user.tgId === auth.tgId);
-    //   if (user === undefined) return ret('Не удалось зарегистрироваться');
-    //   const rate = +rateStr;
-    //   sokiServer.execExecs(
-    //     'index',
-    //     [
-    //       {
-    //         action: 'setDayEventRate',
-    //         args: {
-    //           schw: schedule.w,
-    //           dayi,
-    //           eventMi,
-    //           value: rate,
-    //           userMi: user.mi,
-    //         },
-    //       },
-    //     ],
-    //     auth,
-    //     auth,
-    //   );
-    //   return ret(
-    //     `Твоя оценка события ${makeScheduleWidgetJoinTitle(schedule, schedule.days[dayi], eventi, true)}\n` +
-    //       ((rate < 0 ? '💔' : '❤️').repeat(Math.abs(rate)) || '❓'),
-    //   );
-    // }
-  }
-
   if (query.message === undefined || query.message.text === undefined || query.data !== parseCbData_) return ret('');
 
   try {

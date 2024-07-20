@@ -2,7 +2,7 @@ import { filer } from '../../../../complect/filer/Filer';
 import { ActionBox, ActionBoxOnFinalCallback, ActionBoxValue } from '../../../../models';
 import smylib from '../../../../shared/SMyLib';
 import { makeTwiceKnownName } from '../../complect/makeTwiceKnownName';
-import { IScheduleWidget } from '../../models/ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetUserCati } from '../../models/ScheduleWidget.model';
 import { NounPronsType } from '../../models/nounProns.model';
 import { scheduleWidgetRegTypeRights, scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../rights';
 import { indexScheduleSetMessageInform } from '../tg-bot-inform/tg-inform';
@@ -92,7 +92,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
     ],
     units: [
       {
-        cat: 0 as never,
+        cat: IScheduleWidgetUserCati.def,
         mi: 1,
         title: 'Первая',
         dsc: '',
@@ -143,6 +143,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             value: '#Dict',
           },
         },
+        onSuccess: onTgInformingChangeSuccess,
       },
       '/start': {
         U: {
@@ -174,10 +175,11 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             value: '#Num',
           },
           title: args =>
-            `В расписании <b>${ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw)}</b> первый день -${
-              args.value ? '' : ' не'
-            } технический`,
+            `В расписании <b>${ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw)}</b> первый день -` +
+            (args.value ? '' : ' не') +
+            ` технический`,
         },
+        onSuccess: onTgInformingChangeSuccess,
       },
       '/tgChatReqs': {
         U: {
@@ -195,9 +197,9 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             value: '#Num',
           },
           title: args =>
-            `В расписании <b>${ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw)}</b> ${
-              args.value ? 'вк' : 'отк'
-            }лючено TG-информирвание`,
+            `В расписании <b>${ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw)}</b> ` +
+            (args.value ? 'вк' : 'отк') +
+            `лючено TG-информирвание`,
         },
         onSuccess: onTgInformingChangeSuccess,
       },
@@ -612,10 +614,11 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
             dayi: '#Number',
           },
           '/wup': {
-            U: {},
             setEachInParent: { list: { tgInform: 1 } },
             onSuccess: onTgInformingChangeSuccess,
+            U: {},
             '<action>': {
+              onSuccess: onTgInformingChangeSuccess,
               action: 'setDayWup',
               method: 'set',
             },
@@ -655,13 +658,14 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                 eventMi: '#Number',
               },
             },
+            onSuccess: onTgInformingChangeSuccess,
             '<update>': {
               scopeNode: 'updateDayEventList',
               U: {
                 setItemSystems: ['mi'],
               },
+              onSuccess: onTgInformingChangeSuccess,
             },
-            onSuccess: onTgInformingChangeSuccess,
             '<put schedule>': {
               action: 'putDayEventList',
               method: 'set',

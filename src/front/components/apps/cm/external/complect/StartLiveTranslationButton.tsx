@@ -1,10 +1,10 @@
 import { useSwitchCurrentTranslationTextApp } from '../../../+complect/translations/hooks/current-app';
-import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { IScheduleWidget } from '../../../../../complect/schedule-widget/ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../../../../complect/schedule-widget/useScheduleWidget';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
+import { CmComBindAttach } from '../../../../../models';
 import useIndexNav, { indexScheduleWidgetTranslationPagePhase } from '../../../../index/complect/useIndexNav';
-import { CmComBindAttach } from '../cmExternalAttach';
 
 interface Props {
   value: CmComBindAttach;

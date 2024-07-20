@@ -5,8 +5,8 @@ import IconButton from '../../../../../../../../complect/the-icon/IconButton';
 import { IconDelete01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/delete-01';
 import { IconRefreshStrokeRounded } from '../../../../../../../../complect/the-icon/icons/refresh';
 import { IconUnavailableStrokeRounded } from '../../../../../../../../complect/the-icon/icons/unavailable';
+import { OrderRepeats } from '../../../../../../../../models';
 import { Order } from '../../../../../col/com/order/Order';
-import { OrderRepeats } from '../../../../../col/com/order/Order.model';
 import { EditableOrder } from '../../complect/orders/EditableOrder';
 
 interface Props {

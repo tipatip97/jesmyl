@@ -1,10 +1,10 @@
+import { IExportableMeetings } from '../../../../back/apps/cm/Meetings.model';
 import { ClientExecutionDict } from '../../../complect/exer/Exer.model';
+import { IExportableCols } from '../../../models';
 import { EeStorageStoreType } from './base/ee-storage/EeStorage.model';
 import { IExportableSetts } from './col/com/block-styles/BlockStyles.model';
 import { ChordPack } from './col/com/chord-card/ChordCard.model';
 import { MigratableComToolName } from './col/com/Com.model';
-import { IExportableCols } from './cols/Cols.model';
-import { IExportableMeetings } from './lists/meetings/Meetings.model';
 import { CmTranslationScreenConfig } from './translation/complect/controlled/model';
 
 export type CmRollMode = 'pause' | 'play' | null;

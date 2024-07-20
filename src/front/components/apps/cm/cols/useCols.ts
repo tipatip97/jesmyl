@@ -1,8 +1,8 @@
 import { useAtomValue } from '../../../../complect/atoms';
 import mylib from '../../../../complect/my-lib/MyLib';
+import { IExportableCols } from '../../../../models';
 import { cmMolecule } from '../molecules';
 import { Cols } from './Cols';
-import { IExportableCols } from './Cols.model';
 
 let localCols: Cols | und;
 let localICols: IExportableCols | und;

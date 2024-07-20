@@ -1,7 +1,7 @@
 import { ClientExecutionDict } from '../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { cmExer } from '../../CmExer';
-import { IExportableMeetingsEvent } from '../../lists/meetings/Meetings.model';
+import { IExportableMeetingsEvent } from '../../../../../../back/apps/cm/Meetings.model';
 import { MeetingsEvent } from '../../lists/meetings/MeetingsEvent';
 import { EditableCom } from '../col/compositions/EditableCom';
 import { EditableCols } from '../col/EditableCols';

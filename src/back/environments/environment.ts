@@ -1,4 +1,4 @@
-const dns = 'jesmyl.ru';
+const dns = 'jesmyl.ru' as const;
 
 const environment = {
   dns,

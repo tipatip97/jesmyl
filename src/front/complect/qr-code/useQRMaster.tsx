@@ -39,12 +39,12 @@ export default function useQRMaster() {
         </Portal>
       </>
     );
-  }, [openError, toastNode]);
+  }, [errorToastNode, openError, toastNode]);
 
   const shareData = useCallback((appName: AppName, key: string, value: unknown, externalData?: boolean | string) => {
     try {
       if (externalData) {
-        var link = crossApplicationLinkCoder.encode({
+        const link = crossApplicationLinkCoder.encode({
           appName,
           key,
           value,

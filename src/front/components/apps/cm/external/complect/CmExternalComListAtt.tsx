@@ -12,13 +12,13 @@ import { IconLinkBackwardStrokeRounded } from '../../../../../complect/the-icon/
 import { IconMinusSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-square';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
+import { CmComBindAttach } from '../../../../../models';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';
 import { ComFace } from '../../col/com/face/ComFace';
 import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import { useMeetings } from '../../lists/meetings/useMeetings';
-import { CmComBindAttach } from '../cmExternalAttach';
 import TheComForFullScreen from './TheComForFullScreen';
 
 interface Props {

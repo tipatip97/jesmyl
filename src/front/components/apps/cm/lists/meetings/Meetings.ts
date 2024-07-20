@@ -6,7 +6,7 @@ import {
   MeetingsContextMap,
   MeetingsContext,
   IExportableMeetingsContextMap,
-} from './Meetings.model';
+} from '../../../../../../back/apps/cm/Meetings.model';
 import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
 
 export class Meetings {

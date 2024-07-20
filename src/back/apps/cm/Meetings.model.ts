@@ -1,19 +1,20 @@
-import SourceBased from '../../../../../complect/SourceBased';
+import { CmComWid, CmMeetingEventWid } from './Cm.enums';
+import SourceBased from '../../../front/complect/SourceBased';
 
 export interface IExportableMeetingsEvent {
   n: string; // название из IExportableMeetings.names
-  w: number; // уникальный айди
+  w: CmMeetingEventWid; // уникальный айди
   r: num; // регулярное ли
   b: number; // время начала
   e: number; // время окончания
-  s: number[]; // список песен
+  s: CmComWid[]; // список песен
   c: number; // контекстуальная группа
   h?: IExportableMeetingsEventHistoryItem[]; // история
 }
 
 interface IExportableMeetingsEventHistoryItem {
   w: number;
-  s?: number[]; // stack
+  s?: CmComWid[]; // stack
 }
 
 export interface IExportableMeetingsContext {

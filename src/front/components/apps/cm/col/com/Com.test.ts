@@ -1,10 +1,11 @@
+import { CmComWid } from '../../../../../../back/apps/cm/Cm.enums';
+import { IExportableCom } from '../../../../../models';
 import { Com } from './Com';
-import { IExportableCom } from './Com.model';
 
 describe('Com', () => {
   const icom: IExportableCom = {
     n: 'NAME',
-    w: 123,
+    w: CmComWid.def,
     o: [
       {
         w: 0,

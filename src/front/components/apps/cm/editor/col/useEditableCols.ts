@@ -1,6 +1,6 @@
 import { useAtomValue } from '../../../../../complect/atoms';
 import mylib from '../../../../../complect/my-lib/MyLib';
-import { IExportableCols } from '../../cols/Cols.model';
+import { IExportableCols } from '../../../../../models';
 import { cmMolecule } from '../../molecules';
 import { EditableCols } from './EditableCols';
 

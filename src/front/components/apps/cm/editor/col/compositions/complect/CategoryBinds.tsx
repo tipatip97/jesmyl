@@ -38,7 +38,7 @@ export default function CategoryBinds() {
                 className="pointer color--ko"
                 onClick={() => exec(cat.removeNativeNumber(ccom, exec))}
               >
-                {isNaN(cat.dict?.[ccom.wid]) ? 'Корректно очистить' : 'Удалить'}
+                {isNaN(cat.dict?.[ccom.wid]!) ? 'Корректно очистить' : 'Удалить'}
               </span>
             ) : null}
           </EditContainerCorrectsInformer>

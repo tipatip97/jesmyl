@@ -1,4 +1,5 @@
 import { SendMessageOptions } from 'node-telegram-bot-api';
+import environment from '../../../environments/environment';
 import { jesmylTgBot } from '../bot';
 import { gul94iAdminTelegramBot, gul94iTelegramBot } from '../gul94i/gul94i-bot';
 import { jesmylChangesBot } from '../jesmylChangesBot';
@@ -27,7 +28,7 @@ export const prodStartOptions: SendMessageOptions = prodTelegramBot.makeSendMess
 const prodStartMessage = (botName: string) => `Это кнопка для входа
 
 Привет!
-Теперь есть возможность авторизоваться в приложении <a href="https://jesmyl.ru">JesmyL</a> через Телеграм-бота
+Теперь есть возможность авторизоваться в приложении <a href="${environment.host}">JesmyL</a> через Телеграм-бота
 Для этого:
   1. Нужно состоять в <a href="https://t.me/jesmyl_space">группе</a>
   2. Запусти <a href="https://t.me/${botName}">бота</a>

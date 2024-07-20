@@ -2,7 +2,7 @@ import mylib from '../../../../../complect/my-lib/MyLib';
 import { BaseNamed } from '../../base/BaseNamed';
 import { Com } from '../../col/com/Com';
 import { Cols } from '../../cols/Cols';
-import { IExportableMeetingsEvent } from './Meetings.model';
+import { IExportableMeetingsEvent } from '../../../../../../back/apps/cm/Meetings.model';
 
 export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
   coms?: Com[];

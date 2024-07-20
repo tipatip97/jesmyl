@@ -3,27 +3,7 @@ import { StyleBlock } from '../block-styles/StyleBlock';
 import { ChordVisibleVariant } from '../../../Cm.model';
 import { Com } from '../Com';
 import { Order } from './Order';
-
-export interface InheritancableOrder {
-  r?: OrderRepeats | null; // Повторения
-  p?: number[][] | nil; // Позиции аккордов
-  v?: num; // Видимость блока
-}
-
-export interface IExportableOrder extends InheritancableOrder {
-  a?: number; // Ссылка на блок
-  c?: number; // Блок аккордов
-  e?: num; // Без названия
-  f?: IExportableOrderFieldValues; // Особые значения
-  m?: num; // Минималка
-  o?: num; // Открыто в полном режиме
-  s?: string; // Тип блока
-  t?: number | null; // Текстовый блок
-  u?: number; // Целевой айди
-  w: number; // Уникальный айди
-  inh?: Inheritancables; //
-  originWid?: number; // Неизменяемый уникальный айди
-}
+import { IExportableOrder, IExportableOrderFieldValues } from '../../../../../../models';
 
 export type INewExportableOrder = Omit<IExportableOrder, 'w' | 'originWid'>;
 
@@ -40,17 +20,6 @@ export type EditableOrderRegion<Ord extends Order> = {
   endKey?: string;
   count?: number;
 };
-
-export interface IExportableOrderFieldValues {
-  md?: number; // Значение модуляции
-}
-
-export type SpecielOrderRepeats = Record<string, number>;
-export type OrderRepeats = number | SpecielOrderRepeats;
-
-export type Inheritancables<K extends keyof InheritancableOrder = keyof InheritancableOrder> = Partial<
-  Record<K, Record<number, InheritancableOrder[K]>>
->;
 
 export interface IExportableOrderTop extends IExportableOrder {
   source?: IExportableOrderTop;

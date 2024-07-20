@@ -2,33 +2,33 @@ import { SokiAppName } from '../../../complect/soki/soki.model';
 import { ScheduleWidgetRegType, ScheduleWidgetUserRoleRight } from '../rights';
 
 export enum IScheduleWidgetWid {
-  number = 1,
+  def = 1,
 }
 export enum IScheduleWidgetUserMi {
-  number = 1,
+  def = 1,
 }
 export enum IScheduleWidgetUserLogin {
-  string = 'string',
+  def = 'string',
 }
 export enum IScheduleWidgetTeamMi {
-  number = 1,
+  def = 1,
 }
 export enum IScheduleWidgetTeamGameMi {
-  number = 1,
+  def = 1,
 }
 export enum IScheduleWidgetDayEventMi {
-  number = 1,
+  def = 1,
 }
 
 export enum IScheduleWidgetUserCati {
-  number = 1,
+  def = 0,
 }
 export enum IScheduleWidgetUserUnitMi {
-  number = 1,
+  def = 1,
 }
 
 export enum IScheduleWidgetUserTgId {
-  number = 1,
+  def = 1,
 }
 
 export type ScheduleWidgetPhotoKey =

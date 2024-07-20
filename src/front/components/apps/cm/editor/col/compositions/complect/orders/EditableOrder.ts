@@ -1,15 +1,14 @@
 import { FreeExecDict, FreeExecDictUniq } from '../../../../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
-import { cmExer } from '../../../../../CmExer';
-import { Order } from '../../../../../col/com/order/Order';
 import {
-  EditableOrderRegion,
   IExportableOrder,
   IExportableOrderFieldValues,
-  IExportableOrderTop,
   InheritancableOrder,
   OrderRepeats,
-} from '../../../../../col/com/order/Order.model';
+} from '../../../../../../../../models';
+import { cmExer } from '../../../../../CmExer';
+import { Order } from '../../../../../col/com/order/Order';
+import { EditableOrderRegion, IExportableOrderTop } from '../../../../../col/com/order/Order.model';
 import { EditableCom } from '../../EditableCom';
 
 export class EditableOrder extends Order {
