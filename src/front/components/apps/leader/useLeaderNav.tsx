@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
@@ -26,7 +26,11 @@ export const leaderNavGamePhase: RoutePhasePoint = ['game'];
 
 const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new NavigationConfig('leader', {
   title: 'Лидер',
-  root: content => <LazyLeaderApplication content={content} />,
+  root: content => (
+    <Suspense>
+      <LazyLeaderApplication content={content} />
+    </Suspense>
+  ),
   rootPhase: 'all',
   exer: leaderExer,
   jumpByLink: {
@@ -58,37 +62,69 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       iconSelfPack: iconPackOfTeacher,
       phase: ['all'],
       title: 'Лидер',
-      node: <LazyLeaderGeneralPage />,
+      node: (
+        <Suspense>
+          <LazyLeaderGeneralPage />
+        </Suspense>
+      ),
       next: [
         {
           phase: ['humanList'],
-          node: <LazyHumanList isAsPage />,
+          node: (
+            <Suspense>
+              <LazyHumanList isAsPage />
+            </Suspense>
+          ),
         },
         {
           phase: ['leaderList'],
-          node: <LazyMentorList isAsPage />,
+          node: (
+            <Suspense>
+              <LazyMentorList isAsPage />
+            </Suspense>
+          ),
         },
         {
           phase: ['memberList'],
-          node: <LazyMemberList isAsPage />,
+          node: (
+            <Suspense>
+              <LazyMemberList isAsPage />
+            </Suspense>
+          ),
         },
         {
           phase: ['groupList'],
-          node: <LazyGroupList />,
+          node: (
+            <Suspense>
+              <LazyGroupList />
+            </Suspense>
+          ),
           next: [
             {
               phase: ['group'],
-              node: <LazyTheLeaderGroup />,
+              node: (
+                <Suspense>
+                  <LazyTheLeaderGroup />
+                </Suspense>
+              ),
             },
           ],
         },
         {
           phase: ['games'],
-          node: <LazyGameList />,
+          node: (
+            <Suspense>
+              <LazyGameList />
+            </Suspense>
+          ),
           next: [
             {
               phase: leaderNavGamePhase,
-              node: <LazyTheGame />,
+              node: (
+                <Suspense>
+                  <LazyTheGame />
+                </Suspense>
+              ),
             },
           ],
         },
@@ -98,13 +134,28 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       iconSelfPack: iconPackOfCalendar03,
       phase: ['schedule'],
       title: 'Мероприятие',
-      node: <LazyLeaderSchedule />,
+      node: (
+        <Suspense>
+          <LazyLeaderSchedule />
+        </Suspense>
+      ),
     },
   ],
 });
 
 const actions: UseNavAction[] = [];
+const lazies = [
+  <LazyLeaderApplication content />,
+  <LazyHumanList isAsPage />,
+  <LazyMentorList isAsPage />,
+  <LazyMemberList isAsPage />,
+  <LazyGroupList />,
+  <LazyTheLeaderGroup />,
+  <LazyGameList />,
+  <LazyTheGame />,
+  <LazyLeaderSchedule />,
+];
 
 export default function useLeaderNav() {
-  return useNavConfigurer<LeaderStoraged, LeaderNavData>('leader', actions, navigation);
+  return useNavConfigurer<LeaderStoraged, LeaderNavData>('leader', actions, navigation, lazies);
 }

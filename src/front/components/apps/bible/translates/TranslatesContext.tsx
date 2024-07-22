@@ -5,7 +5,7 @@ import { BibleTranslate } from './complect';
 import { useBibleShowTranslatesValue } from './hooks';
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 interface ChapterCombine {

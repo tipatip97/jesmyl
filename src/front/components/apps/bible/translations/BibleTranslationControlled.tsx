@@ -6,10 +6,10 @@ import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigur
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useBibleSlideSyncInkrementer } from '../hooks/slide-sync';
 import { useLoadBibleChaptersCombine } from '../hooks/texts';
-import { bibleVerseiAtom } from './lists/atoms';
 import { BibleModulesTranslations } from '../translates/Translations';
 import BibleTranslationControlledBottomPanel from './BottomPanel';
 import { BibleTranslationControlledTopPanel } from './TopPanel';
+import { bibleVerseiAtom } from './lists/atoms';
 import BibleSearchPanel from './search/Panel';
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
   headTitle: ReactNode;
 }
 
-export const BibleTranslationControlled = ({ useNav, head, headTitle }: Props): JSX.Element => {
+export default function BibleTranslationControlled({ useNav, head, headTitle }: Props): JSX.Element {
   useLoadBibleChaptersCombine();
   const inkSync = useBibleSlideSyncInkrementer();
   const switchVersei = useAtomInkrement(bibleVerseiAtom);
@@ -63,7 +63,7 @@ export const BibleTranslationControlled = ({ useNav, head, headTitle }: Props): 
       }
     />
   );
-};
+}
 
 const Container = styled.div`
   --size: 50vmin;

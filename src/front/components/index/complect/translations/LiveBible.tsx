@@ -5,7 +5,7 @@ import { useSwitchCurrentTranslationTextApp } from '../../../apps/+complect/tran
 import { BibleAddress } from '../../../apps/bible/address/Address';
 import BibleTextContent from '../../../apps/bible/text-content/TextContent';
 import BibleLiveTranslation from '../../../apps/bible/translations/BibleLiveTranslation';
-import { BibleTranslationControlled } from '../../../apps/bible/translations/BibleTranslationControlled';
+import BibleTranslationControlled from '../../../apps/bible/translations/BibleTranslationControlled';
 import useIndexNav from '../useIndexNav';
 import { LiveTranslationAppProps } from './model';
 

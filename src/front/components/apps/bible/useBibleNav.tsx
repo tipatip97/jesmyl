@@ -1,3 +1,5 @@
+import React, { Suspense } from 'react';
+import { CurrentForceViweAppContext } from '../+complect/translations/Translation.contexts';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
@@ -6,10 +8,11 @@ import { iconPackOfComputer } from '../../../complect/the-icon/icons/computer';
 import { iconPackOfFile02 } from '../../../complect/the-icon/icons/file-02';
 import { iconPackOfFileSearch } from '../../../complect/the-icon/icons/file-search';
 import { BibleStorage } from './model';
-import BibleReaderCurrentBookPage from './reader/book/CurrentBookPage';
-import BibleReaderSearchPage from './reader/search/SearchPage';
-import BibleTranslatesContextProvider from './translates/TranslatesContext';
-import { BibleTranslationControlled } from './translations/BibleTranslationControlled';
+
+const LazyBibleTranslationControlled = React.lazy(() => import('./translations/BibleTranslationControlled'));
+const LazyBibleReaderCurrentBookPage = React.lazy(() => import('./reader/book/CurrentBookPage'));
+const LazyBibleReaderSearchPage = React.lazy(() => import('./reader/search/SearchPage'));
+const LazyBibleTranslatesContextProvider = React.lazy(() => import('./translates/TranslatesContext'));
 
 const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bible', {
   title: 'Библия',
@@ -21,33 +24,57 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
       iconSelfPack: iconPackOfFile02,
       phase: ['chapter'],
       title: 'Глава',
-      node: <BibleReaderCurrentBookPage />,
+      node: (
+        <Suspense>
+          <LazyBibleReaderCurrentBookPage />
+        </Suspense>
+      ),
     },
     {
       iconSelfPack: iconPackOfFileSearch,
       phase: ['search'],
       title: 'Поиск',
-      node: <BibleReaderSearchPage />,
+      node: (
+        <Suspense>
+          <LazyBibleReaderSearchPage />
+        </Suspense>
+      ),
     },
     {
       iconSelfPack: iconPackOfComputer,
       phase: ['translation'],
       title: 'Трансляция',
       node: (
-        <BibleTranslatesContextProvider>
-          <BibleTranslationControlled
-            head
-            headTitle="Библия"
-            useNav={useBibleNav as never}
-          />
-        </BibleTranslatesContextProvider>
+        <Suspense>
+          <LazyBibleTranslatesContextProvider>
+            <Suspense>
+              <CurrentForceViweAppContext.Provider value="bible">
+                <LazyBibleTranslationControlled
+                  head
+                  headTitle="Библия"
+                  useNav={useBibleNav as never}
+                />
+              </CurrentForceViweAppContext.Provider>
+            </Suspense>
+          </LazyBibleTranslatesContextProvider>
+        </Suspense>
       ),
     },
   ],
 });
 
 const actions: UseNavAction[] = [];
+const lazies = [
+  <LazyBibleReaderCurrentBookPage />,
+  <LazyBibleReaderSearchPage />,
+  <LazyBibleTranslatesContextProvider />,
+  <LazyBibleTranslationControlled
+    head
+    headTitle="Библия"
+    useNav={useBibleNav as never}
+  />,
+];
 
 export default function useBibleNav() {
-  return useNavConfigurer<BibleStorage, {}>('bible', actions, navigation);
+  return useNavConfigurer<BibleStorage, {}>('bible', actions, navigation, lazies);
 }

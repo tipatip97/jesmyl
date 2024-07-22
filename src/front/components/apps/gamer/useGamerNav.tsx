@@ -1,8 +1,12 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, Suspense } from 'react';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../back/complect/soki/soki.model';
 import mylib from '../../../complect/my-lib/MyLib';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
-import { INavigationRouteChildItem, UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
+import {
+  INavigationRouteChildItem,
+  NavigationThrowNodeProps,
+  UseNavAction,
+} from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { QRCodeReaderData } from '../../../complect/qr-code/QRCodeMaster.model';
 import { IconAnonymousStrokeRounded } from '../../../complect/the-icon/icons/anonymous';
@@ -67,11 +71,19 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
 }>[] = [
   {
     phase: ['spy'],
-    node: <LazySpyOfflineRoomContent />,
+    node: (
+      <Suspense>
+        <LazySpyOfflineRoomContent />
+      </Suspense>
+    ),
     data: {
       Icon: IconAnonymousStrokeRounded,
       title: 'Шпион 1.0',
-      currentNode: <LazySpyCurrentOfflineGameInfo />,
+      currentNode: (
+        <Suspense>
+          <LazySpyCurrentOfflineGameInfo />
+        </Suspense>
+      ),
       qrDataCatcher: (passport, data) => {
         if (!passport.login) return;
         const [location, spiesCount, iterations, memberStrList] = (data.value as OfflineGameShare) || [];
@@ -98,18 +110,30 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
 
 const gamerNavigation = new NavigationConfig<GamerStoraged, GamerNavData>('gamer', {
   title: 'Игрок',
-  root: content => <LazyGamerApp content={content} />,
+  root: content => (
+    <Suspense>
+      <LazyGamerApp content={content} />
+    </Suspense>
+  ),
   rootPhase: 'gamer',
   routes: [
     {
       phase: ['gamer'],
       iconSelfPack: iconPackOfGameController03,
       title: 'Игрок',
-      node: <LazyGamer />,
+      node: (
+        <Suspense>
+          <LazyGamer />
+        </Suspense>
+      ),
       next: [
         {
           phase: ['room'],
-          node: config => <LazyTheGamerRoom config={config} />,
+          node: config => (
+            <Suspense>
+              <LazyTheGamerRoom config={config} />
+            </Suspense>
+          ),
           next: [
             {
               phase: ['needChooseGame'],
@@ -120,7 +144,11 @@ const gamerNavigation = new NavigationConfig<GamerStoraged, GamerNavData>('gamer
         },
         {
           phase: ['offlineRoom'],
-          node: config => <LazyGamerOfflineRoom config={config} />,
+          node: config => (
+            <Suspense>
+              <LazyGamerOfflineRoom config={config} />
+            </Suspense>
+          ),
           next: [
             {
               phase: ['needChooseGame'],
@@ -135,13 +163,33 @@ const gamerNavigation = new NavigationConfig<GamerStoraged, GamerNavData>('gamer
       phase: ['passport'],
       iconSelfPack: iconPackOfPassport,
       title: 'Паспорт',
-      node: <LazyTheGamerPassport />,
+      node: (
+        <Suspense>
+          <LazyTheGamerPassport />
+        </Suspense>
+      ),
     },
   ],
 });
 
 const actions: UseNavAction[] = [];
 
+const fakeConfig: NavigationThrowNodeProps<GamerNavData> = {
+  currentChildPhase: '',
+  outletContent: null,
+  relativePoint: [''],
+};
+
+const lazies = [
+  <LazySpyOfflineRoomContent />,
+  <LazySpyCurrentOfflineGameInfo />,
+  <LazyGamerApp content />,
+  <LazyGamer />,
+  <LazyTheGamerRoom config={fakeConfig} />,
+  <LazyGamerOfflineRoom config={fakeConfig} />,
+  <LazyTheGamerPassport />,
+];
+
 export default function useGamerNav() {
-  return useNavConfigurer<GamerStoraged, GamerNavData>('gamer', actions, gamerNavigation);
+  return useNavConfigurer<GamerStoraged, GamerNavData>('gamer', actions, gamerNavigation, lazies);
 }

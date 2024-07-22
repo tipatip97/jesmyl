@@ -1,27 +1,41 @@
+import React, { Suspense } from 'react';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { iconPackOfManager } from '../../../complect/the-icon/icons/manager';
-import Admin from './Admin';
 import { AdminNavData, AdminStorage } from './Admin.model';
-import AdminApp from './AdminApp';
-import TheUser from './complect/users/TheUser';
+
+const LazyAdmin = React.lazy(() => import('./Admin'));
+const LazyAdminApp = React.lazy(() => import('./AdminApp'));
+const LazyTheUser = React.lazy(() => import('./complect/users/TheUser'));
 
 const adminNavigation = new NavigationConfig<AdminStorage, AdminNavData>('admin', {
   title: 'Админ',
   level: 100,
-  root: content => <AdminApp content={content} />,
+  root: content => (
+    <Suspense>
+      <LazyAdminApp content={content} />
+    </Suspense>
+  ),
   rootPhase: 'admin',
   routes: [
     {
       phase: ['admin'],
       iconSelfPack: iconPackOfManager,
       title: 'Админ',
-      node: <Admin />,
+      node: (
+        <Suspense>
+          <LazyAdmin />
+        </Suspense>
+      ),
       next: [
         {
           phase: ['user'],
-          node: <TheUser />,
+          node: (
+            <Suspense>
+              <LazyTheUser />
+            </Suspense>
+          ),
         },
       ],
     },
@@ -30,6 +44,8 @@ const adminNavigation = new NavigationConfig<AdminStorage, AdminNavData>('admin'
 
 const actions: UseNavAction[] = [];
 
+const lazies = [<LazyAdminApp content />, <LazyAdmin />, <LazyTheUser />];
+
 export default function useAdminNav() {
-  return useNavConfigurer<AdminStorage, AdminNavData>('admin', actions, adminNavigation);
+  return useNavConfigurer<AdminStorage, AdminNavData>('admin', actions, adminNavigation, lazies);
 }

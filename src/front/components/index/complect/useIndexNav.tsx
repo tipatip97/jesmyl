@@ -46,33 +46,61 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
       phase: ['other'],
       title: 'Другое',
       iconSelfPack: iconPackOfCircleArrowRight02,
-      node: <LazyMain />,
+      node: (
+        <Suspense>
+          <LazyMain />
+        </Suspense>
+      ),
       next: [
         {
           phase: ['settings'],
-          node: <LazyIndexSettings />,
+          node: (
+            <Suspense>
+              <LazyIndexSettings />
+            </Suspense>
+          ),
           next: [
             {
               phase: ['console'],
-              node: <LazyIndexConsole />,
+              node: (
+                <Suspense>
+                  <LazyIndexConsole />
+                </Suspense>
+              ),
             },
           ],
         },
         {
           phase: ['login'],
-          node: <LazyIndexAuthorization />,
+          node: (
+            <Suspense>
+              <LazyIndexAuthorization />
+            </Suspense>
+          ),
         },
         {
           phase: ['schedules'],
-          node: <LazyScheduleWidgetListPage />,
+          node: (
+            <Suspense>
+              <LazyScheduleWidgetListPage />
+            </Suspense>
+          ),
           next: [
             {
               phase: ['schedule'],
-              node: <LazyScheduleWidgetPage />,
+              node: (
+                <Suspense>
+                  <LazyScheduleWidgetPage />
+                </Suspense>
+              ),
               next: [
                 {
                   phase: indexScheduleWidgetTranslationPagePhase,
-                  node: <IndexScheduleWidgetTranslations />,
+                  node: (
+                    <Suspense>
+                      <IndexScheduleWidgetTranslations />
+                    </Suspense>
+                  ),
                 },
               ],
             },
@@ -80,11 +108,19 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
         },
         {
           phase: ['actions'],
-          node: <LazyIndexActions />,
+          node: (
+            <Suspense>
+              <LazyIndexActions />
+            </Suspense>
+          ),
           next: [
             {
               phase: ['files'],
-              node: <LazyIndexMyFiles />,
+              node: (
+                <Suspense>
+                  <LazyIndexMyFiles />
+                </Suspense>
+              ),
             },
           ],
         },
@@ -93,6 +129,18 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
   ],
 });
 
+const lazies = [
+  <LazyMain />,
+  <LazyIndexSettings />,
+  <LazyIndexConsole />,
+  <LazyIndexAuthorization />,
+  <LazyScheduleWidgetListPage />,
+  <LazyScheduleWidgetPage />,
+  <IndexScheduleWidgetTranslations />,
+  <LazyIndexActions />,
+  <LazyIndexMyFiles />,
+];
+
 export default function useIndexNav() {
-  return useNavConfigurer<IndexStorage, IndexNavData>('index', actions, navigate);
+  return useNavConfigurer<IndexStorage, IndexNavData>('index', actions, navigate, lazies);
 }

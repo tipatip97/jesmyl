@@ -35,12 +35,24 @@ const LazyCmApplication = React.lazy(() => import('../Cm'));
 const makeComNext = (render: (props: { children: React.ReactNode }) => JSX.Element) => {
   const next = {
     phase: translationNavPoint,
-    node: render({ children: <LazyTranslations /> }),
+    node: render({
+      children: (
+        <Suspense>
+          <LazyTranslations />
+        </Suspense>
+      ),
+    }),
   };
   return [
     {
       phase: comNavPhasePoint,
-      node: render({ children: <LazyTheComposition /> }),
+      node: render({
+        children: (
+          <Suspense>
+            <LazyTheComposition />
+          </Suspense>
+        ),
+      }),
       next: [next],
     },
     next,
@@ -70,38 +82,66 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
       iconSelfPack: iconPackOfLeftToRightListBullet,
       phase: ['all'],
       title: 'Все',
-      node: <LazyTheCat all />,
+      node: (
+        <Suspense>
+          <LazyTheCat all />
+        </Suspense>
+      ),
       next: makeComNext(props => <LazyCmTranslationComListContextInZeroCat {...props} />),
     },
     {
       iconSelfPack: iconPackOfPlaylist01,
       phase: ['lists'],
       title: 'Списки',
-      node: <LazyLists />,
+      node: (
+        <Suspense>
+          <LazyLists />
+        </Suspense>
+      ),
       next: [
         {
           phase: ['marks'],
-          node: <LazyMarks />,
+          node: (
+            <Suspense>
+              <LazyMarks />
+            </Suspense>
+          ),
           next: makeComNext(props => <LazyCmTranslationComListContextInMarks {...props} />),
         },
         {
           phase: ['cat'],
-          node: <LazyTheCat />,
+          node: (
+            <Suspense>
+              <LazyTheCat />
+            </Suspense>
+          ),
           next: makeComNext(props => <LazyCmTranslationComListContextInCat {...props} />),
         },
         {
           phase: ['selected'],
-          node: <LazySelectedComs />,
+          node: (
+            <Suspense>
+              <LazySelectedComs />
+            </Suspense>
+          ),
           slideBackOn: navData => !navData.selectedComws?.length,
           next: makeComNext(props => <LazyCmTranslationComListContextInSelected {...props} />),
         },
         {
           phase: ['meetings'],
-          node: <LazyTheMeetings />,
+          node: (
+            <Suspense>
+              <LazyTheMeetings />
+            </Suspense>
+          ),
           next: [
             {
               phase: ['event'],
-              node: <LazyTheMeetingsEvent />,
+              node: (
+                <Suspense>
+                  <LazyTheMeetingsEvent />
+                </Suspense>
+              ),
               next: makeComNext(props => <LazyCmTranslationComListContextInMeetings {...props} />),
             },
           ],
@@ -113,7 +153,26 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
 });
 
 const actions: UseNavAction[] = [];
+const props = { children: null };
+
+const lazies = [
+  <LazyTranslations />,
+  <LazyTheComposition />,
+  <LazyCmApplication content />,
+  <LazyTheCat all />,
+  <LazyCmTranslationComListContextInZeroCat {...props} />,
+  <LazyLists />,
+  <LazyMarks />,
+  <LazyCmTranslationComListContextInMarks {...props} />,
+  <LazyTheCat />,
+  <LazyCmTranslationComListContextInCat {...props} />,
+  <LazySelectedComs />,
+  <LazyCmTranslationComListContextInSelected {...props} />,
+  <LazyTheMeetings />,
+  <LazyTheMeetingsEvent />,
+  <LazyCmTranslationComListContextInMeetings {...props} />,
+];
 
 export default function useCmNav() {
-  return useNavConfigurer<CmStorage, CmNavData>('cm', actions, navigation);
+  return useNavConfigurer<CmStorage, CmNavData>('cm', actions, navigation, lazies);
 }

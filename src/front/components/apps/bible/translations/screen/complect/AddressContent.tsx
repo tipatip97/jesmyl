@@ -42,11 +42,11 @@ export default function BibleTranslationScreenAddressContent(props: Props) {
             >
               {(address, cachedAddress) => {
                 if (props.isPreview) {
-                  if (addressContent !== address) Promise.resolve().then(() => setAddressContent(address));
+                  if (addressContent !== address) setTimeout(setAddressContent, 200, address);
                   return address;
                 }
 
-                if (addressContent !== cachedAddress) Promise.resolve().then(() => setAddressContent(cachedAddress));
+                if (addressContent !== cachedAddress) setTimeout(setAddressContent, 200, cachedAddress);
                 return cachedAddress;
               }}
             </BibleAddress>

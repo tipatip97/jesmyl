@@ -20,6 +20,7 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
   appName: AppName,
   actions: UseNavAction[],
   nav: NavigationConfig<NavigationStorage<Storage>, NavDataNative>,
+  _usedLazyComponents: JSX.Element[],
 ) {
   type NavData = Partial<NavDataNative>;
 
@@ -32,6 +33,8 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
   const setAppRouteData = useAtomSet(routerMolecule.take(`${appName}.data`));
   const routeRef = useRef(route);
   routeRef.current = route;
+
+  // console.log(appName, 9876, appRouteCast);
 
   const updateAppRouteData = useCallback(
     (data: NavData | ((prev?: NavData) => NavData), isPreventSave?: boolean) => {
