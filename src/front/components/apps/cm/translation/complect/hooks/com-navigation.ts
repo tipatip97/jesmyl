@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
+import { useCmTranslationComListContext } from '../../../base/translations/context';
 import useCmNav from '../../../base/useCmNav';
 import { Com } from '../../../col/com/Com';
 import { useCcom } from '../../../col/com/useCcom';
-import useComPack from '../../../col/com/useComPack';
 import { useCmScreenTranslationComTextNavigations } from './com-texts';
 
 export const useCmScreenTranslationComNavigations = () => {
@@ -10,27 +10,25 @@ export const useCmScreenTranslationComNavigations = () => {
   const ccom = useCcom();
   const setCom: (com: Com) => void = useCallback((com: Com) => setAppRouteData({ ccomw: com.wid }), [setAppRouteData]);
 
-  const comPack = useComPack();
+  const comPack = useCmTranslationComListContext();
   const { setTexti } = useCmScreenTranslationComTextNavigations();
 
   return {
     setCom,
     comPack,
     prevCom: useCallback(() => {
-      const [comList] = comPack;
-      const comi = getComi(ccom?.wid, comList);
-      if (!comList || comi < 0) return;
-      const nextCom = comList[comi === 0 ? comList.length - 1 : comi - 1];
+      const comi = getComi(ccom?.wid, comPack.list);
+      if (!comPack.list || comi < 0) return;
+      const nextCom = comPack.list[comi === 0 ? comPack.list.length - 1 : comi - 1];
 
       setCom(nextCom);
       setTexti(0);
       scrollToView(nextCom);
     }, [ccom?.wid, comPack, setCom, setTexti]),
     nextCom: useCallback(() => {
-      const [comList] = comPack;
-      const comi = getComi(ccom?.wid, comList);
-      if (!comList || comi < 0) return;
-      const nextCom = comList[comi === comList.length - 1 ? 0 : comi + 1];
+      const comi = getComi(ccom?.wid, comPack.list);
+      if (!comPack.list || comi < 0) return;
+      const nextCom = comPack.list[comi === comPack.list.length - 1 ? 0 : comi + 1];
 
       setCom(nextCom);
       setTexti(0);

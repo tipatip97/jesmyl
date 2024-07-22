@@ -9,7 +9,8 @@ import { RoutePhasePoint } from '../../../router/Router.model';
 import { CmNavData, CmStorage } from '../Cm.model';
 import { cmExer } from '../CmExer';
 import { editorNav } from '../editor/editorNav';
-import Translations from '../translation/Translation';
+
+const LazyTranslations = React.lazy(() => import('../translation/Translation'));
 
 const LazyCmTranslationComListContextInCat = React.lazy(() => import('./translations/InCat'));
 const LazyCmTranslationComListContextInMarks = React.lazy(() => import('./translations/InMarks'));
@@ -34,7 +35,7 @@ const LazyCmApplication = React.lazy(() => import('../Cm'));
 const makeComNext = (render: (props: { children: React.ReactNode }) => JSX.Element) => {
   const next = {
     phase: translationNavPoint,
-    node: render({ children: <Translations /> }),
+    node: render({ children: <LazyTranslations /> }),
   };
   return [
     {

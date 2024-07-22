@@ -1,12 +1,15 @@
+import { useMemo } from 'react';
 import ScheduleWidgetCleans from '../../../../../../../back/apps/index/schedules/utils/Cleans';
 import {
   IScheduleWidget,
   IScheduleWidgetDayEvent,
 } from '../../../../../../complect/schedule-widget/ScheduleWidget.model';
-import { CmComBindAttach } from '../../../../../../models';
-import { CmTranslationComListContext } from '../../../base/translations/context';
+import { CmComBindAttach, IScheduleWidgetDay } from '../../../../../../models';
+import { CmTranslationComListContext, CmTranslationComListContextValue } from '../../../base/translations/context';
 import { Com } from '../../../col/com/Com';
+import { Cols } from '../../../cols/Cols';
 import { useCols } from '../../../cols/useCols';
+import { Meetings } from '../../../lists/meetings/Meetings';
 import { useMeetings } from '../../../lists/meetings/useMeetings';
 
 interface Props {
@@ -16,6 +19,7 @@ interface Props {
 
 const itNUnd = (it: unknown) => it !== undefined;
 const findEventWithComs = (event: IScheduleWidgetDayEvent) => event.atts?.['[cm]:coms'] != null;
+const findDayWithComs = (day: IScheduleWidgetDay) => day.list.some(findEventWithComs);
 
 export const ScheduleWidgetCurrentCmTranslationList = ({ schedule, children }: Props) => {
   const cols = useCols();
@@ -23,55 +27,73 @@ export const ScheduleWidgetCurrentCmTranslationList = ({ schedule, children }: P
 
   if (meetings == null || cols == null || schedule == null || schedule.days.length === 0) return children;
 
-  let coms: Com[] | null = null;
+  return <Component {...{ cols, meetings, schedule, children }} />;
+};
 
-  const dayi = ScheduleWidgetCleans.getCurrentDayi(schedule);
-  const getValue = (event: IScheduleWidgetDayEvent | und): Com[] => {
-    if (event?.atts?.['[cm]:coms'] != null) {
-      const { comws, eventw } = event.atts['[cm]:coms'] as Partial<CmComBindAttach>;
-      let coms: Com[] = [];
+const Component = ({
+  schedule,
+  meetings,
+  cols,
+  children,
+}: {
+  schedule: IScheduleWidget;
+  meetings: Meetings;
+  cols: Cols;
+  children: React.ReactNode;
+}) => {
+  const value = useMemo((): CmTranslationComListContextValue => {
+    let coms: Com[] | null = null;
+    const titles: Record<number, string> = {};
 
-      if (eventw !== undefined) {
-        const meeting = meetings.events?.find(event => event.wid === eventw);
-        coms = coms.concat(meeting?.coms ?? []);
+    const dayi = ScheduleWidgetCleans.getCurrentDayi(schedule);
+    const getValue = (event: IScheduleWidgetDayEvent | und): Com[] => {
+      if (event?.atts?.['[cm]:coms'] != null) {
+        const { comws, eventw } = event.atts['[cm]:coms'] as Partial<CmComBindAttach>;
+        let coms: Com[] = [];
+
+        if (eventw !== undefined) {
+          const meeting = meetings.events?.find(event => event.wid === eventw);
+          coms = coms.concat(meeting?.coms ?? []);
+        }
+
+        if (comws !== undefined) {
+          coms = coms.concat(comws.map(comw => cols.coms.find(com => com.wid === comw)!).filter(itNUnd));
+        }
+
+        return coms;
       }
 
-      if (comws !== undefined) {
-        coms = coms.concat(comws.map(comw => cols.coms.find(com => com.wid === comw)!).filter(itNUnd));
-      }
+      return [];
+    };
 
-      return coms;
+    if (dayi < 0) {
+      coms = getValue(schedule.days.find(findDayWithComs)?.list.find(findEventWithComs));
+    } else {
+      const today = schedule.days[dayi];
+
+      if (today != null) {
+        const event = ScheduleWidgetCleans.getCurrentEventInDay(schedule, dayi);
+
+        if (event?.atts?.['[cm]:coms'] == null) {
+          coms = [];
+
+          today.list.filter(findEventWithComs).forEach(event => {
+            if (coms === null) return;
+
+            titles[coms.length] =
+              (schedule.types[event.type]?.title ?? 'Событие') + (event.topic ? `: ${event.topic}` : '');
+
+            coms = coms.concat(getValue(event));
+          });
+        } else coms = getValue(event);
+      } else coms = getValue(schedule.days.findLast(findDayWithComs)?.list.find(findEventWithComs));
     }
 
-    return [];
-  };
+    return {
+      list: coms,
+      titles,
+    };
+  }, [cols.coms, meetings.events, schedule]);
 
-  if (dayi < 0) {
-    coms = getValue(schedule.days.find(day => day.list.some(findEventWithComs))?.list.find(findEventWithComs));
-  } else {
-    const today = schedule.days[dayi];
-
-    if (today != null) {
-      const event = ScheduleWidgetCleans.getCurrentEventInDay(schedule, dayi);
-
-      if (event?.atts?.['[cm]:coms'] == null) {
-        coms = Array.from(
-          new Set(
-            today?.list
-              .filter(findEventWithComs)
-              .map(event => getValue(event))
-              .flat(),
-          ),
-        );
-      } else coms = getValue(event);
-    } else
-      coms = getValue(
-        [...schedule.days]
-          .reverse()
-          .find(day => day.list.some(findEventWithComs))
-          ?.list.find(findEventWithComs),
-      );
-  }
-
-  return <CmTranslationComListContext.Provider value={[coms, '']}>{children}</CmTranslationComListContext.Provider>;
+  return <CmTranslationComListContext.Provider value={value}>{children}</CmTranslationComListContext.Provider>;
 };

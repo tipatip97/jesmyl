@@ -1,16 +1,20 @@
+import { useMemo } from 'react';
 import { useCcat } from '../../col/cat/useCcat';
-import { CmTranslationComListContext } from './context';
+import { CmTranslationComListContext, CmTranslationComListContextValue } from './context';
 
 const CmTranslationComListContextInCat = function InCat({ children }: { children: React.ReactNode }) {
   const cat = useCcat();
 
-  return (
-    cat && (
-      <CmTranslationComListContext.Provider value={[cat.searchedComs, ' - ' + cat.name]}>
-        {children}
-      </CmTranslationComListContext.Provider>
-    )
-  );
+  const value = useMemo((): CmTranslationComListContextValue => {
+    if (cat == null) return {};
+
+    return {
+      list: cat.searchedComs,
+      pageTitlePostfix: ' - ' + cat.name,
+    };
+  }, [cat]);
+
+  return <CmTranslationComListContext.Provider value={value}>{children}</CmTranslationComListContext.Provider>;
 };
 
 export default CmTranslationComListContextInCat;

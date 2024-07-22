@@ -11,6 +11,7 @@ import { IComFaceList } from './model';
 
 interface Props extends IComFaceList {
   list: number[] | Com[] | nil;
+  titles?: Record<number, string>;
 }
 
 export const ComFaceList = (props: Props) => {

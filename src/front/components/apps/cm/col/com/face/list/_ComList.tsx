@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { isIPhone } from '../../../../../../../complect/device-differences';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
@@ -9,9 +9,10 @@ import { IComFaceList } from './model';
 
 interface Props extends IComFaceList, FreeComFaceProps {
   list: Com[];
+  titles?: Record<number, string>;
 }
 
-export const ComFaceListComList = ({ list, isNeedRenderingDelay, ...comProps }: Props) => {
+export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, ...comProps }: Props) => {
   const [isPartialRender, setIsPartialRender] = useState(isNeedRenderingDelay);
 
   const ccomWid = comProps.ccom?.wid;
@@ -66,12 +67,14 @@ export const ComFaceListComList = ({ list, isNeedRenderingDelay, ...comProps }: 
         if (isPartialRender && (ccomi - 15 > comi || ccomi + 17 < comi)) return null;
 
         return (
-          <FreeComFace
-            key={com.wid}
-            com={com}
-            comi={comi}
-            {...comProps}
-          />
+          <React.Fragment key={'' + com.wid + comi}>
+            {titles?.[comi] !== undefined && <div className="flex center margin-gap-v color--7">{titles[comi]}</div>}
+            <FreeComFace
+              com={com}
+              comi={comi}
+              {...comProps}
+            />
+          </React.Fragment>
         );
       })}
     </StyledContainer>

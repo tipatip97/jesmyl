@@ -5,6 +5,7 @@ import { IComFaceList } from './model';
 
 interface Props extends IComFaceList, FreeComFaceProps {
   list: number[];
+  titles?: Record<number, string>;
 }
 
 const itIt = (it: unknown) => it != null;

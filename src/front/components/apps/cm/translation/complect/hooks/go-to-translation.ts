@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { isTouchDevice } from '../../../../../../complect/device-differences';
 import useCmNav from '../../../base/useCmNav';
-import { useCloseTranslation } from './close-translation copy';
+import { useCloseTranslation } from './close-translation';
 import { useCmScreenTranslationComNavigations } from './com-navigation';
 import { useCmScreenTranslationComTextNavigations } from './com-texts';
 
@@ -14,8 +14,7 @@ export const useGoToTranslation = () => {
   return useCallback(
     (isSetFirstCom?: boolean) => {
       if (isSetFirstCom) {
-        const [comList] = comPack;
-        if (comList?.length) setCom(comList[0]);
+        if (comPack.list?.length) setCom(comPack.list[0]);
       }
 
       setTexti(0);

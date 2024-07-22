@@ -34,10 +34,10 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
         headTitle ? (
           <>
             {headTitle}
-            {comPack[1]}
+            {comPack.pageTitlePostfix}
           </>
         ) : (
-          'Трансляция' + comPack[1]
+          'Трансляция' + comPack.pageTitlePostfix
         )
       }
       head={head}
@@ -48,7 +48,8 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
             {
               <div className="translation-com-list">
                 <ComFaceList
-                  list={comList ?? comPack[0]}
+                  list={comList ?? comPack.list}
+                  titles={comPack.titles}
                   importantOnClick={com => {
                     nav.setAppRouteData({ ccomw: com.wid });
                     setTexti(0);

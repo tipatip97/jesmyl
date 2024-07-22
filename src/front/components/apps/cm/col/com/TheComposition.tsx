@@ -4,6 +4,7 @@ import { DocTitle } from '../../../../../complect/DocTitle';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useAtom, useAtomValue } from '../../../../../complect/atoms';
 import { Metronome } from '../../../../../complect/metronome/Metronome';
+import { useCmTranslationComListContext } from '../../base/translations/context';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useCmNav from '../../base/useCmNav';
 import useLaterComList from '../../base/useLaterComList';
@@ -15,7 +16,6 @@ import { ComTools } from './ComTools';
 import TheControlledCom from './TheControlledCom';
 import ComPlayer from './player/ComPlayer';
 import { useCcom } from './useCcom';
-import useComPack from './useComPack';
 import useMigratableComTools from './useMigratableComTools';
 
 export default function TheComposition() {
@@ -24,7 +24,7 @@ export default function TheComposition() {
   const { addLaterComw } = useLaterComList();
   const [popupComToolsNode, openPopuComTools] = useBottomPopup(ComTools);
   const { topTools } = useMigratableComTools();
-  const [comList] = useComPack();
+  const { list } = useCmTranslationComListContext();
   const [playerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
   const isMetronomeHide = useAtomValue(cmMolecule.take('isMetronomeHide'));
   const comAudio = ccom?.audio.trim();
@@ -90,7 +90,7 @@ export default function TheComposition() {
           />
           <TheControlledCom
             com={ccom}
-            comList={comList}
+            comList={list}
             chordVisibleVariant={chordVisibleVariant}
             onComSet={setCom}
           />

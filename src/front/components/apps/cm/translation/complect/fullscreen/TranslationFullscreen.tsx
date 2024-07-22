@@ -7,7 +7,7 @@ import { IconHelpCircleStrokeRounded } from '../../../../../../complect/the-icon
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
 import { cmMolecule } from '../../../molecules';
-import { useCloseTranslation } from '../hooks/close-translation copy';
+import { useCloseTranslation } from '../hooks/close-translation';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 
