@@ -26,12 +26,7 @@ export const useRemoveScreenTranslationConfig = () => {
   const configs = useScreenTranslationConfigs();
   const set = useScreenTranslationConfigsSet();
 
-  return useCallback(
-    (configi: number) => {
-      set(configs.toSpliced(configi, 1));
-    },
-    [configs, set],
-  );
+  return useCallback((configi: number) => set(configs.toSpliced(configi, 1)), [configs, set]);
 };
 
 export const useGetScreenTranslationConfig = () => {

@@ -24,6 +24,7 @@ export class JesmylTelegramBotWrapper {
   private callbackCatchers: Set<TgBotWrapperCallbackCatcher> = new Set();
 
   private _message: TgBot.Message = null!;
+  private _metadata: TgBot.Metadata = null!;
   private _cbQuery: TgBot.CallbackQuery = null!;
   private _cbQueryAnswer = (_options: string | FreeAnswerCallbackQueryOptions) => 'answered' as const;
 
@@ -31,17 +32,19 @@ export class JesmylTelegramBotWrapper {
     this.bot = new TgBot(token, options);
 
     this.bot.on('message', async (message, metadata) => {
+      this._message = message;
+      this._metadata = metadata;
+
       if (this.messageCatchers.size) {
-        this._message = message;
         this.messageCatchers.forEach(this.invokeMessageCatcherItem);
       }
 
       if (this.chatMessagesCallbacks[0] !== undefined) {
-        this.chatMessagesCallbacks[0].forEach(cb => cb(message, metadata));
+        this.chatMessagesCallbacks[0].forEach(this.invokeMessageCallbacks);
       }
 
       if (this.chatMessagesCallbacks[message.chat.id] !== undefined) {
-        this.chatMessagesCallbacks[message.chat.id].forEach(cb => cb(message, metadata));
+        this.chatMessagesCallbacks[message.chat.id].forEach(this.invokeMessageCallbacks);
         return;
       }
 
@@ -93,6 +96,7 @@ export class JesmylTelegramBotWrapper {
   }
 
   invokeMessageCatcherItem = (cb: TgBotWrapperMessageCatcher) => cb(this._message, this.bot);
+  invokeMessageCallbacks = (cb: JTgBotChatMessageCallbackWithoutBot) => cb(this._message, this._metadata);
 
   invokeCallbackQueryCatcherItem = (cb: TgBotWrapperCallbackCatcher) =>
     cb(this._cbQuery, this.bot, this._cbQueryAnswer);
