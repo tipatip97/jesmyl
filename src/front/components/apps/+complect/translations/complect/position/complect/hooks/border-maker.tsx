@@ -115,7 +115,7 @@ export const usePositionConfiguratorResizerBorderMaker = (
             }
       }
       onMouseDown={
-        fixedResizerLines !== undefined
+        fixedResizerLines !== null
           ? undefined
           : event => {
               if (rectRef.current === null || wrapperRef.current === null) return null;

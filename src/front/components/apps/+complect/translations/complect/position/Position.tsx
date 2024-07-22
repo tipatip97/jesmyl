@@ -118,11 +118,11 @@ export const ScreenTranslateCurrentPositionConfigurators = ({
   return (
     <>
       {(showHalfFixersKeyActiveMode === 'ctrl' ||
-        (fixedResizerLines && fixedResizerLines.type === 'vert' && fixedResizerLines.value === 50)) && (
+        (fixedResizerLines?.type === 'vert' && fixedResizerLines.value === 50)) && (
         <PositionConfiguratorsResizersHalfWrapperFixer prop="vert" />
       )}
       {(showHalfFixersKeyActiveMode === 'ctrl' ||
-        (fixedResizerLines && fixedResizerLines.type === 'horz' && fixedResizerLines.value === 50)) && (
+        (fixedResizerLines?.type === 'horz' && fixedResizerLines.value === 50)) && (
         <PositionConfiguratorsResizersHalfWrapperFixer prop="horz" />
       )}
       <Rect
@@ -135,8 +135,8 @@ export const ScreenTranslateCurrentPositionConfigurators = ({
         $fixedResizerLines={fixedResizerLines}
         $config={config}
         ref={rectRef}
-        onDoubleClick={fixedResizerLines === undefined ? onRectDoubleClick : undefined}
-        onMouseDown={fixedResizerLines === undefined ? onMouseDown : undefined}
+        onDoubleClick={fixedResizerLines === null ? onRectDoubleClick : undefined}
+        onMouseDown={fixedResizerLines === null ? onMouseDown : undefined}
       >
         <PositionConfiguratorsResizers
           setOnMove={setOnMove}
