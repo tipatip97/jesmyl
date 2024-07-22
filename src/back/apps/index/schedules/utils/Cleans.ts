@@ -1,5 +1,5 @@
 import { makeRegExp } from '../../../../complect/makeRegExp';
-import smylib from '../../../../shared/SMyLib';
+import smylib, { SMyLib } from '../../../../shared/SMyLib';
 import {
   IScheduleWidget,
   IScheduleWidgetDayEvent,
@@ -9,9 +9,41 @@ import { CustomAttUseTaleId } from '../../rights';
 
 const singleTitleSymbols = '- ().,/';
 const incorrectsTitleReg = makeRegExp(`/[^${singleTitleSymbols}\\dа-яё]/gi`);
-const notDynamicTitleReg = makeRegExp(`/[^- .,\\dа-яё]/gi`);
 const singlesTitleReg = makeRegExp(`/([${singleTitleSymbols}])(\\1+)/g`);
 const titleLettersNormalizer = (_: string, __: string, letters: string) => letters[0];
+
+const likeLetters: Record<string, string> = {
+  e: 'е',
+  y: 'у',
+  u: 'и',
+  o: 'о',
+  p: 'р',
+  a: 'а',
+  h: 'н',
+  k: 'к',
+  x: 'х',
+  c: 'с',
+  b: 'ь',
+  n: 'п',
+  m: 'т',
+
+  E: 'Е',
+  Y: 'У',
+  U: 'И',
+  O: 'О',
+  P: 'Р',
+  A: 'А',
+  H: 'Н',
+  K: 'К',
+  X: 'Х',
+  C: 'С',
+  B: 'В',
+  M: 'М',
+  T: 'Т',
+};
+
+const likeLettersReg = makeRegExp(`/[${SMyLib.keys(likeLetters).join('')}]/g`);
+const repLikeLetters = (letter: string) => likeLetters[letter];
 
 export default class ScheduleWidgetCleans {
   static checkIsTaleIdUnit = (num: number, taleId: CustomAttUseTaleId) => Math.trunc(num) + taleId === num;
@@ -60,11 +92,11 @@ export default class ScheduleWidgetCleans {
 
   static attachmentTypeTitleNormalize = (text: string, isWithTopic?: boolean) => {
     if (isWithTopic) {
-      const notSymboli = text.search(notDynamicTitleReg);
+      const notSymboli = text.search(makeRegExp(`/[^- .,\\wа-яё]/gi`));
       const topic = notSymboli < 0 ? '' : text.slice(notSymboli).trim();
 
       return (
-        (notSymboli < 0 ? text : text.slice(0, notSymboli)).trim() +
+        (notSymboli < 0 ? text : text.slice(0, notSymboli)).trim().replace(likeLettersReg, repLikeLetters) +
         (topic && `: ${topic.replace(makeRegExp('/^\\(([^)]+)\\)$/'), '$1').replace(makeRegExp(`/^: /`), '')}`)
       );
     }

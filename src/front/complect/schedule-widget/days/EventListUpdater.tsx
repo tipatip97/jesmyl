@@ -61,7 +61,7 @@ export const ScheduleWidgetEventListUpdater = ({ day, dayScope, dayi, schedule, 
                 {newTatts.map(({ title, tm }) => {
                   return (
                     <div key={title}>
-                      {title} {tm}м.
+                      {title} <span className="color--7">{tm}м.</span>
                     </div>
                   );
                 })}
@@ -144,7 +144,13 @@ export const ScheduleWidgetEventListUpdater = ({ day, dayScope, dayi, schedule, 
         onChange={setValue}
         multiline
       />
-      {errorText ? <div className="color--ko margin-gap-v flex center">{errorText}</div> : node}
+      {errorText ? (
+        <div className="color--ko margin-gap-v flex center">
+          <div dangerouslySetInnerHTML={{ __html: errorText }} />
+        </div>
+      ) : (
+        node
+      )}
     </div>
   );
 };

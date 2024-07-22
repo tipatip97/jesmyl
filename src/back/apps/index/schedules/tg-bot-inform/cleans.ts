@@ -4,7 +4,7 @@ import { SMyLib } from '../../../../shared/SMyLib';
 import { IScheduleWidget, IScheduleWidgetDayEvent } from '../../models/ScheduleWidget.model';
 import ScheduleWidgetCleans from '../utils/Cleans';
 
-const timeRegStr = '\\d{1,2}:\\d{1,2}';
+const timeRegStr = ' *\\d{1,2}:\\d{1,2}';
 const timeSchLineReg = makeRegExp(`/(${timeRegStr}) (.+)(\\n(?!${timeRegStr}).+)*/g`);
 
 const repEInText = (text: string) => text.replace(makeRegExp('/ё/gi'), 'е');
@@ -22,13 +22,14 @@ export class ScheduleWidgetTgInformCleans {
     let errors: string[] = [];
 
     const list = lines.map(line => {
+      line = line.trim();
+
       const lineLines = line.split('\n');
 
-      const [hoursStr, minsStr] = line.slice(0, line.indexOf(' ')).split(':');
+      const [hoursStr, minsStr] = line.slice(0, line.search(makeRegExp('/[^\\d:]/'))).split(':');
 
       const timeStr = `${hoursStr.padStart(2, '0')}:${minsStr.padStart(2, '0')}`;
-
-      const titleStr = lineLines[0].slice(line.indexOf(' ') + 1);
+      const titleStr = lineLines[0].slice(line.search(makeRegExp('/[^\\d:]/')) + 1);
 
       if (timeStr < lastTimeStr) errors.push(`Ошибка по времени <b>(${lastTimeStr} > ${timeStr})</b> ${titleStr}`);
       lastTimeStr = timeStr;
@@ -40,8 +41,13 @@ export class ScheduleWidgetTgInformCleans {
       return (
         titleStr
           .split(makeRegExp('/\\s*\\/\\s*/'))
-          .map(title => timeStr + ` ${ScheduleWidgetCleans.attachmentTypeTitleNormalize(title, true)}`)
-          .join('') + (description ? `\n${description}` : '')
+          .map(title => {
+            return (
+              timeStr +
+              ` ${ScheduleWidgetCleans.attachmentTypeTitleNormalize(title[0].toUpperCase() + title.slice(1), true)}`
+            );
+          })
+          .join('\n') + (description ? `\n${description}` : '')
       );
     });
 

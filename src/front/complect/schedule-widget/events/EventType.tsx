@@ -58,6 +58,91 @@ export default function ScheduleWidgetEventType(props: {
     );
   });
 
+  const innerNode = (
+    <>
+      <StrongEditableField
+        scope={selfScope}
+        fieldName="field"
+        value={props.typeBox.title}
+        isRedact={props.isRedact}
+        Icon={IconSchoolReportCardStrokeRounded}
+        title="Название"
+        isImpossibleEmptyValue
+        onChange={setTitle}
+        mapExecArgs={(args, val) => {
+          if (error) return;
+          return {
+            ...args,
+            value: val,
+            key: 'title',
+          };
+        }}
+      />
+      {error && (
+        <div className="flex flex-gap center error-message">
+          <IconAlert02StrokeRounded />
+          {error}
+        </div>
+      )}
+      <StrongEditableField
+        scope={selfScope}
+        fieldName="tm"
+        type="number"
+        value={'' + (props.typeBox.tm ?? '')}
+        postfix=" мин"
+        isRedact={props.isRedact}
+        title="Продолжительность, мин"
+        Icon={IconClock01StrokeRounded}
+      />
+      {props.isRedact ? (
+        <ScheduleWidgetBindAtts
+          scope={selfScope}
+          schedule={props.schedule}
+          scheduleScope={props.scheduleScope}
+          atts={props.typeBox.atts}
+          forTitle={
+            <>
+              Шаблон <span className="color--7">{props.typeBox.title}</span>
+            </>
+          }
+          cantBindLinks
+          topContent={
+            <Dropdown
+              id={attTranslatorType}
+              items={attTranslatorTypes}
+              onSelect={({ id }) => setAttTranslatorType(id)}
+            />
+          }
+          customAttTopContent={(scope, attKey) => (
+            <StrongDropdown
+              id={props.typeBox.atts?.[attKey]?.[0] as AttTranslatorType}
+              scope={scope}
+              fieldName="period"
+              cud="U"
+              items={attTranslatorTypes}
+              className="margin-gap-b"
+            />
+          )}
+          mapExecArgs={args => {
+            return {
+              ...args,
+              value: attTranslatorType,
+            };
+          }}
+        />
+      ) : (
+        !attEntries || (
+          <div>
+            <div className="flex flex-gap">
+              <IconAttachmentStrokeRounded />
+              Вложения
+            </div>
+          </div>
+        )
+      )}
+    </>
+  );
+
   return (
     <div className="relative">
       {modalNode}
@@ -66,104 +151,28 @@ export default function ScheduleWidgetEventType(props: {
           <IconEdit02StrokeRounded onClick={screen} />
         </div>
       )}
-      <SelectItem
-        scope={props.selectScope}
-        fieldName={props.selectFieldName}
-        className={
-          'schedule-event-type-select-item' +
-          (props.selectScope ? (props.isRedact ? '' : props.typeBox.title ? ' pointer ' : ' disabled ') : '') +
-          (props.isRedact ? '' : ' bgcolor--5 padding-gap margin-gap-v')
-        }
-        mapExecArgs={args => {
-          if (props.isRedact || !props.typeBox.title) return;
-          props.onSelect?.();
-          return {
-            ...args,
-            eventType: props.typei,
-          };
-        }}
-      >
-        <StrongEditableField
-          scope={selfScope}
-          fieldName="field"
-          value={title}
-          isRedact={props.isRedact}
-          Icon={IconSchoolReportCardStrokeRounded}
-          title="Название"
-          isImpossibleEmptyValue
-          onChange={setTitle}
-          mapExecArgs={(args, val) => {
-            if (error) return;
+      {props.isRedact || !props.typeBox.title ? (
+        innerNode
+      ) : (
+        <SelectItem
+          scope={props.selectScope}
+          fieldName={props.selectFieldName}
+          className={
+            'schedule-event-type-select-item' +
+            (props.selectScope ? (props.isRedact ? '' : props.typeBox.title ? ' pointer ' : ' disabled ') : '') +
+            (props.isRedact ? '' : ' bgcolor--5 padding-gap margin-gap-v')
+          }
+          mapExecArgs={args => {
+            props.onSelect?.();
             return {
               ...args,
-              value: val,
-              key: 'title',
+              eventType: props.typei,
             };
           }}
-        />
-        {error && (
-          <div className="flex flex-gap center error-message">
-            <IconAlert02StrokeRounded />
-            {error}
-          </div>
-        )}
-        <StrongEditableField
-          scope={selfScope}
-          fieldName="tm"
-          type="number"
-          value={'' + (props.typeBox.tm ?? '')}
-          postfix=" мин"
-          isRedact={props.isRedact}
-          title="Продолжительность, мин"
-          Icon={IconClock01StrokeRounded}
-        />
-        {props.isRedact ? (
-          <ScheduleWidgetBindAtts
-            scope={selfScope}
-            schedule={props.schedule}
-            scheduleScope={props.scheduleScope}
-            atts={props.typeBox.atts}
-            forTitle={
-              <>
-                Шаблон <span className="color--7">{props.typeBox.title}</span>
-              </>
-            }
-            cantBindLinks
-            topContent={
-              <Dropdown
-                id={attTranslatorType}
-                items={attTranslatorTypes}
-                onSelect={({ id }) => setAttTranslatorType(id)}
-              />
-            }
-            customAttTopContent={(scope, attKey) => (
-              <StrongDropdown
-                id={props.typeBox.atts?.[attKey]?.[0] as AttTranslatorType}
-                scope={scope}
-                fieldName="period"
-                cud="U"
-                items={attTranslatorTypes}
-                className="margin-gap-b"
-              />
-            )}
-            mapExecArgs={args => {
-              return {
-                ...args,
-                value: attTranslatorType,
-              };
-            }}
-          />
-        ) : (
-          !attEntries || (
-            <div>
-              <div className="flex flex-gap">
-                <IconAttachmentStrokeRounded />
-                Вложения
-              </div>
-            </div>
-          )
-        )}
-      </SelectItem>
+        >
+          {innerNode}
+        </SelectItem>
+      )}
     </div>
   );
 }
