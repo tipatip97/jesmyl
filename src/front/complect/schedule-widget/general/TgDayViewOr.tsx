@@ -5,22 +5,38 @@ import { removePullRequisites, useAuthState, useIndexSchedules } from '../../../
 import { soki } from '../../../soki';
 import mylib from '../../my-lib/MyLib';
 import serviceMaster from '../../service/serviceMaster';
-import { TelegramWebApp } from '../../tg-app/model';
 import { TelegramWebAppApiOr } from '../../tg-app/getTgApi';
+import { TelegramWebApp, TelegramWebAppInitData } from '../../tg-app/model';
 import { TheIconLoading } from '../../the-icon/IconLoading';
 import ScheduleWidgetAlarmContent from '../alarm/AlarmContent';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 
+const hashParamName = 'tgWebAppData';
+const url = new URL(window.location.href);
+let initData: TelegramWebAppInitData | null = null;
+
+if (url.hash.startsWith(`#${hashParamName}`)) {
+  const data: Record<string, string> = {};
+
+  url.search = url.hash.slice(1);
+  url.search = url.searchParams.get(hashParamName) || '';
+
+  Array.from(url.searchParams.entries()).forEach(([key, value]) => (data[key] = value));
+
+  initData = { ...data, user: JSON.parse(data.user) } as TelegramWebAppInitData;
+}
+
 export const ScheduleWidgetTgDayViewOr = ({ children }: { children: React.ReactNode }) => {
   return (
     <TelegramWebAppApiOr>
-      {(api: TelegramWebApp | nil, isLoading: boolean) =>
-        !api?.initData ? (
+      {(api, isLoading) =>
+        initData === null || !api?.initData ? (
           children
         ) : (
           <Child
             api={api}
             isLoading={isLoading}
+            initData={initData}
           />
         )
       }
@@ -31,20 +47,21 @@ export const ScheduleWidgetTgDayViewOr = ({ children }: { children: React.ReactN
 type Props = {
   api: TelegramWebApp | nil;
   isLoading: boolean;
+  initData: TelegramWebAppInitData;
 };
 
-const Child = ({ api, isLoading }: Props) => {
+const emptyFunc = () => {};
+
+const Child = ({ api, isLoading, initData }: Props) => {
   const schedules = useIndexSchedules();
   const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);
   const [auth, setAuth] = useAuthState();
   const { navigate } = useIndexNav();
 
-  api?.disableVerticalSwipes();
+  useEffect(() => api?.disableVerticalSwipes(), [api]);
 
   useEffect(() => {
-    if (api == null) return;
-
-    const schedule = schedules.list.find(sch => sch.tgChatReqs?.endsWith(api.initDataUnsafe.chat_instance));
+    const schedule = schedules.list.find(sch => sch.tgChatReqs?.endsWith(initData.chat_instance));
 
     if (schedule !== undefined) {
       setSchedule(schedule);
@@ -53,17 +70,17 @@ const Child = ({ api, isLoading }: Props) => {
 
     (async () => {
       try {
-        setSchedule(await serviceMaster('index')('takeDaySchedule', api.initDataUnsafe.chat_instance));
+        setSchedule(await serviceMaster('index')('takeDaySchedule', initData.chat_instance));
       } catch (error) {}
     })();
-  }, [api, schedules.list]);
+  }, [initData.chat_instance, schedules.list]);
 
   useEffect(() => {
     return hookEffectLine()
       .setTimeout(() => {
-        if (api == null || auth.level) return;
+        if (auth.level) return;
 
-        soki.send({ tgNativeAuthorization: api.initDataUnsafe.user }, 'index').on(({ tgAuthorization }) => {
+        soki.send({ tgNativeAuthorization: initData.user }, 'index').on(({ tgAuthorization }) => {
           if (!tgAuthorization || !tgAuthorization.ok || mylib.isStr(tgAuthorization.value)) return;
 
           setAuth(tgAuthorization.value);
@@ -73,13 +90,13 @@ const Child = ({ api, isLoading }: Props) => {
         });
       }, 300)
       .effect();
-  }, [api, auth.level, navigate, setAuth]);
+  }, [auth.level, initData.user, navigate, setAuth]);
 
   return (
     <StyledBox>
       {schedule ? (
         <ScheduleWidgetAlarmContent
-          onGoTo={() => {}}
+          onGoTo={emptyFunc}
           schedule={schedule}
           isJustShowAllDay
         />

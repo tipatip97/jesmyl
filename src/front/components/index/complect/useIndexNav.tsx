@@ -1,27 +1,33 @@
+import React, { Suspense } from 'react';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
-import ScheduleWidgetListPage from '../../../complect/schedule-widget/general/ListPage';
-import ScheduleWidgetPage from '../../../complect/schedule-widget/general/Page';
 import serviceMaster from '../../../complect/service/serviceMaster';
 import { iconPackOfCircleArrowRight02 } from '../../../complect/the-icon/icons/circle-arrow-right-02';
 import { RoutePhasePoint } from '../../router/Router.model';
 import { Index } from '../Index';
 import { IndexNavData, IndexStorage } from '../Index.model';
-import IndexActions from '../parts/actions/Actions';
-import IndexMyFiles from '../parts/actions/files/MyFiles';
-import { IndexAuthorization } from '../parts/login/IndexAuthorization';
-import Main from '../parts/main/IndexMain';
-import { IndexConsole } from '../parts/settings/Console';
-import IndexSettings from '../parts/settings/Settings';
 import { IndexScheduleWidgetTranslations } from './translations/LiveTranslations';
+
+const LazyIndexAuthorization = React.lazy(() => import('../parts/login/IndexAuthorization'));
+const LazyIndexConsole = React.lazy(() => import('../parts/settings/Console'));
+const LazyScheduleWidgetListPage = React.lazy(() => import('../../../complect/schedule-widget/general/ListPage'));
+const LazyIndexActions = React.lazy(() => import('../parts/actions/Actions'));
+const LazyIndexMyFiles = React.lazy(() => import('../parts/actions/files/MyFiles'));
+const LazyMain = React.lazy(() => import('../parts/main/IndexMain'));
+const LazyIndexSettings = React.lazy(() => import('../parts/settings/Settings'));
+const LazyScheduleWidgetPage = React.lazy(() => import('../../../complect/schedule-widget/general/Page'));
 
 export const indexScheduleWidgetTranslationPagePhase: RoutePhasePoint = ['translation'];
 
 const actions: UseNavAction[] = [];
 const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
   title: 'Index',
-  root: content => <Index content={content} />,
+  root: content => (
+    <Suspense>
+      <Index content={content} />
+    </Suspense>
+  ),
   rootPhase: null,
   jumpByLink: {
     swInvite: async ({ value, key, auth, rejectClearRoute, errorToast }) => {
@@ -40,29 +46,29 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
       phase: ['other'],
       title: 'Другое',
       iconSelfPack: iconPackOfCircleArrowRight02,
-      node: <Main />,
+      node: <LazyMain />,
       next: [
         {
           phase: ['settings'],
-          node: <IndexSettings />,
+          node: <LazyIndexSettings />,
           next: [
             {
               phase: ['console'],
-              node: <IndexConsole />,
+              node: <LazyIndexConsole />,
             },
           ],
         },
         {
           phase: ['login'],
-          node: <IndexAuthorization />,
+          node: <LazyIndexAuthorization />,
         },
         {
           phase: ['schedules'],
-          node: <ScheduleWidgetListPage />,
+          node: <LazyScheduleWidgetListPage />,
           next: [
             {
               phase: ['schedule'],
-              node: <ScheduleWidgetPage />,
+              node: <LazyScheduleWidgetPage />,
               next: [
                 {
                   phase: indexScheduleWidgetTranslationPagePhase,
@@ -74,11 +80,11 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
         },
         {
           phase: ['actions'],
-          node: <IndexActions />,
+          node: <LazyIndexActions />,
           next: [
             {
               phase: ['files'],
-              node: <IndexMyFiles />,
+              node: <LazyIndexMyFiles />,
             },
           ],
         },

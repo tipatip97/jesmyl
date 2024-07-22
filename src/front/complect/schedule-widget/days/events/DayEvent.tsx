@@ -146,7 +146,7 @@ export default function ScheduleWidgetDayEvent(props: Props) {
           (timeToTitle ? ' margin-big-gap-b' : '') +
           (isInGroup ? ' in-group' : '') +
           (isFirstInGroup ? ' first-in-group' : '') +
-          (isLastInGroup ? ' last-in-group' : '')
+          (isLastInGroup && !timeToTitle ? ' last-in-group' : '')
         }
       >
         <div

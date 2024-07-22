@@ -1,6 +1,12 @@
 let isFirst = true;
-if (window.location.hash === '#Jesmyl') window.location.hash = 'Jеsmyl';
-else window.location.hash = 'Jesmyl';
+
+const en = '&JESMYL';
+const ru = '&JE5MYL';
+const hash = window.location.hash;
+
+if (hash.endsWith(en)) window.location.hash = hash.replace(en, ru);
+else if (hash.endsWith(ru)) window.location.hash = hash.replace(ru, en);
+else window.location.hash += ru;
 
 window.addEventListener('load', () => window.history.pushState({}, ''));
 

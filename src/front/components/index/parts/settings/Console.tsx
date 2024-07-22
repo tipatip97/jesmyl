@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { isTouchDevice } from '../../../../complect/device-differences';
+import { IconCancel02StrokeRounded } from '../../../../complect/the-icon/icons/cancel-02';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { CodeExecutionScreen } from './coder/Coder';
 import { CoderResultLine } from './coder/complect/line';
-import { isTouchDevice } from '../../../../complect/device-differences';
-import { IconCancel02StrokeRounded } from '../../../../complect/the-icon/icons/cancel-02';
 
 const logs: unknown[][] = [];
 
@@ -22,9 +22,9 @@ console[scope] = ((...args: unknown[]) => {
   forceUpdate();
 }) as never;
 
-export const IndexConsole = () => {
+export default function IndexConsole() {
   const [, setUpdates] = useState(0);
-  const [bottomNode, openBottom] = useBottomPopup((isOpen, _close, prepare) => {
+  const [bottomNode, openBottom] = useBottomPopup((_isOpen, _close, prepare) => {
     return prepare({
       items: [
         {
@@ -77,7 +77,7 @@ export const IndexConsole = () => {
       }
     />
   );
-};
+}
 
 const Line = styled.div`
   overflow-wrap: anywhere;

@@ -1,17 +1,19 @@
 import { User } from 'node-telegram-bot-api';
 
+export type TelegramWebAppInitData = {
+  user: User & {
+    is_premium: boolean;
+    allows_write_to_pm: boolean;
+  };
+  chat_instance: string;
+  chat_type: string;
+  auth_date: string;
+  hash: string;
+};
+
 export type TelegramWebApp = {
   initData: string;
-  initDataUnsafe: {
-    user: User & {
-      is_premium: boolean;
-      allows_write_to_pm: boolean;
-    };
-    chat_instance: string;
-    chat_type: string;
-    auth_date: string;
-    hash: string;
-  };
+  initDataUnsafe: TelegramWebAppInitData;
   version: string;
   platform: 'tdesktop' | string;
   colorScheme: 'light' | 'dark';
