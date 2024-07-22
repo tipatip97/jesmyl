@@ -34,8 +34,6 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
   const routeRef = useRef(route);
   routeRef.current = route;
 
-  // console.log(appName, 9876, appRouteCast);
-
   const updateAppRouteData = useCallback(
     (data: NavData | ((prev?: NavData) => NavData), isPreventSave?: boolean) => {
       setAppRouteData(
