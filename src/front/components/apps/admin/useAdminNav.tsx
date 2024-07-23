@@ -40,12 +40,11 @@ const adminNavigation = new NavigationConfig<AdminStorage, AdminNavData>('admin'
       ],
     },
   ],
+  lazies: [<LazyAdminApp content />, <LazyAdmin />, <LazyTheUser />],
 });
 
 const actions: UseNavAction[] = [];
 
-const lazies = [<LazyAdminApp content />, <LazyAdmin />, <LazyTheUser />];
-
 export default function useAdminNav() {
-  return useNavConfigurer<AdminStorage, AdminNavData>('admin', actions, adminNavigation, lazies);
+  return useNavConfigurer<AdminStorage, AdminNavData>('admin', actions, adminNavigation);
 }

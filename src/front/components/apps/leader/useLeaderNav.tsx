@@ -141,21 +141,21 @@ const navigation: NavigationConfig<LeaderStoraged, LeaderNavData> = new Navigati
       ),
     },
   ],
+  lazies: [
+    <LazyLeaderApplication content />,
+    <LazyHumanList isAsPage />,
+    <LazyMentorList isAsPage />,
+    <LazyMemberList isAsPage />,
+    <LazyGroupList />,
+    <LazyTheLeaderGroup />,
+    <LazyGameList />,
+    <LazyTheGame />,
+    <LazyLeaderSchedule />,
+  ],
 });
 
 const actions: UseNavAction[] = [];
-const lazies = [
-  <LazyLeaderApplication content />,
-  <LazyHumanList isAsPage />,
-  <LazyMentorList isAsPage />,
-  <LazyMemberList isAsPage />,
-  <LazyGroupList />,
-  <LazyTheLeaderGroup />,
-  <LazyGameList />,
-  <LazyTheGame />,
-  <LazyLeaderSchedule />,
-];
 
 export default function useLeaderNav() {
-  return useNavConfigurer<LeaderStoraged, LeaderNavData>('leader', actions, navigation, lazies);
+  return useNavConfigurer<LeaderStoraged, LeaderNavData>('leader', actions, navigation);
 }

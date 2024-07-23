@@ -28,6 +28,7 @@ const LazySelectedComs = React.lazy(() => import('../lists/selected-coms/Selecte
 export const translationNavPoint: RoutePhasePoint = ['translation'];
 
 export const comNavPhasePoint: RoutePhasePoint = ['com'];
+const props = { children: null };
 
 const LazyTheComposition = React.lazy(() => import('../col/com/TheComposition'));
 const LazyCmApplication = React.lazy(() => import('../Cm'));
@@ -150,29 +151,27 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
     },
     editorNav,
   ],
+  lazies: [
+    <LazyTranslations />,
+    <LazyTheComposition />,
+    <LazyCmApplication content />,
+    <LazyTheCat all />,
+    <LazyCmTranslationComListContextInZeroCat {...props} />,
+    <LazyLists />,
+    <LazyMarks />,
+    <LazyCmTranslationComListContextInMarks {...props} />,
+    <LazyTheCat />,
+    <LazyCmTranslationComListContextInCat {...props} />,
+    <LazySelectedComs />,
+    <LazyCmTranslationComListContextInSelected {...props} />,
+    <LazyTheMeetings />,
+    <LazyTheMeetingsEvent />,
+    <LazyCmTranslationComListContextInMeetings {...props} />,
+  ],
 });
 
 const actions: UseNavAction[] = [];
-const props = { children: null };
-
-const lazies = [
-  <LazyTranslations />,
-  <LazyTheComposition />,
-  <LazyCmApplication content />,
-  <LazyTheCat all />,
-  <LazyCmTranslationComListContextInZeroCat {...props} />,
-  <LazyLists />,
-  <LazyMarks />,
-  <LazyCmTranslationComListContextInMarks {...props} />,
-  <LazyTheCat />,
-  <LazyCmTranslationComListContextInCat {...props} />,
-  <LazySelectedComs />,
-  <LazyCmTranslationComListContextInSelected {...props} />,
-  <LazyTheMeetings />,
-  <LazyTheMeetingsEvent />,
-  <LazyCmTranslationComListContextInMeetings {...props} />,
-];
 
 export default function useCmNav() {
-  return useNavConfigurer<CmStorage, CmNavData>('cm', actions, navigation, lazies);
+  return useNavConfigurer<CmStorage, CmNavData>('cm', actions, navigation);
 }

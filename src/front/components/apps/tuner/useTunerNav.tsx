@@ -23,12 +23,11 @@ const tunerNavigation = new NavigationConfig<TunerStorage>('tuner', {
       ),
     },
   ],
+  lazies: [<LazyTheTuner />],
 });
 
 const actions: UseNavAction[] = [];
 
-const lazies = [<LazyTheTuner />];
-
 export default function useTunerNav() {
-  return useNavConfigurer<TunerStorage>('tuner', actions, tunerNavigation, lazies);
+  return useNavConfigurer<TunerStorage>('tuner', actions, tunerNavigation);
 }

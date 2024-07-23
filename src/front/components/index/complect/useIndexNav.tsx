@@ -127,20 +127,19 @@ const navigate = new NavigationConfig<IndexStorage, IndexNavData>('index', {
       ],
     },
   ],
+  lazies: [
+    <LazyMain />,
+    <LazyIndexSettings />,
+    <LazyIndexConsole />,
+    <LazyIndexAuthorization />,
+    <LazyScheduleWidgetListPage />,
+    <LazyScheduleWidgetPage />,
+    <IndexScheduleWidgetTranslations />,
+    <LazyIndexActions />,
+    <LazyIndexMyFiles />,
+  ],
 });
 
-const lazies = [
-  <LazyMain />,
-  <LazyIndexSettings />,
-  <LazyIndexConsole />,
-  <LazyIndexAuthorization />,
-  <LazyScheduleWidgetListPage />,
-  <LazyScheduleWidgetPage />,
-  <IndexScheduleWidgetTranslations />,
-  <LazyIndexActions />,
-  <LazyIndexMyFiles />,
-];
-
 export default function useIndexNav() {
-  return useNavConfigurer<IndexStorage, IndexNavData>('index', actions, navigate, lazies);
+  return useNavConfigurer<IndexStorage, IndexNavData>('index', actions, navigate);
 }

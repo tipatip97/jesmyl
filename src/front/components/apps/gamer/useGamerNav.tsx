@@ -65,6 +65,12 @@ export const gamerRoomGames: GamerRoomGameSkelet[] = [
   },
 ];
 
+const fakeConfig: NavigationThrowNodeProps<GamerNavData> = {
+  currentChildPhase: '',
+  outletContent: null,
+  relativePoint: [''],
+};
+
 export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
   currentNode: ReactNode;
   qrDataCatcher: (passport: LocalSokiAuth | GamerPassport, data: QRCodeReaderData<any, any>) => void;
@@ -170,26 +176,19 @@ const gamerNavigation = new NavigationConfig<GamerStoraged, GamerNavData>('gamer
       ),
     },
   ],
+  lazies: [
+    <LazySpyOfflineRoomContent />,
+    <LazySpyCurrentOfflineGameInfo />,
+    <LazyGamerApp content />,
+    <LazyGamer />,
+    <LazyTheGamerRoom config={fakeConfig} />,
+    <LazyGamerOfflineRoom config={fakeConfig} />,
+    <LazyTheGamerPassport />,
+  ],
 });
 
 const actions: UseNavAction[] = [];
 
-const fakeConfig: NavigationThrowNodeProps<GamerNavData> = {
-  currentChildPhase: '',
-  outletContent: null,
-  relativePoint: [''],
-};
-
-const lazies = [
-  <LazySpyOfflineRoomContent />,
-  <LazySpyCurrentOfflineGameInfo />,
-  <LazyGamerApp content />,
-  <LazyGamer />,
-  <LazyTheGamerRoom config={fakeConfig} />,
-  <LazyGamerOfflineRoom config={fakeConfig} />,
-  <LazyTheGamerPassport />,
-];
-
 export default function useGamerNav() {
-  return useNavConfigurer<GamerStoraged, GamerNavData>('gamer', actions, gamerNavigation, lazies);
+  return useNavConfigurer<GamerStoraged, GamerNavData>('gamer', actions, gamerNavigation);
 }

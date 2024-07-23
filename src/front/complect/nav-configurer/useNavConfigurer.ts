@@ -20,7 +20,6 @@ export default function useNavConfigurer<Storage, NavDataNative = {}>(
   appName: AppName,
   actions: UseNavAction[],
   nav: NavigationConfig<NavigationStorage<Storage>, NavDataNative>,
-  _usedLazyComponents: JSX.Element[],
 ) {
   type NavData = Partial<NavDataNative>;
 

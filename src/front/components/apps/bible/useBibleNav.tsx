@@ -61,20 +61,20 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
       ),
     },
   ],
+  lazies: [
+    <LazyBibleReaderCurrentBookPage />,
+    <LazyBibleReaderSearchPage />,
+    <LazyBibleTranslatesContextProvider />,
+    <LazyBibleTranslationControlled
+      head
+      headTitle="Библия"
+      useNav={useBibleNav as never}
+    />,
+  ],
 });
 
 const actions: UseNavAction[] = [];
-const lazies = [
-  <LazyBibleReaderCurrentBookPage />,
-  <LazyBibleReaderSearchPage />,
-  <LazyBibleTranslatesContextProvider />,
-  <LazyBibleTranslationControlled
-    head
-    headTitle="Библия"
-    useNav={useBibleNav as never}
-  />,
-];
 
 export default function useBibleNav() {
-  return useNavConfigurer<BibleStorage, {}>('bible', actions, navigation, lazies);
+  return useNavConfigurer<BibleStorage, {}>('bible', actions, navigation);
 }

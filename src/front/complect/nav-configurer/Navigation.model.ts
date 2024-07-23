@@ -53,6 +53,7 @@ export interface INavigationConfig<Storage extends ExerStorage, NavData> {
   title: string;
   level?: number;
   useIsCanRead?: (value?: any) => boolean;
+  lazies: JSX.Element[];
 }
 
 export type INavigationRouteItem<NavData> = INavigationRouteChildItem<NavData> | INavigationRouteRootItem<NavData>;

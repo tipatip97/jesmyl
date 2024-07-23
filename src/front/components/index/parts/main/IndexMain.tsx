@@ -5,9 +5,7 @@ import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
 import useToast from '../../../../complect/modal/useToast';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
-import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconComputerSettingsStrokeRounded } from '../../../../complect/the-icon/icons/computer-settings';
-import { IconCubeStrokeRounded } from '../../../../complect/the-icon/icons/cube';
 import { IconInformationCircleStrokeRounded } from '../../../../complect/the-icon/icons/information-circle';
 import { IconRefreshStrokeRounded } from '../../../../complect/the-icon/icons/refresh';
 import { IconSettings02StrokeRounded } from '../../../../complect/the-icon/icons/settings-02';
@@ -19,6 +17,7 @@ import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import IndexAbout from '../IndexAbout';
 import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthButton';
+import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
 import { UserMore } from './UserMore';
 
@@ -45,12 +44,10 @@ export default function IndexMain() {
       if (nav.nav.level !== undefined && nav.nav.level > auth.level) return null!;
 
       return (
-        <IconButton
+        <AppFace
           key={appName}
-          Icon={nav.nav.Icon ?? nav.nav.routes[0]?.iconSelfPack.StrokeRounded ?? IconCubeStrokeRounded}
-          className="margin-big-gap-h margin-sm-gap-v flex-max"
-          postfix={nav.nav.title}
-          onClick={() => jumpToApp(nav.appName)}
+          jumpToApp={jumpToApp}
+          nav={nav}
         />
       );
     })
