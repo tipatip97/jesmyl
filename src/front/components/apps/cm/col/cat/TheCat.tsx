@@ -62,11 +62,11 @@ export default function TheCat({ all }: { all?: boolean }) {
               className="debounced-searcher round-styled"
               initialTerm={term}
               onSearch={term => cat.search(term, isNumberSearch)}
-              debounce={500}
+              debounce={1000}
               onDebounced={() => {
                 if (listRef.current) listRef.current.scrollTop = 0;
               }}
-              onTermChange={term => setTerm(term)}
+              onTermChange={setTerm}
             />
           )
         }
