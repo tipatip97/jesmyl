@@ -78,11 +78,11 @@ export default function ScheduleWidgetDayEvent(props: Props) {
       let eventiPlus = 1;
 
       while (true) {
-        const nextEvent = props.day.list[props.eventi + eventiPlus++];
-        const nextBox = props.schedule.types[nextEvent.type];
+        const nextEvent = props.day.list[props.eventi + eventiPlus++] as IScheduleWidgetDayEvent | und;
 
         if (nextEvent == null) break;
 
+        const nextBox = props.schedule.types[nextEvent.type];
         const nextEventTm = ScheduleWidgetCleans.takeEventTm(nextEvent, nextBox);
 
         if (nextEventTm !== 0) {
