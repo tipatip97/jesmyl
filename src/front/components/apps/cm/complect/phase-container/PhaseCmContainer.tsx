@@ -3,11 +3,11 @@ import { PhaseContainerProps } from '../../../../../complect/phase-container/Pha
 import useCmNav from '../../base/useCmNav';
 
 export default function PhaseCmContainer(props: PhaseContainerProps) {
-  const { goBack } = useCmNav();
+  // const { goBack } = useCmNav();
   return (
     <PhaseContainerConfigurer
       {...props}
-      goBack={goBack}
+      // goBack={goBack}
     />
   );
 }

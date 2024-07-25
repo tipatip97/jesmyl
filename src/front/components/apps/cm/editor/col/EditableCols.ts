@@ -9,7 +9,7 @@ export class EditableCols extends Cols {
 
   constructor(cols: IExportableCols) {
     super(cols);
-    this.coms = [...cols.coms].sort((a, b) => a.w - b.w).map((com, comi) => new EditableCom(com, comi));
+    this.coms = cols.coms.map((com, comi) => new EditableCom(com, comi)).sort((a, b) => a.wid - b.wid);
 
     this.cats = cols.cats.map(cat => new EditableCat(cat, this.coms));
   }

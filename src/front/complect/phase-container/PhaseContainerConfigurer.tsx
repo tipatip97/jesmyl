@@ -1,26 +1,35 @@
+import { useRef } from 'react';
 import styled from 'styled-components';
-import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import { IconArrowLeft02StrokeRounded } from '../../complect/the-icon/icons/arrow-left-02';
 import { IconMoreVerticalCircle01StrokeRounded } from '../../complect/the-icon/icons/more-vertical-circle-01';
+import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
+import { LinkWithSearchRemember } from './LinkWithSearchRemember';
 import { PhaseContainerConfigurerProps } from './PhaseContainerConfigurer.model';
 
 let goBack: (isForceBack?: boolean | undefined) => void;
 const swiper = backSwipableContainerMaker(() => goBack(true));
 
+const emptyFunc = () => {};
+
 export default function PhaseContainerConfigurer(props: PhaseContainerConfigurerProps) {
-  goBack = props.goBack;
+  const linkRef = useRef(emptyFunc);
+
+  goBack = () => linkRef.current();
 
   const content = (
     <>
       <div className="header flex between full-width">
-        {(!props.withoutBackButton || props.headTitle) && (
-          <span
-            className={'flex ' + (props.withoutBackButton ? 'margin-big-gap-h' : 'pointer')}
-            onClick={props.withoutBackButton ? undefined : () => props.goBack(true)}
+        {props.withoutBackButton ? (
+          props.headTitle && <span className="margin-big-gap-h">{props.headTitle}</span>
+        ) : (
+          <LinkWithSearchRemember
+            to=".."
+            rememberProps={props.rememberProps}
+            className="flex"
           >
-            {!props.withoutBackButton && <IconArrowLeft02StrokeRounded className="action-button" />}
+            <IconArrowLeft02StrokeRounded className="action-button" />
             {props.headTitle}
-          </span>
+          </LinkWithSearchRemember>
         )}
         <div className={`head ${props.headClass || 'flex between'}`}>
           {props.head}

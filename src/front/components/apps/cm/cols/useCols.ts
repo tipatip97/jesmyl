@@ -10,7 +10,7 @@ let localICols: IExportableCols | und;
 export function useCols(): Cols | und {
   const cols = useAtomValue(cmMolecule.take('cols'));
 
-  if (!cols) return;
+  if (cols == null) return;
   if (localCols && localICols === cols) return localCols;
 
   localCols = cols && new Cols(mylib.clone(cols), localCols?.coms);

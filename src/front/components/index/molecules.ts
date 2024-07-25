@@ -1,3 +1,5 @@
+import { useParams } from 'react-router-dom';
+import { AppName } from '../../app/App.model';
 import { atomValueSetter, getAtomValue, Molecule, useAtom, useAtomSet, useAtomValue } from '../../complect/atoms';
 import { LocalSokiAuth } from '../../models';
 import { IndexState } from './Index.model';
@@ -46,5 +48,4 @@ export const getUpdateRequisitesValue = async () => await getAtomValue(indexMole
 export const setUpdateRequisitesValue = atomValueSetter(indexMolecule.take('updateRequisites'));
 export const removePullRequisites = () => setUpdateRequisitesValue(null);
 
-export const useCurrentApp = () => useAtom(indexMolecule.take('currentApp'));
-export const getCurrentAppValue = async () => await getAtomValue(indexMolecule.take('currentApp'));
+export const useCurrentApp = () => useParams().appName as AppName | und;

@@ -44,7 +44,7 @@ export const IndexScheduleWidgetBibleTranslations: React.FC<LiveTranslationAppPr
             onClick={() => switchCurrApp()}
           />
         }
-        useNav={useIndexNav as never}
+        // useNav={useIndexNav as never}
         headTitle={headTitle}
       />
     </>

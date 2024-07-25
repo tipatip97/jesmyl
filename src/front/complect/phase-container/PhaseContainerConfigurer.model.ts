@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 export interface PhaseContainerConfigurerProps extends PhaseContainerProps {
-  goBack: (isForceBack?: boolean) => void;
+  goBack?: (isForceBack?: boolean) => void;
 }
 
 export interface PhaseContainerProps {
@@ -15,4 +15,5 @@ export interface PhaseContainerProps {
   contentRef?: React.LegacyRef<HTMLDivElement>;
   onMoreClick?: () => void;
   withoutBackSwipe?: boolean;
+  rememberProps?: string[];
 }

@@ -1,9 +1,8 @@
 import { IconPencilEdit02StrokeRounded } from '../../../../../../../complect/the-icon/icons/pencil-edit-02';
 import { Auth } from '../../../../../../index/Index.model';
-import useCmNav from '../../../../base/useCmNav';
 import { cmExer } from '../../../../CmExer';
+import { Com } from '../../../../col/com/Com';
 import { MigratableComTool, MigratableComToolName } from '../../../../col/com/Com.model';
-import { editComNavPhasePoint } from '../../../editorNav';
 import { MigratableEditableComToolName } from '../EditableCom.model';
 
 export const migratableEditableComToolNameList = ['edit-com'] as const;
@@ -18,7 +17,7 @@ export const spliceMigratableEditableComToolNameList = (toolList: MigratableComT
 
 export const getMigratableEditableComTool = (
   tool: MigratableEditableComToolName,
-  { jumpTo }: ReturnType<typeof useCmNav>,
+  com: Com | und,
 ): MigratableComTool | nil => {
   switch (tool) {
     case 'edit-com':
@@ -26,7 +25,7 @@ export const getMigratableEditableComTool = (
         tool,
         title: 'Редактировать',
         Icon: IconPencilEdit02StrokeRounded,
-        onClick: () => jumpTo(editComNavPhasePoint),
+        path: com && `/cm/edit/coms/${com.wid}`,
       };
   }
 };

@@ -14,11 +14,11 @@ import BibleSearchPanel from './search/Panel';
 
 interface Props {
   head: ReactNode;
-  useNav: () => ReturnType<typeof useNavConfigurer>;
+  // useNav: () => ReturnType<typeof useNavConfigurer>;
   headTitle: ReactNode;
 }
 
-export default function BibleTranslationControlled({ useNav, head, headTitle }: Props): JSX.Element {
+export default function BibleTranslationControlled({ head, headTitle }: Props): JSX.Element {
   useLoadBibleChaptersCombine();
   const inkSync = useBibleSlideSyncInkrementer();
   const switchVersei = useAtomInkrement(bibleVerseiAtom);
@@ -45,8 +45,9 @@ export default function BibleTranslationControlled({ useNav, head, headTitle }: 
 
   return (
     <PhaseContainerConfigurer
-      goBack={useNav().goBack}
+      goBack={() => {}}
       className=""
+      withoutBackButton
       headTitle={headTitle ?? 'Библия'}
       head={head}
       content={

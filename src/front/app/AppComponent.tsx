@@ -1,20 +1,13 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
+import { useEffect, useState } from 'react';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
-import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
-import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
 import useToast from '../complect/modal/useToast';
-import { crossApplicationLinkCoder, jesmylHostName } from '../complect/qr-code/useQRMaster';
 import { IconArrowShrink02StrokeRounded } from '../complect/the-icon/icons/arrow-shrink-02';
 import listenThemeChanges from '../complect/theme-changer';
-import useApps from '../complect/useApps';
 import { useFullScreen } from '../complect/useFullscreen';
 import { useAppFontFamilyAtom, useCurrentApp } from '../components/index/molecules';
 import { applyFontFamilyFromMyFiles } from '../components/index/parts/actions/files/utils/set-font-family-effect';
 import { useIsReadyRouter } from '../components/router/atoms';
-import navConfigurers from '../shared/navConfigurers';
 import './App.scss';
-import AppFooter from './AppFooter';
 import AppRouter from './AppRouter';
 
 listenThemeChanges();
@@ -22,29 +15,29 @@ listenThemeChanges();
 const emptyArr: [] = [];
 
 export default function AppComponent() {
-  const [currentApp] = useCurrentApp();
+  const currentApp = useCurrentApp();
   const [appFontFamily] = useAppFontFamilyAtom();
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  const { goBack, registerBackAction } = navConfigurers[currentApp]();
+  // const { goBack, registerBackAction } = navConfigurers[currentApp]();
   const [errorToastNode, errorToast] = useToast({ mood: 'ko' });
-  const { jumpToApp } = useApps(errorToast);
+  // const { jumpToApp } = useApps(errorToast);
   const [isShowLogo, setIsShowLogo] = useState(true);
   const [, setIsReady] = useIsReadyRouter();
 
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      event.code === 'Escape' && switchFullscreen(false);
-      if (event.code === 'ArrowLeft' && event.altKey) {
-        event.preventDefault();
-        goBack();
-      }
-    };
+  // useEffect(() => {
+  //   const onKeyDown = (event: KeyboardEvent) => {
+  //     event.code === 'Escape' && switchFullscreen(false);
+  //     if (event.code === 'ArrowLeft' && event.altKey) {
+  //       event.preventDefault();
+  //       goBack();
+  //     }
+  //   };
 
-    window.addEventListener('keydown', onKeyDown);
+  //   window.addEventListener('keydown', onKeyDown);
 
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [goBack, switchFullscreen]);
+  //   return () => window.removeEventListener('keydown', onKeyDown);
+  // }, [goBack, switchFullscreen]);
 
   useEffect(() => {
     if (appFontFamily == null) return;
@@ -61,32 +54,32 @@ export default function AppComponent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, emptyArr);
 
-  useEffect(() => {
-    (async () => {
-      if (window.location.href.startsWith(jesmylHostName)) {
-        const decodeds = crossApplicationLinkCoder.decode(window.location.href);
-        if (decodeds) {
-          const { appName, key, value } = decodeds;
-          if (appName && key && value !== undefined) {
-            jumpToApp(appName, key as never, value);
-          }
-        }
-      }
-    })();
-  }, [jumpToApp]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (window.location.href.startsWith(jesmylHostName)) {
+  //       const decodeds = crossApplicationLinkCoder.decode(window.location.href);
+  //       if (decodeds) {
+  //         const { appName, key, value } = decodeds;
+  //         if (appName && key && value !== undefined) {
+  //           jumpToApp(appName, key as never, value);
+  //         }
+  //       }
+  //     }
+  //   })();
+  // }, [jumpToApp]);
 
-  const onOpen = useCallback((close: () => boolean) => registerBackAction(() => close()), [registerBackAction]);
-  const keyboardProps = useMemo(() => {
-    return {
-      onFocus: (input: KeyboardInputStorage | nil) => {
-        setKeyboardOpen(true);
-        registerBackAction(() => !input || input.blur());
-      },
-      onBlur: () => {
-        setKeyboardOpen(false);
-      },
-    };
-  }, [registerBackAction]);
+  // const onOpen = useCallback((close: () => boolean) => registerBackAction(() => close()), [registerBackAction]);
+  // const keyboardProps = useMemo(() => {
+  //   return {
+  //     onFocus: (input: KeyboardInputStorage | nil) => {
+  //       setKeyboardOpen(true);
+  //       registerBackAction(() => !input || input.blur());
+  //     },
+  //     onBlur: () => {
+  //       setKeyboardOpen(false);
+  //     },
+  //   };
+  // }, [registerBackAction]);
 
   return (
     <div className={`above-container ${keyboardOpen ? 'keyboard-open' : ''}`}>
@@ -101,11 +94,11 @@ export default function AppComponent() {
           className="collapse-fullscreen-button pointer"
           onClick={() => switchFullscreen(false)}
         />
-        <ABSOLUTE__FLOAT__POPUP onOpen={onOpen} />
-        <AppRouter appName={currentApp} />
-        <AppFooter appName={currentApp} />
+        {/* <ABSOLUTE__FLOAT__POPUP onOpen={onOpen} /> */}
+        <AppRouter />
+        {/* <AppFooter /> */}
       </div>
-      <KEYBOARD_FLASH {...keyboardProps} />
+      {/* <KEYBOARD_FLASH {...keyboardProps} /> */}
     </div>
   );
 }

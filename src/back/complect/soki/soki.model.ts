@@ -5,6 +5,7 @@ import { SimpleKeyValue } from '../filer/Filer.model';
 import { SokiSharedKey, SokiSharedValueType } from './values';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible'] as const;
+export const sokiAppNamesSet = new Set(sokiAppNames);
 export type SokiAppName = (typeof sokiAppNames)[number];
 
 const dir = __dirname.split('/').slice(0, -2);

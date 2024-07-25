@@ -1,4 +1,4 @@
-import useIndexNav from '../../../components/index/complect/useIndexNav';
+import { useParams } from 'react-router-dom';
 import { useAuth, useIndexSchedules } from '../../../components/index/molecules';
 import useConnectionState from '../../../components/index/useConnectionState';
 import PhaseContainerConfigurer from '../../phase-container/PhaseContainerConfigurer';
@@ -10,17 +10,13 @@ import { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
 
 export default function ScheduleWidgetPage() {
   const schedules = useIndexSchedules();
-  const {
-    goBack,
-    appRouteData: { schw },
-  } = useIndexNav();
+  const schw = +useParams().schw!;
   const schedule = schedules.list.find(({ w }) => w === schw);
   const connectionNode = useConnectionState();
   const auth = useAuth();
 
   return (
     <PhaseContainerConfigurer
-      goBack={goBack}
       className="ScheduleWidgetPage"
       headTitle={schedule?.title ?? 'Мероприятие'}
       head={

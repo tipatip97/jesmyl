@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
 import { useCheckIsAccessed } from '../../../../../../complect/exer/hooks/check-is-accessed';
 import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
-import { NavigationThrowNodeProps } from '../../../../../../complect/nav-configurer/Navigation.model';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import {
   IconMusicNote03SolidRounded,
@@ -9,21 +9,14 @@ import {
 } from '../../../../../../complect/the-icon/icons/music-note-03';
 import { useAuth } from '../../../../../index/molecules';
 import useConnectionState from '../../../../../index/useConnectionState';
-import { CmNavData } from '../../../Cm.model';
-import useCmNav from '../../../base/useCmNav';
 import ComPlayer from '../../../col/com/player/ComPlayer';
 import { editCompositionNavs } from '../../editorNav';
 import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
 import './EditComposition.scss';
 import { useEditableCcom } from './useEditableCcom';
 
-export default function EditComposition({
-  outletContent,
-  relativePoint,
-  currentChildPhase,
-}: NavigationThrowNodeProps<CmNavData>) {
+export default function EditComposition() {
   const ccom = useEditableCcom();
-  const { goTo } = useCmNav();
   const exec = useExerExec();
   const [isOpenPlayer, setIsOpenPlayer] = useState(false);
   const auth = useAuth();
@@ -63,21 +56,24 @@ export default function EditComposition({
               {editCompositionNavs.map(({ data: { iconPack, iconText } = {}, phase: [phase], accessLevel }) => {
                 if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
                 return (
-                  <span
+                  <NavLink
                     key={phase}
+                    to={phase}
                     className="pointer"
-                    onClick={() => goTo(phase, relativePoint, ccom.isCreated)}
+                    end
                   >
-                    {iconPack ? (
-                      phase === currentChildPhase ? (
-                        <iconPack.StrokeRounded className="color--7" />
+                    {({ isActive }) =>
+                      iconPack ? (
+                        isActive ? (
+                          <iconPack.StrokeRounded className="color--7" />
+                        ) : (
+                          <iconPack.BulkRounded />
+                        )
                       ) : (
-                        <iconPack.BulkRounded />
+                        iconText
                       )
-                    ) : (
-                      iconText
-                    )}
-                  </span>
+                    }
+                  </NavLink>
                 );
               })}
             </div>
@@ -89,7 +85,7 @@ export default function EditComposition({
                 />
               </div>
             )}
-            {outletContent}
+            <Outlet />
           </>
         )
       }

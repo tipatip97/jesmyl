@@ -232,7 +232,6 @@ export default function CmExternalComListAtt({ value, scope, isRedact, switchIsR
       meetings && (
         <MeetingsInner
           meetings={meetings}
-          onEventClick={event => event}
           asEventBox={event =>
             value.eventw === event.wid ? (
               <StrongEvaButton

@@ -66,7 +66,7 @@ export interface INavigationRouteChildItem<
   readonly phase: RoutePhasePoint<PhaseName>;
   // компоненту можно передать содержимое его потомков, если typeof node === 'function'
   // такая фаза считается проходящей
-  node: ReactNode | ((props: NavigationThrowNodeProps<NavData>) => ReactNode);
+  node?: ReactNode | ((props: NavigationThrowNodeProps<NavData>) => ReactNode);
   // если typeof node === 'function' - этот параметр будет указывать,
   // на какой роут нужно перейти по умолчанию
   defaultChild?: RoutePhase;
@@ -75,6 +75,9 @@ export interface INavigationRouteChildItem<
   accessLevel?: number | ((auth: LocalSokiAuth) => boolean);
   next?: INavigationRouteChildItem<NavData>[];
   slideBackOn?: (data: Partial<NavData>) => boolean;
+
+  element?: ReactNode;
+  path?: string;
 }
 
 export interface INavigationRouteRootItem<NavData> extends INavigationRouteChildItem<NavData> {

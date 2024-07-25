@@ -19,10 +19,13 @@ export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, ...comP
   const ccomi = isPartialRender ? list.findIndex(({ wid }) => wid === ccomWid) : 0;
 
   useEffect(() => {
-    if (comProps.ccom === undefined) return;
+    const node = document.getElementById(`com_face_wid_${comProps.ccom?.wid}`);
 
-    const node = document.getElementById(`com_face_wid_${comProps.ccom.wid}`);
-    if (node == null) return;
+    if (comProps.ccom === undefined || node === null) {
+      return hookEffectLine()
+        .setTimeout(setIsPartialRender, isIPhone ? 2 : 600, false)
+        .effect();
+    }
 
     if (!isNeedRenderingDelay) return;
 

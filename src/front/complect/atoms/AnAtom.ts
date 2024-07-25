@@ -47,6 +47,8 @@ export class Atom<
       const value = await storage.get(key);
       if (value === undefined) return;
       this.justSet(value);
+      if (this.subs.size === 0) setTimeout(this.justSet, 100, value);
+      this.onValueChange?.(value);
     })();
   }
 

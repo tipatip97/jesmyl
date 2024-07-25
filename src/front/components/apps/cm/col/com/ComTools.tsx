@@ -127,7 +127,7 @@ export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
               ...tool,
               iconWrapperClassName: comTopTools.includes(tool.tool) ? 'active' : '',
               onClick: () => {
-                if (tool.onClick()) return;
+                if (tool.onClick?.()) return;
                 close();
               },
               ...propsOfClicker({

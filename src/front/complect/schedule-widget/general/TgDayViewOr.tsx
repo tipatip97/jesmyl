@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useIndexNav from '../../../components/index/complect/useIndexNav';
 import { removePullRequisites, useAuthState, useIndexSchedules } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
 import mylib from '../../my-lib/MyLib';
@@ -50,13 +49,10 @@ type Props = {
   initData: TelegramWebAppInitData;
 };
 
-const emptyFunc = () => {};
-
 const Child = ({ api, isLoading, initData }: Props) => {
   const schedules = useIndexSchedules();
   const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);
   const [auth, setAuth] = useAuthState();
-  const { navigate } = useIndexNav();
 
   useEffect(() => api?.disableVerticalSwipes(), [api]);
 
@@ -86,17 +82,15 @@ const Child = ({ api, isLoading, initData }: Props) => {
           setAuth(tgAuthorization.value);
           removePullRequisites();
           soki.onConnect();
-          navigate(['other']);
         });
       }, 300)
       .effect();
-  }, [auth.level, initData.user, navigate, setAuth]);
+  }, [auth.level, initData.user, setAuth]);
 
   return (
     <StyledBox>
       {schedule ? (
         <ScheduleWidgetAlarmContent
-          onGoTo={emptyFunc}
           schedule={schedule}
           isJustShowAllDay
         />

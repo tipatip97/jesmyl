@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { DocTitle } from '../../../../../complect/DocTitle';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
@@ -10,6 +11,7 @@ import useCmNav from '../../base/useCmNav';
 import useLaterComList from '../../base/useLaterComList';
 import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import { cmMolecule } from '../../molecules';
+import Translations from '../../translation/Translation';
 import { Com } from './Com';
 import './Com.scss';
 import { ComTools } from './ComTools';
@@ -52,56 +54,81 @@ export default function TheComposition() {
   }
 
   return (
-    <ComContainer
-      className={
-        'composition-container' +
-        (playerHideMode && comAudio ? ` with-open-player ${playerHideMode}` : '') +
-        (isMetronomeHide ? ' hide-metronome' : '')
-      }
-      headTitle={ccom.number}
-      onMoreClick={openPopuComTools}
-      contentClass="composition-content"
-      contentRef={comListElem}
-      withoutBackSwipe
-      head={
-        <div className="com-actions-pannel">
-          {topTools.map(({ Icon, onClick, tool }) => (
-            <Icon
-              key={tool}
-              className="action-button"
-              onClick={() => onClick()}
-            />
-          ))}
-        </div>
-      }
-      content={
-        <>
-          {popupComToolsNode}
-          <DocTitle title={ccom.name} />
-          {comAudio && (
-            <ComPlayer
-              src={comAudio}
-              split
-            />
-          )}
-          <Metronome
-            meterSize={ccom.meterSize}
-            bpm={ccom.beatsPerMinute}
+    <Routes>
+      <Route
+        index
+        element={
+          <ComContainer
+            className={
+              'composition-container' +
+              (playerHideMode && comAudio ? ` with-open-player ${playerHideMode}` : '') +
+              (isMetronomeHide ? ' hide-metronome' : '')
+            }
+            headTitle={ccom.number}
+            onMoreClick={openPopuComTools}
+            contentClass="composition-content"
+            contentRef={comListElem}
+            withoutBackSwipe
+            rememberProps={['comw']}
+            head={
+              <div className="com-actions-pannel">
+                {topTools.map(({ Icon, onClick, tool, path }) =>
+                  path !== undefined ? (
+                    <Link
+                      key={tool}
+                      to={path}
+                    >
+                      <Icon className="action-button" />
+                    </Link>
+                  ) : (
+                    onClick !== undefined && (
+                      <Icon
+                        key={tool}
+                        className="action-button"
+                        onClick={() => onClick()}
+                      />
+                    )
+                  ),
+                )}
+              </div>
+            }
+            content={
+              <>
+                {popupComToolsNode}
+                <DocTitle title={ccom.name} />
+                {comAudio && (
+                  <ComPlayer
+                    src={comAudio}
+                    split
+                  />
+                )}
+                <Metronome
+                  meterSize={ccom.meterSize}
+                  bpm={ccom.beatsPerMinute}
+                />
+                <TheControlledCom
+                  com={ccom}
+                  comList={list}
+                  chordVisibleVariant={chordVisibleVariant}
+                  onComSet={setCom}
+                />
+              </>
+            }
           />
-          <TheControlledCom
-            com={ccom}
-            comList={list}
-            chordVisibleVariant={chordVisibleVariant}
-            onComSet={setCom}
-          />
-        </>
-      }
-    />
+        }
+      />
+
+      <Route
+        path="tran"
+        element={<Translations />}
+      />
+    </Routes>
   );
 }
 
 const ComContainer = styled(PhaseCmContainer)`
   .composition-content {
+    padding-top: 150px;
     transition: padding-top 0.2s;
 
     .composition-player {
@@ -127,18 +154,6 @@ const ComContainer = styled(PhaseCmContainer)`
   }
 
   &.with-open-player {
-    &.expand {
-      --content-padding-top: var(--com-player-expand-height);
-    }
-
-    &.min {
-      --content-padding-top: var(--com-player-height);
-    }
-
-    .composition-content {
-      padding-top: var(--content-padding-top);
-    }
-
     .composition-player {
       opacity: 1;
       pointer-events: all;

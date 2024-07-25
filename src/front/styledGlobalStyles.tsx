@@ -42,6 +42,10 @@ const StyledGlobalStyles = createGlobalStyle`
         ${lightColors('')}
     }
   }
+
+  a {
+    text-decoration: none;
+  }
 `;
 
 export default StyledGlobalStyles;

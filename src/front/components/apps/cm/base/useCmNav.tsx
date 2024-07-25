@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { Route } from 'react-router-dom';
 import { NavigationConfig } from '../../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
@@ -8,7 +9,9 @@ import { iconPackOfPlaylist01 } from '../../../../complect/the-icon/icons/playli
 import { RoutePhasePoint } from '../../../router/Router.model';
 import { CmNavData, CmStorage } from '../Cm.model';
 import { cmExer } from '../CmExer';
+import TheComposition from '../col/com/TheComposition';
 import { editorNav } from '../editor/editorNav';
+import Translations from '../translation/Translation';
 
 const LazyTranslations = React.lazy(() => import('../translation/Translation'));
 
@@ -39,7 +42,7 @@ const makeComNext = (render: (props: { children: React.ReactNode }) => JSX.Eleme
     node: render({
       children: (
         <Suspense>
-          <LazyTranslations />
+          <Translations />
         </Suspense>
       ),
     }),
@@ -60,11 +63,34 @@ const makeComNext = (render: (props: { children: React.ReactNode }) => JSX.Eleme
   ];
 };
 
+export const getCompositionRoutes = (Context: React.FunctionComponent<{ children: React.ReactNode }>) => {
+  return (
+    <>
+      <Route
+        path=":comw/*"
+        element={
+          <Context>
+            <TheComposition />
+          </Context>
+        }
+      />
+      <Route
+        path="tran"
+        element={
+          <Context>
+            <Translations />
+          </Context>
+        }
+      />
+    </>
+  );
+};
+
 const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig('cm', {
-  title: 'Песни возрождённых',
+  title: '',
   root: content => (
     <Suspense>
-      <LazyCmApplication content={content} />
+      <LazyCmApplication />
     </Suspense>
   ),
   rootPhase: 'all',
@@ -93,7 +119,7 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
     {
       iconSelfPack: iconPackOfPlaylist01,
       phase: ['lists'],
-      title: 'Списки',
+      title: '',
       node: (
         <Suspense>
           <LazyLists />
@@ -101,7 +127,7 @@ const navigation: NavigationConfig<CmStorage, CmNavData> = new NavigationConfig(
       ),
       next: [
         {
-          phase: ['marks'],
+          phase: [''],
           node: (
             <Suspense>
               <LazyMarks />

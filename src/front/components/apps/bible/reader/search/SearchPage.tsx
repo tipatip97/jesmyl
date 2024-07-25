@@ -30,6 +30,7 @@ export default function BibleReaderSearchPage() {
     <PhaseContainerConfigurer
       goBack={goBack}
       className=""
+      withoutBackButton
       headTitle="Поиск"
       content={
         <>

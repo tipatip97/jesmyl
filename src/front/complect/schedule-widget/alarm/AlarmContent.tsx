@@ -1,14 +1,13 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
-import { IconArrowRight01StrokeRounded } from '../../../complect/the-icon/icons/arrow-right-01';
 import { IconCalendar01StrokeRounded } from '../../../complect/the-icon/icons/calendar-01';
 import { IconLeftToRightListDashStrokeRounded } from '../../../complect/the-icon/icons/left-to-right-list-dash';
 import { IconSmileStrokeRounded } from '../../../complect/the-icon/icons/smile';
 import { useIndexSchedules } from '../../../components/index/molecules';
 import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
 import mylib from '../../my-lib/MyLib';
-import IconButton from '../../the-icon/IconButton';
 import {
   IScheduleWidget,
   IScheduleWidgetDay,
@@ -53,13 +52,12 @@ const makeNextDayFirstEventNode = (
 };
 
 interface Props {
-  onGoTo: () => void;
   observeSchw?: number;
   schedule?: IScheduleWidget;
   isJustShowAllDay?: boolean;
 }
 
-export default function ScheduleWidgetAlarmContent({ onGoTo, observeSchw, schedule, isJustShowAllDay }: Props) {
+export default function ScheduleWidgetAlarmContent({ observeSchw, schedule, isJustShowAllDay }: Props) {
   const schedules = useIndexSchedules();
   const now = Date.now();
   const [isFullOpen, setIsFullOpen] = useState(false);
@@ -358,27 +356,28 @@ export default function ScheduleWidgetAlarmContent({ onGoTo, observeSchw, schedu
         className={'flex flex-gap between' + (fullValue ? ' pointer' : '')}
         onClick={fullValue && (() => setIsFullOpen(true))}
       >
-        <div className="flex">
-          <IconCalendar01StrokeRounded className="margin-big-gap" />
-          {node ??
-            (observeSchedule !== undefined ? (
-              <div>
-                <ScheduleWidgetTopicTitle
-                  titleBox={observeSchedule.sch!}
-                  altTitle="Мероприятие"
-                  topicBox={observeSchedule.sch}
-                />
-                <span className="text-italic">Мероприятие прошло</span>
-              </div>
-            ) : (
-              <>Мероприятий нет</>
-            ))}
-        </div>
-        <IconButton
-          Icon={observeSchw !== undefined ? IconArrowRight01StrokeRounded : IconLeftToRightListDashStrokeRounded}
-          className="margin-gap"
-          onClick={() => onGoTo()}
-        />
+        <Link to={observeSchedule === undefined ? '.' : `schs/${observeSchedule.sch.w}`}>
+          <div className="flex">
+            <IconCalendar01StrokeRounded className="margin-big-gap" />
+            {node ??
+              (observeSchedule !== undefined ? (
+                <div>
+                  <ScheduleWidgetTopicTitle
+                    titleBox={observeSchedule.sch!}
+                    altTitle="Мероприятие"
+                    topicBox={observeSchedule.sch}
+                  />
+                  <span className="text-italic">Мероприятие прошло</span>
+                </div>
+              ) : (
+                <>Мероприятий нет</>
+              ))}
+          </div>
+        </Link>
+
+        <Link to="schs">
+          <IconLeftToRightListDashStrokeRounded className="margin-gap" />
+        </Link>
       </Alarm>
     </>
   );

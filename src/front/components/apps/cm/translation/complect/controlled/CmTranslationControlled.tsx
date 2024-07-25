@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { TranslationSlidePreview } from '../../../../+complect/translations/controls/Preview';
 import useNavConfigurer from '../../../../../../complect/nav-configurer/useNavConfigurer';
 import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
-import useCmNav from '../../../base/useCmNav';
 import { Com } from '../../../col/com/Com';
 import { ComFaceList } from '../../../col/com/face/list/ComFaceList';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
@@ -19,16 +19,14 @@ interface Props {
   headTitle?: ReactNode;
 }
 
-export default function CmTranslationControlled({ head, comList, useNav, headTitle }: Props) {
-  const nav = useCmNav();
-  const goBack = useNav().goBack;
+export default function CmTranslationControlled({ head, comList, headTitle }: Props) {
+  const [, setSearchParams] = useSearchParams();
 
   const { comPack } = useCmScreenTranslationComNavigations();
   const setTexti = useCmScreenTranslationComTextNavigations().setTexti;
 
   return (
     <PhaseContainerConfigurer
-      goBack={goBack}
       className=""
       headTitle={
         headTitle ? (
@@ -37,7 +35,7 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
             {comPack.pageTitlePostfix}
           </>
         ) : (
-          'Трансляция' + comPack.pageTitlePostfix
+          'Трансляция' + (comPack.pageTitlePostfix || '')
         )
       }
       head={head}
@@ -51,7 +49,7 @@ export default function CmTranslationControlled({ head, comList, useNav, headTit
                   list={comList ?? comPack.list}
                   titles={comPack.titles}
                   importantOnClick={com => {
-                    nav.setAppRouteData({ ccomw: com.wid });
+                    setSearchParams(prev => ({ ...prev, comw: com.wid }));
                     setTexti(0);
                   }}
                 />

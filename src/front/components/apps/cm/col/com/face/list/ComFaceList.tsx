@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import useAbsoluteFloatPopup from '../../../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
-import useCmNav from '../../../../base/useCmNav';
 import useSelectedComs from '../../../../base/useSelectedComs';
 import { Com } from '../../Com';
 import { useCcom } from '../../useCcom';
@@ -32,7 +31,6 @@ interface WrapperProps extends IComFaceList {
 
 const ComFaceListWrapper = ({ Component, ...props }: WrapperProps) => {
   const ccom = useCcom();
-  const { jumpTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const { selectedComPosition, toggleSelectedCom } = useSelectedComs();
 
@@ -40,7 +38,6 @@ const ComFaceListWrapper = ({ Component, ...props }: WrapperProps) => {
     <Component
       {...props}
       ccom={ccom}
-      jumpTo={jumpTo}
       closeAbsoluteFloatPopup={closeAbsoluteFloatPopup}
       openAbsoluteFloatPopup={openAbsoluteFloatPopup}
       selectedComPosition={selectedComPosition}

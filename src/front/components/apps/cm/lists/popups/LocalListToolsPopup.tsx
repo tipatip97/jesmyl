@@ -1,20 +1,19 @@
+import { Link } from 'react-router-dom';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import { isTouchDevice } from '../../../../../complect/device-differences';
-import IconButton from '../../../../../complect/the-icon/IconButton';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
+import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconBookOpen02StrokeRounded } from '../../../../../complect/the-icon/icons/book-open-02';
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
+import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
 import { IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/qr-code';
-import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
 import useCmNav from '../../base/useCmNav';
 import { Com } from '../../col/com/Com';
-import { useGoToTranslation } from '../../translation/complect/hooks/go-to-translation';
 import FullscreenExpandComList from './FullscreenExpandComList';
-import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
 
 export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, closePopup, _prepare, coms) => {
   const [fullNode, openFullContent] = useFullContent(() => coms && <FullscreenExpandComList coms={coms} />);
-  const goToTranslation = useGoToTranslation();
   const { nav } = useCmNav();
   const { shareQrData, qrNode } = useQRMaster();
 
@@ -30,11 +29,12 @@ export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, c
             closePopup();
           }}
         />
-        <IconButton
-          Icon={isTouchDevice ? IconPlayStrokeRounded : IconComputerStrokeRounded}
-          postfix="Показывать слайды списка"
-          onClick={() => goToTranslation(true)}
-        />
+        <Link to={`tran${coms?.length ? `?comw=${coms[0].wid}` : ''}`}>
+          <IconButton
+            Icon={isTouchDevice ? IconPlayStrokeRounded : IconComputerStrokeRounded}
+            postfix="Показывать слайды списка"
+          />
+        </Link>
         <IconButton
           Icon={IconQrCodeStrokeRounded}
           postfix="Поделиться по QR"

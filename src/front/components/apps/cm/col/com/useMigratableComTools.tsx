@@ -33,7 +33,6 @@ import {
 } from '../../editor/col/compositions/complect/MigratableEditableComTools';
 import { useMarks } from '../../lists/marks/useMarks';
 import { cmMolecule } from '../../molecules';
-import { useGoToTranslation } from '../../translation/complect/hooks/go-to-translation';
 import { MigratableComTool, MigratableComToolName, menuComToolNameList } from './Com.model';
 import ChordImagesList from './chord-card/ChordImagesList';
 import { useCcom } from './useCcom';
@@ -41,7 +40,6 @@ import { useCcom } from './useCcom';
 export default function useMigratableComTools() {
   const ccom = useCcom();
   const auth = useAuth();
-  const goToTranslation = useGoToTranslation();
   const [chordVisibleVariant, setChordVisibleVariant] = useChordVisibleVariant();
   const [fullContentNode, openFullscreenContent] = useFullContent(() => <ChordImagesList />);
   const { toggleSelectedCom, selectedComPosition: isSelected } = useSelectedComs();
@@ -63,9 +61,7 @@ export default function useMigratableComTools() {
               tool,
               title: 'Слайды',
               Icon: IconComputerStrokeRounded,
-              onClick: () => {
-                setTimeout(() => goToTranslation());
-              },
+              path: 'tran',
             };
           case 'chords-variant':
             return {
@@ -164,7 +160,7 @@ export default function useMigratableComTools() {
               }
             );
         }
-        return getMigratableEditableComTool(tool, nav);
+        return getMigratableEditableComTool(tool, ccom);
       })
       .filter(tool => tool) as MigratableComTool[];
   };

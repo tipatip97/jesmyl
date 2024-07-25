@@ -3,18 +3,16 @@ import { useConfirm } from '../../../../complect/modal/confirm/useConfirm';
 import useQRMaster from '../../../../complect/qr-code/useQRMaster';
 import { IconQrCode01StrokeRounded } from '../../../../complect/the-icon/icons/qr-code-01';
 import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
-import { removePullRequisites, useAuthState, useCurrentApp } from '../../molecules';
+import { removePullRequisites, useAuthState } from '../../molecules';
 import useIndexNav from '../../complect/useIndexNav';
 
 export const UserMore: BottomPopupContenter = (isOpen, _, prepare) => {
   const { nav } = useIndexNav();
   const [auth, setAuth] = useAuthState();
-  const [, setCurrentApp] = useCurrentApp();
   const { shareQrData, qrNode } = useQRMaster();
 
   const logout = () => {
     setAuth({ level: 0 });
-    setCurrentApp('cm');
     removePullRequisites();
     window.location.reload();
   };

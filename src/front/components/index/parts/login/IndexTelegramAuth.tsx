@@ -9,7 +9,7 @@ import { useActualRef } from '../../../../complect/useActualRef';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../models';
 import { soki } from '../../../../soki';
 import useIndexNav from '../../complect/useIndexNav';
-import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
+import { removePullRequisites, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { LoginIndex } from './IndexLoginAuth';
 import { TgNativeAuth } from './TgNativeAuth';
@@ -20,7 +20,6 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
   const [isLoading, setIsLoading] = useState(false);
   const [isSendTgCode, setIsSendTgCode] = useState(false);
   const setAuth = useSetAuth();
-  const [, setCurrentApp] = useCurrentApp();
 
   const connectionNode = useConnectionState();
   const [errors] = useAuthErrors();
@@ -41,7 +40,6 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
   const setAuthData = async (auth: LocalSokiAuth) => {
     if (auth) {
       setAuth(auth);
-      setCurrentApp('cm');
       removePullRequisites();
     }
   };

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { AppName } from '../app/App.model';
-import { useAuth, useCurrentApp } from '../components/index/molecules';
+import { useAuth } from '../components/index/molecules';
 import { RoutePathVariated } from '../components/router/Router.model';
 import navConfigurers, { NavDataRegister } from '../shared/navConfigurers';
 import { soki } from '../soki';
@@ -11,7 +11,6 @@ import { jesmylHostName } from './qr-code/useQRMaster';
 import { useActualRef } from './useActualRef';
 
 export default function useApps(errorToast: (content?: React.ReactNode, config?: ToastModalConfig) => void) {
-  const [, setCurrentApp] = useCurrentApp();
   const auth = useAuth();
   const errorToastRef = useActualRef(errorToast);
   const appConfigs = useMemo(() => ({}), []) as Record<AppName, ReturnType<typeof useNavConfigurer>>;
@@ -28,7 +27,7 @@ export default function useApps(errorToast: (content?: React.ReactNode, config?:
       const jump = (phase: RoutePathVariated<NavData>) => {
         if (appName !== 'index') {
           soki.onAppChange(appName);
-          setCurrentApp(appName);
+          // setCurrentApp(appName);
         }
         appConfigs[appName].navigate(phase);
         if (appName !== 'index') appConfigs.index.navigate(null, false);
@@ -58,7 +57,7 @@ export default function useApps(errorToast: (content?: React.ReactNode, config?:
         }
       });
     },
-    [appConfigs, auth, errorToastRef, setCurrentApp],
+    [appConfigs, auth, errorToastRef],
   );
 
   return useMemo(() => {

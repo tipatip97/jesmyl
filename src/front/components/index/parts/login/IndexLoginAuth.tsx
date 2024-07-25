@@ -10,13 +10,13 @@ import { soki } from '../../../../soki';
 import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import useIndexNav from '../../complect/useIndexNav';
 import { AuthMode, ClientAuthorizationData, ClientRegisterData, ServerAuthorizeInSystem } from '../../Index.model';
-import { removePullRequisites, useCurrentApp, useSetAuth } from '../../molecules';
+import { removePullRequisites, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { useAuthErrors } from './atoms';
 
 export default function IndexLoginAuth() {
   const setAuth = useSetAuth();
-  const [, setCurrentApp] = useCurrentApp();
+  // const [, setCurrentApp] = useCurrentApp();
   const [nick, setNick] = useState('');
   const [passw, setPassword] = useState('');
   const [rpassw, setRPassword] = useState('');
@@ -52,7 +52,7 @@ export default function IndexLoginAuth() {
 
   const setAuthData = async (auth: LocalSokiAuth) => {
     setAuth(auth);
-    setCurrentApp('cm');
+    // setCurrentApp('cm');
     removePullRequisites();
     soki.onConnect();
   };

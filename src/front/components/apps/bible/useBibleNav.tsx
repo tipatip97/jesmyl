@@ -23,7 +23,7 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
     {
       iconSelfPack: iconPackOfFile02,
       phase: ['chapter'],
-      title: 'Глава',
+      title: '',
       node: (
         <Suspense>
           <LazyBibleReaderCurrentBookPage />
@@ -33,7 +33,7 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
     {
       iconSelfPack: iconPackOfFileSearch,
       phase: ['search'],
-      title: 'Поиск',
+      title: '',
       node: (
         <Suspense>
           <LazyBibleReaderSearchPage />
@@ -43,7 +43,7 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
     {
       iconSelfPack: iconPackOfComputer,
       phase: ['translation'],
-      title: 'Трансляция',
+      title: '',
       node: (
         <Suspense>
           <LazyBibleTranslatesContextProvider>
@@ -52,7 +52,7 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
                 <LazyBibleTranslationControlled
                   head
                   headTitle="Библия"
-                  useNav={useBibleNav as never}
+                  // useNav={useBibleNav as never}
                 />
               </CurrentForceViweAppContext.Provider>
             </Suspense>
@@ -68,7 +68,7 @@ const navigation: NavigationConfig<BibleStorage, {}> = new NavigationConfig('bib
     <LazyBibleTranslationControlled
       head
       headTitle="Библия"
-      useNav={useBibleNav as never}
+      // useNav={useBibleNav as never}
     />,
   ],
 });

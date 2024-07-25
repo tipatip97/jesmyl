@@ -24,6 +24,15 @@ import { iconPackOfVoice } from '../../../../complect/the-icon/icons/voice';
 import { TheIconSelfPack } from '../../../../complect/the-icon/model';
 import { RoutePhasePoint } from '../../../router/Router.model';
 import { CmNavData } from '../Cm.model';
+import ComAudio from './col/compositions/complect/audio/ComAudio';
+import CategoryBinds from './col/compositions/complect/CategoryBinds';
+import ChordApplicationsRedactor from './col/compositions/complect/chord-applications/ChordApplicationsRedactor';
+import ComOnTranslations from './col/compositions/complect/ComOnTranslations';
+import EditableCompositionMain from './col/compositions/complect/main/EditableCompositionMain';
+import OrdersRedactor from './col/compositions/complect/orders/OrdersRedactor';
+import TextsChordsRedactor from './col/compositions/complect/texts_chords-redactor/TextsChordsRedactor';
+import EditableCompositionWatch from './col/compositions/complect/Watch';
+import ComRepeats from './col/compositions/repeats/ComRepeats';
 
 const LazyTheComposition = React.lazy(() => import('../col/com/TheComposition'));
 const LazyEditor = React.lazy(() => import('./Editor'));
@@ -32,21 +41,7 @@ const LazyEditCategories = React.lazy(() => import('./col/categories/EditCategor
 const LazyEditCategory = React.lazy(() => import('./col/categories/EditCategory'));
 const LazyEditComposition = React.lazy(() => import('./col/compositions/EditComposition'));
 const LazyEditCompositions = React.lazy(() => import('./col/compositions/EditCompositions'));
-const LazyCategoryBinds = React.lazy(() => import('./col/compositions/complect/CategoryBinds'));
-const LazyComOnTranslations = React.lazy(() => import('./col/compositions/complect/ComOnTranslations'));
-const LazyEditableCompositionWatch = React.lazy(() => import('./col/compositions/complect/Watch'));
-const LazyComAudio = React.lazy(() => import('./col/compositions/complect/audio/ComAudio'));
-const LazyChordApplicationsRedactor = React.lazy(
-  () => import('./col/compositions/complect/chord-applications/ChordApplicationsRedactor'),
-);
-const LazyEditableCompositionMain = React.lazy(
-  () => import('./col/compositions/complect/main/EditableCompositionMain'),
-);
-const LazyOrdersRedactor = React.lazy(() => import('./col/compositions/complect/orders/OrdersRedactor'));
-const LazyTextsChordsRedactor = React.lazy(
-  () => import('./col/compositions/complect/texts_chords-redactor/TextsChordsRedactor'),
-);
-const LazyComRepeats = React.lazy(() => import('./col/compositions/repeats/ComRepeats'));
+
 const LazyEERules = React.lazy(() => import('./ee-rules/EERules'));
 const LazyExecsVisor = React.lazy(() => import('./execs/ExecsVisor'));
 const LazyEditMeetings = React.lazy(() => import('./meetings/EditMeetings'));
@@ -61,71 +56,81 @@ export const editCompositionNavs: INavigationRouteChildItem<
   }
 >[] = [
   {
-    phase: ['watch'],
-    node: <LazyEditableCompositionWatch />,
+    phase: [''],
+    path: '',
+    element: <EditableCompositionWatch />,
     data: {
       iconPack: iconPackOfView,
     },
   },
   {
-    phase: ['applications'],
-    node: <LazyChordApplicationsRedactor />,
+    phase: ['aps'],
+    path: 'aps',
+    element: <ChordApplicationsRedactor />,
     data: {
       iconPack: iconPackOfUmbrella,
     },
   },
   {
-    phase: ['orders'],
-    node: <LazyOrdersRedactor />,
+    phase: ['ord'],
+    path: 'ord',
+    element: <OrdersRedactor />,
     data: {
       iconPack: iconPackOfDistributeVerticalTop,
     },
   },
   {
-    phase: ['texts'],
-    node: <LazyTextsChordsRedactor ccoln="texts" />,
+    phase: ['txt'],
+    path: 'txt',
+    element: <TextsChordsRedactor ccoln="texts" />,
     data: {
       iconPack: iconPackOfTextVerticalAlignment,
     },
   },
   {
-    phase: ['chords'],
-    node: <LazyTextsChordsRedactor ccoln="chords" />,
+    phase: ['ch'],
+    path: 'ch',
+    element: <TextsChordsRedactor ccoln="chords" />,
     data: {
       iconPack: iconPackOfPlaylist03,
     },
   },
   {
     phase: ['audio'],
-    node: <LazyComAudio />,
+    path: 'audio',
+    element: <ComAudio />,
     data: {
       iconPack: iconPackOfVoice,
     },
   },
   {
-    phase: ['catBinds'],
-    node: <LazyCategoryBinds />,
+    phase: ['cat'],
+    path: 'cat',
+    element: <CategoryBinds />,
     data: {
       iconPack: iconPackOfBookOpen02,
     },
   },
   {
-    phase: ['repeats'],
-    node: <LazyComRepeats />,
+    phase: ['rep'],
+    path: 'rep',
+    element: <ComRepeats />,
     data: {
       iconPack: iconPackOfLayers01,
     },
   },
   {
-    phase: ['translations'],
-    node: <LazyComOnTranslations />,
+    phase: ['tr'],
+    path: 'tr',
+    element: <ComOnTranslations />,
     data: {
       iconPack: iconPackOfComputer,
     },
   },
   {
     phase: ['main'],
-    node: <LazyEditableCompositionMain />,
+    path: 'main',
+    element: <EditableCompositionMain />,
     data: {
       iconPack: iconPackOfSchoolReportCard,
     },
@@ -167,7 +172,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     next: [
       {
         phase: editComNavPhasePoint,
-        node: props => <LazyEditComposition {...props} />,
+        node: props => <LazyEditComposition />,
         next: editCompositionNavs,
       },
     ],
@@ -177,7 +182,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     node: <LazyEditMeetings />,
     accessLevel: 50,
     data: {
-      title: 'События',
+      title: '',
       iconSelfPack: iconPackOfCalendar02,
     },
     next: [
@@ -198,16 +203,16 @@ export const editorRouteItems: INavigationRouteChildItem<
     node: <LazyChordRedactor />,
     accessLevel: 50,
     data: {
-      title: 'Редактор аккордов',
+      title: '',
       iconSelfPack: iconPackOfArrange,
     },
   },
   {
-    phase: ['mp3Rules'],
+    phase: [''],
     node: <LazyMp3RulesRedactor />,
     accessLevel: 80,
     data: {
-      title: 'Редактор MP3 правил',
+      title: '',
       iconSelfPack: iconPackOfMusicNote01,
     },
   },
@@ -216,7 +221,7 @@ export const editorRouteItems: INavigationRouteChildItem<
     node: <LazyEERules />,
     accessLevel: 100,
     data: {
-      title: 'Ё-Е правила',
+      title: '',
       iconSelfPack: iconPackOfText,
     },
   },
@@ -232,9 +237,9 @@ export const editorRouteItems: INavigationRouteChildItem<
 ];
 
 export const editorNav: INavigationRouteRootItem<CmNavData> = {
-  phase: ['editor'],
+  phase: [''],
   node: <LazyEditor />,
-  title: 'Редактор',
+  title: '',
   iconSelfPack: iconPackOfEdit02,
   accessLevel: 50,
   next: editorRouteItems,

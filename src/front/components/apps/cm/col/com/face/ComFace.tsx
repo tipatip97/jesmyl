@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom';
 import useAbsoluteFloatPopup from '../../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import propsOfClicker from '../../../../../../complect/clicker/propsOfClicker';
-import useCmNav, { comNavPhasePoint } from '../../../base/useCmNav';
 import useSelectedComs from '../../../base/useSelectedComs';
 import { Com } from '../Com';
 import { ComFaceInheritProps, FreeComFaceProps } from './ComFace.model';
@@ -21,22 +21,17 @@ export const FreeComFace = ({
   groupClass,
   importantOnClick,
   selectable,
-  jumpTo,
   closeAbsoluteFloatPopup,
   openAbsoluteFloatPopup,
   selectedComPosition,
   toggleSelectedCom,
   isWithoutIds,
 }: FreeProps) => {
-  return (
+  const node = (
     <div
       id={isWithoutIds ? undefined : `com_face_wid_${com.wid}`}
       className={'face-item flex between ' + (groupClass || '') + ` com_face_wid_${com.wid}`}
-      onClick={
-        importantOnClick === undefined
-          ? () => jumpTo({ phase: comNavPhasePoint, data: { ccomw: com.wid } })
-          : () => importantOnClick(com, comi)
-      }
+      onClick={importantOnClick === undefined ? undefined : () => importantOnClick(com, comi)}
       {...propsOfClicker({
         onCtxMenu: event => {
           event.preventDefault();
@@ -66,17 +61,17 @@ export const FreeComFace = ({
       {description?.(com, comi)}
     </div>
   );
+
+  return importantOnClick === undefined ? <Link to={'' + com.wid}>{node}</Link> : node;
 };
 
 export const ComFace = (props: Props) => {
-  const { jumpTo } = useCmNav();
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const { selectedComPosition, toggleSelectedCom } = useSelectedComs();
 
   return (
     <FreeComFace
       {...props}
-      jumpTo={jumpTo}
       closeAbsoluteFloatPopup={closeAbsoluteFloatPopup}
       openAbsoluteFloatPopup={openAbsoluteFloatPopup}
       selectedComPosition={selectedComPosition}

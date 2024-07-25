@@ -1,31 +1,28 @@
 import { Suspense, useEffect, useRef, useState } from 'react';
-import { AppName } from '../../../../app/App.model';
+import { Link } from 'react-router-dom';
+import { RoutingAppConfig } from '../../../../app/routing-apps';
 import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
-import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
 import { IconCloudDownloadStrokeRounded } from '../../../../complect/the-icon/icons/cloud-download';
-import { IconCubeStrokeRounded } from '../../../../complect/the-icon/icons/cube';
 
 interface Props {
-  jumpToApp: (appName: AppName) => void;
-  nav: ReturnType<typeof useNavConfigurer>['nav'];
+  config: RoutingAppConfig;
 }
 
-export const AppFace = ({ jumpToApp, nav }: Props) => {
+export const AppFace = ({ config: { appName, Icon, title, lazies } }: Props) => {
   const [isOpenFull, setIsOpenFull] = useState<unknown>(false);
-  const Icon = nav.nav.Icon ?? nav.nav.routes[0]?.iconSelfPack.StrokeRounded ?? IconCubeStrokeRounded;
 
   const loadedRef = useRef(0);
   const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div className="margin-big-gap-h margin-sm-gap-v flex between">
-      <span
+      <Link
+        to={`/${appName}/i`}
         className="flex flex-gap pointer"
-        onClick={() => jumpToApp(nav.appName)}
       >
         <Icon />
-        <span>{nav.nav.title}</span>
-      </span>
+        <span>{title}</span>
+      </Link>
       <IconCloudDownloadStrokeRounded
         className="pointer"
         onClick={setIsOpenFull}
@@ -36,7 +33,7 @@ export const AppFace = ({ jumpToApp, nav }: Props) => {
           onClose={setIsOpenFull}
         >
           <div>{isLoading ? 'Загружаем...' : 'Загрузка завершена!'}</div>
-          {nav.nav.lazies.map((node, nodei) => (
+          {lazies.map((node, nodei) => (
             <div
               key={nodei}
               hidden

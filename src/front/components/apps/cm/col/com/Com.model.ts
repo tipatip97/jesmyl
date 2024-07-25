@@ -27,6 +27,7 @@ export const menuComToolNameList = [
 export interface MigratableComTool {
   title: string;
   Icon: TheIconType;
-  onClick: () => void | boolean;
+  onClick?: () => void | boolean;
+  path?: string;
   tool: MigratableComToolName;
 }

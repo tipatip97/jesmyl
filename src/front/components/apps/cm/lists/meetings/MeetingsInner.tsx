@@ -1,4 +1,5 @@
 import { ReactNode, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAtom } from '../../../../../complect/atoms';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
 import IconButton from '../../../../../complect/the-icon/IconButton';
@@ -19,7 +20,7 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate,
 }: {
   meetings: Meets;
-  onEventClick: (event: NonUndefined<Meets['event']>) => void;
+  onEventClick?: (event: NonUndefined<Meets['event']>) => void;
   onContextNavigate?: (context: number[]) => void;
   asEventBox?: (event: MeetingsEvent) => ReactNode;
 }) {
@@ -74,12 +75,21 @@ export default function MeetingsInner<Meets extends Meetings>({
             if (!event) return null;
             const { context } = meetings.contexts[event.contextw] || {};
 
-            return (
+            return (node =>
+              onEventClick ? (
+                node
+              ) : (
+                <Link
+                  key={eventwi}
+                  to={`${event.wid}`}
+                >
+                  {node}
+                </Link>
+              ))(
               <BrutalItem
-                key={eventwi}
                 icon={<IconCalendar01SolidSharp />}
                 title={event.name}
-                onClick={() => onEventClick(event as never)}
+                onClick={onEventClick && (() => onEventClick(event as never))}
                 box={asEventBox ? asEventBox(event) : <IconStarSolidRounded className="fade-05" />}
                 description={
                   <span
@@ -91,7 +101,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                     {context?.map(context => meetings.names[context]).join(' - ')}
                   </span>
                 }
-              />
+              />,
             );
           })}
           {favorites.contexts.map((contextw, contextwi) => {
@@ -124,12 +134,21 @@ export default function MeetingsInner<Meets extends Meetings>({
         if (event.contextw && event.contextw !== currContextw) return null;
         const isFavorite = favorites.events.indexOf(event.wid) > -1;
 
-        return (
+        return (node =>
+          onEventClick ? (
+            node
+          ) : (
+            <Link
+              key={eventi}
+              to={`${event.wid}`}
+            >
+              {node}
+            </Link>
+          ))(
           <BrutalItem
-            key={eventi}
             icon={<IconCalendar02StrokeRounded />}
             title={event.name}
-            onClick={() => onEventClick(event as never)}
+            onClick={onEventClick && (() => onEventClick(event as never))}
             box={
               asEventBox ? (
                 asEventBox(event)
@@ -149,7 +168,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                 />
               ) : null
             }
-          />
+          />,
         );
       })}
       {contexts.map(([contexti, contextn, contextw], groupi) => {

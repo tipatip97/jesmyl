@@ -5,6 +5,7 @@ import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import {
   PullEventValue,
   SokiAppName,
+  sokiAppNamesSet,
   SokiClientEvent,
   SokiClientEventBody,
   SokiClientUpdateCortage,
@@ -24,7 +25,6 @@ import { cmMolecule } from './components/apps/cm/molecules';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
 import {
   getAuthValue,
-  getCurrentAppValue,
   getUpdateRequisitesValue,
   indexMolecule,
   setAuthValue,
@@ -67,8 +67,12 @@ export class SokiTrip {
     bible: bibleMolecule,
   };
 
-  async appName() {
-    return await getCurrentAppValue();
+  appName() {
+    const parts = window.location.pathname.split('/', 2);
+    const appName = (parts[0] || parts[1]) as SokiAppName | '';
+    if (appName !== '' && sokiAppNamesSet.has(appName)) return appName;
+
+    return null;
   }
 
   onClose = () => {
@@ -82,7 +86,7 @@ export class SokiTrip {
 
     this.sendForce(
       { connect: true },
-      await this.appName(),
+      this.appName(),
       '',
       `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}\n${navigator.userAgent}`,
     );
@@ -125,7 +129,8 @@ export class SokiTrip {
           if (event.authorized !== undefined) {
             this.isConnected = true;
             Eventer.invoke(this.authListeners, true);
-            const appName = await this.appName();
+            const appName = this.appName();
+            if (appName === null) return;
             this.pullCurrentAppData(appName);
             mylib.values(this.subscriptions).forEach(body => body && this.sendForce(body, appName));
           }
@@ -238,7 +243,8 @@ export class SokiTrip {
     this.pullCurrentAppData(appName);
   }
 
-  async sendForce(body: SokiClientEventBody, appName: SokiAppName, requestId?: string, browser?: string) {
+  async sendForce(body: SokiClientEventBody, appName: SokiAppName | null, requestId?: string, browser?: string) {
+    if (appName === null) return;
     let tries = 20;
 
     const trySend = async () => {

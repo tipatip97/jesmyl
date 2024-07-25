@@ -1,14 +1,12 @@
 import { useMemo } from 'react';
-import useCmNav from '../../../base/useCmNav';
-import { useEditableCols } from '../useEditableCols';
+import { useParams } from 'react-router-dom';
 import { EditableCols } from '../EditableCols';
+import { useEditableCols } from '../useEditableCols';
 import { EditableCat } from './EditableCat';
 
 export function useEditableCcat(catw?: number): EditableCat | und {
   const cols: EditableCols | und = useEditableCols();
-  const {
-    appRouteData: { ccatw },
-  } = useCmNav();
+  const ccatw = +useParams().catw!;
 
   return useMemo(() => {
     if (cols) {

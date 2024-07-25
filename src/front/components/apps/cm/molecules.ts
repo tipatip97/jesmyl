@@ -20,7 +20,7 @@ export const cmMolecule = new Molecule<CmState>(
     metronomeAccentes: '1000',
     metronomeMainSound: '380',
     metronomeSecondarySound: '200',
-    cols: { cats: [], coms: [] },
+    cols: null,
     meetings: { contexts: [] },
 
     speedRollKf: 10,

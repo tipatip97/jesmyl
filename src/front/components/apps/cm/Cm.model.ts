@@ -17,7 +17,7 @@ export enum ChordVisibleVariant {
 
 export type FavoriteMeetings = Record<'events' | 'contexts', number[]>;
 export interface CmState {
-  cols?: IExportableCols;
+  cols: IExportableCols | nil;
   laterComwList: number[];
   chordVisibleVariant: ChordVisibleVariant;
   marks: number[];

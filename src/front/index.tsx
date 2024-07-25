@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import App from './app/App';
 import { setPolyfills } from './complect/polyfills';
@@ -20,7 +21,13 @@ export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null
     </React.StrictMode>,
   );
 };
-export const renderRootApp = () => renderApplication(<App />, document.getElementById('root'));
+export const renderRootApp = () =>
+  renderApplication(
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
+    document.getElementById('root'),
+  );
 
 export const renderComponentInNewWindow = (
   reactNode: ReactNode | ((win: typeof window) => ReactNode),

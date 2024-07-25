@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
-import { Com } from '../Com';
-import useCmNav from '../../../base/useCmNav';
 import useAbsoluteFloatPopup from '../../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import useSelectedComs from '../../../base/useSelectedComs';
+import { Com } from '../Com';
 
 export interface ComFaceInheritProps {
   importantOnClick?: (com: Com, comi: number) => void;
@@ -13,7 +12,6 @@ export interface ComFaceInheritProps {
 }
 
 export interface FreeComFaceProps {
-  jumpTo: ReturnType<typeof useCmNav>['jumpTo'];
   closeAbsoluteFloatPopup: ReturnType<typeof useAbsoluteFloatPopup>['closeAbsoluteFloatPopup'];
   openAbsoluteFloatPopup: ReturnType<typeof useAbsoluteFloatPopup>['openAbsoluteFloatPopup'];
   selectedComPosition: ReturnType<typeof useSelectedComs>['selectedComPosition'];
