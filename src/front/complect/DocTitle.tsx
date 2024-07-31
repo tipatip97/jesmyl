@@ -1,27 +1,16 @@
-import { useEffect, useMemo } from 'react';
-
-const containerInitState = () => document.createElement('title');
+import { memo, useEffect } from 'react';
 
 const initTitle = document.title;
-const findTitle = () => document.querySelector('head title');
-const emptyArr: [] = [];
+const ret = () => {
+  document.title = initTitle;
+};
 
-export const DocTitle = ({ title }: { title: string }) => {
-  const container = useMemo(containerInitState, emptyArr);
-  const firstTitle = useMemo(findTitle, emptyArr);
-
+export const DocTitle = memo(function DocTitle({ title }: { title: string }) {
   useEffect(() => {
-    if (firstTitle !== null) document.head.insertBefore(container, firstTitle);
-    else document.head.appendChild(container);
+    document.title = `${title} × ${initTitle}`;
 
-    return () => {
-      document.head.removeChild(container);
-    };
-  }, [container, firstTitle]);
-
-  useEffect(() => {
-    container.innerHTML = `${title} &times; ${initTitle}`;
-  }, [title, container]);
+    return ret;
+  }, [title]);
 
   return <></>;
-};
+});
