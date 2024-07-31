@@ -20,15 +20,14 @@ export const indexMolecule = new Molecule<IndexState>(
   },
   'index',
 );
+const schedulesAtom = indexMolecule.select(s => s.schedules);
 
-export const useIndexAppVersion = () => useAtomValue(indexMolecule.take('appVersion'));
-export const useIndexStatistic = () => useAtomValue(indexMolecule.take('statistic'));
-export const useIndexSchedules = () => useAtomValue(indexMolecule.take('schedules'));
+export const useIndexSchedules = () => useAtomValue(schedulesAtom);
 export const useIndexFileAssociations = () => useAtomValue(indexMolecule.take('fileAssociations'));
 export const useIndexNounPronsWords = () => useAtomValue(indexMolecule.take('nounPronsWords'));
 export const useIndexLiveData = () => useAtomValue(indexMolecule.take('liveData'));
 
-const authAtom = indexMolecule.take('auth');
+const authAtom = indexMolecule.select(s => s.auth);
 
 export const useAuth = () => useAtomValue(authAtom);
 export const useAuthState = () => useAtom(authAtom);

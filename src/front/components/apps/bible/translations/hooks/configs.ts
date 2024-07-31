@@ -39,11 +39,10 @@ export const defaultBibleConfig: BibleTranslationScreenConfig = {
   },
 };
 
+const translationScreenConfigsAtom = bibleMolecule.select(s => s.translationScreenConfigs);
+
 export const useBibleScreenTranslationConfigs = () =>
-  useMakeScreenTranslationConfigsFillPack(
-    useAtomValue(bibleMolecule.take('translationScreenConfigs')),
-    defaultBibleConfig,
-  );
+  useMakeScreenTranslationConfigsFillPack(useAtomValue(translationScreenConfigsAtom), defaultBibleConfig);
 
 export const useBibleScreenTranslationConfig = (configi: number | und): BibleTranslationScreenConfig | und => {
   const configs = useBibleScreenTranslationConfigs();

@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { useScreenTranslationCurrentConfigi } from '../../../../../+complect/translations/hooks/configs';
 import { useAtom } from '../../../../../../../complect/atoms';
-import { cmMolecule } from '../../../../molecules';
+import { cmTranslationScreenConfigsAtom } from '../../../../molecules';
 import { CmTranslationScreenConfig } from '../model';
 import { defaultCmConfig } from './configs';
 
 export const useUpdateCmTranslationConfig = () => {
-  const [configs, setConfigs] = useAtom(cmMolecule.take('translationScreenConfigs'));
+  const [configs, setConfigs] = useAtom(cmTranslationScreenConfigsAtom);
 
   return useCallback(
     (config: Partial<CmTranslationScreenConfig> | null, configi: number) => {

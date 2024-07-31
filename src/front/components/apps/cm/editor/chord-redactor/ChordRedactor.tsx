@@ -14,8 +14,10 @@ import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorConta
 import ChordRedactableTrack from './ChordRedactableTrack';
 import './ChordRedactor.scss';
 
+const chordTracksAtom = cmMolecule.select(s => s.chordTracks);
+
 export default function ChordRedactor() {
-  const chords = useAtomValue(cmMolecule.take('chordTracks'));
+  const chords = useAtomValue(chordTracksAtom);
   const [currentChord, setCurrentChord] = useState('');
   const [newChordName, setNewChordName] = useState('');
   const [isNewChord, setIsNewChord] = useState(false);

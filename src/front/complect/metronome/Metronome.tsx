@@ -19,14 +19,18 @@ const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
 var context = new AudioContext();
 let lastTs: number;
 
+const metronomeAccentesAtom = cmMolecule.select(s => s.metronomeAccentes);
+const metronomeMainSoundAtom = cmMolecule.select(s => s.metronomeMainSound);
+const metronomeSecondarySoundAtom = cmMolecule.select(s => s.metronomeSecondarySound);
+
 export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
   const [userBpm, setUserBpm] = useState(bpm);
   const [userMeterSize, setUserMeterSize] = useState(meterSize);
   const currentDotMemo = useMemo(() => ({ current: 0 }), []);
-  const [accentes, setAccentes] = useAtom(cmMolecule.take('metronomeAccentes'));
+  const [accentes, setAccentes] = useAtom(metronomeAccentesAtom);
   const accentesRef: ActualRef<string> = useActualRef(accentes);
-  const [mainSound, setMainSound] = useAtom(cmMolecule.take('metronomeMainSound'));
-  const [secondarySound, setSecondarySound] = useAtom(cmMolecule.take('metronomeSecondarySound'));
+  const [mainSound, setMainSound] = useAtom(metronomeMainSoundAtom);
+  const [secondarySound, setSecondarySound] = useAtom(metronomeSecondarySoundAtom);
   const actualUserMeterSize = useActualRef(userMeterSize);
   const actualUserBpm = useActualRef(userBpm);
 

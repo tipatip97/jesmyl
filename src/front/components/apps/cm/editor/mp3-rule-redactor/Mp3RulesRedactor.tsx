@@ -9,10 +9,11 @@ import { cmEditorMolecule } from '../molecules';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import Mp3RuleEditor from './Mp3RuleEditor';
 
+const mp3RulesAtom = cmEditorMolecule.select(s => s.mp3Rules);
+
 export default function Mp3RulesRedactor() {
-  const mp3Rules = useAtomValue(cmEditorMolecule.take('mp3Rules'));
   const [newRules, updateNewRules] = useState<CmMp3Rule[]>([]);
-  const [redactRules, updateRedactRules] = useState<CmMp3Rule[]>(mp3Rules || []);
+  const [redactRules, updateRedactRules] = useState(useAtomValue(mp3RulesAtom));
   const [isOpenNewRule, setIsOpenNewRule] = useState(false);
 
   return (

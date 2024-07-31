@@ -4,6 +4,8 @@ import { BibleTranslateLine } from './complect';
 
 const myTranslatesAtom = atom<BibleTranslateLine>(['rst'], 'bible', 'myTranslates');
 
+const showTranslatesAtom = bibleMolecule.select(s => s.showTranslates);
+
 export const useBibleMyTranslates = () => useAtom(myTranslatesAtom);
-export const useBibleShowTranslates = () => useAtom(bibleMolecule.take('showTranslates'));
-export const useBibleShowTranslatesValue = () => useAtomValue(bibleMolecule.take('showTranslates'));
+export const useBibleShowTranslates = () => useAtom(showTranslatesAtom);
+export const useBibleShowTranslatesValue = () => useAtomValue(showTranslatesAtom);

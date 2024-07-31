@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAtom } from '../../../../../complect/atoms';
+import { atom, useAtom } from '../../../../../complect/atoms';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCalendar01SolidSharp } from '../../../../../complect/the-icon/icons/calendar-01';
@@ -8,9 +8,12 @@ import { IconCalendar02StrokeRounded } from '../../../../../complect/the-icon/ic
 import { IconFolder01StrokeRounded } from '../../../../../complect/the-icon/icons/folder-01';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { useActualRef } from '../../../../../complect/useActualRef';
-import { cmMolecule } from '../../molecules';
+import { FavoriteMeetings } from '../../Cm.model';
+import { cmEventContextAtom } from '../../molecules';
 import { Meetings } from './Meetings';
 import { MeetingsEvent } from './MeetingsEvent';
+
+const favoriteMeetingsAtom = atom<FavoriteMeetings>({ contexts: [], events: [] }, 'cm', 'favoriteMeetings');
 
 export default function MeetingsInner<Meets extends Meetings>({
   meetings,
@@ -23,8 +26,8 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate?: (context: number[]) => void;
   asEventBox?: (event: MeetingsEvent) => ReactNode;
 }) {
-  const [eventContext, setEventContext] = useAtom(cmMolecule.take('eventContext'));
-  const [favorites, setFavorites] = useAtom(cmMolecule.take('favoriteMeetings'));
+  const [eventContext, setEventContext] = useAtom(cmEventContextAtom);
+  const [favorites, setFavorites] = useAtom(favoriteMeetingsAtom);
   const setCurrContextRef = useActualRef((eventContext: number[]) => setEventContext(eventContext));
   const onContextNavigateRef = useActualRef(onContextNavigate);
   const eventContextRef = useActualRef(eventContext);
@@ -39,7 +42,6 @@ export default function MeetingsInner<Meets extends Meetings>({
   const names = eventContextRef.current.map((context, contexti) => (
     <span
       key={contexti}
-      className="pointer"
       onClick={() => setCurrContextRef.current([...eventContextRef.current].slice(0, contexti + 1))}
     >
       {contexti ? ' - ' : ''}
@@ -49,7 +51,7 @@ export default function MeetingsInner<Meets extends Meetings>({
 
   return (
     <>
-      <div className="margin-gap-v">
+      <div className="margin-gap-v pointer">
         <span onClick={() => setCurrContextRef.current([])}>Контекст: </span>
         {names.length ? names : 'Все'}
       </div>
@@ -69,6 +71,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                   <span
                     onClick={event => {
                       event.stopPropagation();
+                      event.preventDefault();
                       setCurrContextRef.current(context);
                     }}
                   >

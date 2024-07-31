@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { AppName, appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
+import { useAtomValue } from '../../../../complect/atoms';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import useToast from '../../../../complect/modal/useToast';
 import mylib from '../../../../complect/my-lib/MyLib';
@@ -18,7 +19,7 @@ import { IconSourceCodeCircleStrokeRounded } from '../../../../complect/the-icon
 import { IconTextStrokeRounded } from '../../../../complect/the-icon/icons/text';
 import { soki } from '../../../../soki';
 import { indexSimpleValIsPlayAnimations, indexSimpleValIsUseNativeKeyboard } from '../../complect/index.simpleValues';
-import { useAppFontFamilyAtom, useAuth, useIndexStatistic } from '../../molecules';
+import { indexMolecule, useAppFontFamilyAtom, useAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
 import IndexConsole from './Console';
@@ -26,10 +27,11 @@ import { Visitor } from './Visitor';
 import { Visits } from './Visits';
 
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
+const statisticAtom = indexMolecule.select(s => s.statistic);
 
 export default function IndexSettings() {
   const auth = useAuth();
-  const statistic = useIndexStatistic();
+  const statistic = useAtomValue(statisticAtom);
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [modalNode, toast] = useToast();
   const [appFontFamily, setAppFontFamily] = useAppFontFamilyAtom();

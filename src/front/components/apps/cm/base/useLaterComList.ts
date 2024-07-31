@@ -10,8 +10,10 @@ let laterComs: Com[] | und;
 const setLaterComs = (cols: Cols, list: number[]) =>
   (laterComs = list.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[]);
 
+const laterComwListAtom = cmMolecule.select(s => s.laterComwList);
+
 export default function useLaterComList({ maxStack = 4 } = {}) {
-  const [list, setList] = useAtom(cmMolecule.take('laterComwList'));
+  const [list, setList] = useAtom(laterComwListAtom);
   const listRef = useActualRef(list);
   const cols = useCols();
 

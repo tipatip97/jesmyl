@@ -1,12 +1,14 @@
 import * as versionNum from '../../../../back/+version.json';
+import { useAtomValue } from '../../../complect/atoms';
 import QRCode from '../../../complect/qr-code/QRCode';
 import { IconTelegramStrokeRounded } from '../../../complect/the-icon/icons/telegram';
-import { useIndexAppVersion } from '../molecules';
+import { indexMolecule } from '../molecules';
 
 const version = { ...versionNum };
+const appVersionAtom = indexMolecule.select(s => s.appVersion);
 
 export default function IndexAbout() {
-  const appVersion = useIndexAppVersion();
+  const appVersion = useAtomValue(appVersionAtom);
 
   return (
     <div className="flex center">

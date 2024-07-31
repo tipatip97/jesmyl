@@ -16,12 +16,12 @@ import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox'
 
 export interface IndexState {
   currentApp: AppName;
-  appVersion?: number;
+  appVersion: number;
   auth: Auth;
   schedules: ScheduleStorage;
   statistic: SokiStatistic | null;
   liveData: Record<SokiClientSubData, unknown>;
-  nounPronsWords?: NounPronsType;
+  nounPronsWords: NounPronsType;
   fileAssociations?: FileAssociations;
   rules: ExecRule[];
   appFontFamily: string | null;

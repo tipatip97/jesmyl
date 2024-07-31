@@ -21,12 +21,10 @@ export interface CmState {
   laterComwList: number[];
   chordVisibleVariant: ChordVisibleVariant;
   marks: number[];
-  meetings?: IExportableMeetings;
+  meetings: IExportableMeetings;
   comFontSize: number;
   comComments: Record<number, string>;
   chordTracks: ChordPack;
-  isShowTranslationInfo: boolean;
-  favoriteMeetings: FavoriteMeetings;
   comTopTools: MigratableComToolName[];
   isMiniAnchor: boolean;
   playerHideMode: PlayerHideMode;

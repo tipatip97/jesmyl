@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { useAtom, useAtomValue } from '../../../../../complect/atoms';
+import { useAtomValue } from '../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../complect/backSwipableContainerMaker';
 import { ChordVisibleVariant } from '../../Cm.model';
 import RollControled from '../../base/RolledContent';
-import { cmMolecule } from '../../molecules';
+import { cmComFontSizeAtom, cmMolecule } from '../../molecules';
 import { Com } from './Com';
 import './Com.scss';
 import TheCom from './TheCom';
@@ -18,6 +18,8 @@ const swiper = backSwipableContainerMaker(
   () => onNextCom(),
 );
 
+const isMiniAnchorAtom = cmMolecule.select(s => s.isMiniAnchor);
+
 export default function TheControlledCom({
   com,
   comList,
@@ -29,8 +31,8 @@ export default function TheControlledCom({
   chordVisibleVariant: ChordVisibleVariant;
   onComSet?: (com: Com) => void;
 }) {
-  const fontSize = useAtomValue(cmMolecule.take('comFontSize'));
-  const [isMiniAnchor] = useAtom(cmMolecule.take('isMiniAnchor'));
+  const fontSize = useAtomValue(cmComFontSizeAtom);
+  const isMiniAnchor = useAtomValue(isMiniAnchorAtom);
   const listRef = useRef<HTMLDivElement>(null);
   const [, setSearchParams] = useSearchParams();
 

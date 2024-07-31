@@ -6,9 +6,11 @@ import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/p
 import { useFullScreen } from '../../../../complect/useFullscreen';
 import { cmMolecule } from '../molecules';
 
+const speedRollKfAtom = cmMolecule.select(s => s.speedRollKf);
+
 export default function RollControled(props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
   const [isFullscreen] = useFullScreen();
-  const [speedRollKf, setSpeedRollKf] = useAtom(cmMolecule.take('speedRollKf'));
+  const [speedRollKf, setSpeedRollKf] = useAtom(speedRollKfAtom);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isRolling, setIsRolling] = useState(false);
 

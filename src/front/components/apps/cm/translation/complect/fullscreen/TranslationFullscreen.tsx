@@ -1,12 +1,11 @@
 import { useEffect, useReducer, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useAtom } from '../../../../../../complect/atoms';
+import { atom, useAtom } from '../../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
 import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
 import { IconHelpCircleStrokeRounded } from '../../../../../../complect/the-icon/icons/help-circle';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
-import { cmMolecule } from '../../../molecules';
 import { useCloseTranslation } from '../hooks/close-translation';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
@@ -15,10 +14,12 @@ const emptyObj = {};
 const forceUpdater = (it: number) => it + 1;
 const style = { padding: '5px' };
 
+const isShowAtom = atom(true);
+
 export default function TranslationFullscreen() {
   const [forceUpdates, forceUpdate] = useReducer(forceUpdater, 0);
   const [isShowCloseButton, setIsShowCloseButton] = useState(false);
-  const [isShowInfo, setIsShowInfo] = useAtom(cmMolecule.take('isShowTranslationInfo'));
+  const [isShowInfo, setIsShowInfo] = useAtom(isShowAtom);
   const [swipes, setSwipes] = useState(emptyObj);
 
   const { text, nextText, prevText } = useCmScreenTranslationComTextNavigations();

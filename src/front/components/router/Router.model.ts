@@ -1,6 +1,6 @@
 import { AppName } from '../../app/App.model';
 
-export type RouterState = Partial<Record<AppName, RouteCast> & Record<`${AppName}.data`, Record<string, unknown>>>;
+export type RouterState = Record<AppName, RouteCast> & Record<`${AppName}.data`, Record<string, unknown>>;
 
 export type RouteCast = {
   net: RoutePath[];

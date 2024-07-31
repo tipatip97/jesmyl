@@ -7,7 +7,7 @@ import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/i
 import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';
 import { IconCopy01StrokeRounded } from '../../../../../complect/the-icon/icons/copy-01';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';
-import { cmMolecule } from '../../molecules';
+import { cmEventContextAtom } from '../../molecules';
 import { MeetingsEvent } from './MeetingsEvent';
 import { useMeetings } from './useMeetings';
 
@@ -19,7 +19,7 @@ enum CopyMode {
 
 export default function MeetingEventExpandList() {
   const { meetings } = useMeetings();
-  const eventContext = useAtomValue(cmMolecule.take('eventContext'));
+  const eventContext = useAtomValue(cmEventContextAtom);
   let currentEventListPathName = '';
   const [expandedEventLists, setExpandedEventLists] = useState<number[]>([]);
   const [copyMode, setCopyMode] = useState(CopyMode.All);

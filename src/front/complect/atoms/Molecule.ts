@@ -29,8 +29,9 @@ export class Molecule<
 
   get = <Key extends keyof T>(key: Key): T[Key] => this.atoms[key]?.get() as never;
 
-  take = <Key extends keyof T>(key: Key): NonUndefined<Atoms[Key]> =>
-    (this.atoms[key] === undefined ? this.newAtom(key) : this.atoms[key]) as never;
+  take = <Key extends keyof T>(key: Key): NonUndefined<Atoms[Key]> => this.atoms[key] as never;
+
+  select = <Value>(selector: (atoms: Atoms) => Atom<Value>): NonUndefined<Atom<Value>> => selector(this.atoms);
 
   rem = <Key extends keyof T>(key: Key) => this.atoms[key].rem();
 

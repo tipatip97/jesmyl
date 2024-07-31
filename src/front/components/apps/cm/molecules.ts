@@ -11,8 +11,6 @@ export const cmMolecule = new Molecule<CmState>(
     marks: [],
     comFontSize: 15,
     chordTracks: {},
-    isShowTranslationInfo: true,
-    favoriteMeetings: { contexts: [], events: [] },
     comTopTools: ['mark-com', 'fullscreen-mode'],
     translationScreenConfigs: [defaultCmConfig],
     comComments: {},
@@ -28,3 +26,8 @@ export const cmMolecule = new Molecule<CmState>(
   },
   'cm',
 );
+
+export const cmEventContextAtom = cmMolecule.select(s => s.eventContext);
+export const cmMeetingsAtom = cmMolecule.select(s => s.meetings);
+export const cmComFontSizeAtom = cmMolecule.select(s => s.comFontSize);
+export const cmTranslationScreenConfigsAtom = cmMolecule.select(s => s.translationScreenConfigs);

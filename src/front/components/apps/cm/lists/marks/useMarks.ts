@@ -4,8 +4,10 @@ import { Com } from '../../col/com/Com';
 import { useCols } from '../../cols/useCols';
 import { cmMolecule } from '../../molecules';
 
+const marksAtom = cmMolecule.select(s => s.marks);
+
 export function useMarks() {
-  const [marks, setMarks] = useAtom(cmMolecule.take('marks'));
+  const [marks, setMarks] = useAtom(marksAtom);
   const cols = useCols();
   const unsets: number[] = [];
   const markedComs =

@@ -17,10 +17,12 @@ import { cmEditorMolecule } from '../molecules';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import './ExecsVisor.scss';
 
+const rulesAtom = cmEditorMolecule.select(s => s.rules);
+
 export default function ExecsVisor() {
   const [lookList, setLookList] = useState<(number | nil)[]>([]);
   const [execs] = useCmEditorExecs();
-  const rules = useAtomValue(cmEditorMolecule.take('rules'));
+  const rules = useAtomValue(rulesAtom);
   const cols = useEditableCols();
   const { meetings, goToEvent } = useEditableMeetings();
   const list: ExecVision[] | nil = useMemo(() => {

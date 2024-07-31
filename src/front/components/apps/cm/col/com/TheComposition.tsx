@@ -3,7 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { DocTitle } from '../../../../../complect/DocTitle';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import { useAtom, useAtomValue } from '../../../../../complect/atoms';
+import { useAtomValue } from '../../../../../complect/atoms';
 import { Metronome } from '../../../../../complect/metronome/Metronome';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useCmTranslationComListContext } from '../../base/translations/context';
@@ -18,6 +18,9 @@ import ComPlayer from './player/ComPlayer';
 import { useCcom, useTakeActualComw } from './useCcom';
 import useMigratableComTools from './useMigratableComTools';
 
+const playerHideModeAtom = cmMolecule.select(s => s.playerHideMode);
+const isMetronomeHideAtom = cmMolecule.select(s => s.isMetronomeHide);
+
 export default function TheComposition() {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const ccom = useCcom();
@@ -25,8 +28,8 @@ export default function TheComposition() {
   const [popupComToolsNode, openPopuComTools] = useBottomPopup(ComTools);
   const { topTools } = useMigratableComTools();
   const { list } = useCmTranslationComListContext();
-  const [playerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
-  const isMetronomeHide = useAtomValue(cmMolecule.take('isMetronomeHide'));
+  const playerHideMode = useAtomValue(playerHideModeAtom);
+  const isMetronomeHide = useAtomValue(isMetronomeHideAtom);
   const comAudio = ccom?.audio.trim();
 
   useTakeActualComw();

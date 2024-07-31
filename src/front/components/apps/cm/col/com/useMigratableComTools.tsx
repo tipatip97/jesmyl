@@ -34,6 +34,11 @@ import { MigratableComTool, MigratableComToolName, menuComToolNameList } from '.
 import ChordImagesList from './chord-card/ChordImagesList';
 import { useCcom } from './useCcom';
 
+const comTopToolsAtom = cmMolecule.select(s => s.comTopTools);
+const isMiniAnchorAtom = cmMolecule.select(s => s.isMiniAnchor);
+const playerHideModeAtom = cmMolecule.select(s => s.playerHideMode);
+const isMetronomeHideAtom = cmMolecule.select(s => s.isMetronomeHide);
+
 export default function useMigratableComTools() {
   const ccom = useCcom();
   const auth = useAuth();
@@ -42,10 +47,10 @@ export default function useMigratableComTools() {
   const { toggleSelectedCom, selectedComPosition: isSelected } = useSelectedComs();
   const { isMarked, toggleMarked } = useMarks();
   const [, switchFullscreen] = useFullScreen();
-  const [comTopTools, setComTopTools] = useAtom(cmMolecule.take('comTopTools'));
-  const [isMiniAnchor, setIsMiniAnchor] = useAtom(cmMolecule.take('isMiniAnchor'));
-  const [playerHideMode, setPlayerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
-  const [isMetronomeHide, setIsMetronomeHide] = useAtom(cmMolecule.take('isMetronomeHide'));
+  const [comTopTools, setComTopTools] = useAtom(comTopToolsAtom);
+  const [isMiniAnchor, setIsMiniAnchor] = useAtom(isMiniAnchorAtom);
+  const [playerHideMode, setPlayerHideMode] = useAtom(playerHideModeAtom);
+  const [isMetronomeHide, setIsMetronomeHide] = useAtom(isMetronomeHideAtom);
 
   const makeToolList = (tools: MigratableComToolName[]): MigratableComTool[] => {
     return tools

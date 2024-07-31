@@ -7,8 +7,10 @@ import { IconEdit01StrokeRounded } from '../../../../../complect/the-icon/icons/
 import { cmMolecule } from '../../molecules';
 import './Com.scss';
 
+const comCommentsAtom = cmMolecule.select(s => s.comComments);
+
 export default function TheComComment({ comw }: { comw: number }) {
-  const [comments, setComments] = useAtom(cmMolecule.take('comComments'));
+  const [comments, setComments] = useAtom(comCommentsAtom);
   const [isRedact, setIsRedact] = useState(false);
 
   return (

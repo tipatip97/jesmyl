@@ -5,9 +5,11 @@ import { bibleMolecule } from '../../molecules';
 import { BibleTranslationScreenConfig } from '../model';
 import { useBibleScreenTranslationConfigs } from './configs';
 
+const translationScreenConfigsAtom = bibleMolecule.select(s => s.translationScreenConfigs);
+
 export const useUpdateBibleTranslationConfig = () => {
   const configs: BibleTranslationScreenConfig[] = useBibleScreenTranslationConfigs();
-  const setConfigs = useAtomSet(bibleMolecule.take('translationScreenConfigs'));
+  const setConfigs = useAtomSet(translationScreenConfigsAtom);
 
   return useCallback(
     (config: Partial<BibleTranslationScreenConfig> | null, configi: number) => {

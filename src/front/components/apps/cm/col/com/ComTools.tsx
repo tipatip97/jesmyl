@@ -12,7 +12,7 @@ import { useNumComUpdates } from '../../atoms';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import { Cols } from '../../cols/Cols';
 import { useCols } from '../../cols/useCols';
-import { cmMolecule } from '../../molecules';
+import { cmComFontSizeAtom } from '../../molecules';
 import { Com } from './Com';
 import { useCcom } from './useCcom';
 import useMigratableComTools from './useMigratableComTools';
@@ -35,7 +35,7 @@ const catMentions = (cols?: Cols, com?: Com): string[] => {
 export const ComTools: BottomPopupContenter = (isOpen, close, prepare) => {
   const ccom = useCcom();
   const cols = useCols();
-  const [fontSize, setFontSize] = useAtom(cmMolecule.take('comFontSize'));
+  const [fontSize, setFontSize] = useAtom(cmComFontSizeAtom);
   const [chordVisibleVariant] = useChordVisibleVariant();
   const { menuTools, toggleTopTool, comTopTools, anchorNode } = useMigratableComTools();
   const [, setNumComUpdates] = useNumComUpdates();

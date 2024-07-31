@@ -20,7 +20,7 @@ export const complectMolecule = new Molecule<Model>(
   'complect',
 );
 
-const screenTranslationConfigsAtom = complectMolecule.take('screenTranslationConfigs');
+const screenTranslationConfigsAtom = complectMolecule.select(s => s.screenTranslationConfigs);
 
 export const useScreenTranslationConfigs = () => useAtom(screenTranslationConfigsAtom);
 export const useScreenTranslationConfigsSet = () => useAtomSet(screenTranslationConfigsAtom);

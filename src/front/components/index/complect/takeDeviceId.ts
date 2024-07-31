@@ -17,11 +17,13 @@ const takeRandomSymbols = (take = 3) =>
     .map((_, i) => (i === 0 || i === take - 1 ? mylib.randomItem(letters) : mylib.randomItem(symbols)))
     .join('');
 
+const nounPronsWordsAtom = indexMolecule.select(store => store.nounPronsWords);
+
 export const takeDeviceId = async () => {
   try {
     if (deviceId !== undefined) return deviceId;
     deviceId = await deviceIdAtom.getStorageValue();
-    const storage = await indexMolecule.take('nounPronsWords').getStorageValue();
+    const storage = await nounPronsWordsAtom.getStorageValue();
 
     if (storage === undefined) return '';
 

@@ -3,7 +3,7 @@ import { CmMp3Rule, ShortRealRule } from '../../../../models';
 
 export interface CmEditorStoraged {
   rules: ShortRealRule[];
-  mp3Rules?: CmMp3Rule[];
+  mp3Rules: CmMp3Rule[];
 }
 
 export type ExecVision = ShortRealRule & Partial<Exec> & Partial<ExecVisionVisual>;

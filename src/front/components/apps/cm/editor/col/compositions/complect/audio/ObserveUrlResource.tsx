@@ -6,6 +6,8 @@ import serviceMaster from '../../../../../../../../complect/service/serviceMaste
 import { CmMp3ContainsPageResult } from '../../../../../../../../models';
 import { cmEditorMolecule } from '../../../../molecules';
 
+const mp3RulesAtom = cmEditorMolecule.select(s => s.mp3Rules);
+
 export default function ObserveUrlResource({
   onSuccess,
   availableWithTextQuery,
@@ -17,7 +19,7 @@ export default function ObserveUrlResource({
   const [url, setUrl] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const mp3Rules = useAtomValue(cmEditorMolecule.take('mp3Rules'));
+  const mp3Rules = useAtomValue(mp3RulesAtom);
 
   useEffect(() => {
     try {

@@ -9,7 +9,7 @@ import {
   useScreenTranslationCurrentConfigi,
 } from '../../../../../+complect/translations/hooks/configs';
 import { useAtomValue } from '../../../../../../../complect/atoms';
-import { cmMolecule } from '../../../../molecules';
+import { cmTranslationScreenConfigsAtom } from '../../../../molecules';
 import { CmTranslationScreenConfig } from '../model';
 
 export const defaultCmConfig: CmTranslationScreenConfig & ScreenTranslationBackgroundConfigs = {
@@ -20,7 +20,7 @@ export const defaultCmConfig: CmTranslationScreenConfig & ScreenTranslationBackg
 };
 
 export const useCmScreenTranslationConfigs = () =>
-  useMakeScreenTranslationConfigsFillPack(useAtomValue(cmMolecule.take('translationScreenConfigs')), defaultCmConfig);
+  useMakeScreenTranslationConfigsFillPack(useAtomValue(cmTranslationScreenConfigsAtom), defaultCmConfig);
 
 export const useCmScreenTranslationConfig = (configi: number | und): CmTranslationScreenConfig | und => {
   const configs = useCmScreenTranslationConfigs();

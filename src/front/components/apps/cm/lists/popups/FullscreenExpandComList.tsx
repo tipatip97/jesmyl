@@ -3,10 +3,10 @@ import { useAtomValue } from '../../../../../complect/atoms';
 import RollControled from '../../base/RolledContent';
 import { Com } from '../../col/com/Com';
 import ComOrders from '../../col/com/orders/ComOrders';
-import { cmMolecule } from '../../molecules';
+import { cmComFontSizeAtom } from '../../molecules';
 
 export default function FullscreenExpandComList({ coms }: { coms: Com[] }) {
-  const fontSize = useAtomValue(cmMolecule.take('comFontSize'));
+  const fontSize = useAtomValue(cmComFontSizeAtom);
 
   return (
     <ExpandContent className="com-expand-content full-height">

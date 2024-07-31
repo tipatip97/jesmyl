@@ -7,6 +7,8 @@ import { IconEdit02StrokeRounded } from '../../../../../complect/the-icon/icons/
 import { CmMp3Rule } from '../../../../../models';
 import { cmEditorMolecule } from '../molecules';
 
+const mp3RulesAtom = cmEditorMolecule.select(s => s.mp3Rules);
+
 export default function Mp3RuleEditor(
   props: Partial<CmMp3Rule> & {
     redact?: boolean;
@@ -15,7 +17,7 @@ export default function Mp3RuleEditor(
     newRule?: boolean;
   },
 ) {
-  const mp3Rules = useAtomValue(cmEditorMolecule.take('mp3Rules'));
+  const mp3Rules = useAtomValue(mp3RulesAtom);
   const [url, setUrl] = useState(props.url || '');
   const [attr, setAttr] = useState(props.attr || '');
   const [textQuery, setTextQuery] = useState(props.textQuery || '');
