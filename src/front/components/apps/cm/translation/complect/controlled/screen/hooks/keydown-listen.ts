@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+import { useScreenTranslationWindows } from '../../../../../../+complect/translations/hooks/windows';
 import { useActualRef } from '../../../../../../../../complect/useActualRef';
 import { useCmScreenTranslationComNavigations } from '../../../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../../../hooks/com-texts';
 
-export const useScreenKeyDownListen = (win: Window | nil) => {
+export const useScreenKeyDownListen = () => {
+  const windows = useScreenTranslationWindows();
   const comActionsRef = useActualRef(useCmScreenTranslationComNavigations());
   const comTextActionsRef = useActualRef(useCmScreenTranslationComTextNavigations());
 
@@ -12,7 +14,7 @@ export const useScreenKeyDownListen = (win: Window | nil) => {
       switch (event.code) {
         case 'F5':
         case 'KeyR':
-          if (!event.ctrlKey || !win || win === window) return;
+          if (!event.ctrlKey) return;
           // just prevent default + stop propagation
           break;
         case 'ArrowUp':
@@ -41,10 +43,11 @@ export const useScreenKeyDownListen = (win: Window | nil) => {
       event.stopPropagation();
     };
 
-    win?.addEventListener('keydown', onKeyTranslations);
+    const winsSet = new Set([windows, window].flat());
+    winsSet.forEach(win => win?.addEventListener('keydown', onKeyTranslations));
 
     return () => {
-      win?.removeEventListener('keydown', onKeyTranslations);
+      winsSet.forEach(win => win?.removeEventListener('keydown', onKeyTranslations));
     };
-  }, [comActionsRef, comTextActionsRef, win]);
+  }, [comActionsRef, comTextActionsRef, windows]);
 };

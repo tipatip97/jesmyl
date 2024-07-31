@@ -1,20 +1,25 @@
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import { appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
 import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
+import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import { scheduleWidgetListPageRoute } from '../../../../complect/schedule-widget/general/ListPageRoute';
+import { IconComputerSettingsStrokeRounded } from '../../../../complect/the-icon/icons/computer-settings';
 import { IconInformationCircleStrokeRounded } from '../../../../complect/the-icon/icons/information-circle';
 import { IconRefreshStrokeRounded } from '../../../../complect/the-icon/icons/refresh';
+import { IconSettings02StrokeRounded } from '../../../../complect/the-icon/icons/settings-02';
 import { checkIsThereNewSW } from '../../../../serviceWorkerRegistration';
-import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
 import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
+import IndexActions from '../actions/Actions';
 import IndexAbout from '../IndexAbout';
+import IndexAuthorization from '../login/IndexAuthorization';
 import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthButton';
+import IndexSettings from '../settings/Settings';
 import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
 import { UserMore } from './UserMore';
@@ -51,7 +56,7 @@ export default function IndexMain() {
         index
         element={
           <>
-            <PhaseIndexContainer
+            <PhaseContainerConfigurer
               className="relative"
               withoutBackButton
               headTitle={(currentAppName && routingApps[currentAppName]?.title) || 'Другое'}
@@ -75,16 +80,24 @@ export default function IndexMain() {
                   {aboutNode}
                   <ScheduleWidgetAlarm isForceShow={auth.level >= 50} />
                   {!auth.nick && <IndexTelegramInlineAuthButton />}
-                  {/* <BrutalItem
-            icon={<IconSettings02StrokeRounded />}
-            title="Настройки"
-            onClick={() => goTo('settings')}
-          />
-          <BrutalItem
-            icon={<IconComputerSettingsStrokeRounded />}
-            title="Взаимодействие"
-            onClick={() => goTo('actions')}
-          /> */}
+                  <Link
+                    to="settings"
+                    className="full-width"
+                  >
+                    <BrutalItem
+                      icon={<IconSettings02StrokeRounded />}
+                      title="Настройки"
+                    />
+                  </Link>
+                  <Link
+                    to="actions"
+                    className="full-width"
+                  >
+                    <BrutalItem
+                      icon={<IconComputerSettingsStrokeRounded />}
+                      title="Взаимодействие"
+                    />
+                  </Link>
                   <BrutalItem
                     icon={<IconInformationCircleStrokeRounded />}
                     title="О приложении"
@@ -118,6 +131,20 @@ export default function IndexMain() {
         }
       />
 
+      <Route
+        path="actions/*"
+        element={<IndexActions />}
+      />
+
+      <Route
+        path="login/*"
+        element={<IndexAuthorization />}
+      />
+
+      <Route
+        path="settings/*"
+        element={<IndexSettings />}
+      />
       {scheduleWidgetListPageRoute}
     </Routes>
   );

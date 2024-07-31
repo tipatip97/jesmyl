@@ -52,6 +52,7 @@ export const FreeComFace = ({
         selected-position={selectedComPosition(com.wid) || undefined}
         onClick={event => {
           event.stopPropagation();
+          event.preventDefault();
           selectable !== false && toggleSelectedCom(com.wid);
         }}
       >

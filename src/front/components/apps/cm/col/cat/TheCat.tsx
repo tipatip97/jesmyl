@@ -3,12 +3,11 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import DebouncedSearchInput, { useIsNumberSearch } from '../../../../../complect/DebouncedSearchInput';
 import LoadIndicatedContent from '../../../../../complect/load-indicated-content/LoadIndicatedContent';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import CmTranslationComListContextInZeroCat from '../../base/translations/InZeroCat';
-import useCmNav, { getCompositionRoutes } from '../../base/useCmNav';
 import useLaterComList from '../../base/useLaterComList';
-import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import { ComFaceList } from '../com/face/list/ComFaceList';
+import TheComposition from '../com/TheComposition';
 import { useCcat } from './useCcat';
 
 export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
@@ -18,45 +17,15 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
-  const {
-    nav,
-    appRouteData: { ccomw },
-  } = useCmNav();
-
-  nav.onGeneralFooterButtonClick('all', 'TheCat')(() => scrollToCurrent(true));
 
   const [term, setTerm] = useState(cat?.term || '');
-
-  const scrollToCurrent = (isSync?: boolean) => {
-    if (ccomw) {
-      const scroll = () => {
-        if (listRef.current)
-          if (listRef.current.scrollTop > 0) listRef.current.scrollTop = 0;
-          else {
-            const currentFace = document.getElementById(`com_face_wid_${ccomw}`);
-            if (currentFace) {
-              mylib.scrollToView(currentFace, 'top', {
-                parent: listRef.current,
-                top: categoryTitleRef.current?.clientHeight ?? 40,
-              });
-            }
-          }
-      };
-
-      if (isSync && listRef.current?.scrollTop !== 0) scroll();
-      else setTimeout(scroll);
-    }
-  };
 
   return (
     <Routes>
       <Route
         index
         element={
-          <LoadIndicatedContent
-            isLoading={!cat}
-            onLoad={() => scrollToCurrent()}
-          >
+          <LoadIndicatedContent isLoading={!cat}>
             <CatPhaseContainer
               className="cat-content"
               withoutBackButton={all}
@@ -81,12 +50,7 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                 cat && (
                   <>
                     <div className={`later-com-list ${all && !term && laterComs?.length ? '' : 'hidden'}`}>
-                      <div
-                        className="list-title sticky"
-                        onClick={() => scrollToCurrent()}
-                      >
-                        Последние:
-                      </div>
+                      <div className="list-title sticky">Последние:</div>
                       <ComFaceList
                         list={laterComs}
                         isWithoutIds
@@ -95,7 +59,6 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                     <div
                       className="flex between sticky list-title"
                       ref={categoryTitleRef}
-                      onClick={() => scrollToCurrent()}
                     >
                       <div>{cat.name}:</div>
                       {cat.wraps && (
@@ -118,12 +81,19 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
         }
       />
 
-      {getCompositionRoutes(CmTranslationComListContextInZeroCat)}
+      <Route
+        path=":comw/*"
+        element={
+          <CmTranslationComListContextInZeroCat>
+            <TheComposition key="compo1" />
+          </CmTranslationComListContextInZeroCat>
+        }
+      />
     </Routes>
   );
 }
 
-const CatPhaseContainer = styled(PhaseCmContainer)`
+const CatPhaseContainer = styled(PhaseContainerConfigurer)`
   .list-title {
     cursor: ns-resize;
   }

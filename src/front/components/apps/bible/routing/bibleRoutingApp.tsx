@@ -9,5 +9,6 @@ export const bibleRoutingApp: RoutingAppConfig = {
   router: mainNode => <BibleRouter mainNode={mainNode} />,
   footer: <BibleFooter />,
   Icon: IconBook02StrokeRounded,
+  level: 0,
   lazies: [],
 };

@@ -5,19 +5,17 @@ import { DocTitle } from '../../../../../complect/DocTitle';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useAtom, useAtomValue } from '../../../../../complect/atoms';
 import { Metronome } from '../../../../../complect/metronome/Metronome';
+import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useCmTranslationComListContext } from '../../base/translations/context';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
-import useCmNav from '../../base/useCmNav';
 import useLaterComList from '../../base/useLaterComList';
-import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import { cmMolecule } from '../../molecules';
 import Translations from '../../translation/Translation';
-import { Com } from './Com';
 import './Com.scss';
 import { ComTools } from './ComTools';
 import TheControlledCom from './TheControlledCom';
 import ComPlayer from './player/ComPlayer';
-import { useCcom } from './useCcom';
+import { useCcom, useTakeActualComw } from './useCcom';
 import useMigratableComTools from './useMigratableComTools';
 
 export default function TheComposition() {
@@ -30,8 +28,8 @@ export default function TheComposition() {
   const [playerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
   const isMetronomeHide = useAtomValue(cmMolecule.take('isMetronomeHide'));
   const comAudio = ccom?.audio.trim();
-  const { setAppRouteData } = useCmNav();
-  const setCom = (com: Com) => setAppRouteData({ ccomw: com.wid });
+
+  useTakeActualComw();
 
   useEffect(() => {
     const add = setTimeout(() => ccom && addLaterComw(ccom.wid), 3000);
@@ -110,7 +108,6 @@ export default function TheComposition() {
                   com={ccom}
                   comList={list}
                   chordVisibleVariant={chordVisibleVariant}
-                  onComSet={setCom}
                 />
               </>
             }
@@ -126,7 +123,7 @@ export default function TheComposition() {
   );
 }
 
-const ComContainer = styled(PhaseCmContainer)`
+const ComContainer = styled(PhaseContainerConfigurer)`
   .composition-content {
     padding-top: 150px;
     transition: padding-top 0.2s;

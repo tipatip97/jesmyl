@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 import { IconTickDouble02StrokeRounded } from '../../../../../../../complect/the-icon/icons/tick-double-02';
 import { CmMp3Rule } from '../../../../../../../models';
-import { RoutePhase } from '../../../../../../router/Router.model';
-import useCmNav from '../../../../base/useCmNav';
 import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCols } from '../../useEditableCols';
 import { EditableCom } from '../EditableCom';
@@ -13,7 +12,7 @@ import ComAudio from './audio/ComAudio';
 import ObserveUrlResource from './audio/ObserveUrlResource';
 
 export default function NewComposition({ close }: { close: () => void }) {
-  const { goTo } = useCmNav();
+  const navigate = useNavigate();
   const cols = useEditableCols();
   const exec = useExerExec();
   const [value, setValue] = useState('');
@@ -36,14 +35,14 @@ export default function NewComposition({ close }: { close: () => void }) {
     }
   };
 
-  const goToRoute = (phase = 'texts', isRejectSave = true) => {
-    goTo({ place: ['com', phase], data: { ccomw: com.wid } }, null, isRejectSave);
+  const goToRoute = () => {
+    navigate('' + com.wid);
     close();
   };
 
-  const publicate = (phase?: RoutePhase) => {
+  const publicate = () => {
     if (cols?.addCom(com)) {
-      com.publicate(() => goToRoute(phase, false));
+      com.publicate(() => goToRoute());
       exec();
     }
   };

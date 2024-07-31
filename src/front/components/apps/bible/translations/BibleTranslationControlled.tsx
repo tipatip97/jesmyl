@@ -2,7 +2,6 @@ import { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import { ScreenTranslationControlPanel } from '../../+complect/translations/controls/ControllPanel';
 import { useAtomInkrement } from '../../../../complect/atoms';
-import useNavConfigurer from '../../../../complect/nav-configurer/useNavConfigurer';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useBibleSlideSyncInkrementer } from '../hooks/slide-sync';
 import { useLoadBibleChaptersCombine } from '../hooks/texts';
@@ -14,7 +13,6 @@ import BibleSearchPanel from './search/Panel';
 
 interface Props {
   head: ReactNode;
-  // useNav: () => ReturnType<typeof useNavConfigurer>;
   headTitle: ReactNode;
 }
 
@@ -45,9 +43,7 @@ export default function BibleTranslationControlled({ head, headTitle }: Props): 
 
   return (
     <PhaseContainerConfigurer
-      goBack={() => {}}
       className=""
-      withoutBackButton
       headTitle={headTitle ?? 'Библия'}
       head={head}
       content={

@@ -348,7 +348,7 @@ export default function ScheduleWidgetAlarmContent({ observeSchw, schedule, isJu
   const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
 
   return isJustShowAllDay ? (
-    <>{fullValue?.(() => {}, null)}</>
+    <>{fullValue?.(() => {}, null) ?? node ?? <div className="flex center full-size">{schedule?.title}</div>}</>
   ) : (
     <>
       {fullNode}

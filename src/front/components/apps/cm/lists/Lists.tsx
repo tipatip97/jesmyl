@@ -1,6 +1,7 @@
 import { Link, Route, Routes } from 'react-router-dom';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
+import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
 import { IconCalendar02StrokeRounded } from '../../../../complect/the-icon/icons/calendar-02';
 import { IconCheckmarkBadge01StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-badge-01';
@@ -8,7 +9,6 @@ import { IconStarStrokeRounded } from '../../../../complect/the-icon/icons/star'
 import useSelectedComs from '../base/useSelectedComs';
 import TheCat from '../col/cat/TheCat';
 import { useCols } from '../cols/useCols';
-import PhaseCmContainer from '../complect/phase-container/PhaseCmContainer';
 import './Lists.scss';
 import Marks from './marks/Marks';
 import TheMeetings from './meetings/TheMeetings';
@@ -23,7 +23,7 @@ export default function Lists() {
       <Route
         index
         element={
-          <PhaseCmContainer
+          <PhaseContainerConfigurer
             className="lists-container"
             withoutBackButton
             headTitle="Списки"

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IconArrowLeft02StrokeRounded } from '../../complect/the-icon/icons/arrow-left-02';
 import { IconMoreVerticalCircle01StrokeRounded } from '../../complect/the-icon/icons/more-vertical-circle-01';
@@ -6,15 +6,11 @@ import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import { LinkWithSearchRemember } from './LinkWithSearchRemember';
 import { PhaseContainerConfigurerProps } from './PhaseContainerConfigurer.model';
 
-let goBack: (isForceBack?: boolean | undefined) => void;
-const swiper = backSwipableContainerMaker(() => goBack(true));
-
-const emptyFunc = () => {};
+let navigate: NavigateFunction = () => {};
+const swiper = backSwipableContainerMaker(() => navigate('..'));
 
 export default function PhaseContainerConfigurer(props: PhaseContainerConfigurerProps) {
-  const linkRef = useRef(emptyFunc);
-
-  goBack = () => linkRef.current();
+  navigate = useNavigate();
 
   const content = (
     <>

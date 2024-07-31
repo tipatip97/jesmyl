@@ -1,9 +1,14 @@
-import { Link, LinkProps, NavLinkProps, useParams } from 'react-router-dom';
+import { Link, LinkProps, NavLinkProps, SetURLSearchParams, useParams, useSearchParams } from 'react-router-dom';
 
-function mapParams(this: Record<string, string>, param: string) {
-  if (!(param in this)) return null;
+const mapParamsSelf = {} as {
+  params: Record<string, string | und>;
+  searchParams: [URLSearchParams, SetURLSearchParams];
+};
 
-  return `${param}=${this[param]}`;
+function mapParams(this: typeof mapParamsSelf, param: string) {
+  if (this.params[param] === undefined && !this.searchParams[0].has(param)) return null;
+
+  return `${param}=${this.searchParams[0].get(param) ?? this.params[param]}`;
 }
 
 const itNNull = (it: unknown) => it !== null;
@@ -15,7 +20,9 @@ const LinkWith = ({
 }: {
   rememberProps: string[];
 } & LinkProps) => {
-  const search = rememberProps.map(mapParams, useParams()).filter(itNNull).join('&');
+  mapParamsSelf.searchParams = useSearchParams();
+  mapParamsSelf.params = useParams();
+  const search = rememberProps.map(mapParams, mapParamsSelf).filter(itNNull).join('&');
 
   return (
     <Link

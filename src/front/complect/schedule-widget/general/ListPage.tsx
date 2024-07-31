@@ -51,7 +51,7 @@ export default function ScheduleWidgetListPage() {
       />
 
       <Route
-        path=":schw"
+        path=":schw/*"
         element={<ScheduleWidgetPage />}
       />
     </Routes>

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ScheduleWidgetTgDayViewOr } from '../complect/schedule-widget/general/TgDayViewOr';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './App.scss';
+import AppComponent from './AppComponent';
 import { lastVisitedRouteLsName } from './AppFooter';
-
-const Child = React.lazy(() => import('./AppComponent'));
 
 function App() {
   const [isNeedFirstNavigate, setIsNeedFirstNavigate] = useState(true);
@@ -12,20 +10,20 @@ function App() {
   return (
     <>
       {isNeedFirstNavigate && <FirstNaver onSet={setIsNeedFirstNavigate} />}
-      <ScheduleWidgetTgDayViewOr>
-        <Child />
-      </ScheduleWidgetTgDayViewOr>
+      <AppComponent />
     </>
   );
 }
 
 const FirstNaver = ({ onSet }: { onSet: (is: false) => void }) => {
   const navigate = useNavigate();
+  const loc = useLocation();
 
   useEffect(() => {
     onSet(false);
+    if (loc.pathname.length > 1) return;
     navigate(localStorage.getItem(lastVisitedRouteLsName) || '/cm/i');
-  }, [navigate, onSet]);
+  }, [loc.pathname.length, navigate, onSet]);
 
   return <></>;
 };

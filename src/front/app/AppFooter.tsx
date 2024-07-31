@@ -9,11 +9,6 @@ import AppFooterItem, {
   footerItemPlaceLsPrefix,
 } from './AppFooterItem';
 
-///////////////////////// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-///////////////////////// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-///////////////////////// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-///////////////////////// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-
 export const lastVisitedRouteLsName = 'nav-last-visited-route';
 
 export default function AppFooter({ children }: { children: React.ReactNode }) {
@@ -65,47 +60,3 @@ const StyledFooter = styled.div`
   height: var(--footer-height);
   overflow: hidden;
 `;
-
-// const { nav, route, navigate } = navConfigurers[appName]();
-// const { route: indexRoute, navigate: indexNavigate, nav: indexNav } = useIndexNav();
-// const auth = useAuth();
-// const checkIsAccessed = useCheckIsAccessed(auth);
-
-// const [indexPhase] = indexRoute || [];
-
-// const putItems = <Storage extends ExerStorage, NavData>(
-//   nav: INavigationConfig<Storage, NavData>,
-//   onClick: (phase: RoutePhasePoint) => void,
-//   setIsActive: (phase: RoutePhasePoint) => boolean,
-// ) => {
-//   return nav.routes.map(props => {
-//     if (!props) return null;
-//     const { phase, title, accessLevel, iconSelfPack } = props;
-
-//     if (accessLevel != null && !checkIsAccessed(accessLevel)) return null;
-//     const isActive = setIsActive(phase);
-
-//     return (
-//       <div
-//         key={`main-footer-item_${iconSelfPack.name}`}
-//         className={`footer-item ${isActive ? 'active' : ''}`}
-//         onClick={() => onClick(phase)}
-//       >
-//         <div className="icon-container">
-//           {isActive ? <iconSelfPack.TwotoneRounded /> : <iconSelfPack.BulkRounded />}
-//         </div>
-//         <div className="title">{title}</div>
-//       </div>
-//     );
-//   });
-// };
-
-// const title = useMemo(() => {
-//   const [phase] = indexRoute || route || [];
-//   const routes = indexRoute ? indexNav.nav.routes : route ? nav.nav.routes : [];
-//   const footerRoute = routes.find(route => route.phase[0] === phase);
-
-//   if (!footerRoute) return;
-
-//   return footerRoute.title;
-// }, [indexNav, indexRoute, nav, route]);

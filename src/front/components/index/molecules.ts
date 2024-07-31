@@ -11,7 +11,6 @@ export const indexMolecule = new Molecule<IndexState>(
     appVersion: 0,
     schedules: { list: [] },
     statistic: null,
-    deviceId: '',
     liveData: {},
     rules: [],
     appFontFamily: null,
@@ -29,10 +28,7 @@ export const useIndexFileAssociations = () => useAtomValue(indexMolecule.take('f
 export const useIndexNounPronsWords = () => useAtomValue(indexMolecule.take('nounPronsWords'));
 export const useIndexLiveData = () => useAtomValue(indexMolecule.take('liveData'));
 
-export const deviceIdAtom = indexMolecule.take('deviceId');
 const authAtom = indexMolecule.take('auth');
-
-export const useDeviceId = () => useAtomValue(deviceIdAtom);
 
 export const useAuth = () => useAtomValue(authAtom);
 export const useAuthState = () => useAtom(authAtom);

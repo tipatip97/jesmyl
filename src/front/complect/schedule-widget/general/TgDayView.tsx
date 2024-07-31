@@ -25,12 +25,12 @@ if (url.hash.startsWith(`#${hashParamName}`)) {
   initData = { ...data, user: JSON.parse(data.user) } as TelegramWebAppInitData;
 }
 
-export const ScheduleWidgetTgDayViewOr = ({ children }: { children: React.ReactNode }) => {
+export default function ScheduleWidgetTgDayView() {
   return (
     <TelegramWebAppApiOr>
       {(api, isLoading) =>
         initData === null || !api?.initData ? (
-          children
+          <div className="flex center color--ko">Ошибка данных</div>
         ) : (
           <Child
             api={api}
@@ -41,7 +41,7 @@ export const ScheduleWidgetTgDayViewOr = ({ children }: { children: React.ReactN
       }
     </TelegramWebAppApiOr>
   );
-};
+}
 
 type Props = {
   api: TelegramWebApp | nil;

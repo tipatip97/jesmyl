@@ -15,57 +15,40 @@ interface Props extends IComFaceList, FreeComFaceProps {
 export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, ...comProps }: Props) => {
   const [isPartialRender, setIsPartialRender] = useState(isNeedRenderingDelay);
 
-  const ccomWid = comProps.ccom?.wid;
+  const ccomWid = comProps.ccomw;
   const ccomi = isPartialRender ? list.findIndex(({ wid }) => wid === ccomWid) : 0;
 
   useEffect(() => {
-    const node = document.getElementById(`com_face_wid_${comProps.ccom?.wid}`);
+    const node = document.getElementById(`com_face_wid_${comProps.ccomw}`);
 
-    if (comProps.ccom === undefined || node === null) {
+    if (comProps.ccomw === undefined || node === null) {
       return hookEffectLine()
         .setTimeout(setIsPartialRender, isIPhone ? 2 : 600, false)
         .effect();
     }
 
-    if (!isNeedRenderingDelay) return;
+    return hookEffectLine()
+      .setTimeout(setIsPartialRender, isIPhone ? 2 : 600, false)
+      .setTimeout(() => {
+        const parent = (function get(node: HTMLElement | null): HTMLElement | null {
+          return node && (node.scrollHeight > node.clientHeight ? node : get(node.parentElement));
+        })(node);
 
-    const parent = node.parentElement?.parentElement?.parentElement;
-    if (parent == null) return;
+        if (parent == null) {
+          node.scrollIntoView({ block: 'center' });
+          return;
+        }
 
-    let scrollTimeout: TimeOut;
-    let isNeedScroll = true;
-
-    const onScroll = () => {
-      isNeedScroll = false;
-      parent.removeEventListener('scroll', onScroll);
-    };
-    parent.addEventListener('scroll', onScroll);
-
-    const renderTimeout = setTimeout(
-      () => {
-        setIsPartialRender(false);
-
-        if (!isNeedScroll) return;
-
-        scrollTimeout = setTimeout(() => {
-          mylib.scrollToView(node, 'top', {
-            parent,
-            top: 36,
-          });
+        mylib.scrollToView(node, 'top', {
+          parent,
+          top: 36,
         });
-      },
-      isIPhone ? 2 : 600,
-    );
-
-    return () => {
-      clearTimeout(renderTimeout);
-      clearTimeout(scrollTimeout);
-      parent.removeEventListener('scroll', onScroll);
-    };
-  }, [ccomi, comProps.ccom, isNeedRenderingDelay]);
+      })
+      .effect();
+  }, [ccomi, comProps.ccomw, isNeedRenderingDelay]);
 
   return (
-    <StyledContainer $ccomw={comProps.ccom?.wid}>
+    <StyledContainer $ccomw={comProps.ccomw}>
       {list.map((com, comi) => {
         if (isPartialRender && (ccomi - 15 > comi || ccomi + 17 < comi)) return null;
 

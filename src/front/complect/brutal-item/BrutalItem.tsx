@@ -1,4 +1,5 @@
-import { HtmlHTMLAttributes, ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { Link, To } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function BrutalItem({
@@ -7,17 +8,17 @@ export default function BrutalItem({
   title,
   box,
   description,
+  to,
 }: {
   icon: JSX.Element;
   title: string;
   box?: ReactNode;
   description?: ReactNode;
-} & HtmlHTMLAttributes<HTMLDivElement>) {
-  return (
-    <Item
-      className="flex between relative"
-      onClick={onClick}
-    >
+  to?: To;
+  onClick?: () => void;
+}) {
+  const inner = (
+    <Item className="flex between relative">
       <div className="nowrap over-hidden flex center">
         <div className="margin-big-gap">{icon}</div>
         <div className="ellipsis inline-block">{title}</div>
@@ -33,6 +34,22 @@ export default function BrutalItem({
         </div>
       )}
     </Item>
+  );
+
+  return to ? (
+    <Link
+      to={to}
+      className="full-width"
+    >
+      {inner}
+    </Link>
+  ) : (
+    <div
+      className="flex between relative full-width"
+      onClick={onClick}
+    >
+      {inner}
+    </div>
   );
 }
 

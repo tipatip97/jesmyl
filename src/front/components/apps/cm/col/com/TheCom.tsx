@@ -1,6 +1,6 @@
 import { RefObject } from 'react';
+import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { ChordVisibleVariant } from '../../Cm.model';
-import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import { Com } from './Com';
 import './Com.scss';
 import './block-styles/BlockStyles.scss';
@@ -29,7 +29,7 @@ export default function TheCom({
 
   if (com == null) {
     return (
-      <PhaseCmContainer
+      <PhaseContainerConfigurer
         className="com-container"
         headTitle="Упс"
         content="Песня не найдена("

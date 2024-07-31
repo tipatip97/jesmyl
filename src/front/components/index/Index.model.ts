@@ -21,7 +21,6 @@ export interface IndexState {
   schedules: ScheduleStorage;
   statistic: SokiStatistic | null;
   liveData: Record<SokiClientSubData, unknown>;
-  deviceId: string;
   nounPronsWords?: NounPronsType;
   fileAssociations?: FileAssociations;
   rules: ExecRule[];

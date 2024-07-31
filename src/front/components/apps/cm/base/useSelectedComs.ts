@@ -1,16 +1,15 @@
 import { useCallback } from 'react';
+import { CmComWid } from '../../../../../back/apps/cm/Cm.enums';
+import { atom, useAtom } from '../../../../complect/atoms';
 import { Com } from '../col/com/Com';
 import { useCols } from '../cols/useCols';
-import useCmNav from './useCmNav';
 
-const emptyArr: [] = [];
+const scomwsAtom = atom<CmComWid[]>([], 'cm', 'scomws');
 
 export default function useSelectedComs() {
   const cols = useCols();
-  const {
-    appRouteData: { selectedComws = emptyArr },
-    setAppRouteData,
-  } = useCmNav();
+
+  const [selectedComws, setSelectedComws] = useAtom(scomwsAtom);
   const takeSelectedComs = useCallback(() => {
     return (
       (cols && (selectedComws.map(comw => cols.coms.find(com => com.wid === comw)).filter(com => com) as Com[])) || []
@@ -21,7 +20,7 @@ export default function useSelectedComs() {
     selectedComws,
     takeSelectedComs,
     selectedComPosition: (comWid: number) => selectedComws.indexOf(comWid) + 1,
-    updateSelectedComws: (selectedComws: number[]) => setAppRouteData({ selectedComws }),
+    updateSelectedComws: (selectedComws: number[]) => setSelectedComws(selectedComws),
     clearSelectedComws: () => ret.updateSelectedComws([]),
     toggleSelectedCom: (comWid: number) => {
       ret.updateSelectedComws(

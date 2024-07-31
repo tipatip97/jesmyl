@@ -1,15 +1,15 @@
-import useIndexNav from '../../../components/index/complect/useIndexNav';
 import { useIndexSchedules } from '../../../components/index/molecules';
+import { useActualSchw } from '../useSch';
 import ScheduleWidgetAlarmContent from './AlarmContent';
 
 export default function ScheduleWidgetAlarm({ isForceShow }: { isForceShow?: boolean }) {
   const schedules = useIndexSchedules();
-  const nav = useIndexNav();
+  const schw = useActualSchw();
 
   return (
     <>
       {(isForceShow || schedules.list.some(schedule => schedule.start)) && (
-        <ScheduleWidgetAlarmContent observeSchw={nav.appRouteData.schw} />
+        <ScheduleWidgetAlarmContent observeSchw={schw} />
       )}
     </>
   );

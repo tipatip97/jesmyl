@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
-import useCmNav from '../../../base/useCmNav';
+import { useNavigate } from 'react-router-dom';
 
 export const useCloseTranslation = () => {
-  const { goBack } = useCmNav();
+  const navigate = useNavigate();
 
   return useCallback(
     (event?: EventStopper) => {
       event?.stopPropagation();
-      goBack();
+      navigate('..');
       if (document.fullscreenElement) document.exitFullscreen();
       return false;
     },
-    [goBack],
+    [navigate],
   );
 };

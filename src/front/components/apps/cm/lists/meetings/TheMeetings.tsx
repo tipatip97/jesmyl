@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconLeftToRightListBulletStrokeRounded } from '../../../../../complect/the-icon/icons/left-to-right-list-bullet';
-import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import MeetingEventExpandList from './MeetingEventExpandList';
 import MeetingsInner from './MeetingsInner';
 import TheMeetingsEvent from './TheMeetingsEvent';
@@ -34,7 +34,7 @@ export default function TheMeetings() {
       <Route
         index
         element={
-          <PhaseCmContainer
+          <PhaseContainerConfigurer
             className="meetings-container"
             headTitle="События"
             onMoreClick={openPopup}

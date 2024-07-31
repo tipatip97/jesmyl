@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { useCcom } from '../../../col/com/useCcom';
+import { useCom } from '../../../col/com/useCcom';
 
-export const useCmCurrentComTexts = (pushKind: number | und, comw?: number) => {
-  const ccom = useCcom(comw);
+export const useCmCurrentComTexts = (pushKind: number | und) => {
+  const com = useCom();
 
-  return useMemo(() => ccom?.getOrderedTexts(true, pushKind), [ccom, pushKind]);
+  return useMemo(() => com?.getOrderedTexts(true, pushKind), [com, pushKind]);
 };

@@ -10,6 +10,7 @@ export type RoutingAppConfig = {
   title: React.ReactNode;
   Icon: TheIconType;
   lazies: React.ReactNode[];
+  level: number;
 };
 
 export const routingApps: Partial<Record<AppName, RoutingAppConfig>> = {

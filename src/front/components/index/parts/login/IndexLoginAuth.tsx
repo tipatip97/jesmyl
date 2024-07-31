@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import TheButton from '../../../../complect/Button';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import LoadIndicatedContent from '../../../../complect/load-indicated-content/LoadIndicatedContent';
 import mylib from '../../../../complect/my-lib/MyLib';
+import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { LocalSokiAuth } from '../../../../models';
 import { soki } from '../../../../soki';
-import PhaseIndexContainer from '../../complect/PhaseIndexContainer';
-import useIndexNav from '../../complect/useIndexNav';
 import { AuthMode, ClientAuthorizationData, ClientRegisterData, ServerAuthorizeInSystem } from '../../Index.model';
 import { removePullRequisites, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
@@ -25,7 +25,7 @@ export default function IndexLoginAuth() {
 
   const connectionNode = useConnectionState();
   const [errors, setErrors] = useAuthErrors();
-  const { navigate } = useIndexNav();
+  const navigate = useNavigate();
   const error = (message: string | nil) => message && <div className="login-error-message">{message}</div>;
 
   const sendData = <AuthType extends keyof ServerAuthorizeInSystem>(
@@ -96,7 +96,7 @@ export default function IndexLoginAuth() {
         <LoadIndicatedContent
           className="flex around column full-height full-width"
           isLoading={!isInProcess}
-          onLoaded={() => isInProcess !== 2 && navigate(['other'])}
+          onLoaded={() => isInProcess !== 2 && navigate('..')}
         >
           {mode === 'register' ? null : (
             <div className="logo">
@@ -187,7 +187,7 @@ export default function IndexLoginAuth() {
   );
 }
 
-export const LoginIndex = styled(PhaseIndexContainer)`
+export const LoginIndex = styled(PhaseContainerConfigurer)`
   .logo {
     display: flex;
     flex-direction: column;

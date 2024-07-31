@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { SokiVisitor } from '../../../../models';
-import { useDeviceId } from '../../molecules';
 import { TgLinkOrFio } from './TgLinkOrFio';
+import { useDeviceId } from '../../complect/takeDeviceId';
 
 const itNIt = (it: unknown) => !it;
 

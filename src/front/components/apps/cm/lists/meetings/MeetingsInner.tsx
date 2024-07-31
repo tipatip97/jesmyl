@@ -8,7 +8,6 @@ import { IconCalendar02StrokeRounded } from '../../../../../complect/the-icon/ic
 import { IconFolder01StrokeRounded } from '../../../../../complect/the-icon/icons/folder-01';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { useActualRef } from '../../../../../complect/useActualRef';
-import useCmNav from '../../base/useCmNav';
 import { cmMolecule } from '../../molecules';
 import { Meetings } from './Meetings';
 import { MeetingsEvent } from './MeetingsEvent';
@@ -24,29 +23,15 @@ export default function MeetingsInner<Meets extends Meetings>({
   onContextNavigate?: (context: number[]) => void;
   asEventBox?: (event: MeetingsEvent) => ReactNode;
 }) {
-  const {
-    registerBackAction,
-    appRouteData: { eventContext = [] },
-    setAppRouteData,
-  } = useCmNav();
+  const [eventContext, setEventContext] = useAtom(cmMolecule.take('eventContext'));
   const [favorites, setFavorites] = useAtom(cmMolecule.take('favoriteMeetings'));
-  const setCurrContextRef = useActualRef((eventContext: number[]) => setAppRouteData({ eventContext }));
+  const setCurrContextRef = useActualRef((eventContext: number[]) => setEventContext(eventContext));
   const onContextNavigateRef = useActualRef(onContextNavigate);
   const eventContextRef = useActualRef(eventContext);
 
   useEffect(() => {
     onContextNavigateRef.current?.(eventContextRef.current);
-    const deregister = registerBackAction(isForceBack => {
-      if (!isForceBack && eventContextRef.current.length) {
-        setCurrContextRef.current(eventContextRef.current.slice(0, -1));
-        return true;
-      }
-      return false;
-    });
-    return () => {
-      deregister();
-    };
-  }, [eventContextRef, onContextNavigateRef, registerBackAction, setCurrContextRef]);
+  }, [eventContextRef, onContextNavigateRef, setCurrContextRef]);
 
   if (!meetings) return null;
 
@@ -74,18 +59,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             const event = meetings.events?.find(event => event.wid === eventw);
             if (!event) return null;
             const { context } = meetings.contexts[event.contextw] || {};
-
-            return (node =>
-              onEventClick ? (
-                node
-              ) : (
-                <Link
-                  key={eventwi}
-                  to={`${event.wid}`}
-                >
-                  {node}
-                </Link>
-              ))(
+            const node = (
               <BrutalItem
                 icon={<IconCalendar01SolidSharp />}
                 title={event.name}
@@ -101,7 +75,18 @@ export default function MeetingsInner<Meets extends Meetings>({
                     {context?.map(context => meetings.names[context]).join(' - ')}
                   </span>
                 }
-              />,
+              />
+            );
+
+            return onEventClick ? (
+              node
+            ) : (
+              <Link
+                key={eventwi}
+                to={`${event.wid}`}
+              >
+                {node}
+              </Link>
             );
           })}
           {favorites.contexts.map((contextw, contextwi) => {
@@ -157,6 +142,7 @@ export default function MeetingsInner<Meets extends Meetings>({
                   Icon={isFavorite ? IconStarSolidRounded : IconStarStrokeRounded}
                   onClick={e => {
                     e.stopPropagation();
+                    e.preventDefault();
 
                     setFavorites({
                       ...favorites,

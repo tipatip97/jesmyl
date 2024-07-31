@@ -1,6 +1,5 @@
 import { useAtom } from '../../../../../complect/atoms';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import useQRMaster from '../../../../../complect/qr-code/useQRMaster';
 import { IconApproximatelyEqualSquareStrokeRounded } from '../../../../../complect/the-icon/icons/approximately-equal-square';
 import { IconArrowExpand01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-expand-01';
 import {
@@ -17,14 +16,12 @@ import { IconEqualSignSquareStrokeRounded } from '../../../../../complect/the-ic
 import { IconImageCompositionOvalStrokeRounded } from '../../../../../complect/the-icon/icons/image-composition-oval';
 import { IconMenu01StrokeRounded } from '../../../../../complect/the-icon/icons/menu-01';
 import { IconMinusSignStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign';
-import { IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/qr-code';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { IconVynil03SolidRounded, IconVynil03StrokeRounded } from '../../../../../complect/the-icon/icons/vynil-03';
 import { useFullScreen } from '../../../../../complect/useFullscreen';
 import { useAuth } from '../../../../index/molecules';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
-import useCmNav from '../../base/useCmNav';
 import useSelectedComs from '../../base/useSelectedComs';
 import {
   concatMigratableEditableComToolNameList,
@@ -49,8 +46,6 @@ export default function useMigratableComTools() {
   const [isMiniAnchor, setIsMiniAnchor] = useAtom(cmMolecule.take('isMiniAnchor'));
   const [playerHideMode, setPlayerHideMode] = useAtom(cmMolecule.take('playerHideMode'));
   const [isMetronomeHide, setIsMetronomeHide] = useAtom(cmMolecule.take('isMetronomeHide'));
-  const nav = useCmNav();
-  const { shareQrData, qrNode } = useQRMaster();
 
   const makeToolList = (tools: MigratableComToolName[]): MigratableComTool[] => {
     return tools
@@ -151,14 +146,14 @@ export default function useMigratableComTools() {
               }
             );
           case 'share-by-qr':
-            return (
-              ccom && {
-                tool,
-                title: 'Поделиться по QR',
-                Icon: IconQrCodeStrokeRounded,
-                onClick: () => shareQrData(nav.nav, 'ccomw', ccom.wid, true),
-              }
-            );
+            return undefined;
+          //     ccom && {
+          //       tool,
+          //       title: 'Поделиться по QR',
+          //       Icon: IconQrCodeStrokeRounded,
+          //       onClick: () => shareQrData(nav.nav, 'ccomw', ccom.wid, true),
+          //     }
+          //   );
         }
         return getMigratableEditableComTool(tool, ccom);
       })
@@ -166,12 +161,7 @@ export default function useMigratableComTools() {
   };
 
   return {
-    anchorNode: (
-      <>
-        {qrNode}
-        {fullContentNode}
-      </>
-    ),
+    anchorNode: <>{fullContentNode}</>,
     comTopTools,
     topTools: makeToolList(spliceMigratableEditableComToolNameList(comTopTools, auth)),
     menuTools: makeToolList(concatMigratableEditableComToolNameList(menuComToolNameList as never, auth)),

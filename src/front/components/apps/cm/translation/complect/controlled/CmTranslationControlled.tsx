@@ -2,20 +2,20 @@ import { ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { TranslationSlidePreview } from '../../../../+complect/translations/controls/Preview';
-import useNavConfigurer from '../../../../../../complect/nav-configurer/useNavConfigurer';
 import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { Com } from '../../../col/com/Com';
 import { ComFaceList } from '../../../col/com/face/list/ComFaceList';
+import { useTakeActualComw } from '../../../col/com/useCcom';
 import { useCmScreenTranslationComNavigations } from '../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../hooks/com-texts';
 import { CmTranslationControlPanel } from './ControllPanel';
 import { CmTranslationSlideLine } from './SlideLine';
+import { useScreenKeyDownListen } from './screen/hooks/keydown-listen';
 import { CmTranslateScreenConfigurations } from './screens/ScreenConfigurations';
 
 interface Props {
   head?: ReactNode;
   comList?: Com[];
-  useNav: () => ReturnType<typeof useNavConfigurer>;
   headTitle?: ReactNode;
 }
 
@@ -24,6 +24,9 @@ export default function CmTranslationControlled({ head, comList, headTitle }: Pr
 
   const { comPack } = useCmScreenTranslationComNavigations();
   const setTexti = useCmScreenTranslationComTextNavigations().setTexti;
+
+  useScreenKeyDownListen();
+  useTakeActualComw();
 
   return (
     <PhaseContainerConfigurer

@@ -1,14 +1,17 @@
 import { useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useCmTranslationComListContext } from '../../../base/translations/context';
-import useCmNav from '../../../base/useCmNav';
 import { Com } from '../../../col/com/Com';
-import { useCcom } from '../../../col/com/useCcom';
+import { useCom } from '../../../col/com/useCcom';
 import { useCmScreenTranslationComTextNavigations } from './com-texts';
 
 export const useCmScreenTranslationComNavigations = () => {
-  const { setAppRouteData } = useCmNav();
-  const ccom = useCcom();
-  const setCom: (com: Com) => void = useCallback((com: Com) => setAppRouteData({ ccomw: com.wid }), [setAppRouteData]);
+  const ccom = useCom();
+  const [, setParams] = useSearchParams();
+  const setCom: (com: Com) => void = useCallback(
+    (com: Com) => setParams(prev => ({ ...prev, comw: com.wid })),
+    [setParams],
+  );
 
   const comPack = useCmTranslationComListContext();
   const { setTexti } = useCmScreenTranslationComTextNavigations();

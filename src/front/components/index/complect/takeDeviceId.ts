@@ -1,6 +1,11 @@
+import { atom, useAtomValue } from '../../../complect/atoms';
 import { makeRandomTwiceName } from '../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 import mylib from '../../../complect/my-lib/MyLib';
-import { deviceIdAtom, indexMolecule } from '../molecules';
+import { indexMolecule } from '../molecules';
+
+export const deviceIdAtom = atom('', 'index', 'deviceId');
+
+export const useDeviceId = () => useAtomValue(deviceIdAtom);
 
 let deviceId: string | und;
 const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.repeat(3).split('');
@@ -13,16 +18,21 @@ const takeRandomSymbols = (take = 3) =>
     .join('');
 
 export const takeDeviceId = async () => {
-  if (deviceId !== undefined) return deviceId;
-  deviceId = await deviceIdAtom.getStorageValue();
-  const storage = await indexMolecule.take('nounPronsWords').getStorageValue();
+  try {
+    if (deviceId !== undefined) return deviceId;
+    deviceId = await deviceIdAtom.getStorageValue();
+    const storage = await indexMolecule.take('nounPronsWords').getStorageValue();
 
-  if (storage === undefined) return '***S***';
+    if (storage === undefined) return '';
 
-  if (!deviceId || deviceId.startsWith('__')) {
-    deviceId = makeRandomTwiceName(storage).join('_') + '_' + takeRandomSymbols();
-    deviceIdAtom.set(deviceId);
+    if (!deviceId || deviceId.startsWith('__')) {
+      deviceId = makeRandomTwiceName(storage).join('_') + '_' + takeRandomSymbols();
+      deviceIdAtom.set(deviceId);
+    }
+
+    return deviceId;
+  } catch (error) {
+    console.error(error);
+    return '';
   }
-
-  return deviceId;
 };

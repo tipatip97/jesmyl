@@ -1,7 +1,7 @@
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import useSelectedComs from '../../base/useSelectedComs';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';
-import PhaseCmContainer from '../../complect/phase-container/PhaseCmContainer';
 import { LocalListToolsPopup } from '../popups/LocalListToolsPopup';
 
 export default function SelectedComs() {
@@ -9,7 +9,7 @@ export default function SelectedComs() {
   const [popup, openPopup] = useBottomPopup(LocalListToolsPopup, coms);
 
   return (
-    <PhaseCmContainer
+    <PhaseContainerConfigurer
       className="favorites-container"
       headTitle="Выбранное"
       onMoreClick={openPopup}

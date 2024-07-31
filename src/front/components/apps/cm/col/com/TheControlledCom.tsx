@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { useAtom, useAtomValue } from '../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../complect/backSwipableContainerMaker';
@@ -26,24 +27,35 @@ export default function TheControlledCom({
   com: Com;
   comList?: Com[] | nil;
   chordVisibleVariant: ChordVisibleVariant;
-  onComSet: (com: Com) => void;
+  onComSet?: (com: Com) => void;
 }) {
   const fontSize = useAtomValue(cmMolecule.take('comFontSize'));
   const [isMiniAnchor] = useAtom(cmMolecule.take('isMiniAnchor'));
   const listRef = useRef<HTMLDivElement>(null);
+  const [, setSearchParams] = useSearchParams();
 
   onNextCom = () => {
     if (!comList) return;
     const comi = comList.findIndex(({ wid }) => wid === com.wid);
-    if (comi < comList.length - 1) onComSet(comList[comi + 1]);
-    else onComSet(comList[0]);
+    if (comi < comList.length - 1) {
+      onComSet?.(comList[comi + 1]);
+      setSearchParams({ comw: '' + comList[comi + 1].wid });
+    } else {
+      onComSet?.(comList[0]);
+      setSearchParams({ comw: '' + comList[0].wid });
+    }
   };
 
   onPrevCom = () => {
     if (!comList) return;
     const comi = comList.findIndex(({ wid }) => wid === com.wid);
-    if (comi > 0) onComSet(comList[comi - 1]);
-    else onComSet(comList[comList.length - 1]);
+    if (comi > 0) {
+      onComSet?.(comList[comi - 1]);
+      setSearchParams({ comw: '' + comList[comi - 1].wid });
+    } else {
+      onComSet?.(comList[comList.length - 1]);
+      setSearchParams({ comw: '' + comList[comList.length - 1].wid });
+    }
   };
 
   return (

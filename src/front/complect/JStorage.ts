@@ -42,11 +42,13 @@ export class JStorage<Scope> {
           resolve(await this.get(key));
           return;
         }
-        const data = this.dbOpen.result
-          .transaction('data', 'readonly')
-          .objectStore('data')
-          .get(key as string);
-        data.onsuccess = () => resolve(data.result);
+        try {
+          const data = this.dbOpen.result
+            .transaction('data', 'readonly')
+            .objectStore('data')
+            .get(key as string);
+          data.onsuccess = () => resolve(data.result);
+        } catch (error) {}
       };
 
       if (this.dbOpen.readyState === 'done') read();
@@ -99,10 +101,12 @@ export class JStorage<Scope> {
       return;
     }
 
-    this.dbOpen.result
-      .transaction('data', 'readwrite')
-      .objectStore('data')
-      .put(value, key as string);
+    try {
+      this.dbOpen.result
+        .transaction('data', 'readwrite')
+        .objectStore('data')
+        .put(value, key as string);
+    } catch (error) {}
   }
 
   rem(key: keyof Scope) {
@@ -110,9 +114,11 @@ export class JStorage<Scope> {
       setTimeout(() => this.rem(key));
       return;
     }
-    this.dbOpen.result
-      .transaction('data', 'readwrite')
-      .objectStore('data')
-      .delete(key as string);
+    try {
+      this.dbOpen.result
+        .transaction('data', 'readwrite')
+        .objectStore('data')
+        .delete(key as string);
+    } catch (error) {}
   }
 }

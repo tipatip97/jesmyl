@@ -1,16 +1,15 @@
 import { useState } from 'react';
+import { useAtomValue } from '../../../../../complect/atoms';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import useCmNav from '../../base/useCmNav';
+import { cmMolecule } from '../../molecules';
 import { useEditableMeetings } from './useEditableMeetings';
 
 export default function MeetingsCreator({ close }: { close: () => void }) {
   const [name, setName] = useState('');
   const { meetings } = useEditableMeetings();
   const exec = useExerExec();
-  const {
-    appRouteData: { eventContext = [] },
-  } = useCmNav();
+  const eventContext = useAtomValue(cmMolecule.take('eventContext'));
 
   const [, currContextw] = meetings?.getContexts(eventContext) || [];
 

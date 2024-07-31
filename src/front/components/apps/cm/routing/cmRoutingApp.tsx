@@ -10,4 +10,5 @@ export const cmRoutingApp: RoutingAppConfig = {
   footer: <CmFooter />,
   Icon: IconBookOpen02StrokeRounded,
   lazies: [],
+  level: 0,
 };

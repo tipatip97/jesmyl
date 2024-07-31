@@ -4,12 +4,11 @@ import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons
 import { soki } from '../../../../soki';
 import { useSwitchCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
 import { useComTranslationBlock } from '../../../apps/cm/atoms';
-import useCmNav from '../../../apps/cm/base/useCmNav';
+import { useCcomw } from '../../../apps/cm/col/com/useCcom';
 import CmTranslationControlled from '../../../apps/cm/translation/complect/controlled/CmTranslationControlled';
 import { useCmScreenTranslationConfigs } from '../../../apps/cm/translation/complect/controlled/hooks/configs';
 import { ScheduleWidgetCurrentCmTranslationList } from '../../../apps/cm/translation/complect/live/SchWgtCurrentList';
 import { IndexSchWTranslationLiveDataValue } from '../../Index.model';
-import useIndexNav from '../useIndexNav';
 import { LiveTranslationAppProps } from './model';
 
 export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
@@ -19,8 +18,7 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
   headTitle,
   schedule,
 }: LiveTranslationAppProps) {
-  const indexNav = useIndexNav();
-  const cmNav = useCmNav();
+  const ccomw = useCcomw();
   const [config] = useCmScreenTranslationConfigs();
   const switchCurrApp = useSwitchCurrentTranslationTextApp();
   const [currTexti] = useComTranslationBlock();
@@ -29,12 +27,12 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
     if (isCantTranslateLive) return;
 
     return setTimeoutEffect(() => {
-      if (indexNav.appRouteData.schw === undefined || cmNav.appRouteData.ccomw === undefined) return;
+      if (isNaN(ccomw)) return;
 
       const liveData: IndexSchWTranslationLiveDataValue = {
         fio,
         cm: {
-          comw: cmNav.appRouteData.ccomw,
+          comw: ccomw,
           texti: currTexti,
           config,
         },
@@ -42,15 +40,7 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
 
       soki.send({ liveData, subscribeData }, 'index');
     }, 100);
-  }, [
-    cmNav.appRouteData.ccomw,
-    config,
-    currTexti,
-    fio,
-    indexNav.appRouteData.schw,
-    isCantTranslateLive,
-    subscribeData,
-  ]);
+  }, [ccomw, config, currTexti, fio, isCantTranslateLive, subscribeData]);
 
   return (
     <ScheduleWidgetCurrentCmTranslationList schedule={schedule}>
@@ -62,7 +52,6 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
             onClick={() => switchCurrApp()}
           />
         }
-        useNav={useIndexNav as never}
         headTitle={headTitle}
       />
     </ScheduleWidgetCurrentCmTranslationList>

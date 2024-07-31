@@ -6,7 +6,6 @@ import { BibleAddress } from '../../../apps/bible/address/Address';
 import BibleTextContent from '../../../apps/bible/text-content/TextContent';
 import BibleLiveTranslation from '../../../apps/bible/translations/BibleLiveTranslation';
 import BibleTranslationControlled from '../../../apps/bible/translations/BibleTranslationControlled';
-import useIndexNav from '../useIndexNav';
 import { LiveTranslationAppProps } from './model';
 
 export const IndexScheduleWidgetBibleTranslations: React.FC<LiveTranslationAppProps> = memo(function BibleTr({
@@ -44,7 +43,6 @@ export const IndexScheduleWidgetBibleTranslations: React.FC<LiveTranslationAppPr
             onClick={() => switchCurrApp()}
           />
         }
-        // useNav={useIndexNav as never}
         headTitle={headTitle}
       />
     </>

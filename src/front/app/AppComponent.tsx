@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
-import useToast from '../complect/modal/useToast';
+import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
+import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
 import { IconArrowShrink02StrokeRounded } from '../complect/the-icon/icons/arrow-shrink-02';
 import listenThemeChanges from '../complect/theme-changer';
 import { useFullScreen } from '../complect/useFullscreen';
@@ -19,25 +21,18 @@ export default function AppComponent() {
   const [appFontFamily] = useAppFontFamilyAtom();
   const [isFullscreen, switchFullscreen] = useFullScreen();
   const [keyboardOpen, setKeyboardOpen] = useState(false);
-  // const { goBack, registerBackAction } = navConfigurers[currentApp]();
-  const [errorToastNode, errorToast] = useToast({ mood: 'ko' });
-  // const { jumpToApp } = useApps(errorToast);
   const [isShowLogo, setIsShowLogo] = useState(true);
   const [, setIsReady] = useIsReadyRouter();
 
-  // useEffect(() => {
-  //   const onKeyDown = (event: KeyboardEvent) => {
-  //     event.code === 'Escape' && switchFullscreen(false);
-  //     if (event.code === 'ArrowLeft' && event.altKey) {
-  //       event.preventDefault();
-  //       goBack();
-  //     }
-  //   };
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      event.code === 'Escape' && switchFullscreen(false);
+    };
 
-  //   window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
 
-  //   return () => window.removeEventListener('keydown', onKeyDown);
-  // }, [goBack, switchFullscreen]);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [switchFullscreen]);
 
   useEffect(() => {
     if (appFontFamily == null) return;
@@ -54,36 +49,19 @@ export default function AppComponent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, emptyArr);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (window.location.href.startsWith(jesmylHostName)) {
-  //       const decodeds = crossApplicationLinkCoder.decode(window.location.href);
-  //       if (decodeds) {
-  //         const { appName, key, value } = decodeds;
-  //         if (appName && key && value !== undefined) {
-  //           jumpToApp(appName, key as never, value);
-  //         }
-  //       }
-  //     }
-  //   })();
-  // }, [jumpToApp]);
-
-  // const onOpen = useCallback((close: () => boolean) => registerBackAction(() => close()), [registerBackAction]);
-  // const keyboardProps = useMemo(() => {
-  //   return {
-  //     onFocus: (input: KeyboardInputStorage | nil) => {
-  //       setKeyboardOpen(true);
-  //       registerBackAction(() => !input || input.blur());
-  //     },
-  //     onBlur: () => {
-  //       setKeyboardOpen(false);
-  //     },
-  //   };
-  // }, [registerBackAction]);
+  const keyboardProps = useMemo(() => {
+    return {
+      onFocus: (input: KeyboardInputStorage | nil) => {
+        setKeyboardOpen(true);
+      },
+      onBlur: () => {
+        setKeyboardOpen(false);
+      },
+    };
+  }, []);
 
   return (
     <div className={`above-container ${keyboardOpen ? 'keyboard-open' : ''}`}>
-      {errorToastNode}
       {isShowLogo && (
         <div className="jesmyl-smile-box flex center absolute full-width full-height z-index:5">
           <JesmylLogo className="no-fade-in-effect" />
@@ -94,11 +72,10 @@ export default function AppComponent() {
           className="collapse-fullscreen-button pointer"
           onClick={() => switchFullscreen(false)}
         />
-        {/* <ABSOLUTE__FLOAT__POPUP onOpen={onOpen} /> */}
+        <ABSOLUTE__FLOAT__POPUP onOpen={() => {}} />
         <AppRouter />
-        {/* <AppFooter /> */}
       </div>
-      {/* <KEYBOARD_FLASH {...keyboardProps} /> */}
+      <KEYBOARD_FLASH {...keyboardProps} />
     </div>
   );
 }

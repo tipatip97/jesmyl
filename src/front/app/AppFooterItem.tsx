@@ -8,6 +8,7 @@ interface Props {
   to: string;
   iconPack: TheIconSelfPack;
   title: string;
+  search?: `?${string}`;
 }
 
 const [CurrentAppFooterItemPlaceContext, useCurrentAppFooterItemPlaceContext] = contextCreator<string | und>(undefined);
@@ -18,7 +19,7 @@ const footerItemPlaceLsPrefix = 'nav-link:';
 
 export { CurrentAppFooterItemAppNameContext, CurrentAppFooterItemPlaceContext, footerItemPlaceLsPrefix };
 
-export default function AppFooterItem({ to, iconPack, title }: Props) {
+export default function AppFooterItem({ to, iconPack, title, search }: Props) {
   const appName = useCurrentAppFooterItemAppNameContext();
   const place = useCurrentAppFooterItemPlaceContext();
   const isActive = to === place;
@@ -27,18 +28,20 @@ export default function AppFooterItem({ to, iconPack, title }: Props) {
     to = localStorage.getItem(footerItemPlaceLsPrefix + appName + '/' + to) ?? to;
   }
 
+  if (search !== undefined && !to.includes('?')) to += search;
+
   return (
-    <StyledFooterNavLink
+    <StyledLink
       to={to}
       className={isActive ? 'active' : undefined}
     >
       <div className="icon-container">{isActive ? <iconPack.TwotoneRounded /> : <iconPack.BulkRounded />}</div>
       <div className="title">{title}</div>
-    </StyledFooterNavLink>
+    </StyledLink>
   );
 }
 
-export const StyledFooterNavLink = styled(Link)`
+const StyledLink = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;

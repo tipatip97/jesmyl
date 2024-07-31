@@ -9,7 +9,6 @@ import { CmTranslationScreenConfig } from '../model';
 import { CmTranslationSubScreen } from './CmTranslationSubScreen';
 import { useGetCmScreenTranslationStyle } from './hooks/get-style';
 import { useGetCmScreenTranslationWrapperStyle } from './hooks/get-wrapper-style';
-import { useScreenKeyDownListen } from './hooks/keydown-listen';
 
 type Props = TranslationScreenProps &
   Partial<FontSizeContainProps> & {
@@ -28,7 +27,6 @@ export const CmTranslationScreen = (props: Props) => {
     props.cmConfig?.isWithBackground ? props.cmConfig.backgroundInteractive : undefined,
   );
 
-  useScreenKeyDownListen(props.win);
   useApplyScreenFontFamilyEffect(props.cmConfig?.fontFamily, props.win);
   let subScreens = null;
 

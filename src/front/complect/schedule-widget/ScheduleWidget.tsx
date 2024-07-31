@@ -181,7 +181,7 @@ export default function ScheduleWidget({
                     value={schedule}
                     isRedact
                     Icon={IconBookmark03StrokeRounded}
-                    title="Название"
+                    title="Тема"
                   />
                 </>
               )}

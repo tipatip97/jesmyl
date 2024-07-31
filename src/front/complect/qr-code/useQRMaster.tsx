@@ -6,7 +6,6 @@ import useToast from '../modal/useToast';
 import mylib from '../my-lib/MyLib';
 import { NavigationConfig } from '../nav-configurer/Navigation';
 import Portal from '../popups/[complect]/Portal';
-import useApps from '../useApps';
 import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from './QRCodeMaster.model';
 import { QRCodeMasterApplication } from './QRCodeMasterApplication';
 
@@ -21,8 +20,6 @@ export const jesmylHostName = `${hrefUrl.protocol}//${hrefUrl.host}`;
 export const crossApplicationLinkCoder = makeSharedLink(jesmylHostName);
 
 export default function useQRMaster() {
-  const [errorToastNode, errorToast] = useToast({ mood: 'ko' });
-  const { jumpToApp } = useApps(errorToast);
   const [qr, setQr] = useState<Html5Qrcode | undefined>();
   const [openError, setOpenError] = useState('');
   const [toastNode, toast] = useToast();
@@ -30,7 +27,6 @@ export default function useQRMaster() {
     return (
       <>
         {toastNode}
-        {errorToastNode}
         <Portal>
           <QRCodeMasterApplication
             controller={top => (controller = top)}
@@ -39,7 +35,7 @@ export default function useQRMaster() {
         </Portal>
       </>
     );
-  }, [errorToastNode, openError, toastNode]);
+  }, [openError, toastNode]);
 
   const shareData = useCallback((appName: AppName, key: string, value: unknown, externalData?: boolean | string) => {
     try {
@@ -267,7 +263,7 @@ export default function useQRMaster() {
               if (callback) resolve(callback(data));
               else {
                 resolve(null);
-                jumpToApp(data.appName, data.key, data.value);
+                // jumpToApp(data.appName, data.key, data.value);
               }
             } else {
               reject();
@@ -276,7 +272,7 @@ export default function useQRMaster() {
           }),
         );
       },
-      [jumpToApp, read, toast],
+      [read, toast],
     );
 
   return useMemo(() => {

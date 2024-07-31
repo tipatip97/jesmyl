@@ -4,7 +4,6 @@ import { useScheduleWidgetRightsContext } from '../../../../../complect/schedule
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { CmComBindAttach } from '../../../../../models';
-import useIndexNav, { indexScheduleWidgetTranslationPagePhase } from '../../../../index/complect/useIndexNav';
 
 interface Props {
   value: CmComBindAttach;
@@ -12,7 +11,6 @@ interface Props {
 }
 
 export const CmAttComStartLiveTranslationButton = (props: Props) => {
-  const indexNav = useIndexNav();
   const switchCurrApp = useSwitchCurrentTranslationTextApp();
   const rights = useScheduleWidgetRightsContext();
 
@@ -25,13 +23,7 @@ export const CmAttComStartLiveTranslationButton = (props: Props) => {
         postfix="Транслировать"
         className="margin-gap-l margin-gap-v"
         onClick={() => {
-          indexNav.jumpTo(indexScheduleWidgetTranslationPagePhase);
           switchCurrApp('cm');
-          indexNav.setAppRouteData({
-            schw: props.schedule.w,
-            schTranslationComws: props.value.comws,
-            schTranslationEventw: props.value.eventw,
-          });
         }}
       />
     </>

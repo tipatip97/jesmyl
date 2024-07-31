@@ -1,3 +1,4 @@
+import { Link, useNavigate } from 'react-router-dom';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import mylib from '../../../../complect/my-lib/MyLib';
 import { TelegramWebAppApiOr } from '../../../../complect/tg-app/getTgApi';
@@ -5,12 +6,11 @@ import { TheIconLoading } from '../../../../complect/the-icon/IconLoading';
 import { IconAuthorizedStrokeRounded } from '../../../../complect/the-icon/icons/authorized';
 import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
 import { soki } from '../../../../soki';
-import useIndexNav from '../../complect/useIndexNav';
 import { removePullRequisites, useSetAuth } from '../../molecules';
 
 export const IndexTelegramInlineAuthButton = () => {
   const setAuth = useSetAuth();
-  const { navigate, goTo } = useIndexNav();
+  const navigate = useNavigate();
 
   return (
     <TelegramWebAppApiOr>
@@ -27,7 +27,7 @@ export const IndexTelegramInlineAuthButton = () => {
                   setAuth(tgAuthorization.value);
                   removePullRequisites();
                   soki.onConnect();
-                  navigate(['other']);
+                  navigate('..');
                 });
               }}
             />
@@ -35,12 +35,16 @@ export const IndexTelegramInlineAuthButton = () => {
         }
 
         return (
-          <BrutalItem
-            icon={<IconAuthorizedStrokeRounded />}
-            title="Авторизоваться"
-            onClick={() => goTo('login')}
-            box={<TheIconLoading isLoading={isLoading} />}
-          />
+          <Link
+            to="login"
+            className="full-width"
+          >
+            <BrutalItem
+              icon={<IconAuthorizedStrokeRounded />}
+              title="Авторизоваться"
+              box={<TheIconLoading isLoading={isLoading} />}
+            />
+          </Link>
         );
       }}
     </TelegramWebAppApiOr>

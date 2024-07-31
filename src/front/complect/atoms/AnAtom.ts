@@ -13,13 +13,13 @@ export class Atom<
   private value: Value;
   private subs = new Set<Sunscriber>();
   private save: (val: Value) => void = emptyFunc;
-  private key?: Key;
+  private setInTopStorage: (value: Value) => void = () => {};
 
-  storage?: JStorage<Record<string, Value>>;
   onValueChange?: (value: Value) => void;
   rem: () => void;
+  getStorageValue: () => Promise<Value>;
 
-  constructor(value: Value, storageName?: string, key?: Key) {
+  constructor(value: Value, storageName?: string, key?: Key, valuesStorage?: Record<string, unknown>) {
     this.value = value;
 
     this.rem =
@@ -28,24 +28,29 @@ export class Atom<
             this.value = null!;
             this.save(null!);
           }
-        : () => {};
+        : emptyFunc;
+
+    this.getStorageValue = async () => this.value;
 
     if (!storageName || !key) return;
+
+    if (valuesStorage !== undefined) this.setInTopStorage = value => (valuesStorage[key] = value);
 
     const name = `${storageName}/${key}` as const;
 
     if (registered.has(name)) throw Error(`Атом ${name} уже зарегистрирован`);
     registered.add(name);
 
-    this.key = key;
-
-    const storage = (this.storage = storages[storageName] ??= new JStorage(storageName));
+    const storage = (storages[storageName] ??= new JStorage(storageName));
 
     this.save = val => storage.set(key, val);
 
+    this.getStorageValue = async () => (await storage.get(key)) ?? this.value;
+
     (async () => {
       const value = await storage.get(key);
-      if (value === undefined) return;
+
+      if (value === undefined || (mylib.isNum(value) && isNaN(value))) return;
       this.justSet(value);
       if (this.subs.size === 0) setTimeout(this.justSet, 100, value);
       this.onValueChange?.(value);
@@ -53,22 +58,19 @@ export class Atom<
   }
 
   get = () => this.value;
-  getStorageValue = async () =>
-    this.storage === undefined || this.key === undefined
-      ? this.value
-      : (await this.storage.get(this.key)) ?? this.value;
 
   invokeSubs = (sub: Sunscriber) => sub(this.value);
 
   justSet = (value: Value) => {
     this.value = value;
     this.subs.forEach(this.invokeSubs, this);
+    this.setInTopStorage(value);
   };
 
   set = (value: Value | ((prev: Value) => Value), isPreventSave?: boolean) => {
     const val = mylib.isFunc(value) ? value(this.value) : value;
 
-    if (value === undefined) return;
+    if (val === undefined || (mylib.isNum(val) && isNaN(val))) return;
 
     this.onValueChange?.(val);
     this.justSet(val);

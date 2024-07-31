@@ -5,14 +5,12 @@ import { IconMinusSignStrokeRounded } from '../../../../complect/the-icon/icons/
 import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
 import { useFullScreen } from '../../../../complect/useFullscreen';
 import { cmMolecule } from '../molecules';
-import useCmNav from './useCmNav';
 
 export default function RollControled(props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
   const [isFullscreen] = useFullScreen();
   const [speedRollKf, setSpeedRollKf] = useAtom(cmMolecule.take('speedRollKf'));
   const containerRef = useRef<HTMLDivElement>(null);
   const [isRolling, setIsRolling] = useState(false);
-  const { registerBackAction } = useCmNav();
 
   useEffect(() => {
     if (containerRef.current?.parentElement == null || !isRolling) return;
@@ -34,16 +32,8 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
 
     roll();
 
-    const unregisterBackAction = registerBackAction(() => {
-      setIsRolling(false);
-      return isRolling;
-    });
-
-    return () => {
-      unregisterBackAction();
-      clearTimeout(rollTimeout);
-    };
-  }, [isRolling, registerBackAction, speedRollKf]);
+    return () => clearTimeout(rollTimeout);
+  }, [isRolling, speedRollKf]);
 
   return (
     <RollContent

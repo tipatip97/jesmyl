@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
@@ -14,7 +15,6 @@ import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icon
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
-import useCmNav from '../../base/useCmNav';
 import { ComFace } from '../../col/com/face/ComFace';
 import { EditableCat } from '../col/categories/EditableCat';
 import { useEditableCcat } from '../col/categories/useEditableCcat';
@@ -29,7 +29,7 @@ export default function EditMeetingsEvent() {
   const exec = useExerExec();
   const zcat: EditableCat | und = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || '');
-  const { goTo } = useCmNav();
+  const navigate = useNavigate();
   const [isClosedComList, setIsClosedComList] = useState(true);
   const [fullNode, openFullContent] = useFullContent(() => <MeetingsEventHistory />);
 
@@ -169,9 +169,7 @@ export default function EditMeetingsEvent() {
                     com={com}
                     comi={wrapi}
                     selectable={false}
-                    importantOnClick={() => {
-                      goTo({ place: 'com', data: { ccomw: com.wid } }, null, true);
-                    }}
+                    importantOnClick={() => navigate(com.wid)}
                     description={() =>
                       usedComList.indexOf(com) < 0 ? (
                         <IconPlusSignCircleStrokeRounded

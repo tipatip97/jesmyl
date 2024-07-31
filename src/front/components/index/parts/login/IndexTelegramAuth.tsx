@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import useToast from '../../../../complect/modal/useToast';
@@ -8,7 +9,6 @@ import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/t
 import { useActualRef } from '../../../../complect/useActualRef';
 import { LocalSokiAuth, SokiServerEvent } from '../../../../models';
 import { soki } from '../../../../soki';
-import useIndexNav from '../../complect/useIndexNav';
 import { removePullRequisites, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { LoginIndex } from './IndexLoginAuth';
@@ -23,7 +23,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
 
   const connectionNode = useConnectionState();
   const [errors] = useAuthErrors();
-  const { navigate } = useIndexNav();
+  const navigate = useNavigate();
   const error = (message: string | nil) => message && <div className="login-error-message">{message}</div>;
   const [toastNode, showToast] = useToast({ mood: 'ko' });
 
@@ -48,7 +48,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
     if (!tgAuthorization || !tgAuthorization.ok || mylib.isStr(tgAuthorization.value)) return;
     setAuthData(tgAuthorization.value);
     soki.onConnect();
-    navigate(['other']);
+    navigate('..');
   });
 
   const showToastRef = useActualRef(showToast);

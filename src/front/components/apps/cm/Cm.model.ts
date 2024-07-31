@@ -35,6 +35,7 @@ export interface CmState {
   metronomeAccentes: string;
   metronomeMainSound: `${number}`;
   metronomeSecondarySound: `${number}`;
+  eventContext: number[];
 
   speedRollKf: number;
 }
@@ -52,5 +53,4 @@ export interface CmNavData {
   ccomw: number;
   ccatw: number;
   eventw: number;
-  eventContext: number[];
 }

@@ -1,5 +1,5 @@
+import { useParams } from 'react-router-dom';
 import { ScheduleWidgetLiveTranslation } from '../../../../complect/schedule-widget/live-translations/Live';
-import useIndexNav from '../../../index/complect/useIndexNav';
 import { useIndexSchedules } from '../../../index/molecules';
 import { useIsCanShowTextTranslation } from './atoms';
 
@@ -16,7 +16,7 @@ export const TranslationTextScreen = ({ children }: Props) => {
 };
 
 const Screen = ({ children }: Props) => {
-  const schw = useIndexNav().appRouteData.schw;
+  const schw = +useParams().schw!;
   const schedules = useIndexSchedules();
   const schedule = schedules.list.find(sch => sch.w === schw);
 
