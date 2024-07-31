@@ -18,7 +18,7 @@ export default function TheComComment({ comw }: { comw: number }) {
       <IconButton
         Icon={isRedact ? IconCheckmarkCircle02StrokeRounded : IconEdit01StrokeRounded}
         className="flex full-width between color--7 margin-gap-v"
-        prefix="Комментарии"
+        prefix="Заметки"
         onClick={() => setIsRedact(!isRedact)}
       />
       {isRedact ? (
