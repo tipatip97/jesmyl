@@ -45,7 +45,10 @@ export class Atom<
 
     this.save = val => storage.set(key, val);
 
-    this.getStorageValue = async () => (await storage.get(key)) ?? this.value;
+    this.getStorageValue = async () => {
+      const val = await storage.get(key);
+      return val === undefined ? this.value : val;
+    };
 
     (async () => {
       const value = await storage.get(key);
