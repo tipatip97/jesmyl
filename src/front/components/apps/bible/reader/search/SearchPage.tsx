@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
 import { useBibleAddressBooki } from '../../hooks/address/books';
@@ -8,12 +9,11 @@ import BibleSearchResults from '../../translations/search/Results';
 import { useBibleTranslationSearchResultSelectedSet } from '../../translations/search/hooks/results';
 import BibleSearchPanelSearchInput from '../../translations/search/input-panel/SearchInput';
 import { useBibleSearchZone } from '../../translations/search/selectors';
-import useBibleNav from '../../useBibleNav';
 
 const emptyArr: [] = [];
 
 export default function BibleReaderSearchPage() {
-  const { goBack, navigateToRoot } = useBibleNav();
+  const navigate = useNavigate();
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
   const [searchZone, setZone] = useBibleSearchZone();
@@ -28,7 +28,6 @@ export default function BibleReaderSearchPage() {
 
   return (
     <PhaseContainerConfigurer
-      goBack={goBack}
       className=""
       withoutBackButton
       headTitle="Поиск"
@@ -72,7 +71,7 @@ export default function BibleReaderSearchPage() {
               inputRef={inputRef}
               height="calc(100% - 100px)"
               innerZone={innerZone}
-              onClick={() => navigateToRoot()}
+              onClick={() => navigate('/bible/i')}
             />
           </div>
         </>

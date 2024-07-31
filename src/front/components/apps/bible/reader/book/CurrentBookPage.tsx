@@ -8,9 +8,9 @@ import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
 import { useBibleBookList } from '../../hooks/texts';
 import BibleTranslatesContextProvider, { useBibleTranslatesContext } from '../../translates/TranslatesContext';
+import { BibleModulesTranslations } from '../../translates/Translations';
 import { useBibleShowTranslatesValue } from '../../translates/hooks';
 import { useBibleSingleAddressSetter } from '../../translations/lists/atoms';
-import useBibleNav from '../../useBibleNav';
 import BibleReaderBook from './BookPage';
 
 export default function BibleReaderCurrentBookPage() {
@@ -22,7 +22,6 @@ export default function BibleReaderCurrentBookPage() {
 }
 
 function Content() {
-  const { goBack } = useBibleNav();
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
   const currentVersei = useBibleAddressVersei();
@@ -97,7 +96,6 @@ function Content() {
 
   return (
     <PhaseContainerConfigurer
-      goBack={goBack}
       className=""
       withoutBackButton
       headTitle={
@@ -108,6 +106,7 @@ function Content() {
           <BibleAddressSingle />
         </span>
       }
+      head={<BibleModulesTranslations />}
       content={
         <>
           {chapterSelectNode}
