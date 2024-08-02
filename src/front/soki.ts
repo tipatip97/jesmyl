@@ -243,6 +243,12 @@ export class SokiTrip {
     this.pullCurrentAppData(appName);
   }
 
+  urls: string[] = [];
+
+  addUrl(url: string) {
+    this.urls.push(url);
+  }
+
   async sendForce(body: SokiClientEventBody, appName: SokiAppName | null, requestId?: string, browser?: string) {
     if (appName === null) return;
     let tries = 20;
@@ -261,12 +267,15 @@ export class SokiTrip {
             deviceId: await takeDeviceId(),
             version: version.num,
             browser,
+            urls: this.urls,
           };
 
           if (body.subscribe) this.subscriptions[body.subscribe] = body;
           if (body.unsubscribe) delete this.subscriptions[body.unsubscribe];
 
           this.ws.send(JSON.stringify(sendEvent));
+
+          this.urls = [];
         } else setTimeout(trySend, 100);
       } catch (error) {
         setTimeout(trySend, 100);

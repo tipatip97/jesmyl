@@ -61,6 +61,7 @@ export class SokiServerSubscribes extends SokiServerTransfers implements SokiSer
             nick: capsule.auth.nick,
             version: capsule.version,
             deviceId: capsule.deviceId,
+            urls: capsule.urls,
             time: '',
           });
       }

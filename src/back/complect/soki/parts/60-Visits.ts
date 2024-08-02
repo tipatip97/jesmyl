@@ -4,27 +4,21 @@ import { SokiServerExecs } from './50-Execs';
 export class SokiServerVisits extends SokiServerExecs {
   lastVisit = new Date().toLocaleDateString();
 
-  setVisit(visit: { version: number; fio?: string; nick: string; tgId?: number; deviceId?: string; browser?: string }) {
+  setVisit(visit: {
+    version: number;
+    fio?: string;
+    nick: string;
+    tgId?: number;
+    deviceId?: string;
+    browser?: string;
+    urls: string[];
+  }) {
     const date = new Date();
 
     if (this.lastVisit !== date.toLocaleDateString()) {
       this.statistic.pastVisits[this.lastVisit] = this.statistic.visits.length;
 
-      tglogger.visit(
-        `Посещения за ${this.lastVisit}` +
-          ` (${this.statistic.visits.length})\n\n<blockquote expandable>` +
-          this.statistic.visits
-            .map(
-              visit =>
-                `<b>${visit.fio ?? '???'}</b>` +
-                (visit.tgId ? ` t.me/${visit.nick || '-'}` : '') +
-                ` ${visit.version}` +
-                ` ${visit.deviceId}` +
-                ` ${visit.time}`,
-            )
-            .join('\n') +
-          `</blockquote>`,
-      );
+      tglogger.visit(`Известных посещений за ${this.lastVisit} (${this.statistic.visits.length})`);
 
       this.statistic.visits = [];
       this.lastVisit = date.toLocaleDateString();
@@ -34,10 +28,22 @@ export class SokiServerVisits extends SokiServerExecs {
       ...visit,
       time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`,
     };
+
     this.statistic.visits.push(visitInfo);
-    tglogger.visit(
-      `${visitInfo.fio ? `${visitInfo.fio} ` : ''}${visitInfo.nick ? `t.me/${visitInfo.nick} ` : ''}\n\n` +
-        `<blockquote expandable>${JSON.stringify(visitInfo, null, ' ')}</blockquote>`,
-    );
+    const getText = (sep?: string, altJson?: string) =>
+      (visitInfo.fio ? `${visitInfo.fio} ` : '') +
+      (visitInfo.nick && visitInfo.tgId ? `t.me/${visitInfo.nick} ` : '') +
+      `\n\n${visitInfo.urls?.length ? visitInfo.urls[0] : '<s>no urls</s>'}\n\n` +
+      (altJson === undefined ? `<blockquote expandable>${JSON.stringify(visitInfo, null, sep)}</blockquote>` : altJson);
+
+    try {
+      tglogger.visit(getText(' '));
+    } catch (error) {
+      try {
+        tglogger.visit(getText());
+      } catch (error) {
+        tglogger.visit(getText(undefined, 'LARGE JSON'));
+      }
+    }
   }
 }

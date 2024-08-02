@@ -31,6 +31,7 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
         deviceId: eventData.deviceId,
         browser: eventData.browser,
         nick: '',
+        urls: eventData.urls,
       });
       this.send({ authorized: false, appName: eventData.appName }, client);
       return true;
@@ -78,9 +79,15 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
           tgId: auth.tgId,
           deviceId: eventData.deviceId,
           browser: eventData.browser,
+          urls: eventData.urls,
         });
 
-      this.capsules.set(client, { auth, deviceId: eventData.deviceId, version: eventData.version });
+      this.capsules.set(client, {
+        auth,
+        deviceId: eventData.deviceId,
+        version: eventData.version,
+        urls: eventData.urls,
+      });
       this.clients.set(eventData.deviceId, client);
 
       this.send({ authorized: true, appName }, client);

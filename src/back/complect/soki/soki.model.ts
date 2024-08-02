@@ -15,6 +15,7 @@ export interface SokiCapsule {
   auth: LocalSokiAuth | null;
   appName?: SokiAppName;
   deviceId: string;
+  urls: string[];
   version: number;
   subscribeData?: SokiClientSubData;
 }
@@ -117,6 +118,7 @@ export interface SokiVisitor {
   browser?: string;
   time: string;
   tgId?: number;
+  urls: string[];
 }
 
 export interface SokiStatistic {
@@ -133,6 +135,7 @@ export interface SokiClientEvent {
   auth?: LocalSokiAuth;
   appName: SokiAppName;
   deviceId: string;
+  urls: string[];
   version: number;
   browser?: string;
 }
