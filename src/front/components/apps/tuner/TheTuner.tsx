@@ -1,28 +1,20 @@
 import { useEffect, useState } from 'react';
 import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
 import { TunerApplication } from './app';
-import './TunerStyle.scss';
 import './Tuner.scss';
-import useTunerNav from './useTunerNav';
+import './TunerStyle.scss';
 
-let tunerContainer: HTMLDivElement | null;
+let tunerContainer: HTMLDivElement | und;
 let tunerApplication: any;
+const effect = () => () => (tunerContainer = undefined);
 
 export default function TheTuner() {
   const [started, setStarted] = useState(false);
 
-  useEffect(
-    () => () => {
-      tunerContainer = null;
-    },
-    [],
-  );
-
-  const { goBack } = useTunerNav();
+  useEffect(effect, []);
 
   return (
     <PhaseContainerConfigurer
-      goBack={goBack}
       className="tuner-application"
       withoutBackButton
       headTitle="Тюнер"

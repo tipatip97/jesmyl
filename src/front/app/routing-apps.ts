@@ -1,6 +1,7 @@
 import { TheIconType } from '../complect/the-icon/model';
 import { bibleRoutingApp } from '../components/apps/bible/routing/bibleRoutingApp';
 import { cmRoutingApp } from '../components/apps/cm/routing/cmRoutingApp';
+import { tunerRoutingApp } from '../components/apps/tuner/tunerRoutingApp';
 import { AppName } from './App.model';
 
 export type RoutingAppConfig = {
@@ -16,4 +17,5 @@ export type RoutingAppConfig = {
 export const routingApps: Partial<Record<AppName, RoutingAppConfig>> = {
   cm: cmRoutingApp,
   bible: bibleRoutingApp,
+  tuner: tunerRoutingApp,
 };
