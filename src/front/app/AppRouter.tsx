@@ -5,7 +5,6 @@ import IndexMain from '../components/index/parts/main/IndexMain';
 import { soki } from '../soki';
 import { AppName } from './App.model';
 import { routingApps } from './routing-apps';
-import { makeRegExp } from '../../back/complect/makeRegExp';
 
 const AppRouter = memo(() => {
   return (
@@ -29,12 +28,14 @@ const otherRoute = (
   />
 );
 
+const effect = () => soki.addUrl();
+
 const Router = () => {
   const params = useParams();
   const app = routingApps[params.appName as AppName] ?? routingApps['cm'];
   const [searchs] = useSearchParams();
 
-  useEffect(() => soki.addUrl(window.location.href.replace(makeRegExp('/^https?:/'), 'https:')), [params, searchs]);
+  useEffect(effect, [params, searchs]);
 
   useEffect(() => {
     if (app === undefined) return;

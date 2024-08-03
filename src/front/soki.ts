@@ -2,6 +2,7 @@ import * as versionNum from '../back/+version.json';
 import Eventer, { EventerListeners } from '../back/complect/Eventer';
 import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
+import { makeRegExp } from '../back/complect/makeRegExp';
 import {
   PullEventValue,
   SokiAppName,
@@ -243,10 +244,13 @@ export class SokiTrip {
     this.pullCurrentAppData(appName);
   }
 
+  getCurrentUrl() {
+    return window.location.href.replace(makeRegExp('/^https?:/'), 'https:');
+  }
   urls: string[] = [];
 
-  addUrl(url: string) {
-    this.urls.push(url);
+  addUrl() {
+    this.urls.push(this.getCurrentUrl());
   }
 
   async sendForce(body: SokiClientEventBody, appName: SokiAppName | null, requestId?: string, browser?: string) {
@@ -267,7 +271,7 @@ export class SokiTrip {
             deviceId: await takeDeviceId(),
             version: version.num,
             browser,
-            urls: this.urls,
+            urls: this.urls.length ? this.urls : [this.getCurrentUrl()],
           };
 
           if (body.subscribe) this.subscriptions[body.subscribe] = body;
@@ -275,7 +279,7 @@ export class SokiTrip {
 
           this.ws.send(JSON.stringify(sendEvent));
 
-          this.urls = [];
+          this.urls = [this.getCurrentUrl()];
         } else setTimeout(trySend, 100);
       } catch (error) {
         setTimeout(trySend, 100);
