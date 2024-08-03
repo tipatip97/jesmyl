@@ -1,22 +1,24 @@
-import { useEffect, useRef } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { DocTitle } from '../../../../../complect/DocTitle';
-import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import { useAtomValue } from '../../../../../complect/atoms';
+import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
+import { useAtom, useAtomValue } from '../../../../../complect/atoms';
+import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import { Metronome } from '../../../../../complect/metronome/Metronome';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useCmTranslationComListContext } from '../../base/translations/context';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useLaterComList from '../../base/useLaterComList';
-import { cmMolecule } from '../../molecules';
+import { cmMolecule, isOpenChordImagesAtom } from '../../molecules';
 import Translations from '../../translation/Translation';
 import './Com.scss';
-import { ComTools } from './ComTools';
 import TheControlledCom from './TheControlledCom';
+import ChordImagesList from './chord-card/ChordImagesList';
 import ComPlayer from './player/ComPlayer';
+import { ComTools } from './tools/ComTools';
+import { useMigratableTopComTools } from './tools/useMigratableComTools';
 import { useCcom, useTakeActualComw } from './useCcom';
-import useMigratableComTools from './useMigratableComTools';
 
 const playerHideModeAtom = cmMolecule.select(s => s.playerHideMode);
 const isMetronomeHideAtom = cmMolecule.select(s => s.isMetronomeHide);
@@ -25,12 +27,13 @@ export default function TheComposition() {
   const [chordVisibleVariant] = useChordVisibleVariant();
   const ccom = useCcom();
   const { addLaterComw } = useLaterComList();
-  const [popupComToolsNode, openPopuComTools] = useBottomPopup(ComTools);
-  const { topTools } = useMigratableComTools();
+  const [isOpenTools, setIsOpenTools] = useState(false);
+  const comToolsNode = useMigratableTopComTools();
   const { list } = useCmTranslationComListContext();
   const playerHideMode = useAtomValue(playerHideModeAtom);
   const isMetronomeHide = useAtomValue(isMetronomeHideAtom);
   const comAudio = ccom?.audio.trim();
+  const [isOpenChordImages, setIsOpenChordImages] = useAtom(isOpenChordImagesAtom);
 
   useTakeActualComw();
 
@@ -66,36 +69,24 @@ export default function TheComposition() {
               (isMetronomeHide ? ' hide-metronome' : '')
             }
             headTitle={ccom.number}
-            onMoreClick={openPopuComTools}
+            onMoreClick={setIsOpenTools}
             contentClass="composition-content"
             contentRef={comListElem}
             withoutBackSwipe
             rememberProps={['comw']}
-            head={
-              <div className="com-actions-pannel">
-                {topTools.map(({ Icon, onClick, tool, path }) =>
-                  path !== undefined ? (
-                    <Link
-                      key={tool}
-                      to={path}
-                    >
-                      <Icon className="action-button" />
-                    </Link>
-                  ) : (
-                    onClick !== undefined && (
-                      <Icon
-                        key={tool}
-                        className="action-button"
-                        onClick={() => onClick()}
-                      />
-                    )
-                  ),
-                )}
-              </div>
-            }
+            head={<div className="com-actions-pannel flex flex-gap">{comToolsNode}</div>}
             content={
               <>
-                {popupComToolsNode}
+                {isOpenChordImages && (
+                  <FullContent onClose={setIsOpenChordImages}>
+                    <ChordImagesList />
+                  </FullContent>
+                )}
+                {isOpenTools && (
+                  <BottomPopup onClose={setIsOpenTools}>
+                    <ComTools />
+                  </BottomPopup>
+                )}
                 <DocTitle title={ccom.name} />
                 {comAudio && (
                   <ComPlayer

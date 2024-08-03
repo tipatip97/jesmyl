@@ -18,7 +18,6 @@ export const menuComToolNameList = [
   'chords-variant',
   'chord-images',
   'selected-toggle',
-  'share-by-qr',
   'is-mini-anchor',
   'open-player',
   'hide-metronome',
@@ -30,4 +29,5 @@ export interface MigratableComTool {
   onClick?: () => void | boolean;
   path?: string;
   tool: MigratableComToolName;
+  anchorNode?: React.ReactNode;
 }

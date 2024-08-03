@@ -1,4 +1,4 @@
-import { Molecule } from '../../../complect/atoms';
+import { atom, Molecule } from '../../../complect/atoms';
 import { CmState } from './Cm.model';
 import { defaultCmConfig } from './translation/complect/controlled/hooks/configs';
 
@@ -31,3 +31,5 @@ export const cmEventContextAtom = cmMolecule.select(s => s.eventContext);
 export const cmMeetingsAtom = cmMolecule.select(s => s.meetings);
 export const cmComFontSizeAtom = cmMolecule.select(s => s.comFontSize);
 export const cmTranslationScreenConfigsAtom = cmMolecule.select(s => s.translationScreenConfigs);
+
+export const isOpenChordImagesAtom = atom(false);
