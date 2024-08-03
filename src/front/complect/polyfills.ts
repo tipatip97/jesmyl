@@ -9,6 +9,8 @@ export const setPolyfills = () => {
     element.removeEventListener(...otherProps);
   };
 
+  const invokeEach = (cb: () => void) => cb();
+
   (globalThis as any).hookEffectLine = () => {
     const timeoutsSet = new Set<TimeOut>();
     const eventListeners = new Set<Parameters<EffectListener>>();
@@ -50,9 +52,9 @@ export const setPolyfills = () => {
         return setter;
       },
 
-      effect: (onUnmount?: () => void) => {
+      effect: (...onUnmounts: (() => void)[]) => {
         return () => {
-          onUnmount?.();
+          onUnmounts.forEach(invokeEach);
           timeoutsSet.forEach(clearTimeouts);
           debounceTimers.forEach(clearTimeouts);
 
@@ -91,7 +93,7 @@ type HookEffectLineReturn = {
   addEventDebouncedListener: DebouncedEffectListener;
   setTimeout: <Args extends any[]>(cb: (...args: Args) => void, time?: number, ...args: Args) => HookEffectLineReturn;
   clearTimeout: (timeout: TimeOut) => HookEffectLineReturn;
-  effect: (onUnmount?: () => void) => () => void;
+  effect: (...onUnmounts: (() => void)[]) => () => void;
 };
 
 declare global {
