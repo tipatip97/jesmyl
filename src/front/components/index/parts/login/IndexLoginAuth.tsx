@@ -5,7 +5,7 @@ import TheButton from '../../../../complect/Button';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import LoadIndicatedContent from '../../../../complect/load-indicated-content/LoadIndicatedContent';
-import mylib from '../../../../complect/my-lib/MyLib';
+import mylib, { MyLib } from '../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { LocalSokiAuth } from '../../../../models';
 import { soki } from '../../../../soki';
@@ -14,9 +14,10 @@ import { removePullRequisites, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { useAuthErrors } from './atoms';
 
+const itNNil = (it: unknown) => it != null;
+
 export default function IndexLoginAuth() {
   const setAuth = useSetAuth();
-  // const [, setCurrentApp] = useCurrentApp();
   const [nick, setNick] = useState('');
   const [passw, setPassword] = useState('');
   const [rpassw, setRPassword] = useState('');
@@ -146,9 +147,9 @@ export default function IndexLoginAuth() {
                 </div>
               </>
             ) : null}
-            <button
+            <TheButton
               className="send-button"
-              disabled={Object.keys(errors).length > 0}
+              disabled={MyLib.values(errors).filter(itNNil).length > 0}
               onClick={async () => {
                 if (mode === 'check') return;
                 setIsInProscess(0);
@@ -178,7 +179,7 @@ export default function IndexLoginAuth() {
               }}
             >
               {mode === 'register' ? 'Создать профиль' : 'Войти'}
-            </button>
+            </TheButton>
           </div>
           {mode === 'register' ? null : <TheButton onClick={() => setMode('register')}>Создать профиль</TheButton>}
         </LoadIndicatedContent>
