@@ -2,7 +2,6 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RoutingAppConfig } from '../../../../app/routing-apps';
 import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
-import { IconCloudDownloadStrokeRounded } from '../../../../complect/the-icon/icons/cloud-download';
 
 interface Props {
   config: RoutingAppConfig;
@@ -23,10 +22,10 @@ export const AppFace = ({ config: { appName, Icon, title, lazies } }: Props) => 
         <Icon />
         <span>{title}</span>
       </Link>
-      <IconCloudDownloadStrokeRounded
+      {/* <IconCloudDownloadStrokeRounded
         className="pointer"
         onClick={setIsOpenFull}
-      />
+      /> */}
       {!isOpenFull || (
         <FullContent
           className="flex center"
