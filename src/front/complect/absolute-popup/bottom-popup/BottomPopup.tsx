@@ -4,13 +4,13 @@ import { ThrowEvent } from '../../eventer/ThrowEvent';
 import Portal from '../../popups/[complect]/Portal';
 import useMountTransition from '../../popups/useMountTransition';
 
-export const BottomPopup = ({ content, close }: { content: ReactNode; close: () => void }) => {
+export const BottomPopup = ({ children, onClose }: { children?: ReactNode; onClose: (is: false) => void }) => {
   const popupContainer = useRef<HTMLDivElement>(null);
   const contentContainer = useRef<HTMLDivElement>(null);
   const overContentContainer = useRef<HTMLDivElement>(null);
   const [isMounted, className] = useMountTransition(true, '', 500);
 
-  useEffect(() => ThrowEvent.listenKeyDown('Escape', () => close()), [close]);
+  useEffect(() => ThrowEvent.listenKeyDown('Escape', () => onClose(false)), [onClose]);
 
   useEffect(() => {
     if (popupContainer.current === null) return;
@@ -19,10 +19,10 @@ export const BottomPopup = ({ content, close }: { content: ReactNode; close: () 
 
     return hookEffectLine()
       .addEventListener(popupContainerNode, 'scroll', () => {
-        if (popupContainerNode.scrollTop === 0) close();
+        if (popupContainerNode.scrollTop === 0) onClose(false);
       })
       .effect();
-  }, [close]);
+  }, [onClose]);
 
   useEffect(() => {
     if (overContentContainer.current === null || popupContainer.current === null) return;
@@ -36,7 +36,7 @@ export const BottomPopup = ({ content, close }: { content: ReactNode; close: () 
           <Popup
             ref={popupContainer}
             className={className}
-            onClick={() => close()}
+            onClick={() => onClose(false)}
           >
             <div
               className="over-container"
@@ -48,10 +48,10 @@ export const BottomPopup = ({ content, close }: { content: ReactNode; close: () 
                 <div className="badge" />
               </div>
               <Content
-                className="content"
+                className="content flex column"
                 ref={contentContainer}
               >
-                {content}
+                {children}
               </Content>
             </div>
           </Popup>
@@ -66,7 +66,6 @@ const Content = styled.div`
     > :not(.abs-item) {
       width: 100%;
       max-width: 450px;
-      margin-bottom: var(--main-big-gap);
     }
   }
 `;
@@ -122,7 +121,7 @@ const Popup = styled.div`
   > .container {
     position: relative;
     width: 100vw;
-    height: 100%;
+    min-height: 50dvh;
     overflow-x: hidden;
     overflow-y: auto;
 
@@ -141,7 +140,7 @@ const Popup = styled.div`
       background-color: var(--color--1);
       padding: 30px;
       width: 100vw;
-      min-height: 100%;
+      min-height: 50dvh;
       overflow: hidden;
 
       .abs-item {
