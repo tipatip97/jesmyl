@@ -32,7 +32,7 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
           {props.onMoreClick && (
             <IconMoreVerticalCircle01StrokeRounded
               className="action-button"
-              onClick={props.onMoreClick}
+              onClick={() => props.onMoreClick?.(true)}
             />
           )}
         </div>
