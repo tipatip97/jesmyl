@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { BottomPopupContenter } from '../../../../../../../../complect/absolute-popup/bottom-popup/model';
-import { EditableCom } from '../../EditableCom';
+import { EditableCom } from '../../com/EditableCom';
 import { EditableOrder } from './EditableOrder';
 import { OrdersRedactorOrderToolsAnchor } from './tools/Anchor';
 import { OrdersRedactorOrderToolsAnchorDelete } from './tools/AnchorDelete';

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 import { useCheckIsAccessed } from '../../../../../../complect/exer/hooks/check-is-accessed';
 import { useExerExec } from '../../../../../../complect/exer/hooks/useExer';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
@@ -12,7 +13,6 @@ import useConnectionState from '../../../../../index/useConnectionState';
 import ComPlayer from '../../../col/com/player/ComPlayer';
 import { editCompositionNavs } from '../../editorNav';
 import PhaseCmEditorContainer from '../../phase-editor-container/PhaseCmEditorContainer';
-import './EditComposition.scss';
 import { useEditableCcom } from './useEditableCcom';
 
 export default function EditComposition() {
@@ -26,7 +26,7 @@ export default function EditComposition() {
   if (!ccom) return null;
 
   return (
-    <PhaseCmEditorContainer
+    <StyledContainer
       className="edit-composition"
       headTitle={`#${ccom.number} ${ccom.initialName || ccom.name}`}
       head={
@@ -92,3 +92,19 @@ export default function EditComposition() {
     />
   );
 }
+
+const StyledContainer = styled(PhaseCmEditorContainer)`
+  .cat-list-title {
+    background-color: var(--color--2);
+  }
+
+  .nav-panel {
+    top: -8px;
+    background: var(--color--1);
+    padding-top: 5px;
+  }
+
+  .com-player {
+    top: 28px;
+  }
+`;

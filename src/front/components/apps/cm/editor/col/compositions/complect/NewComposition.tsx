@@ -7,7 +7,7 @@ import { IconTickDouble02StrokeRounded } from '../../../../../../../complect/the
 import { CmMp3Rule } from '../../../../../../../models';
 import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCols } from '../../useEditableCols';
-import { EditableCom } from '../EditableCom';
+import { EditableCom } from '../com/EditableCom';
 import ComAudio from './audio/ComAudio';
 import ObserveUrlResource from './audio/ObserveUrlResource';
 

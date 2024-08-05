@@ -7,7 +7,7 @@ import { IconViewStrokeRounded } from '../../../../../../../../complect/the-icon
 import { IconViewOffSlashStrokeRounded } from '../../../../../../../../complect/the-icon/icons/view-off-slash';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import TheOrder from '../../../../../col/com/order/TheOrder';
-import { EditableCom } from '../../EditableCom';
+import { EditableCom } from '../../com/EditableCom';
 import { useEditableCcom } from '../../useEditableCcom';
 import { OrdersRedactorOrderTools } from './OrdersRedactorOrderTools';
 import { OrdersRedactorAdditions } from './additions/Additions';

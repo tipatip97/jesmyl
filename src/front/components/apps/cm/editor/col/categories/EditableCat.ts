@@ -6,7 +6,7 @@ import { catTrackers } from '../../../col/cat/Cat.complect';
 import { CatTracker, ComWrap } from '../../../col/cat/Cat.model';
 import { Com } from '../../../col/com/Com';
 import { CorrectsBox } from '../../corrects-box/CorrectsBox';
-import { EditableCom } from '../compositions/EditableCom';
+import { EditableCom } from '../compositions/com/EditableCom';
 import { EditableCol } from '../EditableCol';
 
 export class EditableCat extends Cat {

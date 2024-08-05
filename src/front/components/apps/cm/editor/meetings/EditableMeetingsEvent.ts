@@ -3,7 +3,7 @@ import mylib from '../../../../../complect/my-lib/MyLib';
 import { cmExer } from '../../CmExer';
 import { IExportableMeetingsEvent } from '../../../../../../back/apps/cm/Meetings.model';
 import { MeetingsEvent } from '../../lists/meetings/MeetingsEvent';
-import { EditableCom } from '../col/compositions/EditableCom';
+import { EditableCom } from '../col/compositions/com/EditableCom';
 import { EditableCols } from '../col/EditableCols';
 
 export class EditableMeetingsEvent extends MeetingsEvent {

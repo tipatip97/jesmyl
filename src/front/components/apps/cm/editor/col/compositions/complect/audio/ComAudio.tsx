@@ -7,7 +7,7 @@ import { IconHelpCircleStrokeRounded } from '../../../../../../../../complect/th
 import { IconPlusSignCircleStrokeRounded } from '../../../../../../../../complect/the-icon/icons/plus-sign-circle';
 import { CmMp3Rule } from '../../../../../../../../models';
 import ComPlayer from '../../../../../col/com/player/ComPlayer';
-import { EditableCom } from '../../EditableCom';
+import { EditableCom } from '../../com/EditableCom';
 import { useEditableCcom } from '../../useEditableCcom';
 import ObserveUrlResource from './ObserveUrlResource';
 

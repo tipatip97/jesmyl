@@ -9,7 +9,7 @@ import {
 import { cmExer } from '../../../../../CmExer';
 import { Order } from '../../../../../col/com/order/Order';
 import { EditableOrderRegion, IExportableOrderTop } from '../../../../../col/com/order/Order.model';
-import { EditableCom } from '../../EditableCom';
+import { EditableCom } from '../../com/EditableCom';
 
 export class EditableOrder extends Order {
   _regions?: EditableOrderRegion<EditableOrder>[];

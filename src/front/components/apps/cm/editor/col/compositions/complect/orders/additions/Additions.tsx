@@ -4,7 +4,7 @@ import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useE
 import useModal from '../../../../../../../../../complect/modal/useModal';
 import { IconOptionStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/option';
 import { IconTextStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/text';
-import { EditableCom } from '../../../EditableCom';
+import { EditableCom } from '../../../com/EditableCom';
 
 export const OrdersRedactorAdditions: BottomPopupContenter<EditableCom | und> = (isOpen, _close, _prepare, ccom) => {
   const exec = useExerExec();

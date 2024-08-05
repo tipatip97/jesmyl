@@ -1,5 +1,5 @@
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
-import { EditableCom } from '../../EditableCom';
+import { EditableCom } from '../../com/EditableCom';
 
 export default function TextAreaRedactor({
   ccoln,

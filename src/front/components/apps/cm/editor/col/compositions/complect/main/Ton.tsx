@@ -9,7 +9,7 @@ import { IconCheckmarkCircle02StrokeRounded } from '../../../../../../../../comp
 import { IconNotification01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/notification-01';
 import { ChordVisibleVariant } from '../../../../../Cm.model';
 import ComOrders from '../../../../../col/com/orders/ComOrders';
-import { EditableCom } from '../../EditableCom';
+import { EditableCom } from '../../com/EditableCom';
 
 const dotts = '.'
   .repeat(12)

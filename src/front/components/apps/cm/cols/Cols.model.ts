@@ -2,7 +2,7 @@ import { IExportableCat, IExportableCom } from '../../../../models';
 import { Cat } from '../col/cat/Cat';
 import { Com } from '../col/com/Com';
 import { EditableCat } from '../editor/col/categories/EditableCat';
-import { EditableCom } from '../editor/col/compositions/EditableCom';
+import { EditableCom } from '../editor/col/compositions/com/EditableCom';
 
 export interface ICols {
   coms: Com[];

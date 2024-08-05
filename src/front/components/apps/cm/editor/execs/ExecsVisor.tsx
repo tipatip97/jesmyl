@@ -9,7 +9,7 @@ import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/
 import { ComFace } from '../../col/com/face/ComFace';
 import { useCmEditorExecs } from '../atoms';
 import { ExecVision } from '../CmEditor.model';
-import { EditableCom } from '../col/compositions/EditableCom';
+import { EditableCom } from '../col/compositions/com/EditableCom';
 import { useEditableCols } from '../col/useEditableCols';
 import { EditableMeetingsEvent } from '../meetings/EditableMeetingsEvent';
 import { useEditableMeetings } from '../meetings/useEditableMeetings';

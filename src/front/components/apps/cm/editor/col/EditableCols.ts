@@ -1,7 +1,7 @@
 import { IExportableCols } from '../../../../../models';
 import { Cols } from '../../cols/Cols';
 import { EditableCat } from './categories/EditableCat';
-import { EditableCom } from './compositions/EditableCom';
+import { EditableCom } from './compositions/com/EditableCom';
 
 export class EditableCols extends Cols {
   cats: EditableCat[];

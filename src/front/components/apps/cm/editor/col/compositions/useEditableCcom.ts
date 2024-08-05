@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { EditableCat } from '../categories/EditableCat';
 import { useEditableCcat } from '../categories/useEditableCcat';
-import { EditableCom } from './EditableCom';
+import { EditableCom } from './com/EditableCom';
 
 export function useEditableCcom(): EditableCom | und {
   const zcat: EditableCat | und = useEditableCcat(0);
