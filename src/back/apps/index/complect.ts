@@ -1,4 +1,5 @@
 import smylib from '../../shared/SMyLib';
+import { IScheduleWidgetUserMi, IScheduleWidgetWid } from './models/ScheduleWidget.model';
 
 const zeroEndTrimReg = /0+$/;
 
@@ -122,6 +123,6 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
 
 const isEmptyR = (R: number | nil): R is nil => R === undefined || R === null || R < 2;
 
-export const packScheduleWidgetInviteLink = (schedulew: number, userMi: number) => {
+export const packScheduleWidgetInviteLink = (schedulew: IScheduleWidgetWid, userMi: IScheduleWidgetUserMi) => {
   return smylib.md5(schedulew + ':' + userMi);
 };

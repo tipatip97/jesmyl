@@ -3,17 +3,16 @@ import { indexService } from '../../../apps/index/service';
 import { SokiServerDoAction, SokiServerDoActionProps, SokiServicePack } from '../soki.model';
 import { SokiServerConnection } from './70-Connection';
 
+const services: SokiServicePack = {
+  cm: cmService,
+  index: indexService,
+};
+
 export class SokiServerServices extends SokiServerConnection implements SokiServerDoAction<'ServiceActions'> {
   async doOnServiceActions(props: SokiServerDoActionProps) {
     if (props.eventBody.service === undefined || !props.eventData.appName) return false;
-    const { appName, client, eventBody, eventData, requestId } = props;
-
-    const service = eventBody.service!;
-
-    const services: SokiServicePack = {
-      cm: cmService,
-      index: indexService,
-    };
+    const { appName, client, eventData, requestId } = props;
+    const service = props.eventBody.service;
 
     if (services[eventData.appName] === undefined) {
       this.send(
