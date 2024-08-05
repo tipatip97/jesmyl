@@ -73,7 +73,7 @@ export class SokiTrip {
     const appName = (parts[0] || parts[1]) as SokiAppName | '';
     if (appName !== '' && sokiAppNamesSet.has(appName)) return appName;
 
-    return null;
+    return 'index';
   }
 
   onClose = () => {

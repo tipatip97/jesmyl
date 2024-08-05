@@ -74,14 +74,6 @@ export interface JesmylPassport {
   tgId?: number;
 }
 
-export interface IndexNavData {
-  passport: JesmylPassport;
-  swInvite: string;
-  schw: number;
-  schTranslationComws: number[];
-  schTranslationEventw: number;
-}
-
 export interface UserMessage {
   at: string;
   fio: string;

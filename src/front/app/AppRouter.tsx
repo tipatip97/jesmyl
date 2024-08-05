@@ -1,10 +1,12 @@
 import { memo, useEffect } from 'react';
 import { Route, Routes, useParams, useSearchParams } from 'react-router-dom';
+import { AppActions, appActionsRouteName as scheduleWidgetActionsRouteName } from './AppActions';
 import ScheduleWidgetTgDayView from '../complect/schedule-widget/general/TgDayView';
 import IndexMain from '../components/index/parts/main/IndexMain';
 import { soki } from '../soki';
 import { AppName } from './App.model';
 import { routingApps } from './routing-apps';
+import { useInitSoki } from './useInitSoki';
 
 const AppRouter = memo(() => {
   return (
@@ -16,6 +18,10 @@ const AppRouter = memo(() => {
       <Route
         path="schedule-day"
         element={<ScheduleWidgetTgDayView />}
+      />
+      <Route
+        path={scheduleWidgetActionsRouteName}
+        element={<AppActions />}
       />
     </Routes>
   );
@@ -36,14 +42,7 @@ const Router = () => {
   const [searchs] = useSearchParams();
 
   useEffect(effect, [params, searchs]);
-
-  useEffect(() => {
-    if (app === undefined) return;
-
-    return hookEffectLine()
-      .setTimeout(() => soki.pullCurrentAppData(app.appName), 300)
-      .effect();
-  }, [app]);
+  useInitSoki();
 
   return <>{app?.router(otherRoute)}</>;
 };

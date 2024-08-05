@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+import { makeAppActionLink } from '../../../../app/AppActions';
 import { IconEdit02StrokeRounded } from '../../../../complect/the-icon/icons/edit-02';
 import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import { IconNotification01StrokeRounded } from '../../../../complect/the-icon/icons/notification-01';
@@ -15,7 +16,7 @@ import Modal from '../../../modal/Modal/Modal';
 import { ModalBody } from '../../../modal/Modal/ModalBody';
 import { ModalHeader } from '../../../modal/Modal/ModalHeader';
 import useToast from '../../../modal/useToast';
-import useQRMaster, { crossApplicationLinkCoder } from '../../../qr-code/useQRMaster';
+import useQRMaster from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import IconButton from '../../../the-icon/IconButton';
@@ -80,11 +81,11 @@ export default function ScheduleWidgetUser({
                   const levelTitle = scheduleWidgetUserRights.texts[balance].role?.[1];
 
                   return {
-                    url: crossApplicationLinkCoder.encode({
-                      appName: 'index',
-                      key: 'swInvite',
-                      value: packScheduleWidgetInviteLink(rights.schedule.w, user.mi),
-                    }),
+                    url: makeAppActionLink(
+                      'index',
+                      'swInvite',
+                      packScheduleWidgetInviteLink(rights.schedule.w, user.mi),
+                    ),
                     title: `Приглашение ${levelTitle}${user.fio ? ` - ${user.fio}` : ''}`,
                     text: user.fio
                       ? `${user.fio}, приветствую! Приглашаю вас в качестве ${levelTitle} на мероприятие ${rights.schedule.title}`

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useInitSoki } from '../../../app/useInitSoki';
 import { removePullRequisites, useAuthState, useIndexSchedules } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
 import mylib from '../../my-lib/MyLib';
@@ -26,6 +27,8 @@ if (url.hash.startsWith(`#${hashParamName}`)) {
 }
 
 export default function ScheduleWidgetTgDayView() {
+  useInitSoki('index');
+
   return (
     <TelegramWebAppApiOr>
       {(api, isLoading) =>

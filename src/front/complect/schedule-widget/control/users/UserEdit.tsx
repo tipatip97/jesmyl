@@ -4,10 +4,10 @@ import {
   packScheduleWidgetInviteLink,
   scheduleWidgetUserRights,
 } from '../../../../models';
-import { crossApplicationLinkCoder } from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
+import { makeAppActionLink } from '../../../../app/AppActions';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetRightControlList from '../RightControlList';
 
@@ -56,11 +56,7 @@ export function ScheduleWidgetUserEdit({
       )}
       {!user.login && (
         <div className="user-select margin-giant-gap-t">
-          {crossApplicationLinkCoder.encode({
-            appName: 'index',
-            key: 'swInvite',
-            value: packScheduleWidgetInviteLink(rights.schedule.w, user.mi),
-          })}
+          {makeAppActionLink('index', 'swInvite', packScheduleWidgetInviteLink(rights.schedule.w, user.mi))}
         </div>
       )}
     </>
