@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 import { Route, Routes, useParams, useSearchParams } from 'react-router-dom';
-import { AppActions, appActionsRouteName as scheduleWidgetActionsRouteName } from './AppActions';
+import { AppServiceActions, appServiceActionsRouteName as scheduleWidgetActionsRouteName } from './AppActions';
 import ScheduleWidgetTgDayView from '../complect/schedule-widget/general/TgDayView';
 import IndexMain from '../components/index/parts/main/IndexMain';
 import { soki } from '../soki';
@@ -21,7 +21,7 @@ const AppRouter = memo(() => {
       />
       <Route
         path={scheduleWidgetActionsRouteName}
-        element={<AppActions />}
+        element={<AppServiceActions />}
       />
     </Routes>
   );
