@@ -63,6 +63,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             const { context } = meetings.contexts[event.contextw] || {};
             const node = (
               <BrutalItem
+                key={eventwi}
                 icon={<IconCalendar01SolidSharp />}
                 title={event.name}
                 onClick={onEventClick && (() => onEventClick(event as never))}
@@ -134,6 +135,7 @@ export default function MeetingsInner<Meets extends Meetings>({
             </Link>
           ))(
           <BrutalItem
+            key={eventi}
             icon={<IconCalendar02StrokeRounded />}
             title={event.name}
             onClick={onEventClick && (() => onEventClick(event as never))}

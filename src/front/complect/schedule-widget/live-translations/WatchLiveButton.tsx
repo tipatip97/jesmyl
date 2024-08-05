@@ -11,7 +11,10 @@ export const ScheduleWidgetWatchLiveTranslationButton = ({ schedule }: { schedul
   return (
     <>
       {isOpen && (
-        <FullContent onClose={setIsOpen}>
+        <FullContent
+          onClose={setIsOpen}
+          containerClassName=""
+        >
           <ScheduleWidgetLiveTranslation
             onClose={setIsOpen}
             schedule={schedule}

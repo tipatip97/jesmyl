@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { SetStateAction, useEffect, useMemo, useState } from 'react';
 import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
+import { contextCreator } from '../complect/contextCreator';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
 import { KeyboardInputStorage } from '../complect/keyboard/KeyboardStorage';
+import { MyLib } from '../complect/my-lib/MyLib';
 import { IconArrowShrink02StrokeRounded } from '../complect/the-icon/icons/arrow-shrink-02';
 import listenThemeChanges from '../complect/theme-changer';
 import { useFullScreen } from '../complect/useFullscreen';
@@ -15,6 +17,13 @@ import AppRouter from './AppRouter';
 listenThemeChanges();
 
 const emptyArr: [] = [];
+const emptyDict = {};
+
+const [SetAppRootAnchorNodesContext, useSetAppRootAnchorNodesContext] = contextCreator(
+  (_nodes: SetStateAction<Record<string, React.ReactNode>>) => {},
+);
+
+export { useSetAppRootAnchorNodesContext };
 
 export default function AppComponent() {
   const currentApp = useCurrentApp();
@@ -23,6 +32,7 @@ export default function AppComponent() {
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const [isShowLogo, setIsShowLogo] = useState(true);
   const [, setIsReady] = useIsReadyRouter();
+  const [rootAnchorNodes, setRootAnchorNodes] = useState<Record<string, React.ReactNode>>(emptyDict);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -61,21 +71,24 @@ export default function AppComponent() {
   }, []);
 
   return (
-    <div className={`above-container ${keyboardOpen ? 'keyboard-open' : ''}`}>
-      {isShowLogo && (
-        <div className="jesmyl-smile-box flex center absolute full-width full-height z-index:5">
-          <JesmylLogo className="no-fade-in-effect" />
+    <SetAppRootAnchorNodesContext.Provider value={setRootAnchorNodes}>
+      {MyLib.values(rootAnchorNodes)}
+      <div className={`above-container ${keyboardOpen ? 'keyboard-open' : ''}`}>
+        {isShowLogo && (
+          <div className="jesmyl-smile-box flex center absolute full-width full-height z-index:5">
+            <JesmylLogo className="no-fade-in-effect" />
+          </div>
+        )}
+        <div className={`application-container app_${currentApp}${isFullscreen ? ' fullscreen-mode' : ''}`}>
+          <IconArrowShrink02StrokeRounded
+            className="collapse-fullscreen-button pointer"
+            onClick={() => switchFullscreen(false)}
+          />
+          <ABSOLUTE__FLOAT__POPUP onOpen={() => {}} />
+          <AppRouter />
         </div>
-      )}
-      <div className={`application-container app_${currentApp}${isFullscreen ? ' fullscreen-mode' : ''}`}>
-        <IconArrowShrink02StrokeRounded
-          className="collapse-fullscreen-button pointer"
-          onClick={() => switchFullscreen(false)}
-        />
-        <ABSOLUTE__FLOAT__POPUP onOpen={() => {}} />
-        <AppRouter />
+        <KEYBOARD_FLASH {...keyboardProps} />
       </div>
-      <KEYBOARD_FLASH {...keyboardProps} />
-    </div>
+    </SetAppRootAnchorNodesContext.Provider>
   );
 }

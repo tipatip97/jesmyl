@@ -40,7 +40,7 @@ export default function ComFaceContextMenu({ onClick, comWid }: { onClick: () =>
           }}
         />
       )}
-      <ComFaceContextMenuEditorItems />
+      <ComFaceContextMenuEditorItems onClick={onClick} />
     </>
   );
 }

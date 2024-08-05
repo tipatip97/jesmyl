@@ -347,10 +347,10 @@ textarea {
 
   &.column {
     flex-direction: column;
-  }
 
-  &.column-reverse {
-    flex-direction: column-reverse;
+    &-reverse {
+      flex-direction: column-reverse;
+    }
   }
 
   &.start {

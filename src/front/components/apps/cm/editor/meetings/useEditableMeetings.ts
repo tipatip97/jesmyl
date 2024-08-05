@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IExportableMeetings } from '../../../../../../back/apps/cm/Meetings.model';
 import { useAtomValue } from '../../../../../complect/atoms';
 import { cmMeetingsAtom } from '../../molecules';
@@ -11,6 +11,7 @@ let localIMeetings: IExportableMeetings | nil;
 
 export function useEditableMeetings() {
   const imeetings = useAtomValue(cmMeetingsAtom);
+  const navigate = useNavigate();
 
   const eventw = +useParams().eventw!;
   const cols = useEditableCols();
@@ -26,6 +27,6 @@ export function useEditableMeetings() {
   return {
     meetings,
     currentEvent: meetings?.events?.find(meeting => meeting.wid === eventw),
-    goToEvent: useCallback((eventw: number) => {}, []),
+    goToEvent: useCallback((eventw: number) => navigate(`/cm/edit/events/${eventw}`), [navigate]),
   };
 }
