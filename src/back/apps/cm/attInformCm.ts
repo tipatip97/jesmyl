@@ -1,12 +1,10 @@
 import { filer } from '../../complect/filer/Filer';
-import { makeSharedLink } from '../../complect/link-coder/linkMaker';
 import environment from '../../environments/environment';
 import { AttTgInformStorage } from '../index/schedules/tg-bot-inform/attInformStorage';
 import { CmComWid, CmMeetingEventWid } from './Cm.enums';
 import { CmComBindAttach, IExportableCols, IExportableCom } from './CmBackend.model';
 import { IExportableMeetings, IExportableMeetingsEvent } from './Meetings.model';
 
-const crossApplicationLinkCoder = makeSharedLink(environment.host);
 const getMeetings = () => filer.contents.cm.meetings?.data as IExportableMeetings | nil;
 const getCols = () => filer.contents.cm.cols?.data as IExportableCols | nil;
 
@@ -40,10 +38,6 @@ export const cmTgAttInform: AttTgInformStorage = {
       titles = comws.map(makeComName).join('\n');
     }
 
-    return `Песни:\n${titles}\n\n${crossApplicationLinkCoder.encode({
-      appName: 'cm',
-      key: 'selectedComws',
-      value: comws,
-    })}\n\n`;
+    return `Песни:\n${titles}\n\n${environment.host}/cm/li/selected?scomws=[${comws}]\n\n`;
   },
 };
