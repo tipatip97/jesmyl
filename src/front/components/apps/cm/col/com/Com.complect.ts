@@ -1,6 +1,8 @@
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import { MyLib } from '../../../../../complect/my-lib/MyLib';
 
-export const iRuUaReg = /[уеыаоэяиёюіїє ]/i;
+export const ruUaSingLettersStr = 'уеыаоэяиёюіїє ' as const;
+export const iRuUaReg = makeRegExp(`/[${ruUaSingLettersStr}]/i`);
 export const gSimpleHashChordReg = /[ACDEFGH]#?/g;
 export const gSimpleBemoleChordReg = /[ABCDEFGH]b?/g;
 export const gSimpleHashedEachLetterChordReg = /[A-H]#/g;

@@ -7,6 +7,7 @@ import { IconGridStrokeRounded } from '../../../../../../../../complect/the-icon
 import { IconPlusSignCircleStrokeRounded } from '../../../../../../../../complect/the-icon/icons/plus-sign-circle';
 import EditContainerCorrectsInformer from '../../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
 import { useEditableCcom } from '../../useEditableCcom';
+import { CutTextRedactor } from './CutText';
 import TextAreaRedactor from './TextAreaRedactor';
 
 export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chords' }) {
@@ -77,6 +78,12 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
                 onChange={value => exec(ccom.changeBlock(ccoln, coli, value))}
               />
               <IconPlusSignCircleStrokeRounded onClick={() => exec(ccom.insertBlocks(ccoln, coli, ''))} />
+              {istcoln && (
+                <CutTextRedactor
+                  ccom={ccom}
+                  coli={coli}
+                />
+              )}
             </div>
           </EditContainerCorrectsInformer>
         );

@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { ConfirmContent } from '../modal/confirm/ConfirmContent';
 import useToast from '../modal/useToast';
 import { TheIconType } from './model';
+import mylib from '../my-lib/MyLib';
 
 interface Props {
   Icon: TheIconType;
   disabled?: boolean;
-  disabledReason?: ReactNode;
+  disabledReason?: (() => ReactNode) | ReactNode;
   confirm?: string;
   prefix?: ReactNode;
   postfix?: ReactNode;
@@ -86,7 +87,7 @@ const DisabledReasonContained = <Node extends HTMLElement>({
   ...props
 }: {
   Comp: FunctionComponent<HTMLAttributes<Node>>;
-  disabledReason: ReactNode | und;
+  disabledReason?: (() => ReactNode) | ReactNode | und;
   disabled: boolean | und;
 } & HTMLAttributes<Node>) => {
   return disabled && disabledReason ? (
@@ -108,7 +109,7 @@ const WithDisabledReason = <Node extends HTMLElement>({
   ...props
 }: {
   Comp: FunctionComponent<HTMLAttributes<Node>>;
-  disabledReason: ReactNode;
+  disabledReason?: (() => ReactNode) | ReactNode;
   disabled: boolean | und;
 } & HTMLAttributes<Node>) => {
   const [toastNode, toast] = useToast();
@@ -118,7 +119,7 @@ const WithDisabledReason = <Node extends HTMLElement>({
       {toastNode}
       <Comp
         {...props}
-        onClick={() => toast(disabledReason, { mood: 'ko' })}
+        onClick={() => toast(mylib.isFunc(disabledReason) ? disabledReason() : disabledReason, { mood: 'ko' })}
       />
     </>
   );

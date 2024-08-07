@@ -1,12 +1,13 @@
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
 import { EditableComOrders } from './20-Orders';
+
+const itTrim = (it: string) => it.trim();
 
 export class EditableComBlocks extends EditableComOrders {
   changeBlock(coln: 'texts' | 'chords', coli: number, val: string, isInsert = false) {
     const value = coln === 'texts' ? val : this.transBlock(val, 12 - (this.transPosition || 0));
     if (value == null) return;
-    const execValue = value.replace(makeRegExp('/^\\s+|\\s+$/gm'), '');
+    const execValue = value.split('\n').map(itTrim).join('\n');
     const corrects = this.setBlockCorrects(coln, coli, val);
     const colnLiteral = coln === 'texts' ? 't' : 'c';
 

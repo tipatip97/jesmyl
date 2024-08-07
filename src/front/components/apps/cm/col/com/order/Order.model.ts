@@ -38,6 +38,10 @@ export interface IExportableOrderTop extends IExportableOrder {
   isInherit?: boolean;
   isAnchorInherit?: boolean;
   isAnchorInheritPlus?: boolean;
+  text?: string;
+  chords?: string;
+  chordLabels?: string[][];
+  positions?: number[][];
   isNextInherit?: boolean;
   isNextAnchorOrd?: boolean;
   isPrevTargetOrd?: boolean;

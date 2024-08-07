@@ -350,6 +350,12 @@ const config: FilerAppConfig = {
               },
               '/p': {
                 expected: [],
+                action: 'comSetOrderChordPositionBlock',
+                method: 'set',
+                title: 'В песне "$name", в порядковом  блоке полностью изменена аппликатура',
+                args: {
+                  value: '#List',
+                },
                 '/{linei}': {
                   level: 50,
                   action: 'comSetOrderChordPositionLine',

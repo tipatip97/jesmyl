@@ -179,17 +179,6 @@ export class EditableOrder extends Order {
       : this.top.isAnchor && this.top.source?.[key] == null;
   }
 
-  get texti() {
-    return this.getBasic('t');
-  }
-  set texti(val) {
-    this.setExportable('t', val);
-  }
-
-  get text() {
-    return (this.texti != null && this.com.texts && this.com.texts[this.texti]) || '';
-  }
-
   get unique() {
     return this.top.source?.u ?? this.top.u;
   }

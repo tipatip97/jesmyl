@@ -90,13 +90,17 @@ export class Order extends SourceBased<IExportableOrderTop> {
     this.setExportable('t', val);
   }
 
-  get positions(): number[][] | nil {
+  get positions(): (number[] | null)[] | nil {
     return (
+      this.top.positions ??
       this.getInheritance('p') ??
       this.top.watchOrd?.top.source?.p ??
       this.top.targetOrd?.top.source?.p ??
       (this.top.source && (this.top.source.p = []))
     );
+  }
+  set positions(val) {
+    this.setExportable('p', val);
   }
 
   get type() {
@@ -107,11 +111,15 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   get text() {
-    return (this.texti != null && this.com.texts && this.com.texts[this.texti]) || '';
+    return this.top.text ?? ((this.texti != null && this.com.texts && this.com.texts[this.texti]) || '');
   }
 
   get chords() {
-    return (this.chordsi != null && this.com.chords?.[this.chordsi]) || '';
+    return this.top.chords ?? ((this.chordsi != null && this.com.chords?.[this.chordsi]) || '');
+  }
+
+  get chordLabels() {
+    return this.top.chordLabels;
   }
 
   get isVisible(): boolean {

@@ -317,7 +317,7 @@ export class Com extends BaseNamed<IExportableCom> {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 
-      (chords || '').split(makeRegExp('/\\s*\\n+\\s*/')).forEach(line => {
+      (chords || '').split(makeRegExp('/\\n/')).forEach(line => {
         const lineLabels: string[] = [];
         ordLabels.push(lineLabels);
 

@@ -24,7 +24,7 @@ export type OrderRepeats = number | SpecielOrderRepeats;
 
 export interface InheritancableOrder {
   r?: OrderRepeats | null; // Повторения
-  p?: number[][] | nil; // Позиции аккордов
+  p?: (number[] | null)[] | nil; // Позиции аккордов
   v?: num; // Видимость блока
 }
 
@@ -55,7 +55,7 @@ export interface IExportableCom {
   n: string;
   w: CmComWid;
   k?: number; // вариант группировки строк для трансляций
-  p?: number; // позиции аккордов
+  p?: number; // уровень модулирования
   l?: number; // язык песни
   b?: num; // бемольная песня
   a?: string; // аудио файлы

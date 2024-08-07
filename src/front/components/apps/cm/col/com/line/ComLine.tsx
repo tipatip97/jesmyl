@@ -37,7 +37,8 @@ export default function ComLine(props: IComLineProps) {
   let chordIndex = 0;
   let points = vowelPositions;
 
-  const chordsLabels = props.com.chordLabels[props.orderUniti]?.[props.textLinei] || [];
+  const chordsLabels =
+    (props.orderUnit.chordLabels ?? props.com.chordLabels[props.orderUniti])?.[props.textLinei] || [];
   const linePositions = props.orderUnit.positions?.[props.textLinei] || [];
 
   if (props.isJoinLetters !== false)

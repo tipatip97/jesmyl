@@ -61,7 +61,7 @@ export default function TheOrder(props: ITheOrderProps) {
         })
       : headerNode;
 
-  if (orderUnit.texti == null) {
+  if (!orderUnit.text) {
     if (!orderUnit.chords) return null;
 
     return (
