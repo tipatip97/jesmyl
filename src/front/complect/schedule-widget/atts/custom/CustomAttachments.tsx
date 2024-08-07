@@ -14,8 +14,8 @@ const newTatt: ScheduleWidgetAppAttCustomizable = {
   icon: 'IconAttachmentStrokeRounded',
   initVal: {},
   title: '',
-  R: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
-  U: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
+  R: scheduleWidgetUserRights.includeRights(ScheduleWidgetUserRoleRight.Redact),
+  U: scheduleWidgetUserRights.includeRights(ScheduleWidgetUserRoleRight.Redact),
 };
 
 export default function ScheduleWidgetCustomAttachments(

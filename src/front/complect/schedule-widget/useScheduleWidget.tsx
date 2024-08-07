@@ -1,7 +1,6 @@
 import React, { useContext, useMemo } from 'react';
 import { appAttsStore } from '../../components/complect/appScheduleAttrsStorage';
-import { useAuth } from '../../components/index/molecules';
-import { useIndexSchedules } from '../../components/index/molecules';
+import { useAuth, useIndexSchedules } from '../../components/index/molecules';
 import {
   LocalSokiAuth,
   ScheduleWidgetRegType,
@@ -9,6 +8,7 @@ import {
   scheduleWidgetRegTypeRights,
   scheduleWidgetUserRights,
 } from '../../models';
+import { contextCreator } from '../contextCreator';
 import mylib, { MyLib } from '../my-lib/MyLib';
 import { strongScopeMakerBuilder } from '../strong-control/useStrongControl';
 import {
@@ -36,11 +36,9 @@ export default function useScheduleWidget(schedulew?: number, schedule?: ISchedu
   return ret;
 }
 
-export const ScheduleWidgetAppAttsContext = React.createContext<[ScheduleWidgetAppAtts, ScheduleWidgetAttRefs]>([
-  {},
-  {},
-]);
-export const useScheduleWidgetAppAttsContext = () => useContext(ScheduleWidgetAppAttsContext);
+export const [ScheduleWidgetAppAttsContext, useScheduleWidgetAppAttsContext] = contextCreator<
+  [ScheduleWidgetAppAtts, ScheduleWidgetAttRefs]
+>([{}, {}]);
 
 export const defaultScheduleWidget: IScheduleWidget = {
   w: 0 as never,

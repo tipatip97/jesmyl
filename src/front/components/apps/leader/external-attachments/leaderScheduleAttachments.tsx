@@ -12,8 +12,8 @@ export const leaderOwnGameResultBoardAppAtt: ScheduleWidgetAppAtts<'leader', Lea
     title: 'Игра',
     description: 'Результаты командной игры контекста',
     initVal: {},
-    R: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
-    U: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
+    R: scheduleWidgetUserRights.includeRights(ScheduleWidgetUserRoleRight.Redact),
+    U: scheduleWidgetUserRights.includeRights(ScheduleWidgetUserRoleRight.Redact),
     result: (value, scope, isRedact, switchIsRedact) => (
       <LeaderTeamGameAttach
         switchIsRedact={switchIsRedact}

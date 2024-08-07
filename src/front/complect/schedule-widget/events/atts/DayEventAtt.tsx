@@ -26,19 +26,19 @@ const makeReg = (phase: ScheduleWidgetScopePhase) => {
 const dayPhaseMarkerReg = makeReg('dayi');
 const eventPhaseMarkerReg = makeReg('eventMi');
 
-export default function ScheduleWidgetDayEventAtt(
-  props: StrongComponentProps<{
-    typeBox: ScheduleWidgetDayListItemTypeBox;
-    event: IScheduleWidgetDayEvent;
-    day: IScheduleWidgetDay;
-    dayi: number;
-    attKey: ScheduleWidgetAttKey;
-    att: ScheduleWidgetDayEventAttValue;
-    isPast: boolean;
-    schedule: IScheduleWidget;
-    isCanRedact: boolean;
-  }>,
-) {
+type Props = StrongComponentProps<{
+  typeBox: ScheduleWidgetDayListItemTypeBox;
+  event: IScheduleWidgetDayEvent;
+  day: IScheduleWidgetDay;
+  dayi: number;
+  attKey: ScheduleWidgetAttKey;
+  att: ScheduleWidgetDayEventAttValue;
+  isPast: boolean;
+  schedule: IScheduleWidget;
+  isCanRedact: boolean;
+}>;
+
+export default function ScheduleWidgetDayEventAtt(props: Props) {
   const [appAtts] = useScheduleWidgetAppAttsContext();
   const appAtt = appAtts[props.attKey];
   const [attTitleNode, isExpand] = useIsRememberExpand(
@@ -49,14 +49,13 @@ export default function ScheduleWidgetDayEventAtt(
     </>,
   );
 
-  const { isRedact, editIcon, setIsSelfRedact } = useIsRedactArea(true, null, true, true);
+  const { isRedact, editIcon, setIsSelfRedact } = useIsRedactArea(true, null, props.isCanRedact, true);
 
   if (!appAtt) return <div className="error-message">Неизвестное вложение</div>;
   let notateNode = null;
 
   let linkTitle = null;
   let attContent = null;
-  let isCanRedact = props.isCanRedact;
 
   try {
     let attValue = props.att;
@@ -68,7 +67,7 @@ export default function ScheduleWidgetDayEventAtt(
       const event = day?.list.find(event => event.mi === eventMi);
 
       if (attValue[0] < 0) {
-        isCanRedact = false;
+        props.isCanRedact = false;
         notateNode = <IconViewStrokeRounded className="color--3 icon-scale-05" />;
 
         attContent = isExpand && (
@@ -122,7 +121,7 @@ export default function ScheduleWidgetDayEventAtt(
       <div className="flex flex-gap inline-block between color--7">
         {attTitleNode}
         <div className="flex">
-          {isCanRedact && isExpand && editIcon}
+          {isExpand && editIcon}
           {notateNode}
         </div>
       </div>

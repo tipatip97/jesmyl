@@ -27,7 +27,7 @@ if (url.hash.startsWith(`#${hashParamName}`)) {
 }
 
 export default function ScheduleWidgetTgDayView() {
-  useInitSoki('index');
+  useInitSoki('cm');
 
   return (
     <TelegramWebAppApiOr>

@@ -43,11 +43,22 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
     return R;
   };
 
-  includeRightsUpTo = (ruleKey: Right) => {
+  includeRightsReversed = (ruleKey: Right) => {
     let R = 1;
     const ind = this.enumOrder.indexOf(ruleKey);
 
     for (let i = this.enumOrder.length - 1; i >= ind; i--) {
+      R = this.switchRights(R, this.enumOrder[i], '1');
+    }
+
+    return R;
+  };
+
+  includeRights = (ruleKey: Right) => {
+    let R = 1;
+    const ind = this.enumOrder.indexOf(ruleKey);
+
+    for (let i = 0; i <= ind; i++) {
       R = this.switchRights(R, this.enumOrder[i], '1');
     }
 

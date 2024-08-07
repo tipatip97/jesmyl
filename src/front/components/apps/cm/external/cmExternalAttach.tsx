@@ -1,5 +1,5 @@
 import { ScheduleWidgetAppAtts } from '../../../../complect/schedule-widget/ScheduleWidget.model';
-import { CmComBindAttach, ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../models';
+import { CmComBindAttach, scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../../models';
 import CmExternalComListAtt from './complect/CmExternalComListAtt';
 
 export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
@@ -9,7 +9,7 @@ export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
     description: 'Список известных песен',
     initVal: {},
     R: ScheduleWidgetUserRoleRight.Free,
-    U: scheduleWidgetUserRights.includeRightsUpTo(ScheduleWidgetUserRoleRight.Redact),
+    U: scheduleWidgetUserRights.includeRights(ScheduleWidgetUserRoleRight.Redact),
     result: (value, scope, isRedact, switchIsRedact) => {
       return (
         <CmExternalComListAtt

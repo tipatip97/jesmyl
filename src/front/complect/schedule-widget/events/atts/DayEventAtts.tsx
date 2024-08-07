@@ -26,7 +26,7 @@ export default function ScheduleWidgetDayEventAtts(
 ) {
   const [appAtts] = useScheduleWidgetAppAttsContext();
   const rights = useScheduleWidgetRightsContext();
-  const myUserR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
+  const userR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
   const atts = MyLib.entries(props.event.atts);
 
   MyLib.entries(props.typeBox.atts).forEach(attEntry => {
@@ -37,7 +37,7 @@ export default function ScheduleWidgetDayEventAtts(
     <>
       {atts.map(([attKey, att]) => {
         const appAtt = appAtts[attKey];
-        if (!appAtt || !scheduleWidgetUserRights.checkIsCan(myUserR, appAtt.R)) return null;
+        if (!appAtt || !scheduleWidgetUserRights.checkIsCan(userR, appAtt.R)) return null;
         const scope = takeStrongScopeMaker(props.scope, ' attKey/', attKey);
 
         return (
@@ -52,7 +52,7 @@ export default function ScheduleWidgetDayEventAtts(
             schedule={props.schedule}
             event={props.event}
             isPast={props.isPast}
-            isCanRedact={scheduleWidgetUserRights.checkIsCan(myUserR, appAtt.U)}
+            isCanRedact={scheduleWidgetUserRights.checkIsCan(userR, appAtt.U)}
           />
         );
       })}
