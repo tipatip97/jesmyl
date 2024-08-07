@@ -169,7 +169,7 @@ export class EditableComCutBlock extends EditableComParseBlocks {
             positions,
             text: newText,
             v: 1,
-            chordLabels: !initialChords.some((line, linei) => line.length !== positions[linei].length)
+            chordLabels: !initialChords.some((line, linei) => line.length !== positions[linei]?.length)
               ? initialChords
               : chordLabels,
           },
