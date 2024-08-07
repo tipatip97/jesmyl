@@ -32,9 +32,7 @@ export class EditableCat extends Cat {
 
   search(term = this.term) {
     if (term) {
-      if (term === '@1') {
-        this.wraps = this.coms.filter(com => !com.audio.trim()).map(com => ({ item: com }));
-      } else if (term === '@2') {
+      if (term === '@@2') {
         this.wraps = this.coms
           .map(com => {
             com.texts?.forEach((text, texti) => com.setBlockCorrects('texts', texti, text, true));
@@ -54,6 +52,8 @@ export class EditableCat extends Cat {
     } else this.wraps = this.coms.map(com => ({ item: com }));
 
     this.term = term;
+
+    return this.wraps;
   }
 
   putComs() {

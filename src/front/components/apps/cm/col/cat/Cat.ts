@@ -66,5 +66,7 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
     this.searchedComs = this.wraps.map(wrap => wrap.item);
 
     this.term = term;
+
+    return this.wraps;
   }
 }

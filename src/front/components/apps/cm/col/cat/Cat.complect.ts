@@ -29,3 +29,22 @@ export const catTrackers: CatTracker[] = [
     select: (com: Com) => com.langi === 1,
   },
 ];
+
+export type CatSpecialSearches = {
+  title: string;
+  map: (coms: Com[], term: string) => Com[];
+};
+
+export const catSpecialSearches: Record<`@${string}`, CatSpecialSearches> = {
+  '@audioLess': {
+    title: 'Песни без аудио',
+    map: coms => coms.filter(com => !com.audio.trim()),
+  },
+  '@lineLen:': {
+    title: 'Со сторкой больше чем:элементов[50]',
+    map: (coms, term) => {
+      const count = +term.split(':')[1] || 50;
+      return coms.filter(com => com.texts?.some(text => text.split('\n').some(t => t.length > count)));
+    },
+  },
+};
