@@ -1,4 +1,5 @@
 import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import Correct from '../../../../corrects-box/Correct';
 import { CorrectsBox } from '../../../../corrects-box/CorrectsBox';
 import { EditableOrder } from '../../complect/orders/EditableOrder';
 import { EditableComParseBlocks } from './31-ParseBlocks';
@@ -9,6 +10,8 @@ const mapJoinBySpace = (it: string[]) => it.join(' ');
 const mapClone = <It>(it: It[]) => it.map(it => it);
 
 export class EditableComCutBlock extends EditableComParseBlocks {
+  ordersOnChange: EditableOrder[] = [];
+
   cutBlock(coli: number, ords: EditableOrder[]) {
     const text = ords[0].top.text;
     if (!text) return;
@@ -40,12 +43,22 @@ export class EditableComCutBlock extends EditableComParseBlocks {
       this.changeBlock('chords', ord.chordsi, chords);
     });
 
-    delete this.corrects[`texts-block-${coli}`];
-
     this.afterOrderChange();
   }
 
-  prepareCutBlock(texti: number): { ords: EditableOrder[]; disabled: boolean; disabledReason: string } | und {
+  fixCorrectError(code: number, texti: number, message: string): string {
+    const corrects = (this.corrects[`texts-block-${texti}`] ??= new CorrectsBox([]));
+
+    const index = corrects.errors?.findIndex(cor => cor.code === code);
+
+    if (index === undefined || index < 0) {
+      corrects.errors = corrects.errors?.concat(new Correct({ message, code })) ?? [];
+    }
+
+    return message;
+  }
+
+  prepareCutBlock(texti: number) {
     const comTexts = this.texts;
     const text = comTexts?.[texti];
 
@@ -59,7 +72,6 @@ export class EditableComCutBlock extends EditableComParseBlocks {
     const comChords = this.chords;
     const newOrds: EditableOrder[] = [];
     const newText = text.replace(makeRegExp('/\\s*\\$+\\s*/g'), '\n');
-    let disabled = false;
     let disabledReason = '';
 
     if (ords.length === 0) {
@@ -78,12 +90,11 @@ export class EditableComCutBlock extends EditableComParseBlocks {
             ordTextDollarsCount !== dollarsCount &&
             comTexts[comOrd.t].split('\n').length === text.split('\n').length
           ) {
-            const message = `Не совпадает количество символов $ для разбивки текстов (${dollarsCount})`;
-
-            this.corrects[`texts-block-${comOrd.t}`] = new CorrectsBox([{ message }]);
-
-            disabled = true;
-            disabledReason += `\n${message}`;
+            disabledReason = this.fixCorrectError(
+              982346544100137,
+              comOrd.t,
+              `Не совпадает количество символов $ для разбивки текстов`,
+            );
           }
         });
       });
@@ -162,22 +173,49 @@ export class EditableComCutBlock extends EditableComParseBlocks {
         });
       });
 
-      newOrds.push(
-        new EditableOrder(
-          {
-            ...ord,
-            positions,
-            text: newText,
-            v: 1,
-            chordLabels: !initialChords.some((line, linei) => line.length !== positions[linei]?.length)
-              ? initialChords
-              : chordLabels,
-          },
-          this as never,
-        ),
+      const newOrd = new EditableOrder(
+        {
+          ...ord,
+          positions,
+          text: newText,
+          v: 1,
+          chordLabels: !initialChords.some((line, linei) => line.length !== positions[linei]?.length)
+            ? initialChords
+            : chordLabels,
+        },
+        this as never,
       );
+
+      newOrds.push(newOrd);
+
+      const prevOrdi = this.ordersOnChange.findIndex(ord => ord.wid === newOrd.wid);
+      this.ordersOnChange.push(newOrd);
+
+      if (prevOrdi < 0) return;
+      this.ordersOnChange.splice(prevOrdi, 1);
     });
 
-    return { ords: newOrds, disabled, disabledReason: disabledReason.trim() };
+    this.ordersOnChange.forEach((topOrd, topOrdi) => {
+      const isError = this.ordersOnChange.some((ord, ordi) => {
+        if (topOrdi === ordi) return false;
+        const topPoss = topOrd.positions;
+
+        return topPoss && ord.positions?.some((poss, possi) => poss !== null && poss.length !== topPoss[possi]?.length);
+      });
+
+      if (isError && topOrd.texti) {
+        disabledReason = this.fixCorrectError(
+          923874623612366,
+          topOrd.texti,
+          `Неверное количество аккордов для аппликатуры (символы $ неравномерно разделяют строки - в блоках разное количество аккордов на аналогичных строчках)`,
+        );
+      }
+    });
+
+    return {
+      ords: newOrds,
+      disabled: !!disabledReason,
+      disabledReason: disabledReason.trim(),
+    };
   }
 }

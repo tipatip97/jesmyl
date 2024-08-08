@@ -37,7 +37,7 @@ export default function TheControlledCom({
   const [, setSearchParams] = useSearchParams();
 
   onNextCom = () => {
-    if (!comList) return;
+    if (!comList?.length) return;
     const comi = comList.findIndex(({ wid }) => wid === com.wid);
     if (comi < comList.length - 1) {
       onComSet?.(comList[comi + 1]);

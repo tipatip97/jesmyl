@@ -82,6 +82,7 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
                 <CutTextRedactor
                   ccom={ccom}
                   coli={coli}
+                  text={col}
                 />
               )}
             </div>
