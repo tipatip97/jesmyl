@@ -20,12 +20,11 @@ export default function BibleReaderBook({
   const isScrollingRef = useRef(false);
   const isResizingRef = useRef(false);
   const [resizeNum, setResizeNum] = useState(0);
-  const [isScrolledToCurrent, setIsScrolledToCurrent] = useState(false);
   const setAddress = useBibleSingleAddressSetter();
 
   useEffect(() => {
     if (
-      isScrolledToCurrent ||
+      chapterList == null ||
       currentChapteri === undefined ||
       currentVersei === undefined ||
       isScrollingRef.current ||
@@ -35,17 +34,15 @@ export default function BibleReaderBook({
     const listNode = listRef.current;
 
     setTimeout(() => {
-      listNode
-        .querySelector(`[attr-chapteri="${currentChapteri}"][attr-versei="${currentVersei}"]`)
-        ?.scrollIntoView({ block: 'start' });
+      const node = listNode.querySelector(`[attr-chapteri="${currentChapteri}"][attr-versei="${currentVersei}"]`);
+      node?.scrollIntoView({ block: 'start' });
 
       listNode.scrollTop += 3;
-      setIsScrolledToCurrent(true);
-    }, 100);
-  }, [currentChapteri, currentVersei, isScrolledToCurrent, resizeNum]);
+    }, 400);
+  }, [currentChapteri, currentVersei, resizeNum, chapterList]);
 
   useEffect(() => {
-    if (listRef.current === null) return;
+    if (chapterList == null || listRef.current === null) return;
     const listNode = listRef.current;
     const topsMap = new Map<number, { chapteri: number; versei: number }>();
     let scrollTimeout: TimeOut;
@@ -68,11 +65,14 @@ export default function BibleReaderBook({
         resizeDebounceTimeOut = setTimeout(() => {
           isResizingRef.current = false;
           setResizeNum(num => num + 1);
-        }, 300);
+        }, 100);
       })
       .addEventListener(listNode, 'scroll', () => {
         if (isResizingRef.current) return;
+
         isScrollingRef.current = true;
+        clearTimeout(isScrollingTimeout);
+        isScrollingTimeout = setTimeout(() => (isScrollingRef.current = false), 300);
 
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
@@ -98,9 +98,6 @@ export default function BibleReaderBook({
             let middle = Math.floor((start + end) / 2);
 
             if (tops[middle] <= scrollTop && tops[middle + 1] >= scrollTop) {
-              clearTimeout(isScrollingTimeout);
-              isScrollingTimeout = setTimeout(() => (isScrollingRef.current = false), 300);
-
               const top = topsMap.get(tops[middle]);
 
               if (top === undefined) return;
@@ -113,7 +110,7 @@ export default function BibleReaderBook({
         }, 10);
       })
       .effect();
-  }, [currentBooki, resizeNum, setAddress]);
+  }, [currentBooki, resizeNum, setAddress, chapterList]);
 
   return (
     <>

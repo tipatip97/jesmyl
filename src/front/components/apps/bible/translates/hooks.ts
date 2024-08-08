@@ -1,8 +1,8 @@
 import { atom, useAtom, useAtomValue } from '../../../../complect/atoms';
 import { bibleMolecule } from '../molecules';
-import { BibleTranslateLine } from './complect';
+import { BibleTranslateNameLine } from './complect';
 
-const myTranslatesAtom = atom<BibleTranslateLine>(['rst'], 'bible', 'myTranslates');
+const myTranslatesAtom = atom<BibleTranslateNameLine>(['rst'], 'bible', 'myTranslates');
 
 const showTranslatesAtom = bibleMolecule.select(s => s.showTranslates);
 

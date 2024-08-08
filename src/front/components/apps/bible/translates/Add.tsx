@@ -7,12 +7,12 @@ import { IconDelete02StrokeRounded } from '../../../../complect/the-icon/icons/d
 import { IconPencilEdit02StrokeRounded } from '../../../../complect/the-icon/icons/pencil-edit-02';
 import { soki } from '../../../../soki';
 import { bibleMolecule } from '../molecules';
-import { bibleAllTranslates, bibleDefaultTranslates, BibleTranslate, translateDescriptions } from './complect';
+import { bibleAllTranslates, bibleDefaultTranslates, BibleTranslateName, translateDescriptions } from './complect';
 import { useBibleMyTranslates } from './hooks';
 
 export default function BibleModulesTranslationsRedactButton(): JSX.Element {
   const [myTranslates, setMyTranslates] = useBibleMyTranslates();
-  const [translateOnLoad, setTranslateOOnLoad] = useState<BibleTranslate | null>(null);
+  const [translateOnLoad, setTranslateOOnLoad] = useState<BibleTranslateName | null>(null);
 
   const [modalNode, openModal] = useModal(({ body, header }) => {
     return (

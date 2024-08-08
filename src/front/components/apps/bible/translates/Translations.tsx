@@ -1,15 +1,23 @@
 import { memo } from 'react';
 import BibleModulesTranslationsRedactButton from './Add';
 import { useBibleMyTranslates, useBibleShowTranslates } from './hooks';
+import { translateFilter } from './complect';
+import { useBibleBooki } from '../translations/lists/atoms';
 
-export const BibleModulesTranslations = memo(function BibleModules(): JSX.Element {
+export const BibleModulesTranslations = memo(function BibleModules({
+  isHideEmptyBook,
+}: {
+  isHideEmptyBook?: boolean;
+}): JSX.Element {
   const [myTranslates] = useBibleMyTranslates();
   const [showTranslates, setShowTranslates] = useBibleShowTranslates();
+  const [booki] = useBibleBooki();
 
   return (
     <div className="flex flex-gap margin-gap-v">
       {myTranslates.map(tName => {
         const isShow = showTranslates.includes(tName);
+        if (isHideEmptyBook && translateFilter[tName](booki)) return null;
 
         return (
           <div

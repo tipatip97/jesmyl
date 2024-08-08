@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { bibleTitles } from '../hooks/texts';
 import { bibleMolecule } from '../molecules';
-import { BibleTranslate } from './complect';
+import { BibleTranslateName } from './complect';
 import { useBibleShowTranslatesValue } from './hooks';
 
 interface Props {
@@ -15,7 +15,7 @@ interface ChapterCombine {
   htmlChapters?: ({ __html: string }[][] | und)[];
 }
 
-const mapChapters = (tName: BibleTranslate, { chapters }: { chapters: (string[][] | null)[] }) => {
+const mapChapters = (tName: BibleTranslateName, { chapters }: { chapters: (string[][] | null)[] }) => {
   const lowerChapters: string[][][] = [];
 
   for (const book of chapters) {
@@ -40,8 +40,8 @@ const mapChapters = (tName: BibleTranslate, { chapters }: { chapters: (string[][
   };
 };
 
-type Translates = Partial<Record<BibleTranslate, ChapterCombine>>;
-const loadings: Partial<Record<BibleTranslate, boolean>> = {};
+type Translates = Partial<Record<BibleTranslateName, ChapterCombine>>;
+const loadings: Partial<Record<BibleTranslateName, boolean>> = {};
 let localTranslates: Translates = {};
 
 const Context = React.createContext<Translates>({});
@@ -53,6 +53,8 @@ export default function BibleTranslatesContextProvider({ children }: Props): JSX
   const [translates, setTranslates] = useState<Translates>(localTranslates);
 
   useEffect(() => {
+    const subscribes: (() => void)[] = [];
+
     return hookEffectLine()
       .setTimeout(() => {
         let tryTimeout: TimeOut;
@@ -75,10 +77,19 @@ export default function BibleTranslatesContextProvider({ children }: Props): JSX
             }
 
             loadings[tName] = true;
+            const tAtom = bibleMolecule.take(tName);
+
+            subscribes.push(
+              tAtom.subscribe(value => {
+                if (value === null) return;
+                mapChapters(tName, value);
+                setTranslates({ ...localTranslates });
+              }),
+            );
 
             (async () => {
               try {
-                const content = await bibleMolecule.take(tName).getStorageValue();
+                const content = await tAtom.getStorageValue();
                 content && mapChapters(tName, content);
                 loadings[tName] = false;
 
@@ -94,7 +105,7 @@ export default function BibleTranslatesContextProvider({ children }: Props): JSX
 
         tryLoad();
       }, 500)
-      .effect();
+      .effect(...subscribes);
   }, [showTranslates]);
 
   return <Context.Provider value={translates}>{children}</Context.Provider>;

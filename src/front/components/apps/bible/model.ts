@@ -1,10 +1,10 @@
-import { BibleTranslate, BibleTranslateLine } from './translates/complect';
+import { BibleTranslate, BibleTranslateName, BibleTranslateNameLine } from './translates/complect';
 import { BibleTranslationScreenConfig } from './translations/model';
 
-export interface BibleStorage extends Record<BibleTranslate, null | { chapters: string[][][] }> {
-  rst: { chapters: string[][][] };
+export interface BibleStorage extends Record<BibleTranslateName, null | BibleTranslate> {
+  rst: BibleTranslate;
 
-  showTranslates: BibleTranslateLine;
+  showTranslates: BibleTranslateNameLine;
 
   translationScreenConfigs: BibleTranslationScreenConfig[];
   translationPlan: BibleTranslationAddress[];
