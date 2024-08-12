@@ -7,7 +7,7 @@ type Props = DOMAttributes<any> & {
   async?: boolean;
 };
 
-export const Script = ({ src, onLoad, ...props }: Props) => {
+export const Script = ({ src, ...props }: Props) => {
   const propRef = useActualRef(props);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const Script = ({ src, onLoad, ...props }: Props) => {
     });
 
     return () => script.remove();
-  }, [onLoad, propRef, src]);
+  }, [propRef, src]);
 
   return <></>;
 };
