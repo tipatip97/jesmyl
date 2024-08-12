@@ -36,7 +36,7 @@ export const BottomPopup = ({ children, onClose }: { children?: ReactNode; onClo
           <Popup
             ref={popupContainer}
             className={className}
-            onClick={() => onClose(false)}
+            onClick={() => setTimeout(onClose, 200, false)}
           >
             <div
               className="over-container"
