@@ -4,7 +4,7 @@ import useSelectedComs from '../../../base/useSelectedComs';
 import { Com } from '../Com';
 
 export interface ComFaceInheritProps {
-  importantOnClick?: (com: Com, comi: number) => void;
+  importantOnClick?: (com: Com, comi: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   groupClass?: string;
   selectable?: boolean;
   description?: (com: Com, comi: number) => ReactNode;

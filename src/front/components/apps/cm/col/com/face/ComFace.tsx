@@ -31,7 +31,7 @@ export const FreeComFace = ({
     <div
       id={isWithoutIds ? undefined : `com_face_wid_${com.wid}`}
       className={'face-item flex between ' + (groupClass || '') + ` com_face_wid_${com.wid}`}
-      onClick={importantOnClick === undefined ? undefined : () => importantOnClick(com, comi)}
+      onClick={importantOnClick === undefined ? undefined : event => importantOnClick(com, comi, event)}
       {...propsOfClicker({
         onCtxMenu: event => {
           event.preventDefault();
