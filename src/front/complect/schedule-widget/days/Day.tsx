@@ -102,7 +102,7 @@ export const ScheduleWidgetDay = function Day({
           />
         )}
       </div>
-      <div className="edit-day-panel absolute pos-top pos-right margin-gap-t">
+      <div className="edit-day-panel absolute pos-top pos-right margin-gap-t flex flex-gap">
         {isPastDay ? (
           <>
             <IconButton
