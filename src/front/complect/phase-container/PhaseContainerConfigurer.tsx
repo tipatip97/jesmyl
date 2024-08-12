@@ -11,6 +11,7 @@ const swiper = backSwipableContainerMaker(() => navigate('..'));
 
 export default function PhaseContainerConfigurer(props: PhaseContainerConfigurerProps) {
   navigate = useNavigate();
+  const Icon = props.BackButtonIcon ?? IconArrowLeft02StrokeRounded;
 
   const content = (
     <>
@@ -23,7 +24,7 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
             rememberProps={props.rememberProps}
             className="flex"
           >
-            <IconArrowLeft02StrokeRounded className="action-button" />
+            <Icon className="action-button" />
             {props.headTitle}
           </LinkWithSearchRemember>
         )}
