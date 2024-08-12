@@ -32,7 +32,7 @@ export default function ScheduleWidgetTgDayView() {
   return (
     <TelegramWebAppApiOr>
       {(api, isLoading) =>
-        initData === null || !api?.initData ? (
+        initData === null ? (
           <div className="flex center color--ko">Ошибка данных</div>
         ) : (
           <Child
