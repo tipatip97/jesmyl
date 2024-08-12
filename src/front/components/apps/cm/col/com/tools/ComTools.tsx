@@ -120,6 +120,9 @@ export const ComTools = () => {
         }
       />
 
+      <div className="flex center full-width color--6 fade-05 font-size:0.7em margin-big-gap-t">
+        Удерживайте для добавления в быстрое меню
+      </div>
       {comToolsNode}
 
       <div className="fade-05 full-width margin-gap-v">
