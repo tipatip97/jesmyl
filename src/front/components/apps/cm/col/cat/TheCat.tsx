@@ -6,8 +6,8 @@ import LoadIndicatedContent from '../../../../../complect/load-indicated-content
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import CmTranslationComListContextInZeroCat from '../../base/translations/InZeroCat';
 import useLaterComList from '../../base/useLaterComList';
+import { cmCompositionRoute } from '../../routing/cmRoutingApp';
 import { ComFaceList } from '../com/face/list/ComFaceList';
-import TheComposition from '../com/TheComposition';
 import { CatSpecialSearches } from './Cat.complect';
 import { TheCatSpecialSearches } from './SpecialSearches';
 import { useCcat } from './useCcat';
@@ -100,14 +100,7 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
         }
       />
 
-      <Route
-        path=":comw/*"
-        element={
-          <CmTranslationComListContextInZeroCat>
-            <TheComposition key="compo1" />
-          </CmTranslationComListContextInZeroCat>
-        }
-      />
+      {cmCompositionRoute(CmTranslationComListContextInZeroCat)}
     </Routes>
   );
 }

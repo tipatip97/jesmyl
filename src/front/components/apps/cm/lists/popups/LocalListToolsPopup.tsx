@@ -24,7 +24,7 @@ export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, c
             closePopup();
           }}
         />
-        <Link to={`tran${coms?.length ? `?comw=${coms[0].wid}` : ''}`}>
+        <Link to={`@tran${coms?.length ? `?comw=${coms[0].wid}` : ''}`}>
           <IconButton
             Icon={isTouchDevice ? IconPlayStrokeRounded : IconComputerStrokeRounded}
             postfix="Показывать слайды списка"

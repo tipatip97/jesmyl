@@ -3,7 +3,7 @@ import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-po
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import CmTranslationComListContextInMeetings from '../../base/translations/InMeetings';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';
-import TheComposition from '../../col/com/TheComposition';
+import { cmCompositionRoute } from '../../routing/cmRoutingApp';
 import { LocalListToolsPopup } from '../popups/LocalListToolsPopup';
 import { useMeetings } from './useMeetings';
 
@@ -30,14 +30,7 @@ export default function TheMeetingsEvent() {
         }
       />
 
-      <Route
-        path=":comw/*"
-        element={
-          <CmTranslationComListContextInMeetings>
-            <TheComposition />
-          </CmTranslationComListContextInMeetings>
-        }
-      />
+      {cmCompositionRoute(CmTranslationComListContextInMeetings)}
     </Routes>
   );
 }
