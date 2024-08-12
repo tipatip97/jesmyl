@@ -11,7 +11,7 @@ export const cmMolecule = new Molecule<CmState>(
     marks: [],
     comFontSize: 15,
     chordTracks: {},
-    comTopTools: ['mark-com', 'fullscreen-mode'],
+    comTopTools: ['mark-com', 'fullscreen-mode', 'chords-variant'],
     translationScreenConfigs: [defaultCmConfig],
     comComments: {},
     isMetronomeHide: true,
