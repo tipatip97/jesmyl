@@ -40,7 +40,7 @@ export default function EditMeetings() {
       />
 
       <Route
-        path=":eventw"
+        path=":eventw/*"
         element={<EditMeetingsEvent />}
       />
     </Routes>
