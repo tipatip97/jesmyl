@@ -5,6 +5,7 @@ export const cmEditorMolecule = new Molecule<CmEditorStoraged>(
   {
     mp3Rules: [],
     rules: [],
+    eeStorage: {},
   },
   'cm',
 );

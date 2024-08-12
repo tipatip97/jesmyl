@@ -18,7 +18,7 @@ const makeComNames = (wids: number | number[]): string => {
 };
 
 const config: FilerAppConfig = {
-  title: 'Аккорд Мастер',
+  title: 'Песни возрождённых',
   requirements: {
     cols: null,
     meetings: null,

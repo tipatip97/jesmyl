@@ -4,6 +4,7 @@ import { CmMp3Rule, ShortRealRule } from '../../../../models';
 export interface CmEditorStoraged {
   rules: ShortRealRule[];
   mp3Rules: CmMp3Rule[];
+  eeStorage: Record<string, number | number[]>;
 }
 
 export type ExecVision = ShortRealRule & Partial<Exec> & Partial<ExecVisionVisual>;
