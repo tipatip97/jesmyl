@@ -95,7 +95,7 @@ const Swiped = ({ close, ...props }: { close: () => void } & HTMLAttributes<HTML
   }, [close]);
 
   return (
-    <ContainerWrapper
+    <StyledContainerWrapper
       {...props}
       {...swiper}
     />
@@ -121,7 +121,7 @@ const RootAnchor = ({
 
 const StyledCloseButton = styled(IconButton)``;
 
-const ContainerWrapper = styled.div`
+const StyledContainerWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
