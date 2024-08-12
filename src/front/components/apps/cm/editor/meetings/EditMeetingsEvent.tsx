@@ -6,7 +6,7 @@ import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconArrowDown02StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-02';
+import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
 import { IconArrowUp02StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-02';
 import { IconArrowUpDoubleStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-double';
 import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
@@ -23,6 +23,7 @@ import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorConta
 import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 import MeetingsEventHistory from './MeetingsEventHistory';
 import { useEditableMeetings } from './useEditableMeetings';
+import styled from 'styled-components';
 
 export default function EditMeetingsEvent() {
   const currentEvent: EditableMeetingsEvent | und = useEditableMeetings().currentEvent;
@@ -85,12 +86,12 @@ export default function EditMeetingsEvent() {
                 selectable={false}
                 description={() => (
                   <div className="flex">
-                    {comsLength === 1 ? null : (
-                      <IconButton
-                        Icon={comi ? IconArrowUp02StrokeRounded : IconArrowDown02StrokeRounded}
+                    {comsLength === 1 || comi === 0 || (
+                      <StyledMoveButton
+                        Icon={IconArrowDataTransferVerticalStrokeRounded}
                         className="margin-big-gap-h"
                         onClick={event => {
-                          event.stopPropagation();
+                          event.preventDefault();
                           exec(currentEvent.moveCom(comi));
                         }}
                       />
@@ -98,7 +99,7 @@ export default function EditMeetingsEvent() {
                     <IconDelete01StrokeRounded
                       className="color--ko"
                       onClick={event => {
-                        event.stopPropagation();
+                        event.preventDefault();
                         exec(currentEvent.removeCom(com));
                       }}
                     />
@@ -190,3 +191,7 @@ export default function EditMeetingsEvent() {
     />
   );
 }
+
+const StyledMoveButton = styled(IconButton)`
+  margin-bottom: 50px;
+`;
