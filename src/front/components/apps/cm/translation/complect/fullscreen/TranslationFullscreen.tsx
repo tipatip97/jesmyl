@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 import { atom, useAtom } from '../../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
 import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
-import { IconHelpCircleStrokeRounded } from '../../../../../../complect/the-icon/icons/help-circle';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import FontSizeContain from '../../../base/font-size-contain/FontSizeContain';
 import { useCloseTranslation } from '../hooks/close-translation';
@@ -18,7 +17,6 @@ const isShowAtom = atom(true);
 
 export default function TranslationFullscreen() {
   const [forceUpdates, forceUpdate] = useReducer(forceUpdater, 0);
-  const [isShowCloseButton, setIsShowCloseButton] = useState(false);
   const [isShowInfo, setIsShowInfo] = useAtom(isShowAtom);
   const [swipes, setSwipes] = useState(emptyObj);
 
@@ -38,94 +36,68 @@ export default function TranslationFullscreen() {
   }, []);
 
   return (
-    <Container
+    <StyledContainer
       className="TranslationFullscreen"
       {...swipes}
+      $isShowInfo={isShowInfo}
     >
-      {
-        <Wrapper className={isShowInfo ? ' open-info ' : ''}>
-          <Screen
-            className="flex center"
-            html={text}
-            style={style}
-            subUpdates={forceUpdates}
-          />
-          <div
-            className="top-area info-area left"
-            onDoubleClick={prevCom}
-          >
-            <div className="description">
-              дважды клик&nbsp;-
-              <br />
-              предыдущая песня
-            </div>
+      <StyledWrapper>
+        <StyledScreen
+          className="flex center"
+          html={text}
+          style={style}
+          subUpdates={forceUpdates}
+        />
+        <div
+          className="top-area info-area left"
+          onDoubleClick={prevCom}
+        >
+          <div className="description">
+            дважды клик&nbsp;-
+            <br />
+            предыдущая песня
           </div>
-          <div
-            className="top-area info-area right"
-            onDoubleClick={nextCom}
-          >
-            <div className="description">
-              дважды клик&nbsp;-
-              <br />
-              следующая песня
-            </div>
+        </div>
+        <div
+          className="top-area info-area right"
+          onDoubleClick={nextCom}
+        >
+          <div className="description">
+            дважды клик&nbsp;-
+            <br />
+            следующая песня
           </div>
-          <IconCancel01StrokeRounded
-            className="close-info-button"
-            onClick={() => setIsShowInfo(false)}
-          />
-          <div
-            className="bottom-area info-area left"
-            onClick={prevText}
-          >
-            <div className="description">
-              клик&nbsp;-
-              <br />
-              предыдущий слайд
-            </div>
+        </div>
+        <IconCancel01StrokeRounded
+          className="close-info-button"
+          onClick={() => setIsShowInfo(false)}
+        />
+        <div
+          className="bottom-area info-area left"
+          onClick={prevText}
+        >
+          <div className="description">
+            клик&nbsp;-
+            <br />
+            предыдущий слайд
           </div>
-          <div
-            className="bottom-area info-area right"
-            onClick={nextText}
-          >
-            <div className="description">
-              клик&nbsp;-
-              <br />
-              следующий слайд
-            </div>
+        </div>
+        <div
+          className="bottom-area info-area right"
+          onClick={nextText}
+        >
+          <div className="description">
+            клик&nbsp;-
+            <br />
+            следующий слайд
           </div>
-          <div
-            className="center-area info-area top"
-            onDoubleClick={() => {
-              setIsShowCloseButton(true);
-              setTimeout(() => setIsShowCloseButton(false), 2000);
-            }}
-          >
-            <div className="description">
-              дважды клик&nbsp;-
-              <br />
-              закрыть и&nbsp;инфо
-            </div>
-            <div
-              className={`area-button ${isShowCloseButton ? 'show' : ''}`}
-              onClick={closeTranslation}
-            >
-              <IconHelpCircleStrokeRounded />
-            </div>
-            <div
-              className={`area-button second open-info-button ${isShowCloseButton ? 'show' : ''}`}
-              onClick={() => setIsShowInfo(!isShowInfo)}
-            >
-              <IconHelpCircleStrokeRounded />
-            </div>
-          </div>
-        </Wrapper>
-      }
-    </Container>
+        </div>
+      </StyledWrapper>
+    </StyledContainer>
   );
 }
 
-const Screen = styled(FontSizeContain)`
+const StyledScreen = styled(FontSizeContain)`
   width: 100%;
   height: 100%;
   color: white;
@@ -139,7 +111,9 @@ const Screen = styled(FontSizeContain)`
   }
 `;
 
-const Container = styled.div`
+const styledContainerAnimationName: [] = [];
+
+const StyledContainer = styled.div<{ $isShowInfo: boolean }>`
   position: relative;
   z-index: 300;
   justify-content: center;
@@ -147,6 +121,76 @@ const Container = styled.div`
   background-color: black;
   width: 100vw;
   height: 100vh;
+
+  &:before {
+    content: '⇣ Закрыть ⇣';
+    position: absolute;
+    rotate: -90deg;
+    color: var(--color--ko);
+    top: 4em;
+    left: -4em;
+
+    z-index: 200;
+  }
+
+  ${props =>
+    props.$isShowInfo &&
+    css`
+      animation: ${props.theme.id(styledContainerAnimationName)} 3s;
+
+      @keyframes ${props.theme.id(styledContainerAnimationName)} {
+        from {
+          margin-left: 0px;
+        }
+        20% {
+          margin-left: 0px;
+        }
+        20% {
+          margin-left: 30px;
+        }
+        45% {
+          margin-left: 20px;
+        }
+        50% {
+          margin-left: 30px;
+        }
+        55% {
+          margin-left: 20px;
+        }
+        70% {
+          margin-left: 30px;
+        }
+        to {
+          margin-left: 0px;
+        }
+      }
+
+      ${StyledWrapper} {
+        --first-bg: #999;
+        --second-bg: grey;
+
+        .close-info-button {
+          opacity: 1;
+          pointer-events: all;
+        }
+
+        .open-info-button {
+          opacity: 0;
+        }
+
+        > .info-area {
+          color: white;
+        }
+
+        > .top-area {
+          ${area('second')}
+        }
+
+        > .bottom-area {
+          ${area('first')}
+        }
+      }
+    `}
 `;
 
 const area = (bgArea: 'first' | 'second') => {
@@ -162,7 +206,7 @@ const area = (bgArea: 'first' | 'second') => {
   `;
 };
 
-const Wrapper = styled.div`
+const StyledWrapper = styled.div`
   --safe-gap: 50px;
   --block-height: 40%;
   --center-width: 20%;
@@ -176,42 +220,6 @@ const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   color: white;
-
-  &.open-info {
-    --first-bg: #999;
-    --second-bg: grey;
-
-    .close-info-button {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .open-info-button {
-      opacity: 0;
-    }
-
-    > .info-area {
-      color: white;
-    }
-
-    > .center-area {
-      &.top {
-        ${area('first')}
-      }
-
-      &.bottom {
-        ${area('second')}
-      }
-    }
-
-    > .top-area {
-      ${area('second')}
-    }
-
-    > .bottom-area {
-      ${area('first')}
-    }
-  }
 
   .close-info-button {
     position: absolute;
@@ -257,61 +265,5 @@ const Wrapper = styled.div`
 
   > .bottom-area {
     bottom: var(--safe-gap);
-  }
-
-  > .center-area {
-    --over-position: calc(0px - var(--safe-gap) * 4);
-    --active-position: calc(0px - var(--safe-gap) / 2.5);
-    --active-second-position: calc(var(--safe-gap) / 1.5);
-
-    position: absolute;
-    left: var(--center-left);
-    width: var(--center-width);
-    height: var(--block-height);
-
-    &.top {
-      top: var(--safe-gap);
-
-      .area-button {
-        top: var(--over-position);
-
-        &.show {
-          top: var(--active-position);
-
-          &.second {
-            top: var(--active-second-position);
-          }
-        }
-      }
-    }
-
-    &.bottom {
-      bottom: var(--safe-gap);
-
-      .area-button {
-        bottom: var(--over-position);
-
-        &.show {
-          bottom: var(--active-position);
-        }
-      }
-    }
-
-    .area-button {
-      position: absolute;
-      left: calc(50% - 24px / 2);
-      z-index: 10000;
-      transition:
-        top 0.4s,
-        bottom 0.4s;
-      cursor: pointer;
-
-      &.second {
-        transition:
-          top 0.5s,
-          bottom 0.5s,
-          opacity 0.2s;
-      }
-    }
   }
 `;
