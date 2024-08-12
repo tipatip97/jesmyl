@@ -14,6 +14,7 @@ export interface PhaseContainerProps {
   head?: ReactNode;
   content: ReactNode;
   BackButtonIcon?: TheIconType;
+  backButtonPath?: string;
   contentRef?: React.LegacyRef<HTMLDivElement>;
   onMoreClick?: (is: true) => void;
   withoutBackSwipe?: boolean;

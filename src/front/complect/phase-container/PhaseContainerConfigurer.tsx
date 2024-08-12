@@ -20,7 +20,7 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
           props.headTitle && <span className="margin-big-gap-h">{props.headTitle}</span>
         ) : (
           <LinkWithSearchRemember
-            to=".."
+            to={props.backButtonPath ?? '..'}
             rememberProps={props.rememberProps}
             className="flex"
           >
