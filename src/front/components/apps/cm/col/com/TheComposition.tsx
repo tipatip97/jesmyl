@@ -110,7 +110,7 @@ export default function TheComposition() {
       />
 
       <Route
-        path="tran"
+        path="@tran"
         element={<Translations />}
       />
     </Routes>

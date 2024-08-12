@@ -6,7 +6,7 @@ export const TranslationTool = () => {
     <ComTool
       title="Слайды"
       Icon={IconComputerStrokeRounded}
-      path="tran"
+      path="@tran"
     />
   );
 };
