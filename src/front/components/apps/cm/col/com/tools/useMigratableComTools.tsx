@@ -54,12 +54,12 @@ function mapTools(this: und | typeof mapToolsSelf, key: MigratableComToolName) {
 }
 
 const toolsDict: Record<MigratableComToolName, React.ReactNode> = {
-  translation: <TranslationTool />,
-  'chords-variant': <ChordsVariantTool />,
-  'chord-images': <ChordImagesTool />,
-  'selected-toggle': <SelectedToggleTool />,
   'mark-com': <MarkedComTool />,
   'fullscreen-mode': <FullscreenTool />,
+  'chords-variant': <ChordsVariantTool />,
+  translation: <TranslationTool />,
+  'chord-images': <ChordImagesTool />,
+  'selected-toggle': <SelectedToggleTool />,
   'open-player': <OpenPlayerTool />,
   'hide-metronome': <HideMetronomeTool />,
   'is-mini-anchor': <MiniAnchorSwitchTool />,
