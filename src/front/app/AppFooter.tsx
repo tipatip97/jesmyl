@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { isTouchDevice } from '../complect/device-differences';
 import { iconPackOfCircleArrowRight02 } from '../complect/the-icon/icons/circle-arrow-right-02';
 import { AppName } from './App.model';
 import AppFooterItem, {
@@ -17,15 +18,15 @@ export default function AppFooter({ children }: { children: React.ReactNode }) {
   const [, appName, place] = loc.pathname.split('/', 3) as [string, AppName | und, string | und];
 
   useEffect(() => {
-    if (appName && place) {
-      const lsName = footerItemPlaceLsPrefix + appName + '/' + place;
-      const url = `${loc.pathname}${loc.search.length > 1 ? loc.search : ''}${loc.hash.length > 1 ? loc.hash : ''}`;
+    if ((isTouchDevice && loc.pathname.includes('@')) || !appName || !place) return;
 
-      if (url === `/${appName}/${place}`) localStorage.removeItem(lsName);
-      else localStorage.setItem(lsName, url);
+    const lsName = footerItemPlaceLsPrefix + appName + '/' + place;
+    const url = `${loc.pathname}${loc.search.length > 1 ? loc.search : ''}${loc.hash.length > 1 ? loc.hash : ''}`;
 
-      localStorage.setItem(lastVisitedRouteLsName, url);
-    }
+    if (url === `/${appName}/${place}`) localStorage.removeItem(lsName);
+    else localStorage.setItem(lsName, url);
+
+    localStorage.setItem(lastVisitedRouteLsName, url);
   }, [appName, loc.hash, loc.pathname, loc.search, place]);
 
   return (
