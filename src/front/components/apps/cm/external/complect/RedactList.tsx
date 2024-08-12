@@ -17,6 +17,7 @@ import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 
 const cbStopper: CallbackStopper = event => event.stopPropagation();
+const emptyFunc = () => {};
 
 interface Props {
   value: CmComBindAttach;
@@ -122,6 +123,7 @@ export default function CmExternalComListAttRedactList({
         <FullContent onClose={setIsMeetingBinderOpen}>
           <MeetingsInner
             meetings={meetings}
+            onEventClick={emptyFunc}
             asEventBox={event =>
               value.eventw === event.wid ? (
                 <StrongEvaButton
