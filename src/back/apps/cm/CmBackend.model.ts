@@ -1,4 +1,4 @@
-import { CmCatWid, CmComWid, CmMeetingEventWid } from './Cm.enums';
+import { CmCatWid, CmComOrderWid, CmComWid, CmMeetingEventWid } from './Cm.enums';
 
 export interface CmMp3Rule {
   w: number;
@@ -19,8 +19,8 @@ export interface CmComBindAttach {
   eventw?: CmMeetingEventWid;
 }
 
-export type SpecielOrderRepeats = Record<string, number>;
-export type OrderRepeats = number | SpecielOrderRepeats;
+export type SpecialOrderRepeats = Record<string, number>;
+export type OrderRepeats = number | SpecialOrderRepeats;
 
 export interface InheritancableOrder {
   r?: OrderRepeats | null; // Повторения
@@ -37,6 +37,7 @@ export type Inheritancables<K extends keyof InheritancableOrder = keyof Inherita
 >;
 
 export interface IExportableOrder extends InheritancableOrder {
+  w: CmComOrderWid; // Уникальный айди
   a?: number; // Ссылка на блок
   c?: number; // Блок аккордов
   e?: num; // Без названия
@@ -46,7 +47,6 @@ export interface IExportableOrder extends InheritancableOrder {
   s?: string; // Тип блока
   t?: number | null; // Текстовый блок
   u?: number; // Целевой айди
-  w: number; // Уникальный айди
   inh?: Inheritancables; //
   originWid?: number; // Неизменяемый уникальный айди
 }

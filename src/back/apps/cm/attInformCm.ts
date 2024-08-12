@@ -1,22 +1,21 @@
 import { filer } from '../../complect/filer/Filer';
 import environment from '../../environments/environment';
 import { AttTgInformStorage } from '../index/schedules/tg-bot-inform/attInformStorage';
-import { CmComWid, CmMeetingEventWid } from './Cm.enums';
+import { CmComWid } from './Cm.enums';
 import { CmComBindAttach, IExportableCols, IExportableCom } from './CmBackend.model';
 import { IExportableMeetings, IExportableMeetingsEvent } from './Meetings.model';
 
 const getMeetings = () => filer.contents.cm.meetings?.data as IExportableMeetings | nil;
 const getCols = () => filer.contents.cm.cols?.data as IExportableCols | nil;
 
-const eventwSelf = { eventw: CmMeetingEventWid.def };
-function findEvent(this: typeof eventwSelf, event: IExportableMeetingsEvent) {
+function findEvent(this: CmComBindAttach, event: IExportableMeetingsEvent) {
   return event.w === this.eventw;
 }
 
 const sortComs = (a: IExportableCom, b: IExportableCom) => a.w - b.w;
 const comwsComs = {} as Record<CmComWid, { com: IExportableCom; number: number }>;
 const setComNumbers = (com: IExportableCom, comi: number) => (comwsComs[com.w] ??= { com, number: comi + 1 });
-const makeComName = (comw: CmComWid) => `${comwsComs[comw].number}. ${comwsComs[comw].com.n}`;
+const makeComName = (comw: CmComWid) => (comwsComs[comw] ? `${comwsComs[comw].number}. ${comwsComs[comw].com.n}` : '');
 
 export const cmTgAttInform: AttTgInformStorage = {
   '[cm]:coms': (value: CmComBindAttach) => {
@@ -24,8 +23,7 @@ export const cmTgAttInform: AttTgInformStorage = {
     let comws: CmComWid[] = value.comws === undefined ? [] : [...value.comws];
 
     if (value.eventw !== undefined) {
-      eventwSelf.eventw = value.eventw;
-      const event = getMeetings()?.events?.find(findEvent, eventwSelf);
+      const event = getMeetings()?.events?.find(findEvent, value);
 
       if (event !== undefined) comws = comws.concat(event.s);
     }
@@ -38,6 +36,6 @@ export const cmTgAttInform: AttTgInformStorage = {
       titles = comws.map(makeComName).join('\n');
     }
 
-    return `Песни:\n${titles}\n\n${environment.host}/cm/li/selected?scomws=[${comws}]\n\n`;
+    return titles === '' ? null : `Песни:\n${titles}\n\n${environment.host}/cm/li/ext/[${comws}]\n\n`;
   },
 };

@@ -113,10 +113,10 @@ export type SokiEventName = keyof SokiClientEventBody & keyof SokiServerEvent;
 export interface SokiVisitor {
   fio?: string;
   nick: string;
-  version: number;
+  version: string | number;
   deviceId?: string;
   browser?: string;
-  time: string;
+  time?: string;
   tgId?: number;
   urls: string[];
 }
