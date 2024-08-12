@@ -39,7 +39,7 @@ export default function ComRepeats() {
   let isRegionEnds = false;
 
   const setField = useCallback(
-    (ord?: EditableOrder, repeateds?: OrderRepeats | nil, prevs?: OrderRepeats | nil) => {
+    (ord?: EditableOrder | null, repeateds?: OrderRepeats | nil, prevs?: OrderRepeats | nil) => {
       if (!ord) return;
 
       const reps = typeof prevs === 'number' ? { '.': prevs } : prevs || {};

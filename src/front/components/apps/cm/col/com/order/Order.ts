@@ -5,12 +5,13 @@ import {
   IExportableOrderFieldValues,
   InheritancableOrder,
   OrderRepeats,
-  SpecielOrderRepeats,
+  SpecialOrderRepeats,
 } from '../../../../../../models';
 import { Com } from '../Com';
 import { EditableOrderRegion, IExportableOrderTop } from './Order.model';
 
 const emptyArr: [] = [];
+const itIt = (it: unknown) => it;
 
 export class Order extends SourceBased<IExportableOrderTop> {
   _regions?: EditableOrderRegion<Order>[];
@@ -157,8 +158,8 @@ export class Order extends SourceBased<IExportableOrderTop> {
       return this.getInheritance('r') as never;
     } else if (this.top && this.top.source && this.top.source.r != null) return this.top.source.r;
     else {
-      const repeats = this.getTargetFirst('r');
-      const nrepeats: SpecielOrderRepeats = {} as never;
+      const repeats = this.top.repeats ?? this.getTargetFirst('r');
+      const nrepeats = {} as SpecialOrderRepeats;
       const reg = makeRegExp('/[a-z]/i', true);
 
       return MyLib.entries((repeats && (mylib.isNum(repeats) ? { '.': repeats } : repeats)) || nrepeats).reduce(
@@ -195,7 +196,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
     delete this._regions;
   }
 
-  regionsOrders() {
+  comOrders() {
     return this.com.orders;
   }
 
@@ -213,128 +214,184 @@ export class Order extends SourceBased<IExportableOrderTop> {
     return this.text;
   }
 
-  setRegions<Ord extends Order>() {
-    const text = (this.text || '').split(makeRegExp('/\\n+/')).map((txt: string) => txt.split(makeRegExp('/\\s+/')));
-    const lines = text.length;
+  setRegions = <Ord extends Order>() =>
+    (this._regions = Order.makeRegions(this.self<Ord>(), this.text, this.repeats, this.comOrders()));
 
-    this._regions =
-      this.repeats === 0
-        ? []
-        : MyLib.entries(mylib.isNum(this.repeats) ? { '.': this.repeats } : this.repeats || {}).map(
-            ([key, count]: [string, number]): EditableOrderRegion<Ord> => {
-              if (key === '.')
-                return {
-                  startLinei: 0,
-                  startWordi: 0,
-                  endLinei: lines - 1,
-                  endWordi: (text[text.length - 1] || '').length - 1,
-                  startOrd: this.self<Ord>(),
-                  endOrd: this.self<Ord>(),
-                  others: null,
-                  key: null,
-                  startKey: key,
-                  endKey: key,
-                  count,
-                };
-              else if (key.startsWith('~')) {
-                const [, linei, wordi] = key.split(makeRegExp('/[~:]/'));
+  static makeRepeatsFromRegions<Ord extends Order>(regions: EditableOrderRegion<Ord>[] | und) {
+    const repeats = {} as SpecialOrderRepeats;
 
-                return {
-                  startLinei: +linei,
-                  startWordi: +wordi,
-                  endLinei: null,
-                  endWordi: null,
-                  startOrd: this.self<Ord>(),
-                  endOrd: this.self<Ord>(),
-                  others: null,
-                  key: null,
-                  startKey: key,
-                  endKey: key,
-                  count,
-                };
+    regions?.forEach(re => {
+      if (re.key === '.') {
+        repeats[re.key] = re.count;
+        return;
+      }
+
+      if (re.key.search(makeRegExp('/[a-z]/')) > -1) {
+        const parts = re.key.split(makeRegExp('/\\d+/')).filter(itIt);
+
+        if (parts[0] === ':') repeats[`${re.endLinei}:${re.endWordi}${parts[1]}`] = re.count;
+        else repeats[`${parts[0]}${re.startLinei}:${re.startWordi}`] = re.count;
+
+        return;
+      }
+
+      if (re.key.search(makeRegExp('/~/')) > -1) {
+        repeats[`~${re.startLinei}:${re.startWordi}`] = re.count;
+        return;
+      }
+
+      const startKey =
+        re.startLinei === null
+          ? ('' as const)
+          : !re.startWordi
+            ? (`${re.startLinei}` as const)
+            : (`${re.startLinei}:${re.startWordi}` as const);
+
+      const endKey =
+        re.endLinei === null
+          ? ('' as const)
+          : !re.endWordi || re.isEndWordiLast
+            ? (`${re.endLinei}` as const)
+            : (`${re.endLinei === re.startLinei ? '' : re.endLinei}:${re.endWordi}` as const);
+
+      const key = startKey && endKey && startKey !== endKey ? (`${startKey}-${endKey}` as const) : startKey || endKey;
+
+      if (key) repeats[key] = re.count;
+    });
+
+    return repeats;
+  }
+
+  static makeRegions<Ord extends Order>(
+    self: Ord | null,
+    text: string,
+    repeats: OrderRepeats | nil,
+    comOrders: Order[] | null,
+  ) {
+    const txt = (text || '').split(makeRegExp('/\\n+/')).map((txt: string) => txt.split(makeRegExp('/\\s+/')));
+    const lines = txt.length;
+
+    return repeats === 0
+      ? []
+      : MyLib.entries(mylib.isNum(repeats) ? { '.': repeats } : repeats).map(
+          ([key, count]: [string, number]): EditableOrderRegion<Ord> => {
+            if (key === '.')
+              return {
+                startLinei: 0,
+                startWordi: 0,
+                endLinei: lines - 1,
+                endWordi: (txt[txt.length - 1] || '').length - 1,
+                isEndWordiLast: true,
+                startOrd: self,
+                endOrd: self,
+                others: null,
+                key,
+                startKey: key,
+                endKey: key,
+                count,
+              };
+            else if (key.startsWith('~')) {
+              const [, linei, wordi] = key.split(makeRegExp('/[~:]/'));
+
+              return {
+                startLinei: +linei,
+                startWordi: +wordi,
+                endLinei: null,
+                endWordi: null,
+                isEndWordiLast: false,
+                startOrd: self,
+                endOrd: self,
+                others: null,
+                key,
+                startKey: key,
+                endKey: key,
+                count,
+              };
+            } else {
+              const letter: string | undefined = (/[a-z]/i.exec(key) || emptyArr)[0];
+
+              if (letter !== undefined) {
+                const [first, second, third] = key.split(makeRegExp('/[:a-z]/i')).map(num => parseInt(num));
+                const isBeg = key.match(makeRegExp('/^[a-z]/i'));
+                let others: number[] = [];
+                let finishKey: string = '';
+
+                const ord = comOrders?.find(
+                  (ord: Order) =>
+                    !mylib.isNum(ord.repeats) &&
+                    Object.keys(ord.repeats || {}).some(key => {
+                      if (key[!isBeg ? 'startsWith' : 'endsWith'](letter)) {
+                        others = key.split(makeRegExp('/[:a-z]/i')).filter(itIt).map(Number);
+                        finishKey = key;
+                        return true;
+                      }
+                      return false;
+                    }),
+                );
+
+                return (
+                  isBeg
+                    ? {
+                        startLinei: second,
+                        startWordi: third,
+                        endLinei: null,
+                        endWordi: null,
+                        startOrd: self,
+                        endOrd: ord,
+                        others,
+                        key,
+                        startKey: key,
+                        endKey: finishKey,
+                        count,
+                      }
+                    : {
+                        startLinei: null,
+                        startWordi: null,
+                        endLinei: first,
+                        endWordi: second,
+                        startOrd: ord,
+                        endOrd: self,
+                        others,
+                        key,
+                        startKey: key,
+                        endKey: finishKey,
+                        count,
+                      }
+                ) as EditableOrderRegion<Ord>;
               } else {
-                const letter: string | undefined = (/[a-z]/i.exec(key) || emptyArr)[0];
+                const [beg, end] = key.split('-');
+                const [startLinei, startWordi = 0] = beg.split(':').map(num => parseInt(num));
+                let endLinei = 0;
+                let endWordi = 0;
+                let isEndWordiLast = false;
 
-                if (letter !== undefined) {
-                  const [first, second, third] = key.split(makeRegExp('/[:a-z]/i')).map(num => parseInt(num));
-                  const isBeg = key.match(makeRegExp('/^[a-z]/i'));
-                  let others: number[] = [];
-                  let finishKey: string = '';
+                if (end) {
+                  [endLinei, endWordi] = (end || '').split(':').map(num => parseInt(num));
+                  if (isNaN(endLinei)) endLinei = startLinei;
+                  if (endWordi == null) {
+                    endWordi = (txt[endLinei] || '').length - 1;
+                    isEndWordiLast = true;
+                  }
+                } else [endLinei, endWordi] = [startLinei, (txt[startLinei] || '').length - 1];
 
-                  const ord = this.regionsOrders()?.find(
-                    (ord: Order) =>
-                      !mylib.isNum(ord.repeats) &&
-                      Object.keys(ord.repeats || {}).some(key => {
-                        if (key[!isBeg ? 'startsWith' : 'endsWith'](letter)) {
-                          others = key
-                            .split(makeRegExp('/[:a-z]/i'))
-                            .filter(s => s)
-                            .map(num => +num);
-                          finishKey = key;
-                          return true;
-                        }
-                        return false;
-                      }),
-                  );
-
-                  return (
-                    isBeg
-                      ? {
-                          startLinei: second,
-                          startWordi: third,
-                          endLinei: null,
-                          endWordi: null,
-                          startOrd: this.self<Ord>(),
-                          endOrd: ord,
-                          others,
-                          key,
-                          startKey: key,
-                          endKey: finishKey,
-                          count,
-                        }
-                      : {
-                          startLinei: null,
-                          startWordi: null,
-                          endLinei: first,
-                          endWordi: second,
-                          startOrd: ord,
-                          endOrd: this.self<Ord>(),
-                          others,
-                          key,
-                          startKey: key,
-                          endKey: finishKey,
-                          count,
-                        }
-                  ) as EditableOrderRegion<Ord>;
-                } else {
-                  const [beg, end] = key.split('-');
-                  const [startLinei, startWordi = 0] = beg.split(':').map(num => parseInt(num));
-                  let endLinei = 0;
-                  let endWordi = 0;
-
-                  if (end) {
-                    [endLinei, endWordi] = (end || '').split(':').map(num => parseInt(num));
-                    if (isNaN(endLinei)) endLinei = startLinei;
-                    if (endWordi == null) endWordi = (text[endLinei] || '').length - 1;
-                  } else [endLinei, endWordi] = [startLinei, (text[startLinei] || '').length - 1];
-
-                  return {
-                    startLinei,
-                    startWordi,
-                    endLinei,
-                    endWordi,
-                    startOrd: this.self<Ord>(),
-                    endOrd: this.self<Ord>(),
-                    others: null,
-                    key: null,
-                    startKey: key,
-                    endKey: key,
-                    count,
-                  };
-                }
+                return {
+                  startLinei,
+                  startWordi,
+                  endLinei,
+                  endWordi,
+                  isEndWordiLast,
+                  startOrd: self,
+                  endOrd: self,
+                  others: null,
+                  key,
+                  startKey: key,
+                  endKey: key,
+                  count,
+                };
               }
-            },
-          );
+            }
+          },
+        );
   }
 
   getInheritance<Key extends keyof InheritancableOrder>(fieldn: Key): InheritancableOrder[Key] | nil {
@@ -347,10 +404,12 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   getTargetFirst<Key extends keyof IExportableOrderTop>(fieldn: Key): IExportableOrderTop[Key] {
-    return this.top?.targetOrd?.top.source?.[fieldn] ?? (this.getInheritance(fieldn as never) as never);
+    return (
+      this.top?.targetOrd?.top.source?.[fieldn] ?? (this.getInheritance(fieldn as never) as never) ?? this.top[fieldn]
+    );
   }
 
-  private _insertRepeats(
+  private static _insertRepeats(
     txt: string,
     repeatsCount: number,
     insetrStartRepeatSign: boolean,
@@ -362,17 +421,18 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   repeatedText() {
-    const reps = this.repeats;
-    const { text } = this.com.bracketsTransformed(this.text);
+    return Order.makeRepeatedText(this.com.bracketsTransformed(this.text).text, this.repeats);
+  }
 
-    if (!reps) return text;
+  static makeRepeatedText(text: string, repeats: OrderRepeats | nil = null) {
+    if (!repeats) return text;
 
-    if (mylib.isNum(reps)) return this._insertRepeats(text, reps, true, true);
+    if (mylib.isNum(repeats)) return this._insertRepeats(text, repeats, true, true);
     else {
       const poss: Record<number, Record<number, number[]>> = {};
 
       mylib
-        .keys(reps)
+        .keys(repeats)
         .sort((a, b) => {
           let acount = 0,
             bcount = 0;
@@ -400,7 +460,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
           const pushRep = (linei: number, wordi: number, fix = 1) => {
             const tr = (poss[linei] = mylib.typ({}, poss[linei]));
             const td = (tr[wordi] = mylib.typ([], tr[wordi]));
-            td.push(fix * reps[key]);
+            td.push(fix * repeats[key]);
           };
 
           if (key.match(makeRegExp('/[a-z]$/i'))) {
@@ -453,7 +513,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
         })
         .join('\n');
 
-      return mylib.isNum(reps['.']) ? this._insertRepeats(repld, reps['.'], true, true) : repld;
+      return mylib.isNum(repeats['.']) ? this._insertRepeats(repld, repeats['.'], true, true) : repld;
     }
   }
 }

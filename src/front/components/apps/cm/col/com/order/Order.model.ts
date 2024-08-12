@@ -1,24 +1,29 @@
 import { ReactNode } from 'react';
-import { StyleBlock } from '../block-styles/StyleBlock';
+import { IExportableOrder, IExportableOrderFieldValues, OrderRepeats } from '../../../../../../models';
 import { ChordVisibleVariant } from '../../../Cm.model';
+import { StyleBlock } from '../block-styles/StyleBlock';
 import { Com } from '../Com';
 import { Order } from './Order';
-import { IExportableOrder, IExportableOrderFieldValues } from '../../../../../../models';
 
 export type INewExportableOrder = Omit<IExportableOrder, 'w' | 'originWid'>;
 
 export type EditableOrderRegion<Ord extends Order> = {
+  count: number;
+
+  key: string;
+  startKey: string;
+  endKey: string;
+
   startLinei: number | null;
   startWordi: number | null;
+
   endLinei: number | null;
   endWordi: number | null;
-  startOrd: Ord | undefined;
-  endOrd: Ord | undefined;
+  isEndWordiLast: boolean;
+
+  startOrd: Ord | null;
+  endOrd: Ord | null;
   others: number[] | null;
-  key: string | null;
-  startKey: string;
-  endKey?: string;
-  count?: number;
 };
 
 export interface IExportableOrderTop extends IExportableOrder {
@@ -42,6 +47,7 @@ export interface IExportableOrderTop extends IExportableOrder {
   chords?: string;
   chordLabels?: string[][];
   positions?: number[][];
+  repeats?: OrderRepeats | null; // Повторения
   isNextInherit?: boolean;
   isNextAnchorOrd?: boolean;
   isPrevTargetOrd?: boolean;

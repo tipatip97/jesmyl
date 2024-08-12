@@ -25,7 +25,7 @@ export class EditableOrder extends Order {
     return this.isVisible ? 0 : 1;
   }
 
-  regionsOrders() {
+  comOrders() {
     return this.com.orders;
   }
 

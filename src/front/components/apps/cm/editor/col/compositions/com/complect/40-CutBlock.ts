@@ -1,22 +1,21 @@
 import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { Order } from '../../../../../col/com/order/Order';
 import Correct from '../../../../corrects-box/Correct';
 import { CorrectsBox } from '../../../../corrects-box/CorrectsBox';
 import { EditableOrder } from '../../complect/orders/EditableOrder';
 import { EditableComParseBlocks } from './31-ParseBlocks';
 
 const sortNums = (a: number, b: number) => a - b;
-const mapSplitBySpace = (it: string) => it.split(' ');
 const mapJoinBySpace = (it: string[]) => it.join(' ');
-const mapClone = <It>(it: It[]) => it.map(it => it);
 
 export class EditableComCutBlock extends EditableComParseBlocks {
   ordersOnChange: EditableOrder[] = [];
 
   cutBlock(coli: number, ords: EditableOrder[]) {
-    const text = ords[0].top.text;
-    if (!text) return;
+    const firstText = ords[0].top.text;
+    if (!firstText) return;
 
-    this.changeBlock('texts', coli, text);
+    this.changeBlock('texts', coli, firstText);
     const changedChordsiSet = new Set<number>();
 
     ords.forEach(ord => {
@@ -59,36 +58,33 @@ export class EditableComCutBlock extends EditableComParseBlocks {
   }
 
   prepareCutBlock(texti: number) {
+    const ords = this.ords.filter(ord => ord.t === texti && ord.c !== undefined);
+    if (ords.length === 0) return;
+
     const comTexts = this.texts;
-    const text = comTexts?.[texti];
+    const cleanText = comTexts?.[texti];
 
-    if (!text || this.chords == null) return;
+    if (!cleanText || this.chords == null) return;
 
-    const dollarsCount = text.match(makeRegExp('/\\$/g'))?.length;
+    const dollarsCount = cleanText.match(makeRegExp('/\\$/g'))?.length;
 
     if (!dollarsCount) return;
 
-    const ords = this.ords.filter(ord => ord.t === texti && ord.c !== undefined);
     const comChords = this.chords;
     const newOrds: EditableOrder[] = [];
-    const newText = text.replace(makeRegExp('/\\s*\\$+\\s*/g'), '\n');
+    const newText = cleanText.replace(makeRegExp('/\\s*\\$+\\s*/g'), '\n');
     let disabledReason = '';
-
-    if (ords.length === 0) {
-      this.changeBlock('texts', texti, newText);
-      return;
-    }
 
     if (dollarsCount)
       ords.forEach(ord => {
         this.ords.forEach(comOrd => {
-          if (comOrd.t == null || comOrd.c == null || ord.c !== comOrd.c || comTexts[comOrd.t] === text) return;
+          if (comOrd.t == null || comOrd.c == null || ord.c !== comOrd.c || comTexts[comOrd.t] === cleanText) return;
 
           const ordTextDollarsCount = comTexts[comOrd.t].match(makeRegExp('/\\$/g'))?.length;
 
           if (
             ordTextDollarsCount !== dollarsCount &&
-            comTexts[comOrd.t].split('\n').length === text.split('\n').length
+            comTexts[comOrd.t].split('\n').length === cleanText.split('\n').length
           ) {
             disabledReason = this.fixCorrectError(
               982346544100137,
@@ -99,28 +95,33 @@ export class EditableComCutBlock extends EditableComParseBlocks {
         });
       });
 
-    const lines = text.split('\n');
-
     ords.forEach(ord => {
-      if (ord.c == null) return;
+      if (ord.c == null || ord.t == null) return;
+
+      const repeatedText = Order.makeRepeatedText(cleanText, ord.repeats);
 
       const positions: number[][] = [];
       const chordLabels: string[][] = [];
 
-      const chords: string[][] = this.transBlock(comChords[ord.c], this.transPosition).split('\n').map(mapSplitBySpace);
-      const initialChords = chords.map(mapClone);
+      const chordsLine = this.transBlock(comChords[ord.c]).trim().split(makeRegExp('/\\s+/'));
 
-      lines.forEach((line, linei) => {
+      const pushChord = (partChordLabels: string[]) => {
+        partChordLabels.push(chordsLine[0]);
+        chordsLine.shift();
+      };
+
+      repeatedText.split('\n').forEach((line, linei) => {
         const linePoss: (null | number)[] | und = ord.p?.[linei]?.toSorted(sortNums);
 
         if (linePoss == null) return;
 
         let prevLen = 0;
-        const lineChords = chords[linei] ?? [];
 
         if (linePoss[0] === -2) {
+          console.log([...linePoss], linePoss);
           linePoss.splice(0, 1);
           linePoss.push(-2);
+          console.log(linePoss);
         }
 
         line.split('$').forEach(part => {
@@ -133,19 +134,12 @@ export class EditableComCutBlock extends EditableComParseBlocks {
           const partChordLabels: string[] = [];
           chordLabels.push(partChordLabels);
 
-          const pushChord = () => {
-            if (lineChords[0]) {
-              partChordLabels.push(lineChords[0]);
-              lineChords.shift();
-            }
-          };
-
           for (let posi = 0; posi < linePoss.length; posi++) {
             linePos = linePoss[posi];
 
             if (linePos === null) continue;
             if (linePos < 0) {
-              pushChord();
+              pushChord(partChordLabels);
 
               if (linePos === -1) {
                 if (partPositions.length === 0) partPositions.push(linePos);
@@ -163,7 +157,7 @@ export class EditableComCutBlock extends EditableComParseBlocks {
             partPositions.push(linePos - prevLen - (part.startsWith(' ') ? 1 : 0));
             linePoss[posi] = null;
 
-            pushChord();
+            pushChord(partChordLabels);
           }
 
           const lasti = partVowels[partPositions[partPositions.length - 1]];
@@ -173,15 +167,15 @@ export class EditableComCutBlock extends EditableComParseBlocks {
         });
       });
 
+      if (chordsLine.length) disabledReason = 'Потеряна часть аккордов при разъединении строк';
+
       const newOrd = new EditableOrder(
         {
           ...ord,
           positions,
           text: newText,
           v: 1,
-          chordLabels: !initialChords.some((line, linei) => line.length !== positions[linei]?.length)
-            ? initialChords
-            : chordLabels,
+          chordLabels,
         },
         this as never,
       );

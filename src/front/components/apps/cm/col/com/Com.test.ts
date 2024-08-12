@@ -8,7 +8,7 @@ describe('Com', () => {
     w: CmComWid.def,
     o: [
       {
-        w: 0,
+        w: 0 as never,
         p: [[4, 8, 3]],
         s: 'one',
         u: 0,
@@ -18,17 +18,17 @@ describe('Com', () => {
         },
       },
       {
-        w: 1,
+        w: 1 as never,
         p: [[2, 5, 8]],
         s: '+',
       },
       {
-        w: 2,
+        w: 2 as never,
         p: [[7, 5, 0]],
         s: '+',
       },
       {
-        w: 3,
+        w: 3 as never,
         a: 0,
         inh: {
           r: {

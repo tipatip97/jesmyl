@@ -16,7 +16,7 @@ interface Props {
   textLinei: number;
   wordi: number;
   reset: () => void;
-  setField: (ord?: EditableOrder, repeateds?: OrderRepeats | nil, prevs?: OrderRepeats | nil) => void;
+  setField: (ord?: EditableOrder | null, repeateds?: OrderRepeats | nil, prevs?: OrderRepeats | nil) => void;
 }
 
 const startFlash = '/';
@@ -38,7 +38,7 @@ export const ComRepeatsRemoveButton = ({ isChordBlock, startOrd, ord, textLinei,
               .map((flash, flashi) => {
                 const { startLinei, startWordi, endLinei, endWordi, startOrd, endOrd, startKey, count } = flash;
                 const fill = (
-                  ord?: Order,
+                  ord?: Order | null,
                   l?: number | nil,
                   w?: number | nil,
                   isBeg?: boolean,
