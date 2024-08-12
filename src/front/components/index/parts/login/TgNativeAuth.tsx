@@ -1,20 +1,24 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Script } from '../../../../complect/tags/Script';
 import { SokiServerEvent, TelegramNativeAuthUserData } from '../../../../models';
 import { soki } from '../../../../soki';
 
-export const TgNativeAuth = ({
-  onAuthSuccessRef,
-  showToastRef,
-}: {
+const funcName = 'onTelegramNativeAuth';
+
+interface Props {
   onAuthSuccessRef: { current: (event: SokiServerEvent) => void };
   showToastRef: { current: () => void };
-}) => {
+}
+
+export const TgNativeAuth = ({ onAuthSuccessRef, showToastRef }: Props) => {
   const tgNativeRef = useRef<HTMLDivElement | null>(null);
+  const [isScriptLoaded, setIsScriptLoaded] = useState<unknown>(false);
+
   useEffect(() => {
-    if (tgNativeRef.current === null || tgNativeRef.current.childElementCount !== 0) return;
+    if (!isScriptLoaded || tgNativeRef.current === null || tgNativeRef.current.childElementCount !== 0) return;
     const tgAuthIframe = document.querySelector('#telegram-login-jesmylbot');
-    (window as any).onTelegramNativeAuth = (user: TelegramNativeAuthUserData) => {
+    (window as any)[funcName] = (user: TelegramNativeAuthUserData) => {
       soki.send({ tgNativeAuthorization: user }, 'index').on(onAuthSuccessRef.current, showToastRef.current);
     };
 
@@ -23,15 +27,26 @@ export const TgNativeAuth = ({
 
     return () => {
       document.body.appendChild(tgAuthIframe);
-      delete (window as any).onTelegramNativeAuth;
+      delete (window as any)[funcName];
     };
-  }, [onAuthSuccessRef, showToastRef]);
+  }, [isScriptLoaded, onAuthSuccessRef, showToastRef]);
 
   return (
-    <IWrapper
-      ref={tgNativeRef}
-      className="flex"
-    />
+    <>
+      <Script
+        src="https://telegram.org/js/telegram-widget.js?22"
+        data-telegram-login="jesmylbot"
+        data-size="small"
+        data-onauth="onTelegramNativeAuth(user)"
+        data-request-access="write"
+        onLoad={setIsScriptLoaded}
+      />
+
+      <IWrapper
+        ref={tgNativeRef}
+        className="flex"
+      />
+    </>
   );
 };
 

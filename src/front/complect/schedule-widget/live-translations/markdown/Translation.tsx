@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { IndexSchWTranslationLiveDataValue } from '../../../../components/index/Index.model';
 import { useAuth } from '../../../../components/index/molecules';
 import { soki } from '../../../../soki';
-import { NewWindow } from '../../../NewWindow';
+import { NewWindow } from '../../../tags/NewWindow';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { ScheduleWidgetMarkdownTranslationWindow } from './Window';
 import { markdownTranslationAtom } from './atoms';

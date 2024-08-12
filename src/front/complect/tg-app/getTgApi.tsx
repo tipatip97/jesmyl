@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Script } from '../tags/Script';
 import { TelegramWebApp } from './model';
 
 let tgApi: TelegramWebApp | nil = null;
@@ -30,8 +31,11 @@ interface Props {
 export const TelegramWebAppApiOr = ({ children }: Props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [api, setApi] = useState(tgApi);
+  const [isScriptLoaded, setIsScriptLoaded] = useState<unknown>(false);
 
   useEffect(() => {
+    if (!isScriptLoaded) return;
+
     (async () => {
       try {
         const api = await getTgApi();
@@ -40,7 +44,15 @@ export const TelegramWebAppApiOr = ({ children }: Props) => {
 
       setIsLoading(false);
     })();
-  }, []);
+  }, [isScriptLoaded]);
 
-  return <>{children(api, isLoading)}</>;
+  return (
+    <>
+      <Script
+        src="https://telegram.org/js/telegram-web-app.js"
+        onLoad={setIsScriptLoaded}
+      />
+      {children(api, isLoading)}
+    </>
+  );
 };

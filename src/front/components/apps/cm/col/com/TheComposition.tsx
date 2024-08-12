@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import { DocTitle } from '../../../../../complect/DocTitle';
+import { DocTitle } from '../../../../../complect/tags/DocTitle';
 import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import { useAtom, useAtomValue } from '../../../../../complect/atoms';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
