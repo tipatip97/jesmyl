@@ -13,6 +13,7 @@ import './Lists.scss';
 import Marks from './marks/Marks';
 import TheMeetings from './meetings/TheMeetings';
 import SelectedComs from './selected-coms/SelectedComs';
+import ExternalList from './ExternalList';
 
 export default function Lists() {
   const cols = useCols();
@@ -94,6 +95,11 @@ export default function Lists() {
       <Route
         path="cat/:catw/*"
         element={<TheCat />}
+      />
+
+      <Route
+        path="ext/:comws/*"
+        element={<ExternalList />}
       />
     </Routes>
   );
