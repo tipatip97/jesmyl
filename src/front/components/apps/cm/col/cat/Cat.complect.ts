@@ -1,3 +1,5 @@
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
 import { Com } from '../com/Com';
 import { Cat } from './Cat';
 import { CatTracker } from './Cat.model';
@@ -35,6 +37,8 @@ export type CatSpecialSearches = {
   map: (coms: Com[], term: string) => Com[];
 };
 
+const itIt = (it: unknown) => it;
+
 export const catSpecialSearches: Record<`@${string}`, CatSpecialSearches> = {
   '@audioLess': {
     title: 'Песни без аудио',
@@ -45,6 +49,58 @@ export const catSpecialSearches: Record<`@${string}`, CatSpecialSearches> = {
     map: (coms, term) => {
       const count = +term.split(':')[1] || 50;
       return coms.filter(com => com.texts?.some(text => text.split('\n').some(t => t.length > count)));
+    },
+  },
+  '@repeatsMatch:': {
+    title: 'Ключи повторений по регулярке:/~/i',
+    map: (coms, term) => {
+      try {
+        const regStr = term.slice(term.indexOf(':') + 1) || '/~/i';
+        const reg = makeRegExp(regStr as never);
+
+        return coms.filter(
+          com =>
+            com.ords?.some(ord =>
+              mylib.isNum(ord.r) ? `${ord.r}`.match(reg) : MyLib.keys(ord.r).some(key => key.match(reg)),
+            ),
+        );
+      } catch (error) {
+        return [];
+      }
+    },
+  },
+  '@matchInRepeatedText:': {
+    title: 'Поиск по блоку с повторениями:/\\/\\//i',
+    map: (coms, term) => {
+      try {
+        const regStr = term.slice(term.indexOf(':') + 1) || '/\\/\\//i';
+        const reg = makeRegExp(regStr as never);
+
+        return coms.filter(com => com.orders?.some(ord => ord.repeatedText().match(reg)));
+      } catch (error) {
+        return [];
+      }
+    },
+  },
+  '@filterPositionsUnequalChordsCounts': {
+    title: 'Количество аккордов не равна аппликатуре',
+    map: (coms, term) => {
+      return coms.filter(
+        com =>
+          com.ords?.some(
+            ord =>
+              ord.c != null &&
+              ord.p &&
+              com.chords?.[ord.c]
+                .split('\n')
+                .some(
+                  (line, linei, linea) =>
+                    line &&
+                    linei < linea.length - 1 &&
+                    line.trim().split(' ').filter(itIt).length !== ord.p![linei]?.length,
+                ),
+          ),
+      );
     },
   },
 };
