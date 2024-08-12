@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 import { RoutingAppConfig } from '../../../../app/routing-apps';
 import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
 import TheComposition from '../col/com/TheComposition';
+import Translations from '../translation/Translation';
 import { CmFooter } from './CmFooter';
 import { CmRouter } from './CmRouter';
 
@@ -17,12 +18,27 @@ export const cmRoutingApp: RoutingAppConfig = {
 };
 
 export const cmCompositionRoute = (Parent: FunctionComponent<any>) => (
-  <Route
-    path=":comw/*"
-    element={
-      <Parent>
-        <TheComposition />
-      </Parent>
-    }
-  />
+  <>
+    <Route
+      path="@tran"
+      element={
+        Parent ? (
+          <Parent>
+            <Translations />
+          </Parent>
+        ) : (
+          <Translations />
+        )
+      }
+    />
+
+    <Route
+      path=":comw/*"
+      element={
+        <Parent>
+          <TheComposition />
+        </Parent>
+      }
+    />
+  </>
 );

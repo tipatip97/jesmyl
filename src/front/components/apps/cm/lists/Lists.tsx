@@ -85,11 +85,11 @@ export default function Lists() {
         element={<TheMeetings />}
       />
       <Route
-        path="marks"
+        path="marks/*"
         element={<Marks />}
       />
       <Route
-        path="selected"
+        path="selected/*"
         element={<SelectedComs />}
       />
       <Route

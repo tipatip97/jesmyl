@@ -1,24 +1,41 @@
-import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
+import CmTranslationComListContextInSelected from '../../base/translations/InSelected';
 import useSelectedComs from '../../base/useSelectedComs';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';
+import { cmCompositionRoute } from '../../routing/cmRoutingApp';
 import { LocalListToolsPopup } from '../popups/LocalListToolsPopup';
 
 export default function SelectedComs() {
   const coms = useSelectedComs().takeSelectedComs();
-  const [popup, openPopup] = useBottomPopup(LocalListToolsPopup, coms);
+  const [isToolsOpen, setIsToolsOpen] = useState(false);
 
   return (
-    <PhaseContainerConfigurer
-      className="favorites-container"
-      headTitle="Выбранное"
-      onMoreClick={openPopup}
-      content={
-        <>
-          {popup}
-          <ComFaceList list={coms} />
-        </>
-      }
-    />
+    <Routes>
+      <Route
+        index
+        element={
+          <PhaseContainerConfigurer
+            className="favorites-container"
+            headTitle="Выбранное"
+            onMoreClick={setIsToolsOpen}
+            content={
+              <>
+                {isToolsOpen && (
+                  <BottomPopup onClose={setIsToolsOpen}>
+                    <LocalListToolsPopup coms={coms} />
+                  </BottomPopup>
+                )}
+                <ComFaceList list={coms} />
+              </>
+            }
+          />
+        }
+      />
+
+      {cmCompositionRoute(CmTranslationComListContextInSelected)}
+    </Routes>
   );
 }

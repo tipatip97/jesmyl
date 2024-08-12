@@ -30,7 +30,7 @@ export function useCom(): Com | und {
   return useMemo(() => cols?.coms.find(com => com.wid === comw), [comw, cols]);
 }
 
-export const useTakeActualComw = () => {
+export const useTakeActualComw = (): number | typeof NaN => {
   const setComw = useAtomSet(ccomwAtom);
   const comw = useCcomw();
 
@@ -38,6 +38,8 @@ export const useTakeActualComw = () => {
     if (isNaN(comw)) return;
     setComw(comw);
   }, [comw, setComw]);
+
+  return comw;
 };
 
 export const useActualCcomw = (): CmComWid | typeof NaN => +useAtomValue(ccomwAtom)!;

@@ -26,11 +26,12 @@ export default function CmTranslationControlled({ head, comList, headTitle }: Pr
   const setTexti = useCmScreenTranslationComTextNavigations().setTexti;
 
   useScreenKeyDownListen();
-  useTakeActualComw();
+  const ccomw = useTakeActualComw();
 
   return (
     <PhaseContainerConfigurer
       className=""
+      backButtonPath={isNaN(ccomw) ? undefined : `../${ccomw}`}
       headTitle={
         headTitle ? (
           <>
@@ -46,18 +47,17 @@ export default function CmTranslationControlled({ head, comList, headTitle }: Pr
         <Container>
           <div className="flex">
             <TranslationSlidePreview />
-            {
-              <div className="translation-com-list">
-                <ComFaceList
-                  list={comList ?? comPack.list}
-                  titles={comPack.titles}
-                  importantOnClick={com => {
-                    setSearchParams(prev => ({ ...prev, comw: com.wid }));
-                    setTexti(0);
-                  }}
-                />
-              </div>
-            }
+
+            <div className="translation-com-list">
+              <StyledComFaceList
+                list={comList ?? comPack.list}
+                titles={comPack.titles}
+                importantOnClick={com => {
+                  setSearchParams(prev => ({ ...prev, comw: com.wid }));
+                  setTexti(0);
+                }}
+              />
+            </div>
           </div>
 
           <CmTranslationSlideLine />
@@ -68,6 +68,10 @@ export default function CmTranslationControlled({ head, comList, headTitle }: Pr
     />
   );
 }
+
+const StyledComFaceList = styled(ComFaceList)`
+  min-height: calc(var(--max-size) + 1px);
+`;
 
 const Container = styled.div`
   --size: 50vmin;
@@ -80,7 +84,7 @@ const Container = styled.div`
     min-height: var(--min-size);
     max-height: var(--max-size);
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
 
     .face-item.current {
       font-weight: bold;

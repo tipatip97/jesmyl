@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import DebouncedSearchInput, { useIsNumberSearch } from '../../../../../complect/DebouncedSearchInput';
 import LoadIndicatedContent from '../../../../../complect/load-indicated-content/LoadIndicatedContent';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
+import CmTranslationComListContextInCat from '../../base/translations/InCat';
 import CmTranslationComListContextInZeroCat from '../../base/translations/InZeroCat';
 import useLaterComList from '../../base/useLaterComList';
 import { cmCompositionRoute } from '../../routing/cmRoutingApp';
@@ -100,7 +101,7 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
         }
       />
 
-      {cmCompositionRoute(CmTranslationComListContextInZeroCat)}
+      {cmCompositionRoute(all ? CmTranslationComListContextInZeroCat : CmTranslationComListContextInCat)}
     </Routes>
   );
 }

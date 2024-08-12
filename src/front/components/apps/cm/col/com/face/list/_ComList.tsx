@@ -10,9 +10,10 @@ import { IComFaceList } from './model';
 interface Props extends IComFaceList, FreeComFaceProps {
   list: Com[];
   titles?: Record<number, string>;
+  className?: string;
 }
 
-export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, ...comProps }: Props) => {
+export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, className, ...comProps }: Props) => {
   const [isPartialRender, setIsPartialRender] = useState(isNeedRenderingDelay);
 
   const ccomWid = comProps.ccomw;
@@ -48,7 +49,10 @@ export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, ...comP
   }, [ccomi, comProps.ccomw, isNeedRenderingDelay]);
 
   return (
-    <StyledContainer $ccomw={comProps.ccomw}>
+    <StyledContainer
+      $ccomw={comProps.ccomw}
+      className={className}
+    >
       {list.map((com, comi) => {
         if (isPartialRender && (ccomi - 15 > comi || ccomi + 17 < comi)) return null;
 

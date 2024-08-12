@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import CmTranslationComListContextInMeetings from '../../base/translations/InMeetings';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';
@@ -9,7 +10,7 @@ import { useMeetings } from './useMeetings';
 
 export default function TheMeetingsEvent() {
   const { currentEvent } = useMeetings();
-  const [popupNode, openPopup] = useBottomPopup(LocalListToolsPopup, currentEvent?.coms);
+  const [isOpenList, setIsOpenList] = useState(false);
 
   return (
     <Routes>
@@ -19,10 +20,14 @@ export default function TheMeetingsEvent() {
           <PhaseContainerConfigurer
             className="meeting-container"
             headTitle={currentEvent?.name ?? 'Событие'}
-            onMoreClick={openPopup}
+            onMoreClick={setIsOpenList}
             content={
               <>
-                {popupNode}
+                {isOpenList && (
+                  <BottomPopup onClose={setIsOpenList}>
+                    <LocalListToolsPopup coms={currentEvent?.coms} />
+                  </BottomPopup>
+                )}
                 <ComFaceList list={currentEvent?.coms} />
               </>
             }

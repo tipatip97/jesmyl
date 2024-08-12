@@ -1,37 +1,36 @@
-import { Link } from 'react-router-dom';
-import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
+import { useState } from 'react';
+import { BottomPopupItem } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { isTouchDevice } from '../../../../../complect/device-differences';
-import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import IconButton from '../../../../../complect/the-icon/IconButton';
+import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import { IconBookOpen02StrokeRounded } from '../../../../../complect/the-icon/icons/book-open-02';
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
 import { Com } from '../../col/com/Com';
 import FullscreenExpandComList from './FullscreenExpandComList';
 
-export const LocalListToolsPopup: BottomPopupContenter<Com[] | und> = (isOpen, closePopup, _prepare, coms) => {
-  const [fullNode, openFullContent] = useFullContent(() => coms && <FullscreenExpandComList coms={coms} />);
+export const LocalListToolsPopup = ({ coms }: { coms: Com[] | und }) => {
+  const [isOpenList, setIsOpenList] = useState(false);
 
-  return [
-    <>{fullNode}</>,
-    isOpen && coms && (
+  return (
+    coms && (
       <>
-        <IconButton
-          Icon={IconBookOpen02StrokeRounded}
-          postfix="Раскрыть песни списка"
-          onClick={() => {
-            openFullContent();
-            closePopup();
-          }}
-        />
-        <Link to={`@tran${coms?.length ? `?comw=${coms[0].wid}` : ''}`}>
-          <IconButton
-            Icon={isTouchDevice ? IconPlayStrokeRounded : IconComputerStrokeRounded}
-            postfix="Показывать слайды списка"
+        {isOpenList && (
+          <FullContent
+            containerClassName=""
+            asRootAnchor={() => <FullscreenExpandComList coms={coms} />}
           />
-        </Link>
+        )}
+        <BottomPopupItem
+          Icon={IconBookOpen02StrokeRounded}
+          title="Раскрыть песни списка"
+          onClick={() => setIsOpenList(true)}
+        />
+        <BottomPopupItem
+          Icon={isTouchDevice ? IconPlayStrokeRounded : IconComputerStrokeRounded}
+          title="Показывать слайды списка"
+          path={`@tran${coms?.length ? `?comw=${coms[0].wid}` : ''}`}
+        />
       </>
-    ),
-    // qrNode,
-  ];
+    )
+  );
 };

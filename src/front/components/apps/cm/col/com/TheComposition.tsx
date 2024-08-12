@@ -1,17 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import { DocTitle } from '../../../../../complect/tags/DocTitle';
 import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import { useAtom, useAtomValue } from '../../../../../complect/atoms';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import { Metronome } from '../../../../../complect/metronome/Metronome';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
+import { DocTitle } from '../../../../../complect/tags/DocTitle';
 import { useCmTranslationComListContext } from '../../base/translations/context';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useLaterComList from '../../base/useLaterComList';
 import { cmMolecule, isOpenChordImagesAtom } from '../../molecules';
-import Translations from '../../translation/Translation';
 import './Com.scss';
 import TheControlledCom from './TheControlledCom';
 import ChordImagesList from './chord-card/ChordImagesList';
@@ -58,62 +56,50 @@ export default function TheComposition() {
   }
 
   return (
-    <Routes>
-      <Route
-        index
-        element={
-          <ComContainer
-            className={
-              'composition-container' +
-              (playerHideMode && comAudio ? ` with-open-player ${playerHideMode}` : '') +
-              (isMetronomeHide ? ' hide-metronome' : '')
-            }
-            headTitle={ccom.number}
-            onMoreClick={setIsOpenTools}
-            contentClass="composition-content"
-            contentRef={comListElem}
-            withoutBackSwipe
-            rememberProps={['comw']}
-            head={<div className="com-actions-pannel flex flex-gap">{comToolsNode}</div>}
-            content={
-              <>
-                {isOpenChordImages && (
-                  <FullContent onClose={setIsOpenChordImages}>
-                    <ChordImagesList />
-                  </FullContent>
-                )}
-                {isOpenTools && (
-                  <BottomPopup onClose={setIsOpenTools}>
-                    <ComTools />
-                  </BottomPopup>
-                )}
-                <DocTitle title={ccom.name} />
-                {comAudio && (
-                  <ComPlayer
-                    src={comAudio}
-                    split
-                  />
-                )}
-                <Metronome
-                  meterSize={ccom.meterSize}
-                  bpm={ccom.beatsPerMinute}
-                />
-                <TheControlledCom
-                  com={ccom}
-                  comList={list}
-                  chordVisibleVariant={chordVisibleVariant}
-                />
-              </>
-            }
+    <ComContainer
+      className={
+        'composition-container' +
+        (playerHideMode && comAudio ? ` with-open-player ${playerHideMode}` : '') +
+        (isMetronomeHide ? ' hide-metronome' : '')
+      }
+      headTitle={ccom.number}
+      onMoreClick={setIsOpenTools}
+      contentClass="composition-content"
+      contentRef={comListElem}
+      withoutBackSwipe
+      rememberProps={['comw']}
+      head={<div className="com-actions-pannel flex flex-gap">{comToolsNode}</div>}
+      content={
+        <>
+          {isOpenChordImages && (
+            <FullContent onClose={setIsOpenChordImages}>
+              <ChordImagesList />
+            </FullContent>
+          )}
+          {isOpenTools && (
+            <BottomPopup onClose={setIsOpenTools}>
+              <ComTools />
+            </BottomPopup>
+          )}
+          <DocTitle title={ccom.name} />
+          {comAudio && (
+            <ComPlayer
+              src={comAudio}
+              split
+            />
+          )}
+          <Metronome
+            meterSize={ccom.meterSize}
+            bpm={ccom.beatsPerMinute}
           />
-        }
-      />
-
-      <Route
-        path="@tran"
-        element={<Translations />}
-      />
-    </Routes>
+          <TheControlledCom
+            com={ccom}
+            comList={list}
+            chordVisibleVariant={chordVisibleVariant}
+          />
+        </>
+      }
+    />
   );
 }
 
