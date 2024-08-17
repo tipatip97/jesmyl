@@ -1,29 +1,30 @@
 import Eventer, { EventerValueListeners } from '../../back/complect/Eventer';
 
 export type JStorageListener<Val> = (val: Val) => void;
+const onUpdates: EventerValueListeners<0> = new Set();
+
+const idb = indexedDB.open('jesmyl', 661);
+idb.onupgradeneeded = () => Eventer.invokeValue(onUpdates, 0);
 
 export class JStorage<Scope> {
   private nonCachable: (keyof Scope)[] = [] as never;
-  private dbOpen: IDBOpenDBRequest;
   private listens: Partial<Record<keyof Scope, EventerValueListeners<Scope[keyof Scope]>>> = {};
+
+  transaction: (mode: IDBTransactionMode) => IDBObjectStore;
+  readyState: () => IDBRequestReadyState;
 
   properties: Record<keyof Scope, any> = {} as never;
 
-  constructor(storageName: string, config?: { nonCachable?: (keyof Scope)[] }) {
-    if (config?.nonCachable) this.nonCachable = config.nonCachable;
-    this.dbOpen = indexedDB.open(storageName);
-    this.initDB(this.dbOpen);
-
-    (window as any)[`${storageName}Storage`] = this;
-  }
-
-  private initDB(dbOpen: IDBOpenDBRequest) {
-    dbOpen.onupgradeneeded = () => {
-      const db = dbOpen.result;
-      if (!db.objectStoreNames.contains('data')) {
-        db.createObjectStore('data');
+  constructor(name: string) {
+    Eventer.listenValue(onUpdates, () => {
+      const db = idb.result;
+      if (!db.objectStoreNames.contains(name)) {
+        db.createObjectStore(name);
       }
-    };
+    });
+
+    this.transaction = mode => idb.result.transaction(name, mode).objectStore(name);
+    this.readyState = () => idb.readyState;
   }
 
   refreshAreas<Key extends keyof Scope>(areas: Key[], contents: Record<Key, unknown>) {
@@ -36,24 +37,26 @@ export class JStorage<Scope> {
   }
 
   get<Key extends keyof Scope>(key: Key): Promise<Scope[Key] | undefined> {
-    return new Promise(resolve => {
-      const read = async () => {
-        if (this.dbOpen.readyState !== 'done') {
-          resolve(await this.get(key));
-          return;
-        }
-        try {
-          const data = this.dbOpen.result
-            .transaction('data', 'readonly')
-            .objectStore('data')
-            .get(key as string);
-          data.onsuccess = () => resolve(data.result);
-        } catch (error) {}
-      };
+    let tries = 100;
 
-      if (this.dbOpen.readyState === 'done') read();
-      else setTimeout(read, 100);
-    });
+    const read = () => {
+      const { promise, resolve } = Promise.withResolvers<Scope[Key] | undefined>();
+
+      if (this.readyState() !== 'done') {
+        if (tries-- > 0) setTimeout(async () => resolve(read()));
+        return promise;
+      }
+      try {
+        const data = this.transaction('readonly').get(key as string);
+        data.onsuccess = () => resolve(data.result);
+      } catch (error) {
+        resolve(undefined);
+      }
+
+      return promise;
+    };
+
+    return read();
   }
 
   async getOr<Key extends keyof Scope>(key: Key, def: Scope[Key]) {
@@ -96,29 +99,23 @@ export class JStorage<Scope> {
 
     if (this.nonCachable.includes(key)) return;
 
-    if (this.dbOpen.readyState !== 'done') {
+    if (this.readyState() !== 'done') {
       setTimeout(() => this.set(key, val));
       return;
     }
 
     try {
-      this.dbOpen.result
-        .transaction('data', 'readwrite')
-        .objectStore('data')
-        .put(value, key as string);
+      this.transaction('readwrite').put(value, key as string);
     } catch (error) {}
   }
 
   rem(key: keyof Scope) {
-    if (this.dbOpen.readyState !== 'done') {
+    if (this.readyState() !== 'done') {
       setTimeout(() => this.rem(key));
       return;
     }
     try {
-      this.dbOpen.result
-        .transaction('data', 'readwrite')
-        .objectStore('data')
-        .delete(key as string);
+      this.transaction('readwrite').delete(key as string);
     } catch (error) {}
   }
 }
