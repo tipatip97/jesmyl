@@ -118,10 +118,8 @@ export class EditableComCutBlock extends EditableComParseBlocks {
         let prevLen = 0;
 
         if (linePoss[0] === -2) {
-          console.log([...linePoss], linePoss);
           linePoss.splice(0, 1);
           linePoss.push(-2);
-          console.log(linePoss);
         }
 
         line.split('$').forEach(part => {
