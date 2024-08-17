@@ -14,23 +14,36 @@ export const makeScheduleWidgetJoinTitle = (
   schedule: IScheduleWidget<string>,
   day: IScheduleWidgetDay,
   eventi: number,
-  isSimpleText: boolean = false,
-  prefix: string = '',
+  collectSecrets: false | string[],
 ): string => {
-  const event = day.list[eventi];
+  const titles: string[] = [];
 
-  if (event == null) return '';
+  const check = (eventi: number) => {
+    const event = day.list[eventi];
 
-  const eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
-  const titleInner = schedule.types[event.type].title + (event.topic ? ': ' + event.topic : '');
-  const title = isSimpleText ? titleInner : ScheduleWidgetTgInformCleans.putInTgTag('b', titleInner);
+    if (event == null) return;
 
-  return (
-    prefix +
-    (event.secret ? (isSimpleText ? title : ScheduleWidgetTgInformCleans.putInTgTag('tg-spoiler', title)) : title) +
-    (eventTimeMin === 0 ? makeScheduleWidgetJoinTitle(schedule, day, eventi + 1, isSimpleText, ' / ') : '')
-  );
+    const eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
+    const titleInner = schedule.types[event.type].title + (event.topic ? ': ' + event.topic : '');
+    const title = ScheduleWidgetTgInformCleans.putInTgTag('b', titleInner);
+
+    if (eventTimeMin === 0) check(eventi + 1);
+
+    if (event.secret) {
+      if (collectSecrets) collectSecrets.push(title);
+      else titles.unshift(ScheduleWidgetTgInformCleans.putInTgTag('tg-spoiler', title));
+
+      return;
+    }
+
+    titles.unshift(title);
+  };
+
+  check(eventi);
+
+  return titles.join(' / ');
 };
+
 const itNNull = (it: unknown) => it !== null;
 const findAdminThis = {} as { from: TelegramBot.User };
 

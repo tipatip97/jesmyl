@@ -132,48 +132,89 @@ export const indexScheduleSetMessageInform = (
         const timeToEvent = Math.ceil((eventStartMs - Date.now()) / smylib.howMs.inMin);
         const isWithDelay = event.tgInform !== 0 && timeToEvent > 0;
 
-        let delayTitlePrefix = '';
-        let nextEventTitle = '';
-        let attsText = '';
+        const secrets: string[] = [];
 
-        if (isWithDelay) {
-          delayTitlePrefix = 'Через ' + timeToEvent + 'м. ';
-        } else {
-          attsText = event.atts !== undefined ? SMyLib.entries(event.atts).map(mapAttsStorage).join('') : '';
+        const makeText = (isJustCollectSecrets: boolean) => {
+          let nextEventTitle = '';
+          let attsText = '';
+          let delayTitlePrefix = '';
+          const eventTitle = makeScheduleWidgetJoinTitle(schedule, day, eventi, isJustCollectSecrets && secrets);
 
-          if (day.list[eventi + 1] != null && eventTimeMin > informBeforeTime) {
-            let timeTo = `через ${eventTimeMin}м.`;
+          if (isWithDelay) {
+            delayTitlePrefix = 'Через ' + timeToEvent + 'м. ';
+          } else {
+            let timedEventi = eventi;
+            let nextTimedEventi = -1;
+            let eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
+            let isFoundTimedEventi = eventTimeMin !== 0;
 
-            if (eventTimeMin > 60) {
-              const date = new Date(eventStartMs + eventTimeMs);
-              timeTo = `в ${('' + date.getHours()).padStart(2, '0')}:${('' + date.getMinutes()).padStart(2, '0')}`;
+            attsText = event.atts !== undefined ? SMyLib.entries(event.atts).map(mapAttsStorage).join('') : '';
+
+            for (let dayEventi = 0; dayEventi < day.list.length; dayEventi++) {
+              if (dayEventi < eventi) continue;
+
+              const dayEvent = day.list[dayEventi];
+              const dayEventTimeMin = ScheduleWidgetCleans.takeEventTm(dayEvent, schedule.types[dayEvent.type]);
+
+              if (dayEventTimeMin > 0)
+                if (isFoundTimedEventi) nextTimedEventi = dayEventi;
+                else {
+                  isFoundTimedEventi = true;
+                  timedEventi = dayEventi;
+                }
+
+              if (nextTimedEventi > -1) break;
             }
 
-            nextEventTitle =
-              newPointLineMarker +
-              ScheduleWidgetTgInformCleans.putInTgTag(
-                'i',
-                `${makeScheduleWidgetJoinTitle(schedule, day, eventi + 1)} - ${timeTo}`,
-              ) +
-              doubleNl;
-          }
-        }
+            if (eventTimeMin === 0) {
+              const timedEvent = day.list[timedEventi];
+              eventTimeMin = ScheduleWidgetCleans.takeEventTm(timedEvent, schedule.types[timedEvent.type]);
+            }
 
-        const text =
-          delayTitlePrefix +
-          (event.secret
-            ? ScheduleWidgetTgInformCleans.putInTgTag('tg-spoiler', makeScheduleWidgetJoinTitle(schedule, day, eventi))
-            : makeScheduleWidgetJoinTitle(schedule, day, eventi)) +
-          doubleNl +
-          (event.tgInform === 0 && event.dsc
-            ? newPointLineMarker +
-              ScheduleWidgetTgInformCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc)) +
-              doubleNl
-            : '') +
-          (attsText ? `${newPointLineMarker}${attsText}` : '') +
-          nextEventTitle +
-          newPointLineMarker +
-          ScheduleWidgetTgInformCleans.putInTgTag('u', ScheduleWidgetTgInformCleans.putInTgTag('i', schedule.title));
+            if (eventTimeMin > informBeforeTime) {
+              let labelTimeTo = `через ${eventTimeMin}м.`;
+
+              if (eventTimeMin > 45) {
+                const date = new Date(dayStartMs + wakeupMs + times[timedEventi] * smylib.howMs.inMin);
+                labelTimeTo =
+                  `в ${('' + date.getHours()).padStart(2, '0')}:` + ('' + date.getMinutes()).padStart(2, '0');
+              }
+
+              const nextEventJoinedTitle = makeScheduleWidgetJoinTitle(
+                schedule,
+                day,
+                timedEventi + 1,
+                isJustCollectSecrets && secrets,
+              );
+
+              nextEventTitle =
+                nextEventJoinedTitle &&
+                newPointLineMarker +
+                  ScheduleWidgetTgInformCleans.putInTgTag('i', `${nextEventJoinedTitle} - ${labelTimeTo}`) +
+                  doubleNl;
+            }
+          }
+
+          return eventTitle
+            ? delayTitlePrefix +
+                eventTitle +
+                doubleNl +
+                (event.tgInform === 0 && event.dsc
+                  ? newPointLineMarker +
+                    ScheduleWidgetTgInformCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc)) +
+                    doubleNl
+                  : '') +
+                (attsText ? `${newPointLineMarker}${attsText}` : '') +
+                nextEventTitle +
+                newPointLineMarker +
+                ScheduleWidgetTgInformCleans.putInTgTag(
+                  'u',
+                  ScheduleWidgetTgInformCleans.putInTgTag('i', schedule.title),
+                )
+            : null;
+        };
+
+        const text = makeText(true);
 
         const options: SendMessageOptions = (unsubOptions[schedule.w] ??= {
           reply_markup: {
@@ -188,7 +229,23 @@ export const indexScheduleSetMessageInform = (
           },
         });
 
+        if (tgChatId !== null && secrets.length) {
+          const text = makeText(false);
+
+          if (text)
+            try {
+              const admins = await jesmylTgBot.bot.getChatAdministrators(tgChatId);
+              admins.forEach(admin => {
+                if (admin.user.is_bot) return;
+
+                jesmylTgBot.bot.sendMessage(admin.user.id, text, { parse_mode: 'HTML' });
+              });
+            } catch (error) {}
+        }
+
         let sendUserMessage = async (tgId: number) => {
+          if (text === null) return;
+
           try {
             if (tgChatId !== null) {
               await jesmylTgBot.bot.getChatMember(tgChatId, tgId);
@@ -200,17 +257,18 @@ export const indexScheduleSetMessageInform = (
         };
 
         try {
-          if (tgChatId !== null) {
-            const message = await jesmylTgBot.sendMessage(tgChatId, text, tglogger, openDayScheduleKey);
+          if (text)
+            if (tgChatId !== null) {
+              const message = await jesmylTgBot.sendMessage(tgChatId, text, tglogger, openDayScheduleKey);
 
-            if (!smylib.isStr(message.value)) {
-              if (await jesmylTgBot.bot.pinChatMessage(tgChatId, message.value.message_id))
-                jesmylTgBot.bot.deleteMessage(tgChatId, message.value.message_id + 1);
-            }
-          } else
-            sendUserMessage = async (tgId: number) => {
-              jesmylTgBot.sendMessage(tgId, text, tglogger, options);
-            };
+              if (!smylib.isStr(message.value)) {
+                if (await jesmylTgBot.bot.pinChatMessage(tgChatId, message.value.message_id))
+                  jesmylTgBot.bot.deleteMessage(tgChatId, message.value.message_id + 1);
+              }
+            } else
+              sendUserMessage = async (tgId: number) => {
+                jesmylTgBot.sendMessage(tgId, text, tglogger, options);
+              };
         } catch (error) {}
 
         for (const user of schedule.ctrl.users) {
@@ -223,7 +281,7 @@ export const indexScheduleSetMessageInform = (
           )
             continue;
 
-          sendUserMessage(user.tgId);
+          if (text) sendUserMessage(user.tgId);
         }
 
         if (event.tgInform !== 0) {
