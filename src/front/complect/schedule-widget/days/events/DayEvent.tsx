@@ -198,8 +198,10 @@ export default function ScheduleWidgetDayEvent(props: Props) {
                   fieldValue={props.event.secret ? 0 : 1}
                   cud="U"
                   Icon={props.event.secret ? IconCheckmarkSquare02StrokeRounded : IconSquareStrokeRounded}
-                  confirm={`Событие ${box.title} ${props.event.secret ? 'больше не секретное' : 'будет секретным'}?`}
-                  postfix="Секретное событие"
+                  confirm={`Событие ${box.title} ${
+                    props.event.secret ? 'больше не только для лидеров' : 'будет только для лидеров'
+                  }?`}
+                  postfix="Событие только для лидеров"
                 />
                 {props.event.tgInform === 0 || isPastEvent || isCurrentEvent ? (
                   <StrongEvaButton
@@ -250,7 +252,7 @@ export default function ScheduleWidgetDayEvent(props: Props) {
                 <IconButton
                   Icon={IconViewOffSlashStrokeRounded}
                   className="color--ko margin-gap-v"
-                  postfix="Это секретное событие"
+                  postfix="Это событие только для лидеров"
                 />
               )
             )}

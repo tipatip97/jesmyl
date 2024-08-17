@@ -109,7 +109,7 @@ export default function ScheduleWidgetAlarmContent({ observeSchw, schedule, isJu
         if (schWr === undefined) node = <span className="color--ko">Мероприятие не найдено</span>;
         else if (schWr.days.length === 0)
           node = (
-            <div>
+            <div className={isJustShowAllDay ? 'full-size flex center column' : undefined}>
               <ScheduleWidgetTopicTitle
                 titleBox={schWr.sch!}
                 altTitle="Мероприятие"
@@ -318,7 +318,7 @@ export default function ScheduleWidgetAlarmContent({ observeSchw, schedule, isJu
           }
 
           node = (
-            <div>
+            <div className={isJustShowAllDay ? 'full-size flex center column' : undefined}>
               <ScheduleWidgetTopicTitle
                 titleBox={willSchWr.sch!}
                 altTitle="Мероприятие"
@@ -348,7 +348,17 @@ export default function ScheduleWidgetAlarmContent({ observeSchw, schedule, isJu
   const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
 
   return isJustShowAllDay ? (
-    <>{fullValue?.(() => {}, null) ?? node ?? <div className="flex center full-size">{schedule?.title}</div>}</>
+    <>
+      {fullValue?.(() => {}, null) ??
+        node ??
+        (schedule && (
+          <div className="flex center column full-size">
+            <h2>{schedule.title}</h2>
+            {schedule.topic && <h4>{schedule.topic}</h4>}
+            {schedule.dsc && <p className="text-center">{schedule.dsc}</p>}
+          </div>
+        ))}
+    </>
   ) : (
     <>
       {fullNode}
