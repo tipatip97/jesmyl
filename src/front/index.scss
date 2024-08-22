@@ -653,6 +653,10 @@ textarea {
   font-family: main;
 }
 
+a {
+  color: var(--text-color);
+}
+
 .text- {
   &center {
     text-align: center;
