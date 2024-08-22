@@ -2,18 +2,15 @@ import smylib from '../../../../shared/SMyLib';
 import { IScheduleWidget, IScheduleWidgetDay } from '../../models/ScheduleWidget.model';
 import ScheduleWidgetCleans from './Cleans';
 
-export const indexScheduleGetDayStartMs = (schedule: IScheduleWidget<string>, dayi: number) => {
+export const indexScheduleGetDayStartMs = (schedule: IScheduleWidget, dayi: number) => {
   return schedule.start + smylib.howMs.inDay * dayi - (schedule.withTech ? smylib.howMs.inDay : 0);
 };
 
-export const indexScheduleCheckIsDayIsPast = (schedule: IScheduleWidget<string>, dayi: number) => {
+export const indexScheduleCheckIsDayIsPast = (schedule: IScheduleWidget, dayi: number) => {
   return Date.now() > indexScheduleGetDayStartMs(schedule, dayi) + smylib.howMs.inDay;
 };
 
-export const indexScheduleGetDayEventTimes = (
-  schedule: IScheduleWidget<string>,
-  dayScalar: number | IScheduleWidgetDay,
-) => {
+export const indexScheduleGetDayEventTimes = (schedule: IScheduleWidget, dayScalar: number | IScheduleWidgetDay) => {
   const day = smylib.isNum(dayScalar) ? schedule.days[dayScalar] : dayScalar;
 
   const times: number[] = [];
@@ -24,7 +21,7 @@ export const indexScheduleGetDayEventTimes = (
 };
 
 export const indexScheduleGetEventFinishMs = (
-  schedule: IScheduleWidget<string>,
+  schedule: IScheduleWidget,
   wakeupMs: number,
   dayi: number,
   eventPrevTime: number,

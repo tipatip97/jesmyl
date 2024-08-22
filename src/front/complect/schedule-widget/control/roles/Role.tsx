@@ -157,7 +157,7 @@ export default function ScheduleWidgetRole({
             <ScheduleWidgetIconChange
               scope={roleScope}
               header={`Иконка для роли ${role.title}`}
-              icon={role.icon ?? 'IconGithub01StrokeRounded'}
+              icon={role.icon ?? 'Github01'}
               used={rights.schedule.ctrl.roles.map(role => role.icon)}
             />
             {rights.isCanTotalRedact && (

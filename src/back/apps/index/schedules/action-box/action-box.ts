@@ -18,7 +18,7 @@ const onTgInformingChangeSuccess: ActionBoxOnFinalCallback = (props, _value, aut
 const getNounPronsWords = () => filer.contents.index['nounPronsWords'].data as NounPronsType;
 
 const makeTitlesTitle =
-  (addText?: ((args: Record<string, unknown>) => string) | null, topKey?: keyof IScheduleWidget<string>) =>
+  (addText?: ((args: Record<string, unknown>) => string) | null, topKey?: keyof IScheduleWidget) =>
   (args: Record<string, unknown>) => {
     const schedule = ScheduleWidgetActionBoxCleans.getSchedule(args.schw);
 
@@ -44,7 +44,7 @@ const addUserValue = {
   tgId: '{*tgId}',
 } as const;
 
-const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
+const newSchedule: ActionBoxValue<IScheduleWidget> = {
   w: '{schw}',
   title: '{title}',
   app: '{app}',
@@ -73,7 +73,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
       {
         mi: 0,
         title: 'Координатор',
-        icon: 'github-outline',
+        icon: 'Teacher',
         user: 0,
       },
     ],
@@ -87,7 +87,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
   lists: {
     cats: [
       {
-        icon: 'people-outline',
+        icon: 'UserGroup',
         title: 'Группа',
         titles: ['Наставники', 'Участники'],
       },
@@ -103,7 +103,7 @@ const newSchedule: ActionBoxValue<IScheduleWidget<string>> = {
   },
 };
 
-export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
+export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
   scopeNode: 'schs',
   expected: { list: [] },
   '/list': {
@@ -133,7 +133,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
         C: {
           method: 'set_all',
           title: args =>
-            `Сделана копия расписания <b>${(args.value as IScheduleWidget<string>).title}</b>` +
+            `Сделана копия расписания <b>${(args.value as IScheduleWidget).title}</b>` +
             ` в <b>${ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw)}</b>`,
           value: args => {
             const value = { ...(args?.value as { title?: string }) };

@@ -10,7 +10,7 @@ function findType(this: typeof findTitleSelf, item: typeof findTitleSelf) {
   return item.id === this.id;
 }
 
-export const scheduleWidgetCtrlTypeActionBox: ActionBox<IScheduleWidget<string>['ctrl']['type']> = {
+export const scheduleWidgetCtrlTypeActionBox: ActionBox<IScheduleWidget['ctrl']['type']> = {
   U: {
     RRej: true,
     args: {

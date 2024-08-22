@@ -160,7 +160,7 @@ export default function ScheduleWidgetCustomAtt(
           value={props.tatt}
           isRedact={isRedact}
           isImpossibleEmptyValue
-          Icon={isRedact ? IconBookmark01StrokeRounded : theIconFromPack(props.tatt.icon)}
+          Icon={isRedact ? IconBookmark01StrokeRounded : theIconFromPack(props.tatt.icon)?.StrokeRounded}
           title="Название"
         />
         <StrongEditableField

@@ -36,12 +36,12 @@ export type ScheduleWidgetPhotoKey =
   | `tg.${IScheduleWidgetUserTgId}`
   | `login.${IScheduleWidgetUserLogin}`;
 
-export interface ScheduleStorage<TheIconName> {
-  list: IScheduleWidget<TheIconName>[];
+export interface ScheduleStorage {
+  list: IScheduleWidget[];
 }
 
-export interface IScheduleWidgetLists<TheIconName> {
-  cats: IScheduleWidgetListCat<TheIconName>[];
+export interface IScheduleWidgetLists {
+  cats: IScheduleWidgetListCat[];
   units: IScheduleWidgetListUnit[];
 }
 
@@ -52,13 +52,13 @@ export interface IScheduleWidgetListUnit {
   dsc: string;
 }
 
-export interface IScheduleWidgetListCat<TheIconName> {
+export interface IScheduleWidgetListCat {
   title: string;
-  icon: TheIconName;
+  icon: KnownIconName;
   titles: [string, string];
 }
 
-export interface IScheduleWidget<TheIconName> {
+export interface IScheduleWidget {
   w: IScheduleWidgetWid;
   start: number;
   title: string;
@@ -67,11 +67,11 @@ export interface IScheduleWidget<TheIconName> {
   days: IScheduleWidgetDay[];
   withTech?: num;
   types: ScheduleWidgetDayListItemTypeBox[];
-  tatts: ScheduleWidgetAppAttCustomized<TheIconName>[];
+  tatts: ScheduleWidgetAppAttCustomized[];
   app: SokiAppName;
-  ctrl: IScheduleWidgetCtrl<TheIconName>;
+  ctrl: IScheduleWidgetCtrl;
   games?: IScheduleWidgetTeamGames;
-  lists: IScheduleWidgetLists<TheIconName>;
+  lists: IScheduleWidgetLists;
   tgInform?: num;
   tgChatReqs?: `${number}`;
   tgInformTime: number;
@@ -91,22 +91,22 @@ export interface ScheduleWidgetDayListItemTypeBox {
   atts?: ScheduleWidgetDayEventAttValues;
 }
 
-export interface ScheduleWidgetAppAttCustomized<TheIconName> extends ScheduleWidgetAppAttCustomizable<TheIconName> {
+export interface ScheduleWidgetAppAttCustomized extends ScheduleWidgetAppAttCustomizable {
   mi: number;
   isCustomize: true;
 }
 
-export interface ScheduleWidgetAppAttCustomizable<TheIconName>
-  extends ScheduleWidgetAppAttBasic<TheIconName, ScheduleWidgetAppAttCustomizableValue> {
+export interface ScheduleWidgetAppAttCustomizable
+  extends ScheduleWidgetAppAttBasic<ScheduleWidgetAppAttCustomizableValue> {
   use?: number;
   titles?: string[];
   roles?: number;
   list?: number;
 }
 
-export interface IScheduleWidgetCtrl<TheIconName> {
+export interface IScheduleWidgetCtrl {
   cats: string[];
-  roles: IScheduleWidgetRole<TheIconName>[];
+  roles: IScheduleWidgetRole[];
   users: IScheduleWidgetUser[];
   type: ScheduleWidgetRegType;
   defu: ScheduleWidgetUserRoleRight;
@@ -126,8 +126,8 @@ export interface IScheduleWidgetDayEvent {
 
 export type ScheduleWidgetDayEventAttValues = Record<ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue>;
 
-export interface ScheduleWidgetAppAttBasic<TheIconName, AttValue extends any = any> {
-  icon: TheIconName;
+export interface ScheduleWidgetAppAttBasic<AttValue extends any = any> {
+  icon: KnownIconName;
   title: string;
   description: string;
   initVal: AttValue;
@@ -182,11 +182,11 @@ export interface IScheduleWidgetTeamGames {
   strikedUsers?: IScheduleWidgetUserMi[];
 }
 
-export interface IScheduleWidgetRole<TheIconName> {
+export interface IScheduleWidgetRole {
   mi: number;
   title: string;
   user?: number;
-  icon?: TheIconName;
+  icon?: KnownIconName;
   cat?: number;
 }
 
@@ -209,26 +209,3 @@ export type ScheduleWidgetDayEventAttValue = ScheduleWidgetAttOwnValue | Schedul
 
 export type ScheduleWidgetAttRef = [number, number];
 export type ScheduleWidgetAttOwnValue = Record<string, unknown>;
-
-export interface Back<TheIconName, Param = unknown> {
-  ScheduleStorage: ScheduleStorage<TheIconName>;
-  IScheduleWidget: IScheduleWidget<TheIconName>;
-  IScheduleWidgetDay: IScheduleWidgetDay;
-  ScheduleWidgetDayListItemTypeBox: ScheduleWidgetDayListItemTypeBox;
-  ScheduleWidgetAppAttCustomized: ScheduleWidgetAppAttCustomized<TheIconName>;
-  ScheduleWidgetAppAttCustomizable: ScheduleWidgetAppAttCustomizable<TheIconName>;
-  IScheduleWidgetCtrl: IScheduleWidgetCtrl<TheIconName>;
-  IScheduleWidgetDayEvent: IScheduleWidgetDayEvent;
-  ScheduleWidgetDayEventAttValues: ScheduleWidgetDayEventAttValues;
-  ScheduleWidgetAppAttBasic: ScheduleWidgetAppAttBasic<TheIconName, Param>;
-  ScheduleWidgetAppAttCustomizableValue: ScheduleWidgetAppAttCustomizableValue;
-  IScheduleWidgetRole: IScheduleWidgetRole<TheIconName>;
-  IScheduleWidgetUser: IScheduleWidgetUser;
-  AttKey: AttKey;
-  ScheduleWidgetAttKey: ScheduleWidgetAttKey;
-  ScheduleWidgetDayEventAttValue: ScheduleWidgetDayEventAttValue;
-  ScheduleWidgetAttRef: ScheduleWidgetAttRef;
-  IScheduleWidgetLists: IScheduleWidgetLists<TheIconName>;
-  IScheduleWidgetListUnit: IScheduleWidgetListUnit;
-  IScheduleWidgetListCat: IScheduleWidgetListCat<TheIconName>;
-}

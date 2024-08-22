@@ -1,17 +1,16 @@
 import { ReactNode } from 'react';
+import { IconHelpSquareStrokeRounded } from '../../../complect/the-icon/icons/help-square';
 import useModal from '../../modal/useModal';
 import IconButton from '../../the-icon/IconButton';
 import { theIconFromPack } from '../../the-icon/TheIcon';
-import { IconHelpSquareStrokeRounded } from '../../../complect/the-icon/icons/help-square';
-import { TheIconName } from '../../the-icon/model';
 
 // const icons = evaPackNames.filter(name => name.endsWith('-outline'));
 
 export default function ScheduleWidgetIconChange(props: {
   scope: string;
-  icon: TheIconName;
+  icon: KnownIconName;
   header: ReactNode;
-  used?: (TheIconName | und)[];
+  used?: (KnownIconName | und)[];
 }) {
   const [modalNode, screen] = useModal(({ header, body }, closeModal) => {
     return (
@@ -43,7 +42,7 @@ export default function ScheduleWidgetIconChange(props: {
     <>
       {modalNode}
       <IconButton
-        Icon={theIconFromPack(props.icon) ?? IconHelpSquareStrokeRounded}
+        Icon={theIconFromPack(props.icon)?.StrokeRounded ?? IconHelpSquareStrokeRounded}
         postfix="Изменить иконку"
         onClick={screen}
         className="flex-max margin-gap-v"

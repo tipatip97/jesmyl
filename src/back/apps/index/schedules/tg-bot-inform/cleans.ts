@@ -61,7 +61,7 @@ export class ScheduleWidgetTgInformCleans {
     }
   };
 
-  static preparedText2DayList = (text: string, schedule: IScheduleWidget<string>) => {
+  static preparedText2DayList = (text: string, schedule: IScheduleWidget) => {
     const lines = text.match(timeSchLineReg);
 
     if (lines == null || lines.length < 3) throw 'Ожидается минимум три пункта';

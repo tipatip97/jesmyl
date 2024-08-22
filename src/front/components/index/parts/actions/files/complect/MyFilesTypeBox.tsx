@@ -3,7 +3,6 @@ import mylib from '../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import TheIcon from '../../../../../../complect/the-icon/TheIcon';
 import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
-import { TheIconName } from '../../../../../../complect/the-icon/model';
 import { useIndexFileAssociations } from '../../../../molecules';
 import { useRemoveMyFile } from '../hooks/remove-file';
 import { MyFileType } from '../model';
@@ -11,7 +10,7 @@ import { filesStorage } from '../utils/storage';
 
 export type FileAssociations = Record<
   MyFileType,
-  { title: string; icon: TheIconName; removeTitle: string; extensions: string[] }
+  { title: string; icon: KnownIconName; removeTitle: string; extensions: string[] }
 >;
 
 const forceUpdater = (it: number) => it + 1;

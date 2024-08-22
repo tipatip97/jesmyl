@@ -20,7 +20,7 @@ export const indexService: SokiServiceCallback = (key, value, getCapsule, { clie
           return;
         }
 
-        const schedules: ScheduleStorage<string> = filer.contents.index?.schedules?.data;
+        const schedules: ScheduleStorage = filer.contents.index?.schedules?.data;
         let isRejected = false;
 
         const isSetted = schedules.list.some(schedule => {
@@ -57,7 +57,7 @@ export const indexService: SokiServiceCallback = (key, value, getCapsule, { clie
     }
 
     if (key === 'takeDaySchedule') {
-      const schedules: ScheduleStorage<string> = filer.contents.index['schedules'].data;
+      const schedules: ScheduleStorage = filer.contents.index['schedules'].data;
 
       if (schedules.list === undefined) return;
 

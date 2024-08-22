@@ -1,8 +1,6 @@
 import { FunctionComponent, HTMLAttributes } from 'react';
-import { theIconUsedPack } from './pack';
 
 export type TheIconType = FunctionComponent<HTMLAttributes<HTMLOrSVGElement>>;
-export type TheIconName = keyof typeof theIconUsedPack;
 
 export type TheIconSelfPackType =
   | 'StrokeRounded'

@@ -11,7 +11,7 @@ import ScheduleWidgetCustomAtt from './CustomAtt';
 
 const newTatt: ScheduleWidgetAppAttCustomizable = {
   description: '',
-  icon: 'IconAttachmentStrokeRounded',
+  icon: 'Attachment',
   initVal: {},
   title: '',
   R: scheduleWidgetUserRights.includeRights(ScheduleWidgetUserRoleRight.Redact),

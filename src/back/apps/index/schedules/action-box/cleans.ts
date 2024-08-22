@@ -2,10 +2,10 @@ import { filer } from '../../../../complect/filer/Filer';
 import smylib from '../../../../shared/SMyLib';
 import { IScheduleWidget, ScheduleStorage } from '../../models/ScheduleWidget.model';
 
-const getSchedules = () => filer.contents.index.schedules.data as ScheduleStorage<string>;
+const getSchedules = () => filer.contents.index.schedules.data as ScheduleStorage;
 
 const schwSelf = { schw: 0 };
-function findSchedule(this: typeof schwSelf, schedule: IScheduleWidget<string>) {
+function findSchedule(this: typeof schwSelf, schedule: IScheduleWidget) {
   return schedule.w === this.schw;
 }
 

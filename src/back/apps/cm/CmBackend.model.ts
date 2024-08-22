@@ -32,7 +32,7 @@ export interface IExportableOrderFieldValues {
   md?: number; // Значение модуляции
 }
 
-export type Inheritancables<K extends keyof InheritancableOrder = keyof InheritancableOrder> = Partial<
+type Inheritancables<K extends keyof InheritancableOrder = keyof InheritancableOrder> = Partial<
   Record<K, Record<number, InheritancableOrder[K]>>
 >;
 

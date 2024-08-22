@@ -103,13 +103,13 @@ export default class ScheduleWidgetCleans {
     return text.replace(incorrectsTitleReg, '').replace(singlesTitleReg, titleLettersNormalizer).trim();
   };
 
-  static getCurrentDayi(schedule: IScheduleWidget<string>) {
+  static getCurrentDayi(schedule: IScheduleWidget) {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
     return (date.getTime() - schedule.start + (schedule.withTech ? smylib.howMs.inDay : 0)) / smylib.howMs.inDay;
   }
 
-  static getCurrentEventInDay(schedule: IScheduleWidget<string>, dayi: number) {
+  static getCurrentEventInDay(schedule: IScheduleWidget, dayi: number) {
     const day = schedule.days[dayi];
     if (day == null) return undefined;
 
@@ -136,7 +136,7 @@ export default class ScheduleWidgetCleans {
     }
   }
 
-  static getCurrentDayiAndEventi(schedule: IScheduleWidget<string>): [number, IScheduleWidgetDayEvent | und] {
+  static getCurrentDayiAndEventi(schedule: IScheduleWidget): [number, IScheduleWidgetDayEvent | und] {
     const dayi = this.getCurrentDayi(schedule);
 
     return [dayi, this.getCurrentEventInDay(schedule, dayi)];

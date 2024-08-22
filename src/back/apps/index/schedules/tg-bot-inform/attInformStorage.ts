@@ -6,7 +6,7 @@ export type AttTgInformStorage = Record<
   (
     value: any,
     eventTitle: string,
-    schedule: IScheduleWidget<string>,
+    schedule: IScheduleWidget,
     dayi: number,
     event: IScheduleWidgetDayEvent,
   ) => `${string}\n\n` | null

@@ -18,7 +18,7 @@ import { indexSchedulesConfigOnInit } from './filer-req-on-init';
 interface SchedulesBag {
   users: IScheduleWidgetUser[];
   schw: number;
-  schedule: IScheduleWidget<string>;
+  schedule: IScheduleWidget;
 }
 
 const emptyArray: [] = [];
@@ -85,7 +85,7 @@ type ScheduleWidgetOnCantReadExec = ExecutionDict<
 
 type ScheduleWidgetOnCantReadRule = ExecutionReal<unknown, ExecutionArgs<unknown, { schw: number }, {}>>;
 
-export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage<string>> = {
+export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage> = {
   ...indexSchedulesConfigOnInit,
   onCantRead: (
     isShareData,
@@ -152,10 +152,10 @@ export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage<string>> 
 
     return scheduleWidgetUserRights.checkIsHasRights(userR, rule.RRej) ? null : whenRejButTs;
   },
-  prepareContent: (schedules: ScheduleStorage<string>, auth): ScheduleStorage<string> => {
+  prepareContent: (schedules: ScheduleStorage, auth): ScheduleStorage => {
     if (!auth) {
       const list = schedules.list
-        .map((schedule): IScheduleWidget<string> => {
+        .map((schedule): IScheduleWidget => {
           if (
             scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public) &&
             !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)
@@ -182,7 +182,7 @@ export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage<string>> 
     }
 
     const authLogin = auth.login;
-    const list = schedules.list.map((schedule): IScheduleWidget<string> => {
+    const list = schedules.list.map((schedule): IScheduleWidget => {
       const user = schedule.ctrl.users.find(user => user.login === authLogin);
 
       if (user === undefined) {

@@ -26,8 +26,8 @@ import { attInformStorage } from './attInformStorage';
 import { ScheduleWidgetTgInformCleans } from './cleans';
 import { makeScheduleWidgetJoinTitle } from './message-catchers';
 
-let schedules: IScheduleWidget<string>[];
-const getSchedule = (scheduleScalar: number | IScheduleWidget<string>) =>
+let schedules: IScheduleWidget[];
+const getSchedule = (scheduleScalar: number | IScheduleWidget) =>
   smylib.isNum(scheduleScalar)
     ? (schedules ??= filer.contents.index['schedules'].data.list).find(sch => sch.w === scheduleScalar)
     : scheduleScalar;
@@ -53,7 +53,7 @@ const newPointLineMarker = '● ';
 const doubleNl = '\n\n';
 
 export const indexScheduleSetMessageInform = (
-  scheduleScalar: number | IScheduleWidget<string>,
+  scheduleScalar: number | IScheduleWidget,
   invokerAuth?: (LocalSokiAuth & { isSystem?: 1 }) | null,
   invokeDayi?: number,
 ) => {

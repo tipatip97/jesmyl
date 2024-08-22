@@ -8,7 +8,7 @@ export interface LeaderResultBoardAttachValues {
 
 export const leaderOwnGameResultBoardAppAtt: ScheduleWidgetAppAtts<'leader', LeaderResultBoardAttachValues> = {
   '[leader]:game': {
-    icon: 'IconBasketballHoopStrokeRounded',
+    icon: 'BasketballHoop',
     title: 'Игра',
     description: 'Результаты командной игры контекста',
     initVal: {},

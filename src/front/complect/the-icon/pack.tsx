@@ -1,19 +1,24 @@
-import { IconAttachmentStrokeRounded } from './icons/attachment';
-import { IconBasketballHoopStrokeRounded } from './icons/basketball-hoop';
-import { IconCheckListStrokeRounded } from './icons/check-list';
-import { IconFileMusicStrokeRounded } from './icons/file-music';
-import { IconGithub01StrokeRounded } from './icons/github-01';
-import { IconPlaylist01StrokeRounded } from './icons/playlist-01';
-import { IconPlaylist02StrokeRounded } from './icons/playlist-02';
-import { IconPlaylist03StrokeRounded } from './icons/playlist-03';
+import { iconPackOfAttachment } from './icons/attachment';
+import { iconPackOfBasketballHoop } from './icons/basketball-hoop';
+import { iconPackOfCheckList } from './icons/check-list';
+import { iconPackOfFileMusic } from './icons/file-music';
+import { iconPackOfGithub01 } from './icons/github-01';
+import { iconPackOfPlaylist01 } from './icons/playlist-01';
+import { iconPackOfPlaylist02 } from './icons/playlist-02';
+import { iconPackOfPlaylist03 } from './icons/playlist-03';
+import { iconPackOfTeacher } from './icons/teacher';
+import { iconPackOfUserGroup } from './icons/user-group';
+import { TheIconSelfPack } from './model';
 
-export const theIconUsedPack = {
-  IconPlaylist01StrokeRounded: IconPlaylist01StrokeRounded,
-  IconPlaylist02StrokeRounded: IconPlaylist02StrokeRounded,
-  IconPlaylist03StrokeRounded: IconPlaylist03StrokeRounded,
-  IconFileMusicStrokeRounded: IconFileMusicStrokeRounded,
-  IconGithub01StrokeRounded: IconGithub01StrokeRounded,
-  IconBasketballHoopStrokeRounded: IconBasketballHoopStrokeRounded,
-  IconAttachmentStrokeRounded: IconAttachmentStrokeRounded,
-  IconCheckListStrokeRounded: IconCheckListStrokeRounded,
-} as const;
+export const theIconUsedPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
+  Playlist01: iconPackOfPlaylist01,
+  Playlist02: iconPackOfPlaylist02,
+  Playlist03: iconPackOfPlaylist03,
+  FileMusic: iconPackOfFileMusic,
+  Github01: iconPackOfGithub01,
+  BasketballHoop: iconPackOfBasketballHoop,
+  Attachment: iconPackOfAttachment,
+  CheckList: iconPackOfCheckList,
+  Teacher: iconPackOfTeacher,
+  UserGroup: iconPackOfUserGroup,
+};

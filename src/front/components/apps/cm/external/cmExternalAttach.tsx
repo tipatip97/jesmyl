@@ -11,7 +11,7 @@ const TgDayEventComList = React.lazy(() => import('./complect/TgDayEventComList'
 
 export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
   '[cm]:coms': {
-    icon: 'IconPlaylist02StrokeRounded',
+    icon: 'Playlist02',
     title: 'Песни',
     description: 'Список известных песен',
     initVal: {},

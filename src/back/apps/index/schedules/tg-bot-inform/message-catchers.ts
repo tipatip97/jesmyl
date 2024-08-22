@@ -11,7 +11,7 @@ import ScheduleWidgetCleans from '../utils/Cleans';
 import { ScheduleWidgetTgInformCleans } from './cleans';
 
 export const makeScheduleWidgetJoinTitle = (
-  schedule: IScheduleWidget<string>,
+  schedule: IScheduleWidget,
   day: IScheduleWidgetDay,
   eventi: number,
   collectSecrets: false | string[],
@@ -51,7 +51,7 @@ function findAdmin(this: typeof findAdminThis, member: TelegramBot.ChatMember) {
   return member.user.id === this.from.id;
 }
 
-const getSchedules = (): ScheduleStorage<string> => filer.contents.index?.schedules?.data;
+const getSchedules = (): ScheduleStorage => filer.contents.index?.schedules?.data;
 const getScheduleByRequisit = (requisit: `${number}/` | `/${string}`) =>
   getSchedules().list.find(sch => sch.tgChatReqs?.includes(requisit));
 
