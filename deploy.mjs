@@ -79,6 +79,9 @@ if (~process.argv.indexOf('--push-front')) {
         else archive(true, () => riseVersion(prevNum), num);
       };
       if (isBuildFront) {
+        console.info(`collect known icons`);
+        exec('node collect-known-icons.mjs', err => err && send(err));
+
         console.info(`Build ${num} is running...`);
         exec('npm run build', err => send(err));
       } else {

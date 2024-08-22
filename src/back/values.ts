@@ -16,21 +16,3 @@ export const sokiWhenRejButTs = [
   'return this array if need send empty exec list, but sent lastUpdate',
   'JSON STR DATA',
 ] as const;
-
-export const knownIconNames = [
-  'Playlist01',
-  'Playlist02',
-  'Playlist03',
-  'FileMusic',
-  'Github01',
-  'BasketballHoop',
-  'Attachment',
-  'CheckList',
-  'Teacher',
-  'UserGroup',
-] as const;
-
-declare global {
-  type KnownIconName = (typeof knownIconNames)[number];
-  type KnownIconNameForPack = KnownIconName;
-}
