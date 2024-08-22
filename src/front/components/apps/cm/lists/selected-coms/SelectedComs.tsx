@@ -35,7 +35,9 @@ export default function SelectedComs() {
         }
       />
 
-      {cmCompositionRoute(CmTranslationComListContextInSelected)}
+      {cmCompositionRoute(children => (
+        <CmTranslationComListContextInSelected>{children}</CmTranslationComListContextInSelected>
+      ))}
     </Routes>
   );
 }

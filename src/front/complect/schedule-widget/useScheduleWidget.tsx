@@ -2,6 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import { appAttsStore } from '../../components/complect/appScheduleAttrsStorage';
 import { useAuth, useIndexSchedules } from '../../components/index/molecules';
 import {
+  IScheduleWidgetWid,
   LocalSokiAuth,
   ScheduleWidgetRegType,
   ScheduleWidgetUserRoleRight,
@@ -100,12 +101,12 @@ export const ScheduleWidgetRightsContext = React.createContext<ScheduleWidgetRig
   schedule: defaultScheduleWidget,
 });
 export const useScheduleWidgetRightsContext = () => useContext(ScheduleWidgetRightsContext);
-export const useScheduleWidgetRights = (schedule: IScheduleWidget | und, rights?: ScheduleWidgetRights) => {
+export const useScheduleWidgetRights = (schedule: IScheduleWidget | nil, rights?: ScheduleWidgetRights) => {
   const auth = useAuth();
 
   return useMemo((): ScheduleWidgetRights => {
     if (rights !== undefined) return rights;
-    if (schedule === undefined)
+    if (schedule == null)
       return {
         auth,
         isCanRead: false,
@@ -196,7 +197,7 @@ export type ScheduleWidgetScopePhase =
   | 'unitMi';
 
 export const takeStrongScopeMaker = strongScopeMakerBuilder<ScheduleWidgetScopePhase>();
-export const takeScheduleStrongScopeMaker = (schedulew: number) =>
+export const takeScheduleStrongScopeMaker = (schedulew: IScheduleWidgetWid) =>
   takeStrongScopeMaker(initialScheduleScope, ` schw/`, schedulew);
 
 export const extractScheduleWidgetRole = (schedule: IScheduleWidget, roleMi: number) => {

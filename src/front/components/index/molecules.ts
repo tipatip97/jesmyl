@@ -1,8 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { AppName } from '../../app/App.model';
-import { atomValueSetter, getAtomValue, Molecule, useAtom, useAtomSet, useAtomValue } from '../../complect/atoms';
-import { LocalSokiAuth } from '../../models';
+import { atom, atomValueSetter, getAtomValue, Molecule, useAtom, useAtomSet, useAtomValue } from '../../complect/atoms';
+import { LocalSokiAuth, SokiClientSubData, SokiStatistic } from '../../models';
 import { IndexState } from './Index.model';
+
+const liveDataAtom = atom<Record<SokiClientSubData, unknown>>({});
+const statisticAtom = atom<SokiStatistic | null>(null);
 
 export const indexMolecule = new Molecule<IndexState>(
   {
@@ -10,12 +13,12 @@ export const indexMolecule = new Molecule<IndexState>(
     currentApp: 'cm',
     appVersion: 0,
     schedules: { list: [] },
-    statistic: null,
-    liveData: {},
+    statistic: statisticAtom,
+    liveData: liveDataAtom,
     rules: [],
     appFontFamily: null,
     fileAssociations: {} as never,
-    nounPronsWords: { nouns: {}, pronouns: {} },
+    nounPronsWords: null,
     updateRequisites: {},
   },
   'index',

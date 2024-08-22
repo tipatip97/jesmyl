@@ -6,7 +6,7 @@ import BibleTranslatesContextProvider from '../translates/TranslatesContext';
 import BibleTranslationControlled from '../translations/BibleTranslationControlled';
 import { BibleFooter } from './BibleFooter';
 
-export const BibleRouter = ({ mainNode }: { mainNode: React.ReactNode }) => {
+export default function BibleRouter({ mainNode }: { mainNode: React.ReactNode }) {
   return (
     <>
       <Routes>
@@ -37,4 +37,4 @@ export const BibleRouter = ({ mainNode }: { mainNode: React.ReactNode }) => {
       <BibleFooter />
     </>
   );
-};
+}

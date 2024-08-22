@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { AppName, appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
@@ -22,9 +22,10 @@ import { indexSimpleValIsPlayAnimations, indexSimpleValIsUseNativeKeyboard } fro
 import { indexMolecule, useAppFontFamilyAtom, useAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
-import IndexConsole from './Console';
 import { Visitor } from './Visitor';
 import { Visits } from './Visits';
+
+const IndexConsole = React.lazy(() => import('./Console'));
 
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 const statisticAtom = indexMolecule.select(s => s.statistic);
@@ -200,7 +201,11 @@ export default function IndexSettings() {
 
       <Route
         path="console"
-        element={<IndexConsole />}
+        element={
+          <Suspense>
+            <IndexConsole />
+          </Suspense>
+        }
       />
     </Routes>
   );

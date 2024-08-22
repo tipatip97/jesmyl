@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { IndexScheduleWidgetTranslations } from '../../../components/index/complect/translations/LiveTranslations';
 import { useAuth, useIndexSchedules } from '../../../components/index/molecules';
@@ -9,6 +10,7 @@ import { IconComputerStrokeRounded } from '../../the-icon/icons/computer';
 import ScheduleWidget from '../ScheduleWidget';
 import { useCschw, useFixActualSchw } from '../useSch';
 import { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
+import { ScheduleWidgetAttRoutes } from './AttRoutes';
 
 export default function ScheduleWidgetPage() {
   const schedules = useIndexSchedules();
@@ -62,6 +64,11 @@ export default function ScheduleWidgetPage() {
       <Route
         path="tran/*"
         element={<IndexScheduleWidgetTranslations />}
+      />
+
+      <Route
+        path="*"
+        element={<ScheduleWidgetAttRoutes />}
       />
     </Routes>
   );

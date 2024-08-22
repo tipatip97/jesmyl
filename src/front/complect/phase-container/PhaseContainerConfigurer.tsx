@@ -1,23 +1,28 @@
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { IconArrowLeft02StrokeRounded } from '../../complect/the-icon/icons/arrow-left-02';
 import { IconMoreVerticalCircle01StrokeRounded } from '../../complect/the-icon/icons/more-vertical-circle-01';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import { LinkWithSearchRemember } from './LinkWithSearchRemember';
 import { PhaseContainerConfigurerProps } from './PhaseContainerConfigurer.model';
+import { contextCreator } from '../contextCreator';
 
 let navigate: NavigateFunction = () => {};
 const swiper = backSwipableContainerMaker(() => navigate('..'));
 
+export const [PhaseContainerConfigurerWithoutFooterContext, usePhaseContainerConfigurerWithoutFooterContext] =
+  contextCreator(false);
+
 export default function PhaseContainerConfigurer(props: PhaseContainerConfigurerProps) {
   navigate = useNavigate();
   const Icon = props.BackButtonIcon ?? IconArrowLeft02StrokeRounded;
+  const withoutFooter = usePhaseContainerConfigurerWithoutFooterContext();
 
   const content = (
     <>
       <div className="header flex between full-width">
         {props.withoutBackButton ? (
-          props.headTitle && <span className="margin-big-gap-h">{props.headTitle}</span>
+          props.headTitle && <span className="margin-big-gap-l">{props.headTitle}</span>
         ) : (
           <LinkWithSearchRemember
             to={props.backButtonPath ?? '..'}
@@ -48,18 +53,30 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
   );
 
   return props.withoutBackButton || props.withoutBackSwipe ? (
-    <ContainerPhase className={`phase-container relative ${props.className || ''}`}>{content}</ContainerPhase>
+    <ContainerPhase
+      className={`phase-container relative ${props.className || ''}`}
+      $withoutFooter={withoutFooter}
+    >
+      {content}
+    </ContainerPhase>
   ) : (
     <ContainerPhase
       {...swiper}
       className={`phase-container relative ${props.className || ''}`}
+      $withoutFooter={withoutFooter}
     >
       {content}
     </ContainerPhase>
   );
 }
 
-const ContainerPhase = styled.div`
+const ContainerPhase = styled.div<{ $withoutFooter: boolean | und }>`
+  ${props =>
+    props.$withoutFooter &&
+    css`
+      --content-height: calc(100% - var(--keyboard-flash-height));
+    `}
+
   > .header {
     transition: var(--fullscreen-transition);
     margin-top: var(--header-top);

@@ -295,6 +295,29 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               },
             },
           },
+          '<add user from schedule>': {
+            action: 'addUserFromTgSchedule',
+            setSystems: ['mi'],
+            value: { ...addUserValue, R: '{R}' },
+            args: {
+              R: '#Number',
+              $$vars: {
+                accessActionWithoutUser: true,
+              },
+            },
+            method: 'push',
+            title: args => {
+              const value = args.value as typeof addUserValue;
+
+              const postfix = value == null ? '' : ` (${value.fio}, ${value.nick})`;
+
+              return (
+                `В расписании <b>` +
+                ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw) +
+                `</b> добавился новый участник по переходу в TG-расписание${postfix}`
+              );
+            },
+          },
           '<add user>': {
             scopeNode: 'newUser',
             C: {
@@ -307,7 +330,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
                 return (
                   `В расписании <b>` +
                   ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw) +
-                  `</b> добавилась новый ссылка для участника${postfix}`
+                  `</b> добавилась новая ссылка для участника${postfix}`
                 );
               },
             },
@@ -754,6 +777,20 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget<string>[]> = {
               method: 'set',
               setItemSystems: ['mi'],
               onSuccess: onTgInformingChangeSuccess,
+              title: args => {
+                const schedule = ScheduleWidgetActionBoxCleans.getSchedule(args.schw);
+
+                if (!schedule) return 'Расписание не найдено';
+                const dayi = args.dayi as number;
+
+                return (
+                  `В расписании <b>` +
+                  ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw) +
+                  `</b> в ` +
+                  (schedule.withTech ? (dayi ? dayi + '-ом' : 'техническом') : dayi + 1 + '-ом') +
+                  ` дне обновлён список событий текстом`
+                );
+              },
             },
             '/[mi === {eventMi}]': {
               scopeNode: 'eventMi',

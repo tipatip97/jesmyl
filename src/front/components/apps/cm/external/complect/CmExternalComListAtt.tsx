@@ -7,7 +7,6 @@ import { Com } from '../../col/com/Com';
 import { ComFace } from '../../col/com/face/ComFace';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 import CmExternalComListAttRedactList from './RedactList';
-import CmExternalComListAttRedactListOrder from './RedactListOrder';
 import TheComForFullScreen from './TheComForFullScreen';
 
 const itIt = (it: unknown) => it;
@@ -20,7 +19,6 @@ interface Props {
 }
 
 export default function CmExternalComListAtt({ value, scope, isRedact, switchIsRedact }: Props) {
-  const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [isOpenComposition, setIsOpenComposition] = useState(false);
 
   const [ccom, setCcom] = useState<Com | und>();
@@ -57,17 +55,7 @@ export default function CmExternalComListAtt({ value, scope, isRedact, switchIsR
             scope={scope}
             value={value}
             setCcom={setCcom}
-            setIsOrderOpen={setIsOrderOpen}
             setIsOpenComposition={setIsOpenComposition}
-          />
-        </FullContent>
-      )}
-      {isOrderOpen && (
-        <FullContent onClose={setIsOrderOpen}>
-          <CmExternalComListAttRedactListOrder
-            scope={scope}
-            value={value}
-            setCcom={setCcom}
           />
         </FullContent>
       )}

@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useInitSoki } from '../../../app/useInitSoki';
-import { removePullRequisites, useAuthState, useIndexSchedules } from '../../../components/index/molecules';
+import { removePullRequisites, useAuthState } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
 import mylib from '../../my-lib/MyLib';
-import serviceMaster from '../../service/serviceMaster';
 import { TelegramWebAppApiOr } from '../../tg-app/getTgApi';
 import { TelegramWebApp, TelegramWebAppInitData } from '../../tg-app/model';
 import { TheIconLoading } from '../../the-icon/IconLoading';
 import ScheduleWidgetAlarmContent from '../alarm/AlarmContent';
 import { IScheduleWidget } from '../ScheduleWidget.model';
+import { useSetScheduleOrPull } from './useSetScheduleOrPull';
 
 const hashParamName = 'tgWebAppData';
 const url = new URL(window.location.href);
@@ -53,26 +53,12 @@ type Props = {
 };
 
 const Child = ({ api, isLoading, initData }: Props) => {
-  const schedules = useIndexSchedules();
   const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);
   const [auth, setAuth] = useAuthState();
 
   useEffect(() => api?.disableVerticalSwipes(), [api]);
 
-  useEffect(() => {
-    const schedule = schedules.list.find(sch => sch.tgChatReqs?.endsWith(initData.chat_instance));
-
-    if (schedule !== undefined) {
-      setSchedule(schedule);
-      return;
-    }
-
-    (async () => {
-      try {
-        setSchedule(await serviceMaster('index')('takeDaySchedule', initData.chat_instance));
-      } catch (error) {}
-    })();
-  }, [initData.chat_instance, schedules.list]);
+  useSetScheduleOrPull(setSchedule, initData.chat_instance);
 
   useEffect(() => {
     return hookEffectLine()
@@ -99,7 +85,7 @@ const Child = ({ api, isLoading, initData }: Props) => {
         />
       ) : (
         <div className="full-size flex center">
-          {isLoading ? <TheIconLoading /> : <span className="color--ko">Ошибка</span>}
+          {isLoading ? <TheIconLoading /> : <span className="color--ko">Мероприятие не найдено</span>}
         </div>
       )}
     </StyledBox>

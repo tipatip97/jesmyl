@@ -35,7 +35,9 @@ export default function TheMeetingsEvent() {
         }
       />
 
-      {cmCompositionRoute(CmTranslationComListContextInMeetings)}
+      {cmCompositionRoute(children => (
+        <CmTranslationComListContextInMeetings>{children}</CmTranslationComListContextInMeetings>
+      ))}
     </Routes>
   );
 }

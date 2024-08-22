@@ -1,13 +1,14 @@
-import { memo, useEffect } from 'react';
+import React, { memo, Suspense, useEffect } from 'react';
 import { Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { atom, useAtomSet, useAtomValue } from '../complect/atoms';
-import ScheduleWidgetTgDayView from '../complect/schedule-widget/general/TgDayView';
 import IndexMain from '../components/index/parts/main/IndexMain';
 import { soki } from '../soki';
 import { AppName } from './App.model';
 import { AppServiceActions, appServiceActionsRouteName as scheduleWidgetActionsRouteName } from './AppActions';
 import { routingApps } from './routing-apps';
 import { useInitSoki } from './useInitSoki';
+
+const ScheduleWidgetTgDayView = React.lazy(() => import('../complect/schedule-widget/general/TgDayView'));
 
 const AppRouter = memo(() => {
   return (
@@ -17,8 +18,12 @@ const AppRouter = memo(() => {
         element={<Router />}
       />
       <Route
-        path="schedule-day"
-        element={<ScheduleWidgetTgDayView />}
+        path="schedule-day/*"
+        element={
+          <Suspense>
+            <ScheduleWidgetTgDayView />
+          </Suspense>
+        }
       />
       <Route
         path={scheduleWidgetActionsRouteName}

@@ -17,12 +17,14 @@ import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import IndexActions from '../actions/Actions';
 import IndexAbout from '../IndexAbout';
-import IndexAuthorization from '../login/IndexAuthorization';
 import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthButton';
 import IndexSettings from '../settings/Settings';
 import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
 import { UserMore } from './UserMore';
+import React, { Suspense } from 'react';
+
+const IndexAuthorization = React.lazy(() => import('../login/IndexAuthorization'));
 
 const isNNull = (it: unknown) => it !== null;
 
@@ -138,7 +140,11 @@ export default function IndexMain() {
 
       <Route
         path="login/*"
-        element={<IndexAuthorization />}
+        element={
+          <Suspense>
+            <IndexAuthorization />
+          </Suspense>
+        }
       />
 
       <Route

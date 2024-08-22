@@ -35,7 +35,9 @@ export default function Marks() {
         }
       />
 
-      {cmCompositionRoute(CmTranslationComListContextInMarks)}
+      {cmCompositionRoute(children => (
+        <CmTranslationComListContextInMarks>{children}</CmTranslationComListContextInMarks>
+      ))}
     </Routes>
   );
 }

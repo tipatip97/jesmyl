@@ -21,7 +21,7 @@ export interface IndexState {
   schedules: ScheduleStorage;
   statistic: SokiStatistic | null;
   liveData: Record<SokiClientSubData, unknown>;
-  nounPronsWords: NounPronsType;
+  nounPronsWords: NounPronsType | null;
   fileAssociations?: FileAssociations;
   rules: ExecRule[];
   appFontFamily: string | null;

@@ -4,19 +4,16 @@ import useToast from './modal/useToast';
 import IconButton from './the-icon/IconButton';
 import { IconCopy01StrokeRounded } from '../complect/the-icon/icons/copy-01';
 
-export default function CopyTextButton({
-  text,
-  disabled,
-  description,
-  className,
-  message,
-}: {
+interface Props {
   text: string | (() => string | nil);
   disabled?: boolean;
   description?: ReactNode;
   className?: string;
   message?: ReactNode;
-}) {
+  withoutIcon?: boolean;
+}
+
+export default function CopyTextButton({ text, disabled, description, className, message, withoutIcon }: Props) {
   const [toastNode, toast] = useToast();
   const [modalNode, modal] = useModal();
 
@@ -47,10 +44,12 @@ export default function CopyTextButton({
         }}
       >
         {description}
-        <IconButton
-          Icon={IconCopy01StrokeRounded}
-          disabled={disabled}
-        />
+        {withoutIcon || (
+          <IconButton
+            Icon={IconCopy01StrokeRounded}
+            disabled={disabled}
+          />
+        )}
       </span>
     </>
   );

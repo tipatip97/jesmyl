@@ -11,7 +11,7 @@ export class Molecule<
   private newAtom: <Key extends keyof T>(key: Key) => Atom<T[Key]>;
   private keys: (keyof T)[] = [];
 
-  constructor(values: Required<{ [Key in keyof T]: T[Key] }>, storageName: StorageName) {
+  constructor(values: Required<{ [Key in keyof T]: T[Key] | Atom<T[Key]> }>, storageName: StorageName) {
     this.atoms = {
       ...SMyLib.entries(values).reduce((atoms: Atoms, [key, value]) => {
         this.keys.push(key);
@@ -21,7 +21,7 @@ export class Molecule<
       }, {} as Atoms),
     };
 
-    this.newAtom = key => (this.atoms[key] = new Atom(undefined as any, storageName, key as string) as never)!;
+    this.newAtom = key => (this.atoms[key] = new Atom(undefined as never, storageName, key as string) as never)!;
   }
 
   set = <Key extends keyof T>(key: Key, value: T[Key]) =>

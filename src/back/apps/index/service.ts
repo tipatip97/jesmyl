@@ -2,11 +2,14 @@ import { ExecutionDict } from '../../complect/executer/Executer.model';
 import { filer } from '../../complect/filer/Filer';
 import sokiServer from '../../complect/soki/SokiServer';
 import { SokiServiceCallback } from '../../complect/soki/soki.model';
+import smylib from '../../shared/SMyLib';
+import { jesmylTgBot } from '../../sides/telegram-bot/bot';
 import { packScheduleWidgetInviteLink } from './complect';
-import { ScheduleStorage } from './models/ScheduleWidget.model';
+import { IScheduleWidgetWid, ScheduleStorage } from './models/ScheduleWidget.model';
+import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from './rights';
 
 export const indexService: SokiServiceCallback = (key, value, getCapsule, { client, eventData, requestId }) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (key === 'swInvite') {
       const tryInvite = (authTries: number) => {
         const capsule = getCapsule();
@@ -58,11 +61,57 @@ export const indexService: SokiServiceCallback = (key, value, getCapsule, { clie
 
       if (schedules.list === undefined) return;
 
-      const chatInstance = value;
+      const chatInstance: string | IScheduleWidgetWid = value;
 
-      const schedule = schedules.list.find(sch => sch.tgChatReqs?.endsWith('/' + chatInstance));
+      const schedule = schedules.list.find(
+        smylib.isStr(chatInstance)
+          ? sch => sch.tgChatReqs?.endsWith('/' + chatInstance)
+          : sch => sch.w === chatInstance,
+      );
 
       if (schedule === undefined) return;
+
+      const tryInvite = async (tries: number) => {
+        const capsule = getCapsule();
+
+        if (capsule?.auth == null) {
+          if (tries > 0) setTimeout(tryInvite, 500, tries - 1);
+          return;
+        }
+
+        const auth = capsule.auth;
+
+        if (auth.tgId == null || schedule.ctrl.users.some(user => user.tgId === auth.tgId)) return;
+
+        const tgChatId =
+          schedule.tgChatReqs === undefined
+            ? null
+            : isNaN(parseInt(schedule.tgChatReqs, 10))
+              ? null
+              : parseInt(schedule.tgChatReqs, 10);
+
+        if (tgChatId === null) return;
+
+        const admins = await jesmylTgBot.bot.getChatAdministrators(tgChatId);
+
+        const execs: ExecutionDict[] = [
+          {
+            action: 'addUserFromTgSchedule',
+            args: {
+              schw: schedule.w,
+              R: admins.some(({ user }) => user.id === auth.tgId)
+                ? scheduleWidgetUserRights.collectRights(ScheduleWidgetUserRoleRight.ReadSpecials)
+                : scheduleWidgetUserRights.collectRights(ScheduleWidgetUserRoleRight.ReadTitles),
+            },
+          },
+        ];
+
+        try {
+          await sokiServer.execExecs('index', execs, eventData.auth, capsule.auth, client);
+        } catch (error) {}
+      };
+
+      tryInvite(10);
 
       sokiServer.send(
         {

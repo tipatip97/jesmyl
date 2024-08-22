@@ -6,6 +6,7 @@ import { Com } from '../Com';
 import { ComFaceInheritProps, FreeComFaceProps } from './ComFace.model';
 import './ComFace.scss';
 import ComFaceContextMenu from './ComFaceContextMenu';
+import { memo } from 'react';
 
 interface Props extends ComFaceInheritProps {
   com: Com;
@@ -66,7 +67,7 @@ export const FreeComFace = ({
   return importantOnClick === undefined ? <Link to={'' + com.wid}>{node}</Link> : node;
 };
 
-export const ComFace = (props: Props) => {
+export const ComFace = memo((props: Props) => {
   const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const { selectedComPosition, toggleSelectedCom } = useSelectedComs();
 
@@ -79,4 +80,4 @@ export const ComFace = (props: Props) => {
       toggleSelectedCom={toggleSelectedCom}
     />
   );
-};
+});

@@ -91,7 +91,10 @@ export default function EditMeetingsEvent() {
                       selectable={false}
                       importantOnClick={(_, __, event) => event.preventDefault()}
                       description={() => (
-                        <div className="flex">
+                        <div
+                          className="flex"
+                          onClick={event => event.stopPropagation()}
+                        >
                           {comsLength === 1 || comi === 0 || (
                             <StyledMoveButton
                               Icon={IconArrowDataTransferVerticalStrokeRounded}
@@ -181,7 +184,7 @@ export default function EditMeetingsEvent() {
                             usedComList.indexOf(com) < 0 ? (
                               <IconPlusSignCircleStrokeRounded
                                 onClick={event => {
-                                  event.stopPropagation();
+                                  event.preventDefault();
                                   exec(currentEvent.mergeStack([com.wid]));
                                 }}
                               />
@@ -198,7 +201,9 @@ export default function EditMeetingsEvent() {
         }
       />
 
-      {cmCompositionRoute(CmTranslationComListContextInZeroCat)}
+      {cmCompositionRoute(children => (
+        <CmTranslationComListContextInZeroCat>{children}</CmTranslationComListContextInZeroCat>
+      ))}
     </Routes>
   );
 }

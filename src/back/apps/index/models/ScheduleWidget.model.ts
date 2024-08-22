@@ -134,6 +134,7 @@ export interface ScheduleWidgetAppAttBasic<TheIconName, AttValue extends any = a
   isCustomize?: true;
   R: number;
   U: number;
+  routes?: 'React.ReactNode' | any;
 }
 
 export type ScheduleWidgetAppAttCustomizableValueItem = [
@@ -204,9 +205,10 @@ export type AttKey = SokiAppName | 'SCH';
 
 export type ScheduleWidgetAttKey<AttAppName extends AttKey = AttKey> = `[${AttAppName}]:${string}`;
 
-export type ScheduleWidgetDayEventAttValue = Record<string, unknown> | ScheduleWidgetAttRef;
+export type ScheduleWidgetDayEventAttValue = ScheduleWidgetAttOwnValue | ScheduleWidgetAttRef;
 
 export type ScheduleWidgetAttRef = [number, number];
+export type ScheduleWidgetAttOwnValue = Record<string, unknown>;
 
 export interface Back<TheIconName, Param = unknown> {
   ScheduleStorage: ScheduleStorage<TheIconName>;

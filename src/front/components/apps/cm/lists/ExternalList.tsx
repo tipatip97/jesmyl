@@ -42,7 +42,9 @@ export default function ExternalList() {
         }
       />
 
-      {cmCompositionRoute(Context)}
+      {cmCompositionRoute(children => (
+        <Context comws={comws}>{children}</Context>
+      ))}
     </Routes>
   );
 }

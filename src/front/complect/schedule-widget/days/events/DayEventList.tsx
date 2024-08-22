@@ -57,7 +57,7 @@ export default function ScheduleWidgetDayEventList({
   const [moveEventMi, setMoveEventMi] = useState<number | null>(null);
   const movementEvent = moveEventMi !== null ? day.list.find(event => event.mi === moveEventMi) : undefined;
   const movementBox = movementEvent && rights.schedule.types[movementEvent.type];
-  const times = indexScheduleGetDayEventTimes(rights.schedule, day);
+  const times = useMemo(() => indexScheduleGetDayEventTimes(rights.schedule, day), [day, rights.schedule]);
 
   let secretTime = 0;
   let isFirstSecrets = true;

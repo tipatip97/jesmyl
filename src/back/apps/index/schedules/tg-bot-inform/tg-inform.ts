@@ -13,8 +13,6 @@ import {
   IScheduleWidgetDayEvent,
   IScheduleWidgetUser,
   IScheduleWidgetWid,
-  ScheduleWidgetAttKey,
-  ScheduleWidgetDayEventAttValue,
 } from '../../models/ScheduleWidget.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../rights';
 import ScheduleWidgetCleans from '../utils/Cleans';
@@ -49,10 +47,6 @@ const openDayScheduleKey: SendMessageOptions = {
   reply_markup: {
     inline_keyboard: [[{ text: 'Расписание дня', url: 'https://t.me/jesmylbot/jesmylapp' }]],
   },
-};
-
-const mapAttsStorage = ([key, value]: [ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue]) => {
-  return attInformStorage[key]?.(value) ?? '';
 };
 
 const newPointLineMarker = '● ';
@@ -129,6 +123,10 @@ export const indexScheduleSetMessageInform = (
       }
 
       jobs[schedule.w] = nodeSchedule.scheduleJob(time, async () => {
+        const schedule = getSchedule(scheduleScalar);
+        if (!schedule) return;
+
+        const event = day.list[eventi];
         const timeToEvent = Math.ceil((eventStartMs - Date.now()) / smylib.howMs.inMin);
         const isWithDelay = event.tgInform !== 0 && timeToEvent > 0;
 
@@ -147,12 +145,9 @@ export const indexScheduleSetMessageInform = (
             let nextTimedEventi = -1;
             let eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
             let isFoundTimedEventi = eventTimeMin !== 0;
+            let isSetAttTitle = false;
 
-            attsText = event.atts !== undefined ? SMyLib.entries(event.atts).map(mapAttsStorage).join('') : '';
-
-            for (let dayEventi = 0; dayEventi < day.list.length; dayEventi++) {
-              if (dayEventi < eventi) continue;
-
+            for (let dayEventi = eventi; dayEventi < day.list.length; dayEventi++) {
               const dayEvent = day.list[dayEventi];
               const dayEventTimeMin = ScheduleWidgetCleans.takeEventTm(dayEvent, schedule.types[dayEvent.type]);
 
@@ -164,6 +159,32 @@ export const indexScheduleSetMessageInform = (
                 }
 
               if (nextTimedEventi > -1) break;
+            }
+
+            for (let attEventi = eventi; attEventi < day.list.length; attEventi++) {
+              const event = day.list[attEventi];
+              const eventTm = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
+              const attEntries = SMyLib.entries(event.atts);
+
+              if (!eventTm) isSetAttTitle = true;
+              if (!isSetAttTitle && (event.atts == null || !attEntries.length)) break;
+
+              const attText = attEntries
+                .map(
+                  // eslint-disable-next-line no-loop-func
+                  ([key, value]) =>
+                    attInformStorage[key]?.(
+                      value,
+                      isSetAttTitle ? ` (${schedule.types[event.type].title})` : '',
+                      schedule,
+                      dayi,
+                      event,
+                    ) ?? '',
+                )
+                .join('');
+
+              if (attText) attsText += newPointLineMarker + attText;
+              if (eventTm) break;
             }
 
             if (eventTimeMin === 0) {
@@ -204,7 +225,7 @@ export const indexScheduleSetMessageInform = (
                     ScheduleWidgetTgInformCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc)) +
                     doubleNl
                   : '') +
-                (attsText ? `${newPointLineMarker}${attsText}` : '') +
+                attsText +
                 nextEventTitle +
                 newPointLineMarker +
                 ScheduleWidgetTgInformCleans.putInTgTag(

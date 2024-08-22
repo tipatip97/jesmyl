@@ -7,7 +7,7 @@ export const useCmScreenTranslationComTextNavigations = () => {
   const texts = useCmCurrentComTexts(useCmScreenTranslationCurrentConfig()?.pushKind);
 
   const state = {
-    text: texts && texts[currTexti],
+    text: texts?.[currTexti],
     currTexti,
     nextText: () => {
       if (texts && currTexti < texts.length - 1) state.setTexti(currTexti + 1);
@@ -15,9 +15,9 @@ export const useCmScreenTranslationComTextNavigations = () => {
     prevText: () => {
       if (currTexti > 0) state.setTexti(currTexti - 1);
     },
-    setTexti: (blocki: number) => {
-      setCurrTexti(blocki);
-      const nextd = window.document.getElementById(`translation-window-line-${blocki}`);
+    setTexti: (texti: number) => {
+      setCurrTexti(texti);
+      const nextd = window.document.getElementById(`translation-window-line-${texti}`);
 
       if (nextd) {
         const nextParent = nextd.parentElement;

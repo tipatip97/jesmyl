@@ -11,7 +11,7 @@ let deviceId: string | und;
 const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.repeat(3).split('');
 const symbols = "@#$%^&+=:;.,'~!?><|\\/-_*".repeat(3).split('').concat(letters);
 
-const takeRandomSymbols = (take = 3) =>
+const takeRandomSymbols = (take = 4) =>
   Array(take)
     .fill('.')
     .map((_, i) => (i === 0 || i === take - 1 ? mylib.randomItem(letters) : mylib.randomItem(symbols)))
@@ -25,11 +25,11 @@ export const takeDeviceId = async () => {
     deviceId = await deviceIdAtom.getStorageValue();
     const storage = await nounPronsWordsAtom.getStorageValue();
 
-    if (storage === undefined) return '';
+    if (!storage) return '';
 
     if (!deviceId || deviceId.startsWith('__')) {
       deviceId = makeRandomTwiceName(storage).join('_') + '_' + takeRandomSymbols();
-      deviceIdAtom.set(deviceId);
+      if (!deviceId.startsWith('__')) deviceIdAtom.set(deviceId);
     }
 
     return deviceId;

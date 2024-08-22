@@ -117,7 +117,7 @@ export class ScheduleWidgetTgInformCleans {
           type,
           topic: eventTopics[line],
           tm: eventTimes[line] !== tattTimes[tattTitle] ? eventTimes[line] : undefined,
-          dsc: eventDescription[line],
+          dsc: eventDescription[line] || undefined,
         } satisfies IScheduleWidgetDayEvent;
 
         delete dayEvent.mi;

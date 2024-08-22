@@ -9,17 +9,14 @@ export const [ComToolItemAttrsContext, useComToolItemAttrsContext] = contextCrea
 >(undefined);
 
 export const ComTool = ({ Icon, ...props }: Parameters<typeof BottomPopupItem>[0]) => {
-  if (useIsComToolIconItemsContext())
-    return props.path ? (
-      <Link to={props.path}>
-        <Icon className="pointer" />
-      </Link>
-    ) : (
-      <Icon
-        className="pointer"
-        onClick={props.onClick}
-      />
-    );
+  const icon = (
+    <Icon
+      className="pointer"
+      onClick={props.onClick}
+    />
+  );
+
+  if (useIsComToolIconItemsContext()) return props.path ? <Link to={props.path}>{icon}</Link> : icon;
 
   return (
     <Bottom

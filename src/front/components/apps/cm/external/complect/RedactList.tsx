@@ -15,6 +15,7 @@ import { Com } from '../../col/com/Com';
 import { ComFace } from '../../col/com/face/ComFace';
 import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import { useMeetings } from '../../lists/meetings/useMeetings';
+import CmExternalComListAttRedactListOrder from './RedactListOrder';
 
 const cbStopper: CallbackStopper = event => event.stopPropagation();
 const emptyFunc = () => {};
@@ -24,18 +25,12 @@ interface Props {
   scope: string;
   setCcom: (com: Com) => void;
   setIsOpenComposition: (isOpen: boolean) => void;
-  setIsOrderOpen: (isOpen: boolean) => void;
 }
 
-export default function CmExternalComListAttRedactList({
-  value,
-  scope,
-  setCcom,
-  setIsOpenComposition,
-  setIsOrderOpen,
-}: Props) {
+export default function CmExternalComListAttRedactList({ value, scope, setCcom, setIsOpenComposition }: Props) {
   const cat = useCcat(true);
 
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [isMeetingBinderOpen, setIsMeetingBinderOpen] = useState(false);
   const [term, setTerm] = useState(cat?.term || '');
   const { meetings } = useMeetings();
@@ -142,6 +137,16 @@ export default function CmExternalComListAttRedactList({
                 />
               )
             }
+          />
+        </FullContent>
+      )}
+
+      {isOrderOpen && (
+        <FullContent onClose={setIsOrderOpen}>
+          <CmExternalComListAttRedactListOrder
+            scope={scope}
+            value={value}
+            setCcom={setCcom}
           />
         </FullContent>
       )}

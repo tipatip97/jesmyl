@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from 'react';
-import { SokiServerEvent } from '../../models';
 import { indexExer } from '../../components/index/IndexExer';
+import { SokiServerEvent } from '../../models';
 import { Exer } from '../exer/Exer';
 import { ExerStorage } from '../exer/Exer.model';
 import { CUD, StrongComponentProps } from './Strong.model';
@@ -17,6 +17,20 @@ export const strongScopeMakerBuilder =
   (parentScope: string, scopeName: ` ${Phase}${typeof strongScopeKeyValueSeparator}`, value: number | string) => {
     return `${parentScope}${scopeName}${value}`;
   };
+
+export const getObjectFromScope = (scope: string) => {
+  const res: Record<string, string> = {};
+
+  scope.split(' ').forEach(part => {
+    const [key, value] = part.split('/');
+
+    if (value == null) return;
+
+    res[key] = value;
+  });
+
+  return res;
+};
 
 export const strongScopeKeyValueSeparator = '/';
 

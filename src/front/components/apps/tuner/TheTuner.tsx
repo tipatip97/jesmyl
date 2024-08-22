@@ -25,8 +25,10 @@ export default function TheTuner() {
             ref={elem => {
               if (elem && !tunerContainer) {
                 tunerContainer = elem;
-                tunerApplication = new TunerApplication();
-                tunerApplication.start();
+                setTimeout(() => {
+                  tunerApplication = new TunerApplication();
+                  tunerApplication.start();
+                });
               }
             }}
             className="start-button"

@@ -1,44 +1,39 @@
-import { FunctionComponent } from 'react';
+import React, { Suspense } from 'react';
 import { Route } from 'react-router-dom';
 import { RoutingAppConfig } from '../../../../app/routing-apps';
 import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
 import TheComposition from '../col/com/TheComposition';
 import Translations from '../translation/Translation';
 import { CmFooter } from './CmFooter';
-import { CmRouter } from './CmRouter';
+
+const CmRouter = React.lazy(() => import('./CmRouter'));
 
 export const cmRoutingApp: RoutingAppConfig = {
   appName: 'cm',
   title: 'Песни возрождённых',
-  router: mainNode => <CmRouter mainNode={mainNode} />,
+  router: mainNode => (
+    <Suspense>
+      <CmRouter mainNode={mainNode} />
+    </Suspense>
+  ),
   footer: <CmFooter />,
   Icon: IconBookOpen02StrokeRounded,
-  lazies: [],
+  lazies: [<CmRouter mainNode />],
   level: 0,
 };
 
-export const cmCompositionRoute = (Parent: FunctionComponent<any>) => (
-  <>
-    <Route
-      path="@tran"
-      element={
-        Parent ? (
-          <Parent>
-            <Translations />
-          </Parent>
-        ) : (
-          <Translations />
-        )
-      }
-    />
+export const cmCompositionRoute = (children: (children: React.ReactNode) => React.ReactNode) => {
+  return (
+    <>
+      <Route
+        path="@tran"
+        element={children(<Translations />)}
+      />
 
-    <Route
-      path=":comw/*"
-      element={
-        <Parent>
-          <TheComposition />
-        </Parent>
-      }
-    />
-  </>
-);
+      <Route
+        path=":comw/*"
+        element={children(<TheComposition />)}
+      />
+    </>
+  );
+};

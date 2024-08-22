@@ -30,6 +30,8 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
 
+  const Context = all ? CmTranslationComListContextInZeroCat : CmTranslationComListContextInCat;
+
   return (
     <Routes>
       <Route
@@ -101,7 +103,9 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
         }
       />
 
-      {cmCompositionRoute(all ? CmTranslationComListContextInZeroCat : CmTranslationComListContextInCat)}
+      {cmCompositionRoute(children => (
+        <Context>{children}</Context>
+      ))}
     </Routes>
   );
 }

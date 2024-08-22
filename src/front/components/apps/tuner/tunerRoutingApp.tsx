@@ -37,5 +37,5 @@ export const tunerRoutingApp: RoutingAppConfig = {
   footer,
   Icon: IconDashboardSpeed02StrokeRounded,
   level: 0,
-  lazies: [],
+  lazies: [<TheTuner />],
 };

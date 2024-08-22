@@ -3,7 +3,7 @@ import { NounPronsType, makeTwiceKnownName } from '../../../models';
 import mylib from '../../my-lib/MyLib';
 
 export const makeRandomTwiceName = (
-  storage?: NounPronsType,
+  storage: NounPronsType | nil,
   topPronoun?: string | nil,
   topNoun?: string | nil,
 ): [string, string] => {
