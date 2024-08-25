@@ -771,6 +771,20 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
                 setItemSystems: ['mi'],
               },
               onSuccess: onTgInformingChangeSuccess,
+              title: args => {
+                const schedule = ScheduleWidgetActionBoxCleans.getSchedule(args.schw);
+
+                if (!schedule) return 'Расписание не найдено';
+                const dayi = args.dayi as number;
+
+                return (
+                  `В расписании <b>` +
+                  ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw) +
+                  `</b> в ` +
+                  (schedule.withTech ? (dayi ? dayi + '-ом' : 'техническом') : dayi + 1 + '-ом') +
+                  ` дне обновлён список событий текстом`
+                );
+              },
             },
             '<put schedule>': {
               action: 'putDayEventList',
@@ -788,7 +802,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
                   ScheduleWidgetActionBoxCleans.getScheduleTitle(args.schw) +
                   `</b> в ` +
                   (schedule.withTech ? (dayi ? dayi + '-ом' : 'техническом') : dayi + 1 + '-ом') +
-                  ` дне обновлён список событий текстом`
+                  ` дне обновлён список событий`
                 );
               },
             },
