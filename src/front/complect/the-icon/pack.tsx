@@ -145,6 +145,7 @@ import { iconPackOfQrCode01 } from './icons/qr-code-01';
 import { iconPackOfRecord } from './icons/record';
 import { iconPackOfRefresh } from './icons/refresh';
 import { iconPackOfRemoveCircleHalfDot } from './icons/remove-circle-half-dot';
+import { iconPackOfRssError } from './icons/rss-error';
 import { iconPackOfSchoolReportCard } from './icons/school-report-card';
 import { iconPackOfScissor01 } from './icons/scissor-01';
 import { iconPackOfSearchVisual } from './icons/search-visual';
@@ -334,6 +335,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   Record: iconPackOfRecord,
   Refresh: iconPackOfRefresh,
   RemoveCircleHalfDot: iconPackOfRemoveCircleHalfDot,
+  RssError: iconPackOfRssError,
   SchoolReportCard: iconPackOfSchoolReportCard,
   Scissor01: iconPackOfScissor01,
   SearchVisual: iconPackOfSearchVisual,

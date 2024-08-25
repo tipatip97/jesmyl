@@ -15,6 +15,7 @@ import { IconArrowUpDoubleStrokeRounded } from '../../../../complect/the-icon/ic
 import { IconKeyboardStrokeRounded } from '../../../../complect/the-icon/icons/keyboard';
 import { IconMessage01StrokeRounded } from '../../../../complect/the-icon/icons/message-01';
 import { IconPaintBoardStrokeRounded } from '../../../../complect/the-icon/icons/paint-board';
+import { IconRssErrorStrokeRounded } from '../../../../complect/the-icon/icons/rss-error';
 import { IconSourceCodeCircleStrokeRounded } from '../../../../complect/the-icon/icons/source-code-circle';
 import { IconTextStrokeRounded } from '../../../../complect/the-icon/icons/text';
 import { soki } from '../../../../soki';
@@ -29,6 +30,8 @@ const IndexConsole = React.lazy(() => import('./Console'));
 
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 const statisticAtom = indexMolecule.select(s => s.statistic);
+
+const itIt = (it: unknown) => it;
 
 export default function IndexSettings() {
   const auth = useAuth();
@@ -89,7 +92,19 @@ export default function IndexSettings() {
         />
       }
     />,
-  ].filter(isShow => isShow);
+    <BrutalItem
+      icon={<IconRssErrorStrokeRounded />}
+      title="Показать ошибки"
+      onClick={() => {
+        const container = document.getElementById('error-log-list');
+
+        if (container == null) return;
+
+        container.style.zIndex = '100000';
+        container.onclick = () => (container.style.zIndex = null!);
+      }}
+    />,
+  ].filter(itIt);
   const connectionNode = useConnectionState('margin-gap');
 
   return (

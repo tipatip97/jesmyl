@@ -10,6 +10,7 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import StyledGlobalStyles from './styledGlobalStyles';
 import { styledDefaultTheme } from './styledTheme';
+import { logFrontErrors } from './complect/error-catcher';
 
 export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {
   createRoot(node).render(
@@ -78,3 +79,4 @@ serviceWorkerRegistration.register();
 reportWebVitals();
 
 setPolyfills();
+logFrontErrors();

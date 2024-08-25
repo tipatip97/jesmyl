@@ -146,6 +146,7 @@ export const knownIconNames = [
   'Record',
   'Refresh',
   'RemoveCircleHalfDot',
+  'RssError',
   'SchoolReportCard',
   'Scissor01',
   'SearchVisual',
