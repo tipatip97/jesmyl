@@ -1,5 +1,6 @@
 import AppFooter from '../../../../app/AppFooter';
 import AppFooterItem from '../../../../app/AppFooterItem';
+import mylib from '../../../../complect/my-lib/MyLib';
 import { iconPackOfEdit02 } from '../../../../complect/the-icon/icons/edit-02';
 import { iconPackOfLeftToRightListBullet } from '../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import { iconPackOfPlaylist01 } from '../../../../complect/the-icon/icons/playlist-01';
@@ -9,7 +10,7 @@ import { useActualCcomw } from '../col/com/useCcom';
 export const CmFooter = () => {
   const auth = useAuth();
   const actualCcomw = useActualCcomw();
-  const search = isNaN(actualCcomw) ? undefined : (`?comw=${actualCcomw}` as const);
+  const search = mylib.isNaN(actualCcomw) ? undefined : (`?comw=${actualCcomw}` as const);
 
   return (
     <AppFooter>

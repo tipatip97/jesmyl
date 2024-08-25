@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { IScheduleWidgetWid } from '../../models';
 import { atom, useAtomSet, useAtomValue } from '../atoms';
+import mylib from '../my-lib/MyLib';
 
-export const useCschw = (): IScheduleWidgetWid | typeof NaN => {
+export const useCschw = (): IScheduleWidgetWid | NaN => {
   const paramSchw = +useParams().schw!;
   const searchParamSchw = +useSearchParams()[0].get('schw')!;
 
@@ -14,13 +15,13 @@ export const useCschw = (): IScheduleWidgetWid | typeof NaN => {
 
 const lastSchwAtom = atom(NaN, 'index', 'lastSchw');
 
-export const useFixActualSchw = (schw: IScheduleWidgetWid | typeof NaN) => {
+export const useFixActualSchw = (schw: IScheduleWidgetWid | NaN) => {
   const set = useAtomSet(lastSchwAtom);
 
   useEffect(() => {
-    if (isNaN(schw)) return;
+    if (mylib.isNaN(schw)) return;
     set(schw);
   }, [schw, set]);
 };
 
-export const useActualSchw = (): IScheduleWidgetWid | typeof NaN => useAtomValue(lastSchwAtom);
+export const useActualSchw = (): IScheduleWidgetWid | NaN => useAtomValue(lastSchwAtom);

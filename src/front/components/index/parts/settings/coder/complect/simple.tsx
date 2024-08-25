@@ -16,7 +16,7 @@ export const CoderResultSimple = ({ name, value }: { value: unknown; name?: stri
       <Simple>
         {mylib.isRegExp(value) ? (
           <RegExpResult>{' ' + value}</RegExpResult>
-        ) : mylib.isNan(value as never) ? (
+        ) : mylib.isNaN(value) ? (
           'NaN'
         ) : value == null ? (
           ' ' + value

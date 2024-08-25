@@ -5,8 +5,9 @@ import { atom, useAtomSet, useAtomValue } from '../../../../../complect/atoms';
 import { useNumComUpdates } from '../../atoms';
 import { useCols } from '../../cols/useCols';
 import { Com } from './Com';
+import mylib from '../../../../../complect/my-lib/MyLib';
 
-export const useCcomw = (): CmComWid | typeof NaN => {
+export const useCcomw = (): CmComWid | NaN => {
   const params = useParams();
   const searchParams = useSearchParams();
   return searchParams[0].has('comw') ? +searchParams[0].get('comw')! : +params.comw!;
@@ -30,16 +31,16 @@ export function useCom(): Com | und {
   return useMemo(() => cols?.coms.find(com => com.wid === comw), [comw, cols]);
 }
 
-export const useTakeActualComw = (): number | typeof NaN => {
+export const useTakeActualComw = (): number | NaN => {
   const setComw = useAtomSet(ccomwAtom);
   const comw = useCcomw();
 
   useEffect(() => {
-    if (isNaN(comw)) return;
+    if (mylib.isNaN(comw)) return;
     setComw(comw);
   }, [comw, setComw]);
 
   return comw;
 };
 
-export const useActualCcomw = (): CmComWid | typeof NaN => +useAtomValue(ccomwAtom)!;
+export const useActualCcomw = (): CmComWid | NaN => +useAtomValue(ccomwAtom)!;

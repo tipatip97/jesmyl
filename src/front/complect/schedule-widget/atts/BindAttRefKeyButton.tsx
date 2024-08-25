@@ -39,8 +39,11 @@ export default function ScheduleWidgetBindAttRefKeyButton({
             {refs.map(attRef => {
               if (!schedule.days) return null;
               const [dayi, eventMi] = attRef;
-              if (dayi < 0) return null;
-              const event = schedule.days[dayi].list.find(event => event.mi === eventMi);
+              const day = schedule.days[dayi];
+
+              if (day == null) return null;
+
+              const event = day.list?.find(event => event.mi === eventMi);
               if (!event) return null;
               const dayDate = new Date(schedule.start + dayi * mylib.howMs.inDay);
 

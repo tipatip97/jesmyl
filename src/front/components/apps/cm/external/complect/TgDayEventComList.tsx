@@ -18,7 +18,7 @@ import {
 } from '../../../../../complect/schedule-widget/useScheduleWidget';
 import { IconCopy01StrokeRounded } from '../../../../../complect/the-icon/icons/copy-01';
 import { IconNoteEditStrokeRounded } from '../../../../../complect/the-icon/icons/note-edit';
-import { CmComBindAttach } from '../../../../../models';
+import { CmComBindAttach, IScheduleWidgetDayEventMi, IScheduleWidgetWid } from '../../../../../models';
 import { CmTranslationComListContext, CmTranslationComListContextValue } from '../../base/translations/context';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { Cat } from '../../col/cat/Cat';
@@ -38,27 +38,49 @@ const error = (children: React.ReactNode) => <div className="color--ko full-size
 
 export default function TgDayEventComList() {
   const params = useParams();
-  const dayi = +params.dayi!;
-  const eventMi = +params.eventMi!;
-  const schw = +params.schw!;
-  const meetings = useMeetings();
+  const dayi = +params.dayi! as NaNumber;
+  const eventMi = +params.eventMi! as IScheduleWidgetDayEventMi | NaN;
+  const schw = +params.schw! as IScheduleWidgetWid | NaN;
+
+  useInitSoki('cm');
+
+  if (mylib.isNaN(dayi) || mylib.isNaN(eventMi) || mylib.isNaN(schw)) return error('Ссылка не действительна');
+
+  return (
+    <Inner
+      schw={schw}
+      dayi={dayi}
+      eventMi={eventMi}
+    />
+  );
+}
+
+const Inner = ({
+  schw,
+  dayi,
+  eventMi,
+}: {
+  schw: IScheduleWidgetWid;
+  dayi: number;
+  eventMi: IScheduleWidgetDayEventMi;
+}) => {
   const [isOpenListRedact, setIsOpenListRedact] = useState<unknown>(false);
   const [isOpenMorePopup, setIsOpenMorePopup] = useState(false);
   const [isOpenComposition, setIsOpenComposition] = useState(false);
   const [ccom, setCcom] = useState<Com | und>();
   const [schedule, isLoading] = useGetScheduleOrPull(schw);
   const rights = useScheduleWidgetRights(schedule);
+  const meetings = useMeetings();
   const cat = useCcat(true);
-
-  useInitSoki('cm');
 
   if (isLoading) return <div className="full-size flex center">Загрузка расписания...</div>;
   if (!schedule) return error('Мероприятие не найдено');
   if (!cat) return error('Прогрузка списка песен...');
 
-  if (isNaN(dayi) || isNaN(eventMi) || isNaN(schw)) return error('Ссылка не действительна');
+  const day = schedule.days[dayi];
+  if (day == null) return error('День не найден');
 
-  const event = schedule.days[dayi].list.find(event => event.mi === eventMi);
+  const event = day?.list.find(event => event.mi === eventMi);
   if (!event) return error('Событие не найдено');
 
   const comsAtt = event.atts?.[attName] as CmComBindAttach | und;
@@ -168,7 +190,7 @@ export default function TgDayEventComList() {
       <CmFooter />
     </>
   );
-}
+};
 
 const ContextList = ({
   children,

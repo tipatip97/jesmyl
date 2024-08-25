@@ -12,6 +12,7 @@ import { CmTranslationControlPanel } from './ControllPanel';
 import { CmTranslationSlideLine } from './SlideLine';
 import { useScreenKeyDownListen } from './screen/hooks/keydown-listen';
 import { CmTranslateScreenConfigurations } from './screens/ScreenConfigurations';
+import mylib from '../../../../../../complect/my-lib/MyLib';
 
 interface Props {
   head?: ReactNode;
@@ -31,7 +32,7 @@ export default function CmTranslationControlled({ head, comList, headTitle }: Pr
   return (
     <PhaseContainerConfigurer
       className=""
-      backButtonPath={isNaN(ccomw) ? undefined : `../${ccomw}`}
+      backButtonPath={mylib.isNaN(ccomw) ? undefined : `../${ccomw}`}
       headTitle={
         headTitle ? (
           <>

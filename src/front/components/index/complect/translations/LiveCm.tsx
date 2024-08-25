@@ -10,6 +10,7 @@ import { useCmScreenTranslationConfigs } from '../../../apps/cm/translation/comp
 import { ScheduleWidgetCurrentCmTranslationList } from '../../../apps/cm/translation/complect/live/SchWgtCurrentList';
 import { IndexSchWTranslationLiveDataValue } from '../../Index.model';
 import { LiveTranslationAppProps } from './model';
+import mylib from '../../../../complect/my-lib/MyLib';
 
 export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
   isCantTranslateLive,
@@ -27,7 +28,7 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
     if (isCantTranslateLive) return;
 
     return setTimeoutEffect(() => {
-      if (isNaN(ccomw)) return;
+      if (mylib.isNaN(ccomw)) return;
 
       const liveData: IndexSchWTranslationLiveDataValue = {
         fio,

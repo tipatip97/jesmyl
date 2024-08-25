@@ -6,6 +6,7 @@ import { Com } from '../../Com';
 import { FreeComFace } from '../ComFace';
 import { FreeComFaceProps } from '../ComFace.model';
 import { IComFaceList } from './model';
+import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
 
 interface Props extends IComFaceList, FreeComFaceProps {
   list: Com[];
@@ -71,7 +72,7 @@ export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, classNa
   );
 };
 
-const StyledContainer = styled.div<{ $ccomw: number | nil }>`
+const StyledContainer = styled.div<{ $ccomw: CmComWid | NaN | nil }>`
   ${props =>
     props.$ccomw &&
     css`

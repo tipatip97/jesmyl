@@ -5,7 +5,7 @@ import mylib from '../../my-lib/MyLib';
 import serviceMaster from '../../service/serviceMaster';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 
-export const useGetScheduleOrPull = (scheduleInstance: string | IScheduleWidgetWid) => {
+export const useGetScheduleOrPull = (scheduleInstance: string | IScheduleWidgetWid | NaN) => {
   const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const schedules = useIndexSchedules();
@@ -33,7 +33,7 @@ export const useGetScheduleOrPull = (scheduleInstance: string | IScheduleWidgetW
         } catch (error) {}
 
         setIsLoading?.(false);
-      }, 200)
+      }, 600)
       .effect();
   }, [scheduleInstance, schedules.list, setIsLoading, setSchedule]);
 

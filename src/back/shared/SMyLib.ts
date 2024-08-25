@@ -66,8 +66,8 @@ export class SMyLib {
   isNil(obj: any): obj is null | undefined {
     return obj === null || obj === undefined;
   }
-  isNan(obj: any): obj is typeof NaN {
-    return isNaN(obj) && this.isNum(obj);
+  isNaN(obj: any): obj is NaN {
+    return typeof obj === 'number' && isNaN(obj);
   }
 
   static entries<T>(obj: T): [keyof T, T[keyof T]][] {

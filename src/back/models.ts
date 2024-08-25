@@ -80,6 +80,10 @@ export type ActionBoxValue<Value> = Value extends string | number | boolean
       ? { [Key in keyof Value]: ActionBoxValue<Value[Key]> }
       : Value;
 
+enum NotANumber {
+  nan = 'NaN',
+}
+
 declare global {
   type num = 0 | 1;
   type str = '' | '1';
@@ -91,6 +95,9 @@ declare global {
   type intStr = `${'-' | ''}${number}`;
   type doubleStr = `${intStr}.${number}`;
   type numberStr = `${intStr}${`.${number}` | ''}`;
+
+  type NaN = NotANumber;
+  type NaNumber = number | NotANumber;
 
   type EventStopper<With = {}> = { stopPropagation(): void } & With;
   type CallbackStopper = (event: EventStopper) => void;
