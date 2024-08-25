@@ -10,8 +10,7 @@ import CopyTextButton from '../../../../../complect/CopyTextButton';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
-import { useSetScheduleOrPull } from '../../../../../complect/schedule-widget/general/useSetScheduleOrPull';
-import { IScheduleWidget } from '../../../../../complect/schedule-widget/ScheduleWidget.model';
+import { useGetScheduleOrPull } from '../../../../../complect/schedule-widget/general/useSetScheduleOrPull';
 import {
   takeScheduleStrongScopeMaker,
   takeStrongScopeMaker,
@@ -43,16 +42,14 @@ export default function TgDayEventComList() {
   const eventMi = +params.eventMi!;
   const schw = +params.schw!;
   const meetings = useMeetings();
-  const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);
   const [isOpenListRedact, setIsOpenListRedact] = useState<unknown>(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isOpenMorePopup, setIsOpenMorePopup] = useState(false);
   const [isOpenComposition, setIsOpenComposition] = useState(false);
   const [ccom, setCcom] = useState<Com | und>();
+  const [schedule, isLoading] = useGetScheduleOrPull(schw);
   const rights = useScheduleWidgetRights(schedule);
   const cat = useCcat(true);
 
-  useSetScheduleOrPull(setSchedule, schw, setIsLoading);
   useInitSoki('cm');
 
   if (isLoading) return <div className="full-size flex center">Загрузка расписания...</div>;

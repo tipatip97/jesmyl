@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useInitSoki } from '../../../app/useInitSoki';
 import { removePullRequisites, useAuthState } from '../../../components/index/molecules';
@@ -8,8 +8,7 @@ import { TelegramWebAppApiOr } from '../../tg-app/getTgApi';
 import { TelegramWebApp, TelegramWebAppInitData } from '../../tg-app/model';
 import { TheIconLoading } from '../../the-icon/IconLoading';
 import ScheduleWidgetAlarmContent from '../alarm/AlarmContent';
-import { IScheduleWidget } from '../ScheduleWidget.model';
-import { useSetScheduleOrPull } from './useSetScheduleOrPull';
+import { useGetScheduleOrPull } from './useSetScheduleOrPull';
 
 const hashParamName = 'tgWebAppData';
 const url = new URL(window.location.href);
@@ -53,12 +52,10 @@ type Props = {
 };
 
 const Child = ({ api, isLoading, initData }: Props) => {
-  const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);
   const [auth, setAuth] = useAuthState();
+  const [schedule] = useGetScheduleOrPull(initData.chat_instance);
 
   useEffect(() => api?.disableVerticalSwipes(), [api]);
-
-  useSetScheduleOrPull(setSchedule, initData.chat_instance);
 
   useEffect(() => {
     return hookEffectLine()

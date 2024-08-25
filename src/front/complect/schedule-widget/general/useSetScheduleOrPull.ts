@@ -1,15 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useIndexSchedules } from '../../../components/index/molecules';
 import { IScheduleWidgetWid } from '../../../models';
 import mylib from '../../my-lib/MyLib';
 import serviceMaster from '../../service/serviceMaster';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 
-export const useSetScheduleOrPull = (
-  setSchedule: (schedule: IScheduleWidget) => void,
-  scheduleInstance: string | IScheduleWidgetWid,
-  setIsLoading?: (is: boolean) => void,
-) => {
+export const useGetScheduleOrPull = (scheduleInstance: string | IScheduleWidgetWid) => {
+  const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const schedules = useIndexSchedules();
 
   useEffect(() => {
@@ -26,9 +24,10 @@ export const useSetScheduleOrPull = (
       return;
     }
 
-    setIsLoading?.(true);
     return hookEffectLine()
       .setTimeout(async () => {
+        setIsLoading?.(true);
+
         try {
           setSchedule(await serviceMaster('index')('takeDaySchedule', scheduleInstance));
         } catch (error) {}
@@ -37,4 +36,6 @@ export const useSetScheduleOrPull = (
       }, 200)
       .effect();
   }, [scheduleInstance, schedules.list, setIsLoading, setSchedule]);
+
+  return [schedule, isLoading] as const;
 };
