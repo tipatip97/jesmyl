@@ -6,6 +6,7 @@ import {
   ExecutionTrack,
 } from './complect/executer/Executer.model';
 import { LocalSokiAuth } from './complect/soki/soki.model';
+import { knownIconNames } from './knownIconNames';
 import { actionBoxSetSystems } from './values';
 
 export type ActionBoxSide =
@@ -103,4 +104,9 @@ declare global {
 
   type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
   type XOR<T, U> = (Without<T, U> & U) | (Without<U, T> & T);
+}
+
+declare global {
+  type KnownIconName = (typeof knownIconNames)[number];
+  type KnownIconNameForPack = KnownIconName;
 }

@@ -186,8 +186,3 @@ export const knownIconNames = [
   'ViewOffSlash',
   'VoiceId',
 ] as const;
-
-declare global {
-  type KnownIconName = (typeof knownIconNames)[number];
-  type KnownIconNameForPack = KnownIconName;
-}
