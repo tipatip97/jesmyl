@@ -5,7 +5,7 @@ import { routingApps } from '../../../../app/routing-apps';
 import { useAtomValue } from '../../../../complect/atoms';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import useToast from '../../../../complect/modal/useToast';
-import mylib from '../../../../complect/my-lib/MyLib';
+import mylib, { MyLib } from '../../../../complect/my-lib/MyLib';
 import Noty from '../../../../complect/notifications/Noti';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import IconButton from '../../../../complect/the-icon/IconButton';
@@ -28,6 +28,19 @@ import { Visits } from './Visits';
 
 const IndexConsole = React.lazy(() => import('./Console'));
 
+const styles = {
+  position: 'absolute',
+  top: '0',
+  right: '0',
+  bottom: '0',
+  left: '0',
+  background: 'black',
+  zIndex: '1000000',
+  overflowY: 'auto',
+  height: '100dvh',
+  display: null,
+};
+
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 const statisticAtom = indexMolecule.select(s => s.statistic);
 
@@ -39,6 +52,7 @@ export default function IndexSettings() {
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [modalNode, toast] = useToast();
   const [appFontFamily, setAppFontFamily] = useAppFontFamilyAtom();
+  const connectionNode = useConnectionState('margin-gap');
 
   useEffect(() => {
     soki.send({ subscribe: 'statistic' }, 'index');
@@ -100,12 +114,15 @@ export default function IndexSettings() {
 
         if (container == null) return;
 
-        container.style.zIndex = '100000';
-        container.onclick = () => (container.style.zIndex = null!);
+        MyLib.entries(styles).forEach(([key, val]) => (container.style[key] = val!));
+
+        container.onclick = () => {
+          MyLib.keys(styles).forEach(key => (container.style[key] = null!));
+          container.style.display = 'none';
+        };
       }}
     />,
   ].filter(itIt);
-  const connectionNode = useConnectionState('margin-gap');
 
   return (
     <Routes>
