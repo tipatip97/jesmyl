@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
-import { theIconKnownPack } from './pack';
 import { TheIconSelfPack } from './model';
+import { theIconKnownPack } from './pack';
 
 export default function TheIcon(props: HTMLAttributes<HTMLOrSVGElement> & { name: KnownIconName }) {
   const Pack = theIconKnownPack[props.name];

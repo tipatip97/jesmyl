@@ -57,9 +57,23 @@ export const indexService: SokiServiceCallback = (key, value, getCapsule, { clie
     }
 
     if (key === 'takeDaySchedule') {
+      const sendError = (errorMessage: string) => {
+        sokiServer.send(
+          {
+            appName: 'index',
+            service: {
+              key,
+              errorMessage,
+            },
+            requestId,
+          },
+          client,
+        );
+      };
+
       const schedules: ScheduleStorage = filer.contents.index['schedules'].data;
 
-      if (schedules.list === undefined) return;
+      if (schedules.list === undefined) return sendError('Ошибка');
 
       const chatInstance: string | IScheduleWidgetWid = value;
 
@@ -69,7 +83,7 @@ export const indexService: SokiServiceCallback = (key, value, getCapsule, { clie
           : sch => sch.w === chatInstance,
       );
 
-      if (schedule === undefined) return;
+      if (schedule === undefined) return sendError('Расписание не найдено');
 
       const tryInvite = async (tries: number) => {
         const capsule = getCapsule();

@@ -21,7 +21,7 @@ export const useBibleScreenTranslationFontSizeAdapter = (
 
     const wrapper = wrapperRef.current;
     const container = contentRef.current;
-    const conainerStyle = contentRef.current.style;
+    const conainerStyle = container.style;
 
     const prevOpacity = conainerStyle.opacity;
     conainerStyle.opacity = '0';
