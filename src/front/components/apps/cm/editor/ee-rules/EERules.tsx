@@ -1,44 +1,39 @@
 import { useEffect, useState } from 'react';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import TheButton from '../../../../../complect/Button';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
-import mylib from '../../../../../complect/my-lib/MyLib';
 import IconCheckbox from '../../../../../complect/the-icon/IconCheckbox';
-import { useBibleTranslatesContext } from '../../../bible/translates/TranslatesContext';
-import { useBibleShowTranslates } from '../../../bible/translates/hooks';
 import { cmExer } from '../../CmExer';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
-import { useEditableCols } from '../col/useEditableCols';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
+import { EERulesListComputer } from './EERulesListComputer';
 
-const radioTitles = ['И е и ё', 'Только е', 'Только ё'];
+const radioTitles = ['И е и ё', 'Только е', 'Только ё'].map((typeName, type) => <div key={type}>{typeName}</div>);
+const sizes = [10, 30, 50];
 
-const regs = {
-  '/[^а-яёіїєґ]+/gi': /[^а-яёіїєґ]+/gi,
-  '/([а-дж-я]*е)/': /([а-дж-я]*е)/,
-  '/^[А-ЯЁ]/': /^[А-ЯЁ]/,
-  '/[іїєґ]/': /[іїєґ]/,
-  '/е/g': /е/g,
-  '/ё/g': /ё/g,
-  '/е/': /е/,
+const marginStyle = {
+  marginRight: '-.3em',
 };
+
+const textAlignStyle = {
+  textAlign: 'right',
+} as const;
+
+let listBox = { list: [] } as { list: string[] };
+
+const itIt = (it: unknown) => it;
 
 export default function EERules() {
   const [pageSize, setPageSize] = useState(50);
-  const [wordList, setWordList] = useState<string[]>([]);
+  const [updates, setUpdates] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const cols = useEditableCols();
   const exec = useExerExec();
-  const showTranslates = useBibleShowTranslates();
-  const chapters = useBibleTranslatesContext()[showTranslates[0][0]]?.chapters;
   const [isCheckBible, setIsCheckBible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [store, setStore] = useState<string[]>([]);
+  const [isShowListComputer, setIsShowListComputer] = useState(false);
 
-  useEffect(() => {
-    eeStorage.load().then(store => setStore(mylib.keys(store)));
-  }, []);
+  useEffect(() => setIsShowListComputer(false), [updates]);
 
   const setWord = (word: string, value: number | number[]) => {
     cmExer.set({
@@ -63,40 +58,7 @@ export default function EERules() {
         <>
           <TheButton
             className="margin-gap"
-            onClick={() => {
-              if (!cols) return;
-              const words = new Set<string>();
-              setIsLoading(true);
-
-              setTimeout(() => {
-                let text = [
-                  store,
-                  cols.cats.map(col => [col.name]),
-                  cols.coms.map(col => [col.name, ...(col.texts ?? [])]),
-                  isCheckBible ? chapters : ([] as string[]),
-                ]
-                  .flat()
-                  .flat()
-                  .flat()
-                  .join(' ');
-
-                (isCheckBible ? text : text.toLowerCase())
-                  .replace(regs['/[^а-яёіїєґ]+/gi'], ' ')
-                  .replace(regs['/ё/g'], 'е')
-                  .split(' ')
-                  .forEach(word => {
-                    if (
-                      (!isCheckBible || word.search(regs['/^[А-ЯЁ]/']) < 0) &&
-                      word.search(regs['/[іїєґ]/']) < 0 &&
-                      word.search(regs['/е/']) > -1
-                    )
-                      words.add(word);
-                  });
-
-                setWordList(Array.from(words).sort());
-                setIsLoading(false);
-              });
-            }}
+            onClick={() => setIsShowListComputer(true)}
           >
             Проверить наличие неизвестных слов
           </TheButton>
@@ -105,122 +67,105 @@ export default function EERules() {
             checked={isCheckBible}
             onChange={setIsCheckBible}
           />
-          {isLoading ? (
-            <div>Загрузка...</div>
+          {isShowListComputer ? (
+            <EERulesListComputer
+              isCheckBible={isCheckBible}
+              setUpdates={setUpdates}
+              listBox={listBox}
+            />
           ) : (
-            !wordList.length || (
-              <>
-                {[10, 30, 50].map(size => (
-                  <button
-                    key={size}
-                    className="margin-gap"
-                    disabled={pageSize === size}
-                    onClick={() => setPageSize(size)}
+            <>
+              {sizes.map(size => (
+                <button
+                  key={size}
+                  className="margin-gap"
+                  disabled={pageSize === size}
+                  onClick={() => setPageSize(size)}
+                >
+                  {size}
+                </button>
+              ))}
+              <Dropdown
+                onSelect={({ id }) => setCurrentPage(id)}
+                items={Array(Math.ceil(listBox.list.length / pageSize))
+                  .fill(0)
+                  .map((_, page): DropdownItem<number> => {
+                    const words = listBox.list.slice(page * pageSize, page * pageSize + pageSize);
+
+                    return {
+                      title: words[0],
+                      id: page,
+                      disabled: currentPage === page,
+                      color: words.some(word => eeStorage.get(word) == null) ? 'ko' : null,
+                    };
+                  })}
+              />
+              слов: {listBox.list.length}
+              {listBox.list.slice(currentPage * pageSize, currentPage * pageSize + pageSize).map((word, wordi) => {
+                const storeType = eeStorage.get(word);
+                const parts = word.split(makeRegExp('/([а-дж-я]*е)/')).filter(itIt);
+
+                return (
+                  <table
+                    key={word}
+                    className="margin-big-gap-v"
                   >
-                    {size}
-                  </button>
-                ))}
-                <Dropdown
-                  onSelect={({ id }) => setCurrentPage(id)}
-                  items={Array(Math.ceil(wordList.length / pageSize))
-                    .fill(0)
-                    .map((_, page): DropdownItem<number> => {
-                      const words = wordList.slice(page * pageSize, page * pageSize + pageSize);
+                    <tbody>
+                      <tr>
+                        <th className={storeType == null ? 'color--ko' : undefined}>Слово:</th>
+                        {parts.map((part, parti) => (
+                          <td key={parti}>
+                            {storeType === 2 || (storeType as number[])?.[parti] === 2
+                              ? part.replace(makeRegExp('/е/'), 'ё')
+                              : part}
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <th>{radioTitles}</th>
+                        {parts.map((part, parti) => (
+                          <td
+                            key={parti}
+                            style={textAlignStyle}
+                          >
+                            {part.endsWith('е') &&
+                              radioTitles.map((_, type) => (
+                                <input
+                                  key={type}
+                                  type="radio"
+                                  className="block margin-gap-v"
+                                  name={`ee-word-radio_${word}-${parti}`}
+                                  style={marginStyle}
+                                  checked={storeType === type || (storeType as number[])?.[parti] === type}
+                                  onChange={() => {
+                                    let track = Array.isArray(storeType) ? storeType.slice(0) : storeType;
+                                    const elen = word.match(makeRegExp('/е/g'))?.length || 0;
 
-                      return {
-                        title: words[0],
-                        id: page,
-                        disabled: currentPage === page,
-                        color: words.some(word => eeStorage.get(word) == null) ? 'ko' : null,
-                      };
-                    })}
-                />
-                слов: {wordList.length}
-                {wordList.map((word, wordi) => {
-                  if (currentPage * pageSize > wordi || wordi >= currentPage * pageSize + pageSize) return null;
-                  const storeType = eeStorage.get(word);
+                                    if (storeType == null) {
+                                      if (elen > 1) {
+                                        track = '.'
+                                          .repeat(elen)
+                                          .split('')
+                                          .map(() => 1);
+                                        track[parti] = type;
+                                      } else track = type;
+                                    } else {
+                                      if (elen > 1) (track as number[])[parti] = type;
+                                      else track = type;
+                                    }
 
-                  return (
-                    <table
-                      key={wordi}
-                      className="margin-big-gap-v"
-                    >
-                      <tbody>
-                        {(parts => (
-                          <>
-                            <tr>
-                              <th
-                                style={{
-                                  background: storeType == null ? 'red' : undefined,
-                                }}
-                              >
-                                Слово:
-                              </th>
-                              {parts.map((part, parti) => (
-                                <td key={parti}>
-                                  {storeType === 2 || (storeType as number[])?.[parti] === 2
-                                    ? part.replace(regs['/е/'], 'ё')
-                                    : part}
-                                </td>
-                              ))}
-                            </tr>
-                            <tr>
-                              <th>
-                                {radioTitles.map((typeName, type) => (
-                                  <div key={type}>{typeName}</div>
-                                ))}
-                              </th>
-                              {parts.map((part, parti) => (
-                                <td
-                                  key={parti}
-                                  style={{
-                                    textAlign: 'right',
+                                    setWord(word, track);
                                   }}
-                                >
-                                  {part.endsWith('е')
-                                    ? radioTitles.map((_, type) => (
-                                        <div key={type}>
-                                          <input
-                                            type="radio"
-                                            name={`ee-word-radio_${word}-${parti}`}
-                                            style={{
-                                              marginRight: '-.3em',
-                                            }}
-                                            checked={storeType === type || (storeType as number[])?.[parti] === type}
-                                            onChange={() => {
-                                              let track = Array.isArray(storeType) ? storeType.slice(0) : storeType;
-                                              const elen = word.match(regs['/е/g'])?.length || 0;
-
-                                              if (storeType == null) {
-                                                if (elen > 1) {
-                                                  track = '.'
-                                                    .repeat(elen)
-                                                    .split('')
-                                                    .map(() => 1);
-                                                  track[parti] = type;
-                                                } else track = type;
-                                              } else {
-                                                if (elen > 1) (track as number[])[parti] = type;
-                                                else track = type;
-                                              }
-
-                                              setWord(word, track);
-                                            }}
-                                          />
-                                        </div>
-                                      ))
-                                    : null}
-                                </td>
+                                />
                               ))}
-                            </tr>
-                          </>
-                        ))(word.split(regs['/([а-дж-я]*е)/']).filter(w => w))}
-                      </tbody>
-                    </table>
-                  );
-                })}
-              </>
-            )
+                          </td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
+                );
+              })}
+            </>
           )}
         </>
       }
