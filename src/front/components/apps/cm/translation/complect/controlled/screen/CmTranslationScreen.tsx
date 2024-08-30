@@ -13,8 +13,8 @@ import { useGetCmScreenTranslationWrapperStyle } from './hooks/get-wrapper-style
 type Props = TranslationScreenProps &
   Partial<FontSizeContainProps> & {
     cmConfig: CmTranslationScreenConfig | und;
-    texts: string[];
-    texti: number;
+    text: string;
+    nextText: string;
     isVisible: boolean;
   };
 
@@ -38,7 +38,7 @@ export const CmTranslationScreen = (props: Props) => {
         config={config}
         win={props.win}
         subUpdates={props.subUpdates}
-        text={props.texts?.[props.texti + 1] ?? ''}
+        text={props.nextText}
         wrapperRef={wrapperRef}
         isTech={props.isTech}
         parentConfig={props.cmConfig}
@@ -64,7 +64,7 @@ export const CmTranslationScreen = (props: Props) => {
       <FontSizeContain
         className="inline-flex white-pre-children"
         style={style}
-        html={props.texts[props.texti]}
+        html={props.text}
         subUpdates={
           '' + props.subUpdates + (props.cmConfig === undefined ? '' : props.cmConfig.width + props.cmConfig.height)
         }

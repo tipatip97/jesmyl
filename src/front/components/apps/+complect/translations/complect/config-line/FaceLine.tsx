@@ -2,15 +2,12 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { IconPlusSignStrokeRounded } from '../../../../../../complect/the-icon/icons/plus-sign';
 import { useCurrentTranslationConfigiSet } from '../../atoms';
-import {
-  useAddScreenTranslationConfig,
-  useScreenTranslationConfigs,
-  useScreenTranslationCurrentConfigi,
-} from '../../hooks/configs';
+import { useAddScreenTranslationConfig, useScreenTranslationCurrentConfigi } from '../../hooks/configs';
 import { useWatchScreenTranslations } from '../../hooks/watch-translation';
 import { useScreenTranslationWindows } from '../../hooks/windows';
 import { useUpdateScreenTranslationConfig } from '../../hooks/with-config';
 import { ScreenTranslationConfig } from '../../model';
+import { useScreenTranslationConfigsValue } from '../../molecules';
 import { ScreenTranslationsFace } from './Face';
 import { useScreenTranslationFaceLineListeners } from './hooks/listeners';
 import { useScreenTranslationPutOnFaceClose } from './hooks/put-on-face-close';
@@ -20,7 +17,7 @@ interface Props<Config> {
 }
 
 export const ScreenTranslationsFaceLine = <Config,>(props: Props<Config>) => {
-  const configs: ScreenTranslationConfig[] = useScreenTranslationConfigs();
+  const configs: ScreenTranslationConfig[] = useScreenTranslationConfigsValue();
   const windows = useScreenTranslationWindows();
   const updateConfig = useUpdateScreenTranslationConfig();
   const setCurrentConfigi = useCurrentTranslationConfigiSet();

@@ -3,8 +3,8 @@ import { CmTranslationScreenConfig } from '../controlled/model';
 import { CmTranslationScreen } from '../controlled/screen/CmTranslationScreen';
 
 interface Props {
-  texti: number;
-  texts: string[];
+  text: string;
+  nextText: string;
   config: CmTranslationScreenConfig;
   subUpdates: number | string | und;
 }
@@ -14,11 +14,11 @@ export const CmLiveTranslationSlide = (props: Props) => {
     <Container className="flex center full-size">
       <CmTranslationScreen
         className="inline-flex center white-pre-children"
-        html={props.texts[props.texti]}
+        html={props.text}
         subUpdates={props.subUpdates}
         cmConfig={props.config}
-        texti={props.texti}
-        texts={props.texts}
+        text={props.text}
+        nextText={props.nextText}
         isVisible
       />
     </Container>

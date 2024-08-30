@@ -11,8 +11,6 @@ import { useCmScreenTranslationConfig } from '../hooks/configs';
 import { CmTranslationScreen } from './CmTranslationScreen';
 import { useScreenWinResizeListen } from './hooks/win-resize-lesten';
 
-const emptyArr: [] = [];
-
 export const CmTranslationCurrentScreen = (props: TranslationScreenProps & Partial<FontSizeContainProps>) => {
   const getCurrentConfig = useGetScreenTranslationConfig();
   const currentConfigi = useScreenTranslationCurrentConfigi();
@@ -26,8 +24,8 @@ export const CmTranslationCurrentScreen = (props: TranslationScreenProps & Parti
     <CmTranslationScreen
       {...props}
       cmConfig={currentConfig}
-      texti={currTexti}
-      texts={texts ?? emptyArr}
+      text={texts ? texts[currTexti] : ''}
+      nextText={texts ? texts[currTexti + 1] || '' : ''}
       isVisible={isVisible}
       subUpdates={'' + currentConfigi + forceUpdates + getCurrentConfig(currentConfigi)?.proportion}
     />

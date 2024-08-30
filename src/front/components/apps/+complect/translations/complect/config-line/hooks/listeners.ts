@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
 import { useToggleIsScreenTranslationTextVisible } from '../../../atoms';
+import { TranslationWindow } from '../../../hooks/windows';
 import { ScreenTranslationConfig } from '../../../model';
 
 const invokeEach = (cb: () => void) => cb();
@@ -11,25 +12,27 @@ export const useScreenTranslationFaceLineListeners = (
   currentConfigi: number,
   setCurrentConfigi: (configi: number) => void,
   updateConfig: (configi: number, config: Partial<ScreenTranslationConfig> | null) => void,
-  windows: readonly (nil | Window)[],
+  windows: readonly (nil | TranslationWindow)[],
 ) => {
   const switchIsVisible = useToggleIsScreenTranslationTextVisible();
   const currentConfigiRef = useActualRef(currentConfigi);
 
   useEffect(() => {
     const listeners = windows
-      .map((win, wini) => {
-        if (win == null) return null!;
+      .map((parentWin, wini) => {
+        if (parentWin == null) return null!;
+        const win = parentWin.win;
+
         let timeout: TimeOut;
+
+        const resize = () => updateConfig(wini, { proportion: win.innerWidth / win.innerHeight });
 
         win.onresize = () => {
           clearTimeout(timeout);
-          timeout = setTimeout(() => {
-            updateConfig(wini, { proportion: win.innerWidth / win.innerHeight });
-          }, 100);
+          timeout = setTimeout(resize);
         };
 
-        window.onkeydown = win.onkeydown = async event => {
+        const onKeyDown = (win.onkeydown = async event => {
           switch (event.code) {
             case 'Tab':
               setCurrentConfigi(
@@ -43,19 +46,25 @@ export const useScreenTranslationFaceLineListeners = (
               );
               break;
 
+            case 'Enter':
+              parentWin.focus();
+
+              break;
+
             case 'Escape':
-              if (!event.ctrlKey) switchIsVisible();
+              parentWin.blur();
               break;
           }
-        };
+        });
 
         win.onfocus = () => setCurrentConfigi(wini);
+        window.addEventListener('keydown', onKeyDown);
 
         return () => {
           win.onresize = null;
           win.onkeydown = null;
           win.onfocus = null;
-          window.onkeydown = null;
+          window.removeEventListener('keydown', onKeyDown);
         };
       })
       .filter(itNNull);

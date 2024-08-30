@@ -9,8 +9,10 @@ import ComOrders from '../../../col/com/orders/ComOrders';
 import { CmTranslationScreenConfig } from '../controlled/model';
 
 interface Props {
-  texti: number;
-  com: Com;
+  texti?: number;
+  com?: Com;
+  text: string;
+  nextText: string;
   config: CmTranslationScreenConfig;
 }
 
@@ -23,7 +25,7 @@ export const CmLiveTranslationList = (props: Props) => {
     const counts = [] as number[];
     let lastSum = 0;
 
-    props.com.orders?.forEach(unit => {
+    props.com?.orders?.forEach(unit => {
       if (unit.texti === null) {
         sum.push(lastSum);
         return;
@@ -38,7 +40,8 @@ export const CmLiveTranslationList = (props: Props) => {
 
   const querySelector = useMemo(() => {
     let count = 0;
-    const mapLine = props.com.translationMap(props.config.pushKind);
+    const mapLine = props.com?.translationMap(props.config.pushKind);
+    if (!mapLine || props.texti == null) return '';
 
     for (let i = 0; i < mapLine.length; i++) {
       if (i >= props.texti) {
@@ -53,7 +56,7 @@ export const CmLiveTranslationList = (props: Props) => {
     }
 
     return `#${_lineNamePrefix}0`;
-  }, [props.com, props.texti]);
+  }, [props.com, props.config.pushKind, props.texti]);
 
   useEffect(() => {
     const element = document.querySelector(querySelector);
@@ -72,20 +75,22 @@ export const CmLiveTranslationList = (props: Props) => {
         className="flex"
         $querySelector={querySelector}
       >
-        <ComOrders
-          chordVisibleVariant={chordVisibleVariant}
-          com={props.com}
-          asLineComponent={props => {
-            return (
-              <div
-                className={_lineNamePrefix}
-                id={`${_lineNamePrefix}${lineVolumes.sum[props.orderUniti] + props.textLinei}`}
-              >
-                <ComLine {...props} />
-              </div>
-            );
-          }}
-        />
+        {props.com && (
+          <ComOrders
+            chordVisibleVariant={chordVisibleVariant}
+            com={props.com}
+            asLineComponent={props => {
+              return (
+                <div
+                  className={_lineNamePrefix}
+                  id={`${_lineNamePrefix}${lineVolumes.sum[props.orderUniti] + props.textLinei}`}
+                >
+                  <ComLine {...props} />
+                </div>
+              );
+            }}
+          />
+        )}
       </List>
     </RollControled>
   );

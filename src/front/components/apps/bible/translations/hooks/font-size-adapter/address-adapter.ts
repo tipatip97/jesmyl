@@ -7,16 +7,17 @@ export const useBibleScreenTranslationFontSizeAddressAdapter = (
   currentConfig: BibleTranslationScreenConfig | und,
   windowResizeUpdatesNum: number | und,
 ) => {
-  const subUpdater =
-    (currentConfig === undefined
-      ? '-'
-      : currentConfig.address.height +
-        currentConfig.address.width +
-        currentConfig.fontWeight +
-        currentConfig.fontFamily +
-        currentConfig.addressPanel.height) +
-    windowResizeUpdatesNum +
-    useIsScreenTranslationTextVisible();
-
-  return useBibleScreenTranslationFontSizeAdapter(content, subUpdater);
+  return useBibleScreenTranslationFontSizeAdapter(
+    content,
+    '' +
+      windowResizeUpdatesNum +
+      useIsScreenTranslationTextVisible() +
+      (currentConfig === undefined
+        ? '-'
+        : currentConfig.address.height +
+          currentConfig.address.width +
+          currentConfig.fontWeight +
+          currentConfig.fontFamily +
+          currentConfig.addressPanel.height),
+  );
 };

@@ -5,7 +5,6 @@ import { useApplyScreenFontFamilyEffect } from '../../../+complect/translations/
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCircleArrowDataTransferDiagonalStrokeRounded } from '../../../../../complect/the-icon/icons/circle-arrow-data-transfer-diagonal';
 import { useBibleAddressVersei } from '../../hooks/address/verses';
-import { BibleTranslationAddress } from '../../model';
 import { useBibleScreenTranslationKeyListener } from '../hooks/key-listener';
 import { useGetBibleScreenTranslationWrapperStyle } from '../hooks/styles/wrapper-style';
 import { BibleTranslationScreenConfig } from '../model';
@@ -16,9 +15,6 @@ import { BibleTranslationScreenContentConfiguration } from './complect/ContentCo
 
 interface Props extends TranslationScreenProps {
   bibleConfig: BibleTranslationScreenConfig | und;
-  address?: BibleTranslationAddress;
-  addressText?: string;
-  text?: string;
   windowResizeUpdatesNum: number | und;
   isVisible: boolean;
 }
@@ -76,7 +72,6 @@ export const BibleTranslationScreen = memo(function BibleTranslationScreen(props
           />
         )}
         <BibleTranslationScreenContent
-          text={props.text}
           screeni={props.screeni}
           win={props.win}
           isPreview={props.isPreview}
@@ -86,8 +81,6 @@ export const BibleTranslationScreen = memo(function BibleTranslationScreen(props
         />
       </div>
       <BibleTranslationScreenAddressContainer
-        address={props.address}
-        addressText={props.addressText}
         isChangeAddressPanelHeight={isChangeAddressPanelHeight}
         isTech={props.isTech}
         isPreview={props.isPreview}

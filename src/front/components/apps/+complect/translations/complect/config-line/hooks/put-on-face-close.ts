@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useRemoveScreenTranslationConfig } from '../../../hooks/configs';
-import { useUpdateScreenTranslationWindows } from '../../../hooks/windows';
+import { TranslationWindow, useUpdateScreenTranslationWindows } from '../../../hooks/windows';
 import { useUpdateScreenTranslationConfig } from '../../../hooks/with-config';
 import { ScreenTranslationConfig } from '../../../model';
 
@@ -8,7 +8,7 @@ export const useScreenTranslationPutOnFaceClose = <Config>(
   configs: ScreenTranslationConfig[],
   currentConfigi: number,
   setCurrentConfigi: (configi: number) => void,
-  windows: readonly (nil | Window)[],
+  windows: readonly (nil | TranslationWindow)[],
   updateExternalConfig: (config: Config | null, configi: number) => void,
 ) => {
   const updateConfig = useUpdateScreenTranslationConfig();
@@ -24,7 +24,8 @@ export const useScreenTranslationPutOnFaceClose = <Config>(
         updateConfig(configi, null);
         updateExternalConfig(null, configi);
 
-        windows[configi]?.close();
+        windows[configi]?.win.close();
+
         setTimeout(() => {
           const newWindows = [...windows];
           newWindows.splice(configi, 1);

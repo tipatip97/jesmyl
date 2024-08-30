@@ -1,7 +1,7 @@
 import { useCcom } from '../../../col/com/useCcom';
 
 interface Props {
-  comw: number;
+  comw?: number;
 }
 
 export const CmTranslationSlideMiniInfo = (props: Props) => {

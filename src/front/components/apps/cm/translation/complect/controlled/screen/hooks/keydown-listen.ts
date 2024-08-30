@@ -4,6 +4,8 @@ import { useActualRef } from '../../../../../../../../complect/useActualRef';
 import { useCmScreenTranslationComNavigations } from '../../../hooks/com-navigation';
 import { useCmScreenTranslationComTextNavigations } from '../../../hooks/com-texts';
 
+const win = { win: window };
+
 export const useScreenKeyDownListen = () => {
   const windows = useScreenTranslationWindows();
   const comActionsRef = useActualRef(useCmScreenTranslationComNavigations());
@@ -43,11 +45,11 @@ export const useScreenKeyDownListen = () => {
       event.stopPropagation();
     };
 
-    const winsSet = new Set([windows, window].flat());
-    winsSet.forEach(win => win?.addEventListener('keydown', onKeyTranslations));
+    const winsSet = new Set([windows, win].flat());
+    winsSet.forEach(win => win?.win.addEventListener('keydown', onKeyTranslations));
 
     return () => {
-      winsSet.forEach(win => win?.removeEventListener('keydown', onKeyTranslations));
+      winsSet.forEach(win => win?.win.removeEventListener('keydown', onKeyTranslations));
     };
   }, [comActionsRef, comTextActionsRef, windows]);
 };

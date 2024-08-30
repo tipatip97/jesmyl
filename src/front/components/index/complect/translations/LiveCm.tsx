@@ -4,13 +4,12 @@ import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons
 import { soki } from '../../../../soki';
 import { useSwitchCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
 import { useComTranslationBlock } from '../../../apps/cm/atoms';
-import { useCcomw } from '../../../apps/cm/col/com/useCcom';
+import { useCcom } from '../../../apps/cm/col/com/useCcom';
 import CmTranslationControlled from '../../../apps/cm/translation/complect/controlled/CmTranslationControlled';
 import { useCmScreenTranslationConfigs } from '../../../apps/cm/translation/complect/controlled/hooks/configs';
 import { ScheduleWidgetCurrentCmTranslationList } from '../../../apps/cm/translation/complect/live/SchWgtCurrentList';
 import { IndexSchWTranslationLiveDataValue } from '../../Index.model';
 import { LiveTranslationAppProps } from './model';
-import mylib from '../../../../complect/my-lib/MyLib';
 
 export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
   isCantTranslateLive,
@@ -19,7 +18,7 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
   headTitle,
   schedule,
 }: LiveTranslationAppProps) {
-  const ccomw = useCcomw();
+  const ccom = useCcom();
   const [config] = useCmScreenTranslationConfigs();
   const switchCurrApp = useSwitchCurrentTranslationTextApp();
   const [currTexti] = useComTranslationBlock();
@@ -28,20 +27,22 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
     if (isCantTranslateLive) return;
 
     return setTimeoutEffect(() => {
-      if (mylib.isNaN(ccomw)) return;
+      if (!ccom?.texts) return;
 
       const liveData: IndexSchWTranslationLiveDataValue = {
         fio,
         cm: {
-          comw: ccomw,
+          comw: ccom.wid,
           texti: currTexti,
+          text: ccom.texts[currTexti],
+          nextText: ccom.texts[currTexti + 1] || '',
           config,
         },
       };
 
       soki.send({ liveData, subscribeData }, 'index');
     }, 100);
-  }, [ccomw, config, currTexti, fio, isCantTranslateLive, subscribeData]);
+  }, [ccom, config, currTexti, fio, isCantTranslateLive, subscribeData]);
 
   return (
     <ScheduleWidgetCurrentCmTranslationList schedule={schedule}>

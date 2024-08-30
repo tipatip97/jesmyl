@@ -66,12 +66,14 @@ export const useBibleSingleSlideText = (
 export const useBibleSlideText = () => {};
 
 export const useBibleJoinedSlideText = (
-  joinAddress: BibleTranslationJoinAddress,
+  joinAddress: BibleTranslationJoinAddress | null,
   isSetFirstTranslate?: boolean,
   isSetAddress?: boolean,
 ) => {
   const showTranslates = useBibleShowTranslatesValue();
   const translates = useBibleTranslatesContext();
+
+  if (joinAddress === null) return '';
 
   const pasteText = (chapters: (string[][] | null)[] | und) => {
     if (chapters === undefined) return '';

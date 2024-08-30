@@ -1,4 +1,6 @@
-import React from 'react';
+import { contextCreator } from '../../../../complect/contextCreator';
 import { TranslationViewApp } from './Translations.model';
 
-export const CurrentForceViweAppContext = React.createContext<TranslationViewApp | und>(undefined);
+export const [CurrentForceViweAppContext, useCurrentForceViweAppContext] = contextCreator<TranslationViewApp | und>(
+  undefined,
+);

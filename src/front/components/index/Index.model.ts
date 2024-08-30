@@ -42,8 +42,10 @@ export type IndexErrorScope = keyof ClientRegisterData;
 export type IndexSchWTranslationLiveDataValue = {
   fio: string;
   cm?: {
-    texti: number;
-    comw: number;
+    texti?: number;
+    comw?: number;
+    text: string;
+    nextText: string;
     config: CmTranslationScreenConfig;
   };
   bible?: {

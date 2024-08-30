@@ -7,7 +7,7 @@ import {
   useMakeScreenTranslationConfigsFillPack,
   useScreenTranslationCurrentConfigi,
 } from '../../../+complect/translations/hooks/configs';
-import { useAtomValue } from '../../../../../complect/atoms';
+import { useAtomSet, useAtomValue } from '../../../../../complect/atoms';
 import { bibleMolecule } from '../../molecules';
 import { BibleTranslationScreenConfig } from '../model';
 
@@ -41,6 +41,7 @@ export const defaultBibleConfig: BibleTranslationScreenConfig = {
 
 const translationScreenConfigsAtom = bibleMolecule.select(s => s.translationScreenConfigs);
 
+export const useBibleScreenTranslationConfigsSet = () => useAtomSet(translationScreenConfigsAtom);
 export const useBibleScreenTranslationConfigs = () =>
   useMakeScreenTranslationConfigsFillPack(useAtomValue(translationScreenConfigsAtom), defaultBibleConfig);
 

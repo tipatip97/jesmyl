@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useRef } from 'react';
+import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
 import { BibleSearchZone } from '../../model';
 import BibleSearchResults from './Results';
 import BibleSearchInputPanel from './input-panel/InputPanel';
@@ -6,6 +7,7 @@ import { useBibleSearchZone } from './selectors';
 
 export default memo(function BibleSearchPanel(): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
+  const setJoin = useBibleTranslationJoinAddressSetter();
 
   const [searchZone, setZone] = useBibleSearchZone();
 
@@ -18,6 +20,19 @@ export default memo(function BibleSearchPanel(): JSX.Element {
     },
     [setZone],
   );
+
+  useEffect(() => {
+    if (inputRef.current)
+      return hookEffectLine()
+        .addEventListener(inputRef.current, 'keydown', event => {
+          switch (event.code) {
+            case 'Enter':
+              setJoin(null);
+              break;
+          }
+        })
+        .effect();
+  }, [setJoin]);
 
   useEffect(() => {
     return hookEffectLine()

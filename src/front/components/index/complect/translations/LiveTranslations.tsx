@@ -6,7 +6,7 @@ import { useCurrentTranslationTextAppValue } from '../../../apps/+complect/trans
 import { useScreenTranslationWindows } from '../../../apps/+complect/translations/hooks/windows';
 import BibleTranslatesContextProvider from '../../../apps/bible/translates/TranslatesContext';
 import { useAuth, useIndexSchedules } from '../../molecules';
-import { IndexScheduleWidgetBibleTranslations } from './LiveBible';
+import { IndexScheduleWidgetBibleTranslationsControlled } from './LiveBible';
 import { ScheduleWidgetLiveCmTranslations } from './LiveCm';
 
 const checkIsNNull = (it: unknown) => it !== null;
@@ -51,7 +51,7 @@ export const IndexScheduleWidgetTranslations = () => {
     />
   ) : (
     <BibleTranslatesContextProvider>
-      <IndexScheduleWidgetBibleTranslations
+      <IndexScheduleWidgetBibleTranslationsControlled
         isCantTranslateLive={isCantTranslateLive}
         fio={auth.fio}
         subscribeData={subscribeData}

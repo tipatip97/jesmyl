@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useScreenTranslationWindows } from '../../../+complect/translations/hooks/windows';
 import { useAtomSet } from '../../../../../complect/atoms';
 import mylib from '../../../../../complect/my-lib/MyLib';
+import { useActualRef } from '../../../../../complect/useActualRef';
 import {
   useBibleTranslationAddressIndexesSetter,
   useBibleTranslationJoinAddress,
@@ -9,7 +11,7 @@ import {
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleTranslationSlideSyncContentSetter } from '../../hooks/slide-sync';
-import { BibleTranslationJoinAddress } from '../../model';
+import { BibleTranslationAddress, BibleTranslationJoinAddress } from '../../model';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
 import { useBibleShowTranslatesValue } from '../../translates/hooks';
 import { useBibleTranslationAddToPlan } from '../archive/plan/hooks/plan';
@@ -17,6 +19,7 @@ import { bibleVerseiAtom } from '../lists/atoms';
 
 export const useBibleScreenTranslationKeyListener = (versei: number, win?: Window) => {
   const [numberCollection, setNumberCollection] = useState('');
+  const wins = useScreenTranslationWindows();
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
@@ -29,6 +32,9 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
   const addToPlan = useBibleTranslationAddToPlan();
   const setAddress = useBibleTranslationAddressIndexesSetter();
   const setVersei = useAtomSet(bibleVerseiAtom);
+  const actualAddressRef = useActualRef<BibleTranslationAddress>(
+    joinAddress ?? [currentBooki, currentChapteri, versei],
+  );
 
   useEffect(() => {
     if (numberCollection === '') return;
@@ -42,13 +48,13 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
 
   useEffect(() => {
     return hookEffectLine()
-      .addEventDebouncedListener(100, win ?? window, 'keydown', event => {
+      .addEventListener(win ?? window, 'keydown', event => {
         switch (event.code) {
           case 'F5':
           case 'Enter':
           case 'NumpadEnter':
             event.preventDefault();
-            if (event.ctrlKey) addToPlan(joinAddress ?? [currentBooki, currentChapteri, versei]);
+            if (event.ctrlKey) addToPlan(actualAddressRef.current);
             else syncSlide();
             break;
           case 'KeyR':
@@ -57,7 +63,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         }
       })
       .effect();
-  }, [addToPlan, currentBooki, currentChapteri, joinAddress, syncSlide, versei, win]);
+  }, [actualAddressRef, addToPlan, syncSlide, win, wins]);
 
   useEffect(() => {
     return hookEffectLine()

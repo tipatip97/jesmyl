@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { useScreenTranslationWindows } from '../../../../+complect/translations/hooks/windows';
 import { useSetBibleAddressIndexes } from '../../../hooks/address/address';
 import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
 import {
@@ -22,6 +23,7 @@ export default function BibleSearchPanelSearchInput({ inputRef }: Props) {
   const [resultList] = useBibleTranslationSearchResultList();
   const resultSelected = useBibleTranslationSearchResultSelectedValue();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
+  const windows = useScreenTranslationWindows();
 
   useEffect(() => {
     if (resultSelected === null || resultList[resultSelected] === undefined) return;
@@ -40,8 +42,9 @@ export default function BibleSearchPanelSearchInput({ inputRef }: Props) {
             inputNode.blur();
             syncSlide();
             setResultSelected(null);
+            windows.forEach(win => win?.focus());
 
-            break;
+            return;
           case 'ArrowUp':
             if (resultSelected !== null && resultSelected > 0) setResultSelected(resultSelected - 1);
             break;
@@ -61,7 +64,7 @@ export default function BibleSearchPanelSearchInput({ inputRef }: Props) {
         event.preventDefault();
       })
       .effect();
-  }, [inputRef, resultList.length, resultSelected, setResultSelected, syncSlide]);
+  }, [inputRef, resultList.length, resultSelected, setResultSelected, syncSlide, windows]);
 
   return (
     <BibleSearchPanelInput

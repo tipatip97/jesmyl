@@ -5,8 +5,10 @@ import { CmLiveTranslationList } from './List';
 import { CmLiveTranslationSlide } from './Slide';
 
 interface Props {
-  texti: number;
-  comw: number;
+  texti?: number;
+  comw?: number;
+  text: string;
+  nextText: string;
   config: CmTranslationScreenConfig;
 }
 
@@ -22,21 +24,22 @@ export const CmLiveTranslationScreen = (props: Props) => {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  if (com === undefined) return;
-
-  const texts = com.getOrderedTexts(true, props.config.pushKind);
+  const texts = com?.getOrderedTexts(true, props.config.pushKind);
+  const text = props.texti == null || texts == null ? props.text : texts[props.texti] || props.text;
+  const nextText = props.texti == null || texts == null ? props.text : texts[props.texti + 1] || props.nextText;
 
   return window.innerWidth > window.innerHeight ? (
     <CmLiveTranslationSlide
       subUpdates={subUpdates}
+      text={text}
+      nextText={nextText}
       config={props.config}
-      texti={props.texti}
-      texts={texts}
     />
   ) : (
     <CmLiveTranslationList
       com={com}
-      texti={props.texti}
+      text={text}
+      nextText={nextText}
       config={props.config}
     />
   );

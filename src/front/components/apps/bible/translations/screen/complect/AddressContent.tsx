@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { BibleAddress } from '../../../address/Address';
-import { BibleTranslationAddress } from '../../../model';
+import { useBibleAddressTextContext } from '../../../texts/AddressContentContext';
 import { useBibleScreenTranslationFontSizeAddressAdapter } from '../../hooks/font-size-adapter/address-adapter';
 import { useGetBibleScreenTranslationAddressTextWrapperStyle } from '../../hooks/styles/address-text-wrapper-style';
 import { BibleTranslationScreenConfig } from '../../model';
@@ -10,16 +8,14 @@ interface Props {
   isPreview: boolean | und;
   bibleConfig: BibleTranslationScreenConfig | und;
   windowResizeUpdatesNum: number | und;
-  address?: BibleTranslationAddress;
-  addressText?: string;
 }
 
 export default function BibleTranslationScreenAddressContent(props: Props) {
   const addressTextWrapperStyle = useGetBibleScreenTranslationAddressTextWrapperStyle(props.bibleConfig);
-  const [addressContent, setAddressContent] = useState('');
+  const addressText = useBibleAddressTextContext();
 
   const [addressWrapperRef, addressContentRef] = useBibleScreenTranslationFontSizeAddressAdapter(
-    addressContent,
+    addressText,
     props.bibleConfig,
     props.windowResizeUpdatesNum,
   );
@@ -35,22 +31,7 @@ export default function BibleTranslationScreenAddressContent(props: Props) {
           className="nowrap"
           ref={addressContentRef}
         >
-          {props.addressText ?? (
-            <BibleAddress
-              address={props.address}
-              isShowCachable={!props.isPreview}
-            >
-              {(address, cachedAddress) => {
-                if (props.isPreview) {
-                  if (addressContent !== address) setTimeout(setAddressContent, 200, address);
-                  return address;
-                }
-
-                if (addressContent !== cachedAddress) setTimeout(setAddressContent, 200, cachedAddress);
-                return cachedAddress;
-              }}
-            </BibleAddress>
-          )}
+          {addressText}
         </div>
       </div>
     </>

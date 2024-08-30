@@ -6,7 +6,7 @@ import { ScreenTranslationConfig } from '../../model';
 export interface ScreenTranslationsFaceProps {
   configi: number;
   config: ScreenTranslationConfig;
-  putOnClick: (configi: number) => () => void;
+  putOnClick: (configi: number) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   putOnClose?: (configi: number) => CallbackStopper;
   className: string;
 }

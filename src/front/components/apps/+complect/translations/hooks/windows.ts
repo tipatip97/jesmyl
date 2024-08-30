@@ -1,26 +1,14 @@
-import { useCallback } from 'react';
-import { atom, useAtomInkrement, useAtomValue } from '../../../../../complect/atoms';
+import { atom, useAtomSet, useAtomValue } from '../../../../../complect/atoms';
 import { useScreenTranslationCurrentConfigi } from './configs';
 
-const windows: { readonly wins: readonly (Window | nil)[] } = { wins: [] };
-
-const numAtom = atom(0);
-
-export const useScreenTranslationWindows = () => {
-  useAtomValue(numAtom);
-  return windows.wins;
+export type TranslationWindow = {
+  win: Window;
+  focus: () => void;
+  blur: () => void;
 };
 
-export const useUpdateScreenTranslationWindows = () => {
-  const setUp = useAtomInkrement(numAtom);
+const windowsAtom = atom<(nil | TranslationWindow)[]>([]);
 
-  return useCallback(
-    (wins: (Window | nil)[]) => {
-      (windows as any).wins = wins;
-      setUp(1);
-    },
-    [setUp],
-  );
-};
-
-export const useScreenTranslationCurrentWindow = () => windows.wins[useScreenTranslationCurrentConfigi()];
+export const useScreenTranslationWindows = () => useAtomValue(windowsAtom);
+export const useUpdateScreenTranslationWindows = () => useAtomSet(windowsAtom);
+export const useScreenTranslationCurrentWindow = () => useAtomValue(windowsAtom)[useScreenTranslationCurrentConfigi()];

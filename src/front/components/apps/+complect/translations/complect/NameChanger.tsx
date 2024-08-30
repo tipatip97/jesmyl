@@ -19,8 +19,10 @@ export const ScreenTranslateConfigurationNameChanger = () => {
         onChange={event => {
           const title = event.target.value;
           updateConfig(currentConfigi, { title });
-          if (windows[currentConfigi] == null) return;
-          windows[currentConfigi]!.document.title = title;
+          const win = windows[currentConfigi];
+          if (win == null) return;
+
+          win.win.document.title = title;
         }}
       />
     </div>

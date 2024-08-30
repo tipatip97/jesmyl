@@ -1,4 +1,4 @@
-import { Molecule, useAtom, useAtomSet, useAtomValue } from '../../../../complect/atoms';
+import { Molecule, useAtomSet, useAtomValue } from '../../../../complect/atoms';
 import { ScreenTranslationConfig } from './model';
 import { TranslationViewApp } from './Translations.model';
 
@@ -22,6 +22,5 @@ export const complectMolecule = new Molecule<Model>(
 
 const screenTranslationConfigsAtom = complectMolecule.select(s => s.screenTranslationConfigs);
 
-export const useScreenTranslationConfigs = () => useAtom(screenTranslationConfigsAtom);
 export const useScreenTranslationConfigsSet = () => useAtomSet(screenTranslationConfigsAtom);
 export const useScreenTranslationConfigsValue = () => useAtomValue(screenTranslationConfigsAtom);

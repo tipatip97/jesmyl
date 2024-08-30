@@ -1,20 +1,29 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { SokiClientSubData } from '../../../../models';
-import { soki } from '../../../../soki';
 import { IndexSchWTranslationLiveDataValue } from '../../../index/Index.model';
+import { BibleTranslationScreenAddressTextContext, useBibleAddressTextContext } from '../texts/AddressContentContext';
 import { useBibleScreenTranslationConfigs } from './hooks/configs';
+import { BibleTranslationScreenTextContentContext, useBibleTextContentContext } from '../texts/TextContentContext';
 
 interface Props {
-  text: string;
-  addressText: string;
-  isCantTranslateLive: boolean;
-  subscribeData: SokiClientSubData;
   fio: string;
+  onSend: (liveData: IndexSchWTranslationLiveDataValue) => void;
 }
 
-export default function BibleLiveTranslation({ text, fio, subscribeData, addressText }: Props): JSX.Element {
+export default function BibleLiveTranslation(props: Props): JSX.Element {
+  return (
+    <BibleTranslationScreenTextContentContext isPreview={false}>
+      <BibleTranslationScreenAddressTextContext isPreview={false}>
+        <Live {...props} />
+      </BibleTranslationScreenAddressTextContext>
+    </BibleTranslationScreenTextContentContext>
+  );
+}
+
+const Live = ({ fio, onSend }: Props) => {
   const schw = +useParams().schw!;
+  const addressText = useBibleAddressTextContext();
+  const text = useBibleTextContentContext();
 
   const [config] = useBibleScreenTranslationConfigs();
 
@@ -31,9 +40,9 @@ export default function BibleLiveTranslation({ text, fio, subscribeData, address
         },
       };
 
-      soki.send({ liveData, subscribeData }, 'index');
+      onSend(liveData);
     }, 100);
-  }, [addressText, config, fio, schw, subscribeData, text]);
+  }, [addressText, config, fio, onSend, schw, text]);
 
   return <></>;
-}
+};

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
-import { BibleAddressSingle } from '../../address/Single';
+import { BibleAddressSingle } from '../../texts/BibleAddressSingle';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../hooks/address/verses';

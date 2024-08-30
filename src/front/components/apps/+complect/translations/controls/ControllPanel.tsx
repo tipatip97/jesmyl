@@ -6,9 +6,9 @@ import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icon
 import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
 import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
 import { useToggleIsScreenTranslationTextVisible } from '../atoms';
-import { useScreenTranslationConfigs } from '../hooks/configs';
 import { useWatchScreenTranslations } from '../hooks/watch-translation';
 import { useScreenTranslationCurrentWindow, useScreenTranslationWindows } from '../hooks/windows';
+import { useScreenTranslationConfigsValue } from '../molecules';
 import { ScreenTranslationControlPanelShowMdButton } from './ShowMdButton';
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const ScreenTranslationControlPanel = memo(function ControlPanel({ onNext, onPrev }: Props) {
-  const configs = useScreenTranslationConfigs();
+  const configs = useScreenTranslationConfigsValue();
   const windows = useScreenTranslationWindows();
   const currWin = useScreenTranslationCurrentWindow();
   const watchTranslation = useWatchScreenTranslations();
