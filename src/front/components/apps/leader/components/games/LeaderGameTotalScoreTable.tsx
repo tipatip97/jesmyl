@@ -61,7 +61,8 @@ export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImpo
       .map(([team, balance]) => {
         return (
           <div key={team.w}>
-            {team.name}:{' '}
+            {team.name}
+            {': '}
             {isSingleTimers ? <span className="color--3">{LeaderCleans.computeMinFromMs(balance)}</span> : balance}
           </div>
         );

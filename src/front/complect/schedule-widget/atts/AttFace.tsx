@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
-import { scheduleWidgetUserRights } from '../../../models';
+import { IconCancel01StrokeRounded } from '../../../complect/the-icon/icons/cancel-01';
 import { IconHelpCircleStrokeRounded } from '../../../complect/the-icon/icons/help-circle';
 import { IconLink02StrokeRounded } from '../../../complect/the-icon/icons/link-02';
+import { scheduleWidgetUserRights } from '../../../models';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import TheIcon from '../../the-icon/TheIcon';
-import { IconCancel01StrokeRounded } from '../../../complect/the-icon/icons/cancel-01';
 import { ScheduleWidgetAppAtt, ScheduleWidgetAttKey } from '../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetCustomAtt from './custom/CustomAtt';
@@ -74,8 +74,9 @@ export default function ScheduleWidgetAttFace({
             className="close-button"
             confirm={
               <>
-                Убрать {isLink ? 'ссылку вложения' : 'вложение'} <span className="color--7">{tatt?.title || '??'}</span>{' '}
-                из события {typeTitle}?
+                Убрать {isLink ? 'ссылку вложения' : 'вложение'} <span className="color--7">{tatt?.title || '??'}</span>
+                {' из события '}
+                {typeTitle}?
               </>
             }
           />

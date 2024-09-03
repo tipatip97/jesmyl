@@ -25,7 +25,7 @@ export default function AliasObserverContent() {
         <div className="color--7 margin-big-gap-b">
           {isMyTeam ? `Приготовься! Вы с ${speaker.name} в одной команде` : `Спикер - ${speaker.name}`}
         </div>
-      )}{' '}
+      )}
       {!state?.startTs && isIManager && (
         <SendButton
           title={speaker?.name + ' пропускает ход'}
@@ -34,7 +34,7 @@ export default function AliasObserverContent() {
       )}
       {(members && members.length < 3) || isMyTeam || !state?.startTs || (
         <div>
-          Текущее слово -{' '}
+          {'Текущее слово - '}
           {state.winfo?.word ?? (!state.arsenal && <span className="color--ko">Слов в арсенале не осталось...</span>)}
         </div>
       )}

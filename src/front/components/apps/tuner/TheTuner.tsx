@@ -49,7 +49,6 @@ export default function TheTuner() {
             <div className="notes">
               <div className="notes-list" />
               <div className="frequency">
-                {' '}
                 <span>Hz</span>
               </div>
             </div>

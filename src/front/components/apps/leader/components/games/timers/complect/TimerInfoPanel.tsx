@@ -98,7 +98,7 @@ export default function TimerInfoPanel({
           />
           {mode !== GameTimerMode.Messager && (
             <div>
-              Команд участвовало:{' '}
+              {'Команд участвовало: '}
               {game?.teams &&
                 (game.teams.length === membersInGame ? game.teams.length : `${membersInGame} / ${game.teams.length}`)}
             </div>

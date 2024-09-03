@@ -160,7 +160,7 @@ export default function HumanMaster({
                   />
                 </div>
                 <div>
-                  Пол:{' '}
+                  {'Пол: '}
                   <Dropdown
                     id={human.isMan}
                     items={sexItems}
