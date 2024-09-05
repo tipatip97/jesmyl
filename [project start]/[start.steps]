@@ -12,6 +12,8 @@ mkdir /var/www/jesmyl.ru/
 chmod 777 /var/www/jesmyl.ru/
 a2enmod rewrite # for .htaccess work
 
+fuser -k 4446/tcp 
+
 apt install npm
 npm install
 npm install -g typescript

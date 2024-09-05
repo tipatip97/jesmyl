@@ -18,15 +18,9 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
     client?: WebSocket,
     requestId?: string,
   ): Promise<ExecuteFeedbacks> {
-    if (
-      auth &&
-      auth.login === eventAuth?.login &&
-      (eventAuth?.tgId
-        ? eventAuth.passw === SokiAuther.makePassw(eventAuth.tgId, eventAuth.nick)
-        : await sokiAuther.isCorrectData(eventAuth))
-    ) {
-      const appConfig = filer.appConfigs[appName];
+    const appConfig = filer.appConfigs[appName];
 
+    const exec = async (accessedExecs: ExecutionDict[]) => {
       if (!appConfig) return { errorMessage: 'Неизвестное приложение', fixes: [], replacedExecs: [], rules: [] };
 
       const contents = filer.contents[appName];
@@ -35,7 +29,7 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
       const authLogin = eventAuth?.login ?? '';
       const bag: Record<string, unknown> = {};
 
-      return await Executer.execute(appConfig, realParents, execs, auth).then(async props => {
+      return await Executer.execute(appConfig, realParents, accessedExecs, auth).then(async props => {
         const lastUpdate = await filer.saveChanges(props.fixes, appName!);
         this.send(
           {
@@ -82,7 +76,27 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
 
         return props;
       });
+    };
+
+    if (
+      auth &&
+      auth.login === eventAuth?.login &&
+      (eventAuth?.tgId
+        ? eventAuth.passw === SokiAuther.makePassw(eventAuth.tgId, eventAuth.nick)
+        : await sokiAuther.isCorrectData(eventAuth))
+    ) {
+      return exec(execs);
     } else {
+      try {
+        const accessedExecs = execs.filter(exec => {
+          const rule = appConfig.actions.rules.find(rule => rule.action === exec.action);
+
+          return rule!.canBeUnauthorized;
+        });
+
+        if (accessedExecs?.length) return exec(accessedExecs);
+      } catch (error) {}
+
       if (client)
         this.send(
           {
@@ -92,14 +106,14 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
               list: [],
               lastUpdate: null,
             },
-            errorMessage: 'Не авторизован',
+            errorMessage: 'Не авторизован 91239',
             appName,
           },
           null,
           client,
         );
 
-      throw Error('Не авторизован');
+      throw Error('Не авторизован 3146');
     }
   }
 
