@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useCallback, useRef, useState } from 'react';
 import Portal from '../popups/[complect]/Portal';
 import { StyledModal, StyledModalScreen, StyledModalScreenWrapper } from './styled';
 
@@ -25,7 +25,7 @@ export default function useToast(
   topConfig?: ToastModalConfig,
 ): [ReactNode, (content?: ReactNode, config?: ToastModalConfig) => void] {
   const [config, setConfig] = useState(defaultUseModalConfig);
-  const [timer, setTimer] = useState<TimeOut>();
+  const timerRef = useRef<TimeOut>();
 
   return [
     config.isOpen && (
@@ -39,24 +39,14 @@ export default function useToast(
         </StyledModal>
       </Portal>
     ),
-    useCallback(
-      (content, config) => {
-        setConfig({
-          ...config,
-          isOpen: true,
-          content,
-        });
-        clearTimeout(timer);
-        setTimer(
-          setTimeout(
-            () => {
-              setConfig(prev => ({ ...prev, isOpen: false }));
-            },
-            config?.showTime ?? 3000,
-          ),
-        );
-      },
-      [timer],
-    ),
+    useCallback((content, config) => {
+      setConfig({
+        ...config,
+        isOpen: true,
+        content,
+      });
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setConfig(prev => ({ ...prev, isOpen: false })), config?.showTime ?? 3000);
+    }, []),
   ];
 }
