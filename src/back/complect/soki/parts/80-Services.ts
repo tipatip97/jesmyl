@@ -1,11 +1,13 @@
 import cmService from '../../../apps/cm/service';
 import { indexService } from '../../../apps/index/service';
+import wedService from '../../../apps/wed/service';
 import { SokiServerDoAction, SokiServerDoActionProps, SokiServicePack } from '../soki.model';
 import { SokiServerConnection } from './70-Connection';
 
 const services: SokiServicePack = {
   cm: cmService,
   index: indexService,
+  wed: wedService,
 };
 
 export class SokiServerServices extends SokiServerConnection implements SokiServerDoAction<'ServiceActions'> {

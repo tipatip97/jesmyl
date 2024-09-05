@@ -14,6 +14,7 @@ export type ExecutionMethod =
   | 'remove'
   | 'remove_each'
   | 'delete'
+  | `setOrPush:${string}`
   | 'other';
 
 export interface ExecutionDict<Value = any, Args = ExecutionArgs<any, Value>> {
@@ -117,6 +118,7 @@ export interface RealAccumulatableRule<
   setEachInParent?: ExecuterSetInEachValueItem;
   RRej?: boolean | number;
   $$vars: Record<`$$${string}`, number>;
+  canBeUnauthorized?: boolean;
 }
 
 export interface ShortRealRule<
@@ -143,6 +145,7 @@ export interface ExecutionReal<Value = unknown, Args = Record<string, unknown>, 
   setSystems?: ActionBoxSetSystems[];
   setItemSystems?: ActionBoxSetSystems[];
   timer?: ExecuteReplaceableField<ActionTimer>;
+  canBeUnauthorized?: boolean;
 }
 
 export type FixedAccesses = {

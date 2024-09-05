@@ -459,6 +459,7 @@ export class Executer {
             method: box.method!,
             fix: accRule.track?.[0],
             value: box.value,
+            canBeUnauthorized: box.canBeUnauthorized,
           });
 
           SMyLib.entries(execRule).forEach(([argName]) => {
@@ -1154,6 +1155,17 @@ export class Executer {
               });
             }
             break;
+        }
+
+        if (method.startsWith('setOrPush')) {
+          const key = method.slice(10);
+          if (key && smylib.isArr(target) && value != null && value[key] != null) {
+            const val = value[key];
+            const index = target.findIndex(item => item[key] === val);
+
+            if (index < 0) target.push(value);
+            else target[index] = value;
+          }
         }
 
         resolve(true);

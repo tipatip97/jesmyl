@@ -113,6 +113,8 @@ import { iconPackOfLinkForward } from './icons/link-forward';
 import { iconPackOfLinkSquare01 } from './icons/link-square-01';
 import { iconPackOfLoading03 } from './icons/loading-03';
 import { iconPackOfLocationUser03 } from './icons/location-user-03';
+import { iconPackOfMailRemove01 } from './icons/mail-remove-01';
+import { iconPackOfMailValidation01 } from './icons/mail-validation-01';
 import { iconPackOfMapsLocation02 } from './icons/maps-location-02';
 import { iconPackOfMapsOff } from './icons/maps-off';
 import { iconPackOfMenu01 } from './icons/menu-01';
@@ -177,6 +179,7 @@ import { iconPackOfUser } from './icons/user';
 import { iconPackOfUserAdd01 } from './icons/user-add-01';
 import { iconPackOfUserAdd02 } from './icons/user-add-02';
 import { iconPackOfUserBlock01 } from './icons/user-block-01';
+import { iconPackOfUserCircle02 } from './icons/user-circle-02';
 import { iconPackOfUserGroup } from './icons/user-group';
 import { iconPackOfUserQuestion01 } from './icons/user-question-01';
 import { iconPackOfUserRemove01 } from './icons/user-remove-01';
@@ -303,6 +306,8 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   LinkSquare01: iconPackOfLinkSquare01,
   Loading03: iconPackOfLoading03,
   LocationUser03: iconPackOfLocationUser03,
+  MailRemove01: iconPackOfMailRemove01,
+  MailValidation01: iconPackOfMailValidation01,
   MapsLocation02: iconPackOfMapsLocation02,
   MapsOff: iconPackOfMapsOff,
   Menu01: iconPackOfMenu01,
@@ -367,6 +372,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   UserAdd01: iconPackOfUserAdd01,
   UserAdd02: iconPackOfUserAdd02,
   UserBlock01: iconPackOfUserBlock01,
+  UserCircle02: iconPackOfUserCircle02,
   UserGroup: iconPackOfUserGroup,
   UserQuestion01: iconPackOfUserQuestion01,
   UserRemove01: iconPackOfUserRemove01,

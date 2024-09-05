@@ -13,6 +13,7 @@ export const routerMolecule = new Molecule<RouterState>(
     'index.data': defData,
     'leader.data': defData,
     'tuner.data': defData,
+    'wed.data': defData,
 
     admin: def,
     bible: def,
@@ -21,6 +22,7 @@ export const routerMolecule = new Molecule<RouterState>(
     index: def,
     leader: def,
     tuner: def,
+    wed: def,
   },
   'router',
 );

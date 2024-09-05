@@ -12,7 +12,7 @@ import { useAppFontFamilyAtom, useCurrentApp } from '../components/index/molecul
 import { applyFontFamilyFromMyFiles } from '../components/index/parts/actions/files/utils/set-font-family-effect';
 import { useIsReadyRouter } from '../components/router/atoms';
 import './App.scss';
-import AppRouter from './AppRouter';
+import { Outlet } from 'react-router-dom';
 
 listenThemeChanges();
 
@@ -85,7 +85,7 @@ export default function AppComponent() {
             onClick={() => switchFullscreen(false)}
           />
           <ABSOLUTE__FLOAT__POPUP onOpen={() => {}} />
-          <AppRouter />
+          <Outlet />
         </div>
         <KEYBOARD_FLASH {...keyboardProps} />
       </div>

@@ -17,7 +17,14 @@ declare const self: ServiceWorkerGlobalScope;
 
 precacheAndRoute(self.__WB_MANIFEST);
 
-registerRoute(({ url }) => !url.pathname.endsWith('.mp3'), new NetworkFirst());
+registerRoute(
+  ({ url }) =>
+    !url.pathname.endsWith('.mp3') &&
+    !url.pathname.endsWith('.png') &&
+    !url.pathname.endsWith('.svg') &&
+    !url.pathname.endsWith('.jpg'),
+  new NetworkFirst(),
+);
 
 // const CACHE_NAME = 'v1';
 

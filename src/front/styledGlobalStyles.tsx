@@ -46,6 +46,16 @@ const StyledGlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
   }
+
+  body:has(.wedding-proposition-page) {
+    
+  &,
+  * {
+    ::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  }
 `;
 
 export default StyledGlobalStyles;

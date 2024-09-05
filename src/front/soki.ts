@@ -23,6 +23,7 @@ import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-sha
 import { bibleMolecule } from './components/apps/bible/molecules';
 import { cmEditorMolecule } from './components/apps/cm/editor/molecules';
 import { cmMolecule } from './components/apps/cm/molecules';
+import { wedMolecule } from './components/apps/wedding/molecules';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
 import {
   getAuthValue,
@@ -66,6 +67,7 @@ export class SokiTrip {
     index: indexMolecule,
     cm: cmMolecule.with(cmEditorMolecule),
     bible: bibleMolecule,
+    wed: wedMolecule,
   };
 
   appName() {

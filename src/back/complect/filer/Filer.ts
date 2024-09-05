@@ -1,6 +1,7 @@
 import fs from 'fs';
 import admin from '../../apps/admin/config';
 import cm from '../../apps/cm/config';
+import wed from '../../apps/wed/config';
 import bible from '../../apps/bible/config';
 import gamer from '../../apps/gamer/config/gamer-config';
 import index from '../../apps/index/config';
@@ -28,6 +29,7 @@ export class Filer {
     leader,
     admin,
     bible,
+    wed,
   } as FilerAppStore;
 
   setWatcher(watcher: FilerWatcher) {

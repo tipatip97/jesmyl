@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './App.scss';
 import AppComponent from './AppComponent';
 import { lastVisitedRouteLsName } from './AppFooter';
+import AppRouter from './AppRouter';
 
 function App() {
   const [isNeedFirstNavigate, setIsNeedFirstNavigate] = useState(true);
@@ -10,7 +11,7 @@ function App() {
   return (
     <>
       {isNeedFirstNavigate && <FirstNaver onSet={setIsNeedFirstNavigate} />}
-      <AppComponent />
+      <AppRouter />
     </>
   );
 }

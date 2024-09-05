@@ -53,6 +53,7 @@ export interface ActionBox<Value = any>
   action?: string;
   timer?: ExecuteReplaceableField<ActionTimer>;
   method?: ExecutionMethod;
+  canBeUnauthorized?: boolean;
   value?: ExecuteReplaceableField<Value, {} | null>;
   args?: ExecutionArgs<string | any[]>;
 }
@@ -66,6 +67,7 @@ export interface ActionCRUD {
   uniqs?: string[];
   RRej?: boolean | number;
   shortTitle?: string;
+  canBeUnauthorized?: boolean;
   title?: string | ((args: Record<string, unknown>) => string);
 }
 

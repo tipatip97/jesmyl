@@ -5,29 +5,37 @@ import IndexMain from '../components/index/parts/main/IndexMain';
 import { soki } from '../soki';
 import { AppName } from './App.model';
 import { AppServiceActions, appServiceActionsRouteName as scheduleWidgetActionsRouteName } from './AppActions';
-import { routingApps } from './routing-apps';
 import { useInitSoki } from './useInitSoki';
+import { routingApps } from './routing-apps';
 
+const AppComponent = React.lazy(() => import('./AppComponent'));
+const Wedding = React.lazy(() => import('../components/apps/wedding/Wedding'));
 const ScheduleWidgetTgDayView = React.lazy(() => import('../complect/schedule-widget/general/TgDayView'));
 
 const AppRouter = memo(() => {
   return (
     <Routes>
-      <Route
-        path=":appName/*"
-        element={<Router />}
-      />
-      <Route
-        path="schedule-day/*"
-        element={
-          <Suspense>
-            <ScheduleWidgetTgDayView />
-          </Suspense>
-        }
-      />
+      <Route element={<AppComponent />}>
+        <Route
+          path=":appName/*"
+          element={<Router />}
+        />
+        <Route
+          path="schedule-day/*"
+          element={
+            <Suspense>
+              <ScheduleWidgetTgDayView />
+            </Suspense>
+          }
+        />
+      </Route>
       <Route
         path={scheduleWidgetActionsRouteName}
         element={<AppServiceActions />}
+      />
+      <Route
+        path="wedding/:weddn/*"
+        element={<Wedding />}
       />
       <Route
         path="*"

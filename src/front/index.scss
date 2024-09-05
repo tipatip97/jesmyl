@@ -653,6 +653,20 @@ textarea {
   font-family: main;
 }
 
+@font-face {
+  font-family: calypso;
+  src: url(./resource/Calypso-Regular.ttf);
+}
+
+@font-face {
+  font-family: candara;
+  src: url(./resource/candara.ttf);
+}
+
+@font-face {
+  font-family: cormorant;
+  src: url(./resource/CormorantInfant-Regular.ttf);
+}
 a {
   color: var(--text-color);
 }
