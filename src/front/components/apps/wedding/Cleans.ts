@@ -1,5 +1,6 @@
 import { WedGuest } from '../../../../back/apps/wed/model';
 import { makeRegExp } from '../../../../back/complect/makeRegExp';
+import environment from '../../../../back/environments/environment';
 import smylib from '../../../../back/shared/SMyLib';
 
 const miLine = 'afirjesmyl';
@@ -48,8 +49,28 @@ export class WedCleans {
     return smylib.isNum(mi) ? mi : undefined;
   };
 
-  static makeGuestFullName = (guest: WedGuest) =>
-    `${guest.ln || ''} ${guest.fn || ''}${guest.wn ? ` и ${guest.wn}` : ''}`.trim();
+  static makePropositionUrl = (person: WedGuest, weddn: string) =>
+    `${environment.host}/wedding/${weddn}/${this.secret(person)}`;
+
+  static makeGuestFullName = (guest: WedGuest) => `${guest.ln || ''} ${this.makeGuestName(guest)}`.trim();
+  static makeGuestName = (guest: WedGuest) => `${guest.fn || ''}${guest.wn ? ` и ${guest.wn}` : ''}`;
+
+  static makePropositionMessage = (guest: WedGuest, weddn: string) => {
+    const nl = '\n';
+    const hello = ['Привет', 'Приветствую'][guest.c];
+    const you = ['тебя', 'вас'][guest.c];
+    const wYou = ['тобой', 'вами'][guest.c];
+    const conf = ['подтверди', 'подтвердите'][guest.c];
+
+    return (
+      `${hello}! ${WedCleans.makeGuestName(guest)},` +
+      ` приглашаем ${you} на нашу свадьбу, будем рады разделить это событие вместе с ${wYou}! 🤍${nl}` +
+      `Пожалуйста, ${conf} свое участие до 26 сентября.` +
+      `${nl}  Подробная информация на сайте${nl}` +
+      `  👇👇👇${nl}` +
+      `${WedCleans.makePropositionUrl(guest, weddn)}${nl}${nl}Ждем встречи!`
+    );
+  };
 
   static miInText = (mi: number | und) =>
     (mi == null ? '' : `${(mi + 111) * 138}`).replace(makeRegExp('/\\d/g'), all => miLine[all as never]);

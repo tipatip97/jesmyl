@@ -52,7 +52,7 @@ const config: FilerAppConfig = {
         '/g': {
           action: 'setPropositionSentMark',
           method: 'set',
-          title: 'Для гостя пригласительная ссылка $value!{{не}} отправлена',
+          title: 'Для гостя $guestName; пригласительная ссылка $value!{{не}} отправлена',
         },
       },
     },

@@ -10,9 +10,12 @@ import {
 } from '../../../../../back/apps/wed/model';
 import { useInitSoki } from '../../../../app/useInitSoki';
 import { useAtomValue } from '../../../../complect/atoms';
+import CopyTextButton from '../../../../complect/CopyTextButton';
 import Dropdown from '../../../../complect/dropdown/Dropdown';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconPlusSignCircleStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign-circle';
+import { useAuth } from '../../../index/molecules';
+import { WedCleans } from '../Cleans';
 import { GuestConversation } from '../guest/complect/GuestConversation';
 import { WedGuestEditorModal } from '../guest/GuestEditorModal';
 import { WedGuestFace } from '../guest/GuestFace';
@@ -25,6 +28,7 @@ enum Show {
   None,
   Comment,
   Conversation,
+  Message,
 }
 
 const showItems = [
@@ -40,6 +44,10 @@ const showItems = [
     id: Show.Conversation,
     title: 'Обращения',
   },
+  {
+    id: Show.Message,
+    title: 'Сообщения',
+  },
 ];
 
 export default function WeddingAdmin() {
@@ -52,13 +60,7 @@ export default function WeddingAdmin() {
   const [isOpenGuestListLoader, setIsOpenGuestListLoader] = useState(false);
   const [term, setTerm] = useState('');
   const [showMode, setShowMode] = useState(Show.None);
-
-  const onEditGuest = (guest: WedGuest) => {
-    return () => {
-      setIsOpenGuestEditor(true);
-      setGuest(guest);
-    };
-  };
+  const auth = useAuth();
 
   const guestListAtomValue = useAtomValue(wedMolecule.select(s => s.guests));
 
@@ -89,7 +91,7 @@ export default function WeddingAdmin() {
     setGuest(editedGuest);
   }, [guest.mi, guests]);
 
-  if (!weddn) return null;
+  if (!weddn || !auth.level) return null;
 
   const resolvedGuests: WedGuest[] = [];
   const rejectedGuests: WedGuest[] = [];
@@ -115,13 +117,42 @@ export default function WeddingAdmin() {
   }
 
   const makeGuest = (guest: WedGuest) => {
+    let node = null;
+
+    switch (showMode) {
+      case Show.Comment:
+        node = <pre>{guest.t}</pre>;
+        break;
+      case Show.Message: {
+        if (guest.g) break;
+
+        const message = WedCleans.makePropositionMessage(guest, weddn);
+
+        node = (
+          <div className="border--7">
+            <CopyTextButton
+              text={message}
+              description={<MessageText>{message}</MessageText>}
+            />
+          </div>
+        );
+        break;
+      }
+      case Show.Conversation:
+        node = <GuestConversation guest={guest} />;
+        break;
+    }
+
     return (
       <div key={guest.mi}>
         <WedGuestFace
           guest={guest}
-          onClick={onEditGuest(guest)}
+          onClick={() => {
+            setIsOpenGuestEditor(true);
+            setGuest(guest);
+          }}
         />
-        {!showMode || (showMode === Show.Conversation ? <GuestConversation guest={guest} /> : <pre>{guest.t}</pre>)}
+        {node}
       </div>
     );
   };
@@ -190,4 +221,8 @@ export default function WeddingAdmin() {
 const Content = styled.div`
   width: 100vw;
   height: 100dvh;
+`;
+
+const MessageText = styled.div`
+  white-space: pre-line;
 `;

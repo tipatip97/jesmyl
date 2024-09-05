@@ -69,35 +69,32 @@ export default function WeddingProposition() {
       return;
     }
 
-    (async () => {
-      try {
-        const person = await serviceMaster('wed')<WedGuest>('getGuest', guestMi);
-        if (person?.mi == null) {
-          toast('Ссылка не действительна', { mood: 'ko', showTime: 20000 });
-          return;
-        }
+    return hookEffectLine()
+      .setTimeout(async () => {
+        try {
+          const person = await serviceMaster('wed')<WedGuest>('getGuest', guestMi);
+          if (person?.mi == null) {
+            toast('Ссылка не действительна', { mood: 'ko', showTime: 20000 });
+            return;
+          }
 
-        setGuest(person);
-      } catch (error) {
-        toast('' + error, { mood: 'ko' });
-      }
-    })();
-  }, [personStr]);
+          setGuest(person);
+        } catch (error) {
+          toast('' + error, { mood: 'ko' });
+        }
+      }, 100)
+      .effect();
+  }, [personStr, toast]);
 
   if (!personStr || !weddn) return null;
 
   return (
     <>
-      {(isLoading || guest === null) && (
-        <div className="absolute flex center pos-all">
-          <LogoImg file="DO" />
-        </div>
-      )}
       <StyledContent className={'wedding-proposition-page' + (isLoading || guest === null ? ' loading' : '')}>
         {toastNode}
         <StyledStock className="flex column flex-gap">
           <MainImg
-            file="main2"
+            file="main3"
             onLoad={() => setTimeout(setIsLoading, 500, false)}
           />
           <RotBox className="flex column">
@@ -122,25 +119,29 @@ export default function WeddingProposition() {
           </RotBox>
 
           <InStockImg file="sch" />
-          <Vizitka className="flex center column flex-gap">
-            <Img
-              file="vizText1"
-              className="vizText"
-            />
-            <a
-              href="tel:+79789466429"
-              className="vizPhone pointer"
-            >
-              <Img file="vizPhone" />
-            </a>
-            <a
-              href="https://t.me/EvdDenis"
-              className="vizTg pointer"
-            >
-              <Img file="vizTg" />
-            </a>
-          </Vizitka>
-          <ColorImg file="color1" />
+          <DressWrapper className="relative">
+            <div className="full-width flex center">
+              <Vizitka className="flex center column flex-gap">
+                <Img
+                  file="vizText1"
+                  className="vizText"
+                />
+                <a
+                  href="tel:+79789466429"
+                  className="vizPhone pointer"
+                >
+                  <Img file="vizPhone" />
+                </a>
+                <a
+                  href="https://t.me/EvdDenis"
+                  className="vizTg pointer"
+                >
+                  <Img file="vizTg" />
+                </a>
+              </Vizitka>
+            </div>
+            <ColorImg file="color2" />
+          </DressWrapper>
           <ConfirmTextImg file="confirm2" />
         </StyledStock>
         <ConfirmBtnWrapper
@@ -213,28 +214,20 @@ export default function WeddingProposition() {
         </SubFooter>
 
         <WithLoveImg
-          file="withLove1"
+          file="withLove2"
           className="flex"
         />
       </StyledContent>
+      {(isLoading || guest === null) && (
+        <div className="absolute flex center pos-all">
+          <LogoImg file="DO" />
+        </div>
+      )}
     </>
   );
 }
 
-const StyledImg = styled.img`
-  animation: fadeIn 0.2s;
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      height: 0%;
-    }
-    to {
-      opacity: 1;
-      height: 100%;
-    }
-  }
-`;
+const StyledImg = styled.img``;
 
 const Img = (props: { file: string } & HTMLAttributes<HTMLOrSVGElement>) => (
   <StyledImg
@@ -295,12 +288,16 @@ const LogoImg = styled(Img)`
   }
 `;
 
+const DressWrapper = styled.div`
+  margin-top: 50px;
+`;
+
 const Vizitka = styled.div`
+  position: absolute;
   background-color: #cdb8a4;
-  margin-top: 30px;
   padding: clamp(10px, 7vw, 25px);
   border-radius: clamp(20px, 10vw, 30px);
-  margin-bottom: clamp(-146px, -31vw, -128px);
+  top: -30px;
   z-index: 2;
 
   ${contentWidths}
@@ -377,7 +374,7 @@ const ConfButtonsWrapper = styled.div`
 
 const SubFooter = styled.div`
   position: relative;
-  border-radius: clamp(40px, 6vw, 73px);
+  border-radius: clamp(40px, 6vw, 53px);
   padding-top: 120px;
   background-color: #eaddcd;
   margin-bottom: -100px;
@@ -465,6 +462,19 @@ const StyledContent = styled.div`
   font-family: cormorant;
   opacity: 1;
   transition: opacity 2s;
+
+  animation: fadeIn 2s;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      height: 0%;
+    }
+    to {
+      opacity: 1;
+      height: 100%;
+    }
+  }
 
   &.loading {
     display: none;

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { WedGuest, WedGuestConversation, WedGuestSex } from '../../../../../back/apps/wed/model';
-import environment from '../../../../../back/environments/environment';
 import CopyTextButton from '../../../../complect/CopyTextButton';
 import Dropdown from '../../../../complect/dropdown/Dropdown';
 import Modal from '../../../../complect/modal/Modal/Modal';
@@ -16,8 +15,6 @@ import { IconUserRemove02StrokeRounded } from '../../../../complect/the-icon/ico
 import { WedCleans } from '../Cleans';
 import { wedExer } from '../exer';
 import { WedGuestPropositionSentButton } from './complect/SentButton';
-
-const makeUrl = (person: WedGuest, weddn: string) => `${environment.host}/wedding/${weddn}/${WedCleans.secret(person)}`;
 
 const sexItems = [
   {
@@ -54,7 +51,7 @@ export const WedGuestEditorModal = ({ guest, setIsOpen, setGuest }: Props) => {
 
   if (!weddn) return null;
 
-  const url = makeUrl(guest, weddn);
+  const propositionMessage = WedCleans.makePropositionMessage(guest, weddn);
 
   return (
     <Modal onClose={setIsOpen}>
@@ -109,8 +106,8 @@ export const WedGuestEditorModal = ({ guest, setIsOpen, setGuest }: Props) => {
           }}
         />
         <CopyTextButton
-          text={url}
-          description={url}
+          text={propositionMessage}
+          description={propositionMessage.slice(0, 70) + '...'}
         />
       </ModalBody>
       <ModalFooter>

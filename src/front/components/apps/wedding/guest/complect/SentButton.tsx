@@ -2,6 +2,7 @@ import { WedGuest, WedGuestPropositionSent } from '../../../../../../back/apps/w
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
 import { IconMailRemove01StrokeRounded } from '../../../../../complect/the-icon/icons/mail-remove-01';
 import { IconMailValidation01StrokeRounded } from '../../../../../complect/the-icon/icons/mail-validation-01';
+import { WedCleans } from '../../Cleans';
 import { wedExer } from '../../exer';
 
 export const WedGuestPropositionSentButton = ({
@@ -15,13 +16,13 @@ export const WedGuestPropositionSentButton = ({
     return (
       <EvaSendButton
         Icon={IconMailValidation01StrokeRounded}
-        className="color--ok margin-gap-v flex-max"
+        className="color--ok margin-gap-v"
         confirm={
           <>
             Удалить пометку "отправлено" для гостя <span className="color--7">{guest.fn}</span>?
           </>
         }
-        postfix="Ссылка отправлена"
+        postfix="Пригласительное отправлено"
         onSend={() =>
           wedExer.send([
             {
@@ -29,6 +30,7 @@ export const WedGuestPropositionSentButton = ({
               args: {
                 guestMi: guest.mi,
                 value: WedGuestPropositionSent.No,
+                guestName: WedCleans.makeGuestFullName(guest),
               },
             },
           ])
@@ -40,8 +42,8 @@ export const WedGuestPropositionSentButton = ({
   return (
     <EvaSendButton
       Icon={IconMailRemove01StrokeRounded}
-      className="color--ko margin-gap-v flex-max"
-      postfix="Ссылка не была отправлена"
+      className="color--ko margin-gap-v"
+      postfix="Пригласительное не было отправлено"
       onSend={() =>
         wedExer.send([
           {
@@ -49,6 +51,7 @@ export const WedGuestPropositionSentButton = ({
             args: {
               guestMi: guest.mi,
               value: WedGuestPropositionSent.Yes,
+              guestName: WedCleans.makeGuestFullName(guest),
             },
           },
         ])
