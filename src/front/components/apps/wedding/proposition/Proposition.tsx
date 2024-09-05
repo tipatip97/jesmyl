@@ -386,7 +386,7 @@ const SubFooter = styled.div`
 const NameText = styled.div`
   font-size: clamp(12px, 7vw, 40px);
   text-align: center;
-  margin-bottom: var(--size);
+  margin-bottom: 20px;
   font-family: calypso;
 `;
 
@@ -414,7 +414,8 @@ const RotBoxContent = styled.div`
 
   > :not(.address) {
     display: block;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     ${contentWidths}
   }
 `;
