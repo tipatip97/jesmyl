@@ -6,14 +6,19 @@ const onUpdates: EventerValueListeners<0> = new Set();
 const idb = indexedDB.open('jesmyl', 662);
 idb.onupgradeneeded = () => Eventer.invokeValue(onUpdates, 0);
 
+export const lsJStorageLSSwitcherName = 'isStorageNeedUseLocalStorage';
+
 export class JStorage<Scope> {
-  private nonCachable: (keyof Scope)[] = [] as never;
   private listens: Partial<Record<keyof Scope, EventerValueListeners<Scope[keyof Scope]>>> = {};
 
   transaction: (mode: IDBTransactionMode) => IDBObjectStore;
   readyState: () => IDBRequestReadyState;
 
   properties: Record<keyof Scope, any> = {} as never;
+
+  setLSGetter: () => void;
+  setLSSetter: () => void;
+  setLSRemover: () => void;
 
   constructor(name: string) {
     Eventer.listenValue(onUpdates, () => {
@@ -25,6 +30,56 @@ export class JStorage<Scope> {
 
     this.transaction = mode => idb.result.transaction(name, mode).objectStore(name);
     this.readyState = () => idb.readyState;
+
+    this.setLSGetter = () => {
+      this.get = key => {
+        try {
+          const str = localStorage.getItem(`[${name}]:${key as never}`);
+
+          if (str === null) return;
+
+          return JSON.parse(str);
+        } catch (error) {}
+      };
+    };
+
+    this.setLSSetter = () => {
+      this.setValue = (key, value) => {
+        try {
+          localStorage.setItem(`[${name}]:${key as never}`, JSON.stringify(value));
+        } catch (error) {}
+      };
+    };
+
+    this.setLSRemover = () => {
+      this.rem = key => {
+        try {
+          localStorage.removeItem(`[${name}]:${key as never}`);
+        } catch (error) {}
+      };
+    };
+
+    if (localStorage[lsJStorageLSSwitcherName]) {
+      this.setLSGetter();
+      this.setLSSetter();
+      this.setLSRemover();
+    } else {
+      let countDown = 100;
+
+      const check = () => {
+        try {
+          this.transaction('readwrite').put('', '');
+        } catch (error) {
+          if (countDown-- > 0) setTimeout(check, 3);
+          else {
+            localStorage[lsJStorageLSSwitcherName] = 'true';
+            window.location.reload();
+          }
+        }
+      };
+
+      check();
+    }
   }
 
   refreshAreas<Key extends keyof Scope>(areas: Key[], contents: Record<Key, unknown>) {
@@ -81,6 +136,21 @@ export class JStorage<Scope> {
     return Eventer.listenValue(this.listens[key]!, callback as never);
   }
 
+  setValue<Key extends keyof Scope>(key: Key, val: Scope[Key]): void {
+    const set = () => {
+      if (this.readyState() !== 'done') {
+        setTimeout(set);
+        return;
+      }
+
+      try {
+        this.transaction('readwrite').put(val, key as string);
+      } catch (error) {}
+    };
+
+    set();
+  }
+
   set<Key extends keyof Scope>(key: Key, val: Scope[Key] | ((prevValue: Scope[Key]) => Scope[Key])): void {
     if (val === null) {
       this.rem(key);
@@ -97,16 +167,7 @@ export class JStorage<Scope> {
     if (this.listens[key] !== undefined) Eventer.invokeValue(this.listens[key]!, value);
     this.properties[key] = value;
 
-    if (this.nonCachable.includes(key)) return;
-
-    if (this.readyState() !== 'done') {
-      setTimeout(() => this.set(key, val));
-      return;
-    }
-
-    try {
-      this.transaction('readwrite').put(value, key as string);
-    } catch (error) {}
+    this.setValue(key, value);
   }
 
   rem(key: keyof Scope) {
