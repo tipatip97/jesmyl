@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { BibleTranslationScreenTextContentContext } from '../texts/TextContentContext';
-import { BibleTranslationScreenConfig } from './model';
+import { IndexSchWTranslationLiveDataValue } from '../../../index/Index.model';
+import { BibleTranslationScreenKnownTextsContext } from '../texts/AddressContentContext';
 import { BibleTranslationScreen } from './screen/BibleTranslationScreen';
 
-interface Props {
-  text: string;
-  config: BibleTranslationScreenConfig;
-}
-
-export default function BibleTranslationSlide({ config, text }: Props): JSX.Element {
+export default function BibleTranslationSlide({
+  config,
+  text,
+  addressText,
+}: Required<IndexSchWTranslationLiveDataValue>['bible']): JSX.Element {
   const [updates, setUpdates] = useState(0);
 
   useEffect(() => {
@@ -22,16 +21,16 @@ export default function BibleTranslationSlide({ config, text }: Props): JSX.Elem
 
   return (
     <Container className="flex center full-size">
-      <BibleTranslationScreenTextContentContext
-        isPreview={false}
+      <BibleTranslationScreenKnownTextsContext
         text={text}
+        addressText={addressText}
       >
         <BibleTranslationScreen
           isVisible
           bibleConfig={config}
           windowResizeUpdatesNum={updates}
         />
-      </BibleTranslationScreenTextContentContext>
+      </BibleTranslationScreenKnownTextsContext>
     </Container>
   );
 }

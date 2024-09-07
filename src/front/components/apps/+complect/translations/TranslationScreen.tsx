@@ -1,5 +1,4 @@
-import { BibleTranslationScreenAddressTextContext } from '../../bible/texts/AddressContentContext';
-import { BibleTranslationScreenTextContentContext } from '../../bible/texts/TextContentContext';
+import { BibleTranslationScreenTextsContext } from '../../bible/texts/AddressContentContext';
 import BibleTranslatesContextProvider from '../../bible/translates/TranslatesContext';
 import BibleTranslationCurrentScreen from '../../bible/translations/screen/BibleTranslationCurrentScreen';
 import { CmTranslationCurrentScreen } from '../../cm/translation/complect/controlled/screen/CmTranslationCurrentScreen';
@@ -18,11 +17,9 @@ export const TranslationScreen = (props: TranslationScreenProps) => {
         <CmTranslationCurrentScreen {...props} />
       ) : (
         <BibleTranslatesContextProvider>
-          <BibleTranslationScreenTextContentContext isPreview={props.isPreview}>
-            <BibleTranslationScreenAddressTextContext isPreview={props.isPreview}>
-              <BibleTranslationCurrentScreen {...props} />
-            </BibleTranslationScreenAddressTextContext>
-          </BibleTranslationScreenTextContentContext>
+          <BibleTranslationScreenTextsContext isPreview={props.isPreview}>
+            <BibleTranslationCurrentScreen {...props} />
+          </BibleTranslationScreenTextsContext>
         </BibleTranslatesContextProvider>
       )}
     </TranslationTextScreen>

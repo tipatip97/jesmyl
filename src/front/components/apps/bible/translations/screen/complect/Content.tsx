@@ -4,7 +4,7 @@ import { useBibleScreenTranslationFontSizeScreenAdapter } from '../../hooks/font
 import { useGetBibleScreenTranslationScreenStyle } from '../../hooks/styles/screen-style';
 import { BibleTranslationScreenConfig } from '../../model';
 import './Content.scss';
-import { useBibleTextContentContext } from '../../../texts/TextContentContext';
+import { useBibleTextContentContext } from '../../../texts/AddressContentContext';
 
 interface Props {
   screeni: number | und;
