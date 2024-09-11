@@ -17,7 +17,7 @@ import {
 import environment from '../back/environments/environment';
 import { AppName } from './app/App.model';
 import { Molecule } from './complect/atoms';
-import { JStorage } from './complect/JStorage';
+import { JStorage, lsJStorageLSSwitcherName } from './complect/JStorage';
 import mylib from './complect/my-lib/MyLib';
 import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-shareds';
 import { bibleMolecule } from './components/apps/bible/molecules';
@@ -274,6 +274,7 @@ export class SokiTrip {
             version: version.num,
             browser,
             urls: this.urls.length ? this.urls : [this.getCurrentUrl()],
+            isUseLS: localStorage[lsJStorageLSSwitcherName] ? true : undefined,
           };
 
           if (body.subscribe) this.subscriptions[body.subscribe] = body;

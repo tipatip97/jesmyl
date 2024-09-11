@@ -1,30 +1,26 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { LocalSokiAuth } from '../../../../models';
 
 export const IndexProfileInfo = ({ auth }: { auth: LocalSokiAuth }) => {
-  const [isHideAva, setIsHideAva] = useState(false);
+  const [isShowAva, setIsShowAva] = useState(true);
 
   return (
     <div className="flex center flex-gap">
       <Name className="ellipsis">{auth.fio}</Name>
-      {isHideAva && // todo: remove this when tg avatar can be displayed
-        auth.tgAva &&
-        (isHideAva ? (
-          <AvaAlt />
-        ) : (
-          <Ava
-            src={auth.tgAva}
-            onError={() => setIsHideAva(true)}
-          />
-        ))}
+      {isShowAva && auth.tgAva && (
+        <Ava
+          src={auth.tgAva}
+          onError={() => setIsShowAva(false)}
+        />
+      )}
     </div>
   );
 };
 
 const size = '2em';
 
-const styles = css`
+const Ava = styled.img`
   height: ${size};
   width: ${size};
 
@@ -38,16 +34,6 @@ const styles = css`
   border: 0;
   display: inline-block;
   vertical-align: middle;
-`;
-
-const AvaAlt = styled.div`
-  ${styles}
-
-  background-color: var(--color--2);
-`;
-
-const Ava = styled.img`
-  ${styles}
 `;
 
 const Name = styled.div``;
