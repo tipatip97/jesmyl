@@ -52,7 +52,7 @@ const makeNextDayFirstEventNode = (
 };
 
 interface Props {
-  observeSchw?: number;
+  observeSchw?: number | NaN;
   schedule?: IScheduleWidget;
   isJustShowAllDay?: boolean;
 }
@@ -104,7 +104,7 @@ export default function ScheduleWidgetAlarmContent({ observeSchw, schedule, isJu
       let fullValue: FullContentValue | und;
       let schWr;
 
-      if (observeSchw !== undefined) {
+      if (observeSchw !== undefined && !mylib.isNaN(observeSchw)) {
         schWr = scheduleList.find(wr => wr.sch.w === observeSchw);
         if (schWr === undefined) node = <span className="color--ko">Мероприятие не найдено</span>;
         else if (schWr.days.length === 0)
@@ -343,7 +343,7 @@ export default function ScheduleWidgetAlarmContent({ observeSchw, schedule, isJu
       if (!fullValue) setIsFullOpen(false);
 
       return [node, fullValue, schWr];
-    }, [now, scheduleList, observeSchw]);
+    }, [observeSchw, scheduleList, isJustShowAllDay, now]);
 
   const [fullNode] = useFullContent(fullValue, isFullOpen ? 'open' : null, setIsFullOpen);
 
