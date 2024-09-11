@@ -1,6 +1,5 @@
 import { WedGuest } from '../../../../back/apps/wed/model';
 import { makeRegExp } from '../../../../back/complect/makeRegExp';
-import environment from '../../../../back/environments/environment';
 import smylib from '../../../../back/shared/SMyLib';
 
 const miLine = 'afirjesmyl';
@@ -50,7 +49,7 @@ export class WedCleans {
   };
 
   static makePropositionUrl = (person: WedGuest, weddn: string) =>
-    `${environment.host}/wedding/${weddn}/${this.secret(person)}`;
+    `${window.location.origin}/wedding/${weddn}/${this.secret(person)}`;
 
   static makeGuestFullName = (guest: WedGuest) => `${guest.ln || ''} ${this.makeGuestName(guest)}`.trim();
   static makeGuestName = (guest: WedGuest) => `${guest.fn || ''}${guest.wn ? ` и ${guest.wn}` : ''}`;

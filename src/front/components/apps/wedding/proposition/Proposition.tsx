@@ -13,7 +13,7 @@ const weddingText = Array(10)
   .map((_, key) => <span key={key}>СВАДЬБА</span>);
 
 const myAnswerSetter = (
-  guest: WedGuest | nil,
+  guest: WedGuest,
   will: WedGuestWillBe,
   setGuest: (guest: WedGuest) => void,
   setIsAnswerLoading: (is: boolean) => void,
@@ -90,7 +90,7 @@ export default function WeddingProposition() {
 
   return (
     <>
-      <StyledContent className={'wedding-proposition-page' + (isLoading || guest === null ? ' loading' : '')}>
+      <StyledContent className={'wedding-proposition-page' + (isLoading ? ' loading' : '')}>
         {toastNode}
         <StyledStock className="flex column flex-gap">
           <MainImg
@@ -99,11 +99,10 @@ export default function WeddingProposition() {
           />
           <RotBox className="flex column">
             <RotBoxContent>
-              {guest && (
-                <NameText>
-                  <GuestConversation guest={guest} />
-                </NameText>
-              )}
+              <NameText>
+                <GuestConversation guest={guest} />
+              </NameText>
+
               <InStockImg file="glad2" />
               <a
                 href="https://yandex.ru/maps/-/CDwvFM7x"
@@ -144,67 +143,71 @@ export default function WeddingProposition() {
           </DressWrapper>
           <ConfirmTextImg file="confirm2" />
         </StyledStock>
-        <ConfirmBtnWrapper
-          onClick={() => regRef.current?.scrollIntoView({ behavior: 'smooth' })}
-          className="flex center"
-        >
-          <InStockImg
-            file="confirmBtn1"
-            className="pointer"
-          />
-        </ConfirmBtnWrapper>
+        {guest && (
+          <ConfirmBtnWrapper
+            onClick={() => regRef.current?.scrollIntoView({ behavior: 'smooth' })}
+            className="flex center"
+          >
+            <InStockImg
+              file="confirmBtn1"
+              className="pointer"
+            />
+          </ConfirmBtnWrapper>
+        )}
         <SubFooter
           className="flex column"
           ref={regRef}
         >
-          <div className={isAnswerLoading ? ' disabled' : ''}>
-            <div className="margin-big-gap-b">
-              <div
-                className="pointer"
-                onClick={() => guest && setGuest({ ...guest, w: undefined })}
-              >
-                <InStockImg
-                  file="resolved"
-                  className={guest?.w !== WedGuestWillBe.Yes ? 'display-none' : undefined}
-                />
-                <InStockImg
-                  file="rejected"
-                  className={guest?.w !== WedGuestWillBe.No ? 'display-none' : undefined}
-                />
-              </div>
-
-              <ConfButtonsWrapper className={guest?.w != null ? 'display-none' : undefined}>
-                <InStockImg file="confButtons" />
+          {guest && (
+            <div className={isAnswerLoading ? ' disabled' : ''}>
+              <div className="margin-big-gap-b">
                 <div
-                  className="will"
-                  onClick={myAnswerSetter(guest, WedGuestWillBe.Yes, setGuest, setIsAnswerLoading)}
-                />
-                <div
-                  className="no"
-                  onClick={myAnswerSetter(guest, WedGuestWillBe.No, setGuest, setIsAnswerLoading)}
-                />
-              </ConfButtonsWrapper>
-            </div>
-            {guest && (
-              <div className="relative over-auto">
-                {guest.w === WedGuestWillBe.Yes && guest.t && (
-                  <CommentInfo className={'absolute' + (guest.w == null ? ' hidden' : '')}>
-                    <h4>Информация о детях / комментарий:</h4>
-                    <pre className="max-full-size">{guest.t}</pre>
-                  </CommentInfo>
-                )}
-                <CommentInputWrapper className={guest.w == null ? undefined : 'hidden'}>
-                  <FullWidthImg file="childrenWithMe" />
-                  <CommentInput
-                    value={guest.t}
-                    onChange={event => {
-                      setGuest({ ...guest, t: event.currentTarget.value || undefined });
-                    }}
+                  className="pointer"
+                  onClick={() => guest && setGuest({ ...guest, w: undefined })}
+                >
+                  <InStockImg
+                    file="resolved"
+                    className={guest.w !== WedGuestWillBe.Yes ? 'display-none' : undefined}
                   />
-                </CommentInputWrapper>
+                  <InStockImg
+                    file="rejected"
+                    className={guest.w !== WedGuestWillBe.No ? 'display-none' : undefined}
+                  />
+                </div>
+
+                <ConfButtonsWrapper className={guest.w != null ? 'display-none' : undefined}>
+                  <InStockImg file="confButtons" />
+                  <div
+                    className="will"
+                    onClick={myAnswerSetter(guest, WedGuestWillBe.Yes, setGuest, setIsAnswerLoading)}
+                  />
+                  <div
+                    className="no"
+                    onClick={myAnswerSetter(guest, WedGuestWillBe.No, setGuest, setIsAnswerLoading)}
+                  />
+                </ConfButtonsWrapper>
               </div>
-            )}
-          </div>
+              {guest && (
+                <div className="relative over-auto">
+                  {guest.w === WedGuestWillBe.Yes && guest.t && (
+                    <CommentInfo className={'absolute' + (guest.w == null ? ' hidden' : '')}>
+                      <h4>Информация о детях / комментарий:</h4>
+                      <pre className="max-full-size">{guest.t}</pre>
+                    </CommentInfo>
+                  )}
+                  <CommentInputWrapper className={guest.w == null ? undefined : 'hidden'}>
+                    <FullWidthImg file="childrenWithMe" />
+                    <CommentInput
+                      value={guest.t}
+                      onChange={event => {
+                        setGuest({ ...guest, t: event.currentTarget.value || undefined });
+                      }}
+                    />
+                  </CommentInputWrapper>
+                </div>
+              )}
+            </div>
+          )}
           <QrLink
             to="https://t.me/+PCD8QnnliEoyNzky"
             className="pointer"
@@ -218,7 +221,7 @@ export default function WeddingProposition() {
           className="flex"
         />
       </StyledContent>
-      {(isLoading || guest === null) && (
+      {isLoading && (
         <div className="absolute flex center pos-all">
           <LogoImg file="DO" />
         </div>
