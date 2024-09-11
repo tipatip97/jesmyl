@@ -22,9 +22,9 @@ const archive = (isFront, onError, versionNum) => {
     const body = new FormData();
     body.append(0, file_system.createReadStream(filename));
     fetch(
-      `https://jesmyl.ru/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}&versionNum=${
-        versionNum ? versionNum : ''
-      }&refreshStatic=${process.argv.indexOf('--refresh-static') < 0 ? '' : '1'}`,
+      `https://jesmyl.ru/bomba.php?pass=${passphrase}&isFront=${isFront ? '1' : ''}&versionNum=` +
+        (versionNum ? versionNum : '') +
+        `&refreshStatic=${process.argv.indexOf('--refresh-static') < 0 ? '' : '1'}`,
       {
         method: 'POST',
         body,

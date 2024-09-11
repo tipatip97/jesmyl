@@ -25,7 +25,7 @@ import fetch from 'node-fetch';
       if (!file_system.existsSync(caseDir)) file_system.mkdirSync(caseDir);
 
       file_system.readFile(`${caseDir}/${name}${fileExt}`, (_err, data) => {
-        if (JSON.stringify(JSON.parse(contentStr)) === JSON.stringify(JSON.parse('' + data))) return;
+        if (data && JSON.stringify(JSON.parse(contentStr)) === JSON.stringify(JSON.parse('' + data))) return;
 
         let content = contentStr;
 
