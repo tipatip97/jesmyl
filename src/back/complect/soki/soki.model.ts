@@ -138,6 +138,7 @@ export interface SokiClientEvent {
   urls: string[];
   version: number;
   browser?: string;
+  isUseLS?: boolean;
 }
 
 export interface SokiAuthUnitRights {}

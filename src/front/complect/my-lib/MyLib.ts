@@ -105,7 +105,7 @@ export class MyLib extends SMyLib {
       .reduce((ferries: RetItem[], item, itemi) => {
         let rate = 0;
         let deep = 0;
-        const ferry = (): RetItem[] => ({ item, deep, rate }) as never;
+        const ferry = (): RetItem => ({ item, deep, rate }) as never;
 
         if (
           places.some((place, placei) => {
@@ -162,8 +162,9 @@ export class MyLib extends SMyLib {
             return search(place, item, placei);
           })
         )
-          return ferries.concat(ferry());
-        else return ferries;
+          ferries.push(ferry());
+
+        return ferries;
       }, [])
       .sort((a, b) => a.rate - b.rate);
   }
