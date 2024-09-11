@@ -1,5 +1,7 @@
 import { Executer } from '../../complect/executer/Executer';
 import { FilerAppConfig } from '../../complect/filer/Filer.model';
+import { jesmylTgBot } from '../../sides/telegram-bot/bot';
+import { WedGuest } from './model';
 
 const config: FilerAppConfig = {
   title: 'Свадьбы',
@@ -37,7 +39,7 @@ const config: FilerAppConfig = {
           method: 'set_all',
           canBeUnauthorized: true,
           title:
-            'Гость <b>$guestName;</b> $will!{{<s>НЕ</s> }}будет присутствовать на свадьбе.$text{{\n\n Заметка: $text}}',
+            'Гость <b>$guestName;</b> $will!{{<s>НЕ</s> }}будет присутствовать на свадьбе.$text{{\n\n nКомментарий: $text}}',
           value: {
             t: '{text}',
             w: '{will}',
@@ -46,6 +48,15 @@ const config: FilerAppConfig = {
             will: [0, 1],
             text: '#string',
             guestName: '#String',
+          },
+          onSuccess: (args, value: WedGuest) => {
+            jesmylTgBot.bot.sendMessage(
+              370756745,
+              `<b>${args?.guestName || `${value.ln || ''} ${value.fn}`.trim()}</b> ` +
+                `${value.w ? '' : 'не '}${value.wn ? 'будут' : 'будут'} присутствовать на свадьбе` +
+                (value.t ? `\n\nКомментарий:\n${value.t}` : ''),
+              { parse_mode: 'HTML' },
+            );
           },
         },
 
