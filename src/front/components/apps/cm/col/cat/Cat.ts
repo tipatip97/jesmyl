@@ -61,9 +61,12 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
         ['name', 'number', ['orders', mylib.c.INDEX, 'text']],
         isNumberSearch,
       );
-    } else this.wraps = this.coms.map(com => ({ item: com }));
 
-    this.searchedComs = this.wraps.map(wrap => wrap.item);
+      this.searchedComs = this.wraps.map(wrap => wrap.item);
+    } else {
+      this.wraps = this.coms.map(com => ({ item: com }));
+      this.searchedComs = this.coms.slice(0);
+    }
 
     this.term = term;
 

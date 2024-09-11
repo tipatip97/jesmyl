@@ -58,7 +58,7 @@ export const ComFaceListComList = ({ list, isNeedRenderingDelay, titles, classNa
         if (isPartialRender && (ccomi - 15 > comi || ccomi + 17 < comi)) return null;
 
         return (
-          <React.Fragment key={'' + com.wid + comi}>
+          <React.Fragment key={com.wid}>
             {titles?.[comi] !== undefined && <div className="flex center margin-gap-v color--7">{titles[comi]}</div>}
             <FreeComFace
               com={com}

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import DebouncedSearchInput, { useIsNumberSearch } from '../../../../../complect/DebouncedSearchInput';
@@ -8,6 +8,7 @@ import CmTranslationComListContextInCat from '../../base/translations/InCat';
 import CmTranslationComListContextInZeroCat from '../../base/translations/InZeroCat';
 import useLaterComList from '../../base/useLaterComList';
 import { cmCompositionRoute } from '../../routing/cmRoutingApp';
+import { Com } from '../com/Com';
 import { ComFaceList } from '../com/face/list/ComFaceList';
 import { CatSpecialSearches } from './Cat.complect';
 import { TheCatSpecialSearches } from './SpecialSearches';
@@ -21,11 +22,22 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
   const isNumberSearch = useIsNumberSearch();
   const [mapper, setMapper] = useState<CatSpecialSearches['map'] | null>(null);
   const [term, setTerm] = useState(cat?.term ?? '');
+  const [filteredComs, setFilteredComs] = useState<null | Com[]>(null);
 
-  const wrapComs = useMemo(
-    () => cat && (mapper?.(cat.coms, term) ?? cat.search(term, isNumberSearch).map(mapExtractItem)),
-    [cat, mapper, term, isNumberSearch],
-  );
+  useEffect(() => {
+    if (cat == null) return;
+
+    if (mapper) {
+      setFilteredComs(mapper(cat.coms, term));
+      return;
+    }
+
+    const coms = cat.search(term, isNumberSearch)?.map(mapExtractItem);
+
+    if (coms == null) return;
+
+    setFilteredComs(coms);
+  }, [cat, isNumberSearch, mapper, term]);
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
@@ -52,7 +64,7 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                       cat.search(term, isNumberSearch);
                       if (term === '') setMapper(null);
                     }}
-                    debounce={1000}
+                    debounce={10}
                     onDebounced={() => {
                       if (listRef.current) listRef.current.scrollTop = 0;
                     }}
@@ -83,15 +95,15 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                       ref={categoryTitleRef}
                     >
                       <div>{cat.name}:</div>
-                      {wrapComs && (
-                        <div>{`${cat.coms.length === wrapComs.length ? '' : `${wrapComs.length} / `}${
+                      {filteredComs && (
+                        <div>{`${cat.coms.length === filteredComs.length ? '' : `${filteredComs.length} / `}${
                           cat.coms.length
                         }`}</div>
                       )}
                     </div>
                     <div className="com-list">
                       <ComFaceList
-                        list={wrapComs}
+                        list={filteredComs}
                         isNeedRenderingDelay
                       />
                     </div>
