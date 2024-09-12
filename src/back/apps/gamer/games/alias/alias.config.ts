@@ -265,7 +265,7 @@ export const aliasGameConfig: ActionBox = {
     expected: [],
     action: 'fixAliasWord',
     title: 'Алиас - зафиксировано замечание к слову',
-    method: 'toggle',
+    method: 'toggle_existance',
     value: '{wordi}',
   },
   '/invert': {
@@ -278,7 +278,7 @@ export const aliasGameConfig: ActionBox = {
       return {
         '/{wordi}': invert?.[props?.wordi]
           ? {
-              method: 'toggle',
+              method: 'toggle_existance',
               value: auth?.login,
             }
           : {

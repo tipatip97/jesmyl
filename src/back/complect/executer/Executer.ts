@@ -3,6 +3,7 @@ import { ActionBox, ActionBoxSetSystems, ActionBoxSetSystemsFree, ActionTimer } 
 import smylib, { SMyLib } from '../../shared/SMyLib';
 import { actionBoxSetSystems, sequreMD5Passphrase, sokiWhenRejButTs } from '../../values';
 import { FilerAppConfig, FilerAppConfigActions } from '../filer/Filer.model';
+import { makeRegExp } from '../makeRegExp';
 import { LocalSokiAuth } from '../soki/soki.model';
 import {
   ExecuteDoItProps,
@@ -1014,7 +1015,7 @@ export class Executer {
         }
       };
 
-      tracky.split(/\s*,\s*/).forEach(trackyBeat => {
+      tracky.split(makeRegExp('/\\s*,\\s*/')).forEach(trackyBeat => {
         if (trackyBeat === '.') setDeepper([], value);
         else setDeepper(trackyBeat.split('.'), value);
       });
@@ -1047,116 +1048,6 @@ export class Executer {
           return;
         }
 
-        switch (method) {
-          case 'set':
-            if (penultimate) penultimate[lastTrace] = smylib.clone(value);
-            break;
-          case 'set_all':
-            if (target) SMyLib.entries(smylib.clone(value)).forEach(([key, val]) => (target[key] = val));
-            break;
-          case 'formula':
-            try {
-              if (penultimate && smylib.isStr(value)) {
-                const val = this.replaceArgs(value, realArgs, auth);
-                if (smylib.isStr(val)) {
-                  const body = val.replace(/[^()X\d-+* /]/g, '').replace(/X/g, '' + (target || 0));
-                  const data: { result?: number } = {};
-                  // eslint-disable-next-line no-new-func
-                  new Function('data', `data.result = ${body};`)(data);
-                  if (data.result != null) penultimate[lastTrace] = data.result;
-                }
-              }
-            } catch (e) {
-              console.error(e);
-            }
-            break;
-          case 'push': {
-            const pushTarget = smylib.isArr(target) ? target : (penultimate[lastTrace] = []);
-            const val = this.filterUniqs(uniqs, pushTarget, value);
-            if (val == null) break;
-
-            pushTarget?.push(smylib.clone(val));
-            break;
-          }
-          case 'toggle':
-            if (!smylib.isArr(target)) {
-              reject(`Целевой объект (${smylib.typeOf(target)?.replace('is', '')}) не является массивом`);
-              break;
-            }
-
-            if (target.includes(value)) target.splice(target.indexOf(value), 1);
-            else target?.push(smylib.clone(value));
-            break;
-          case 'toggle_by':
-            if (!smylib.isArr(target)) {
-              reject(`Целевой объект (${smylib.typeOf(target)?.replace('is', '')}) не является массивом`);
-              break;
-            }
-            if (value == null || !smylib.isStr(value.by)) {
-              reject('Отсутствует аргумент by#String');
-              break;
-            }
-            const { by, val } = value;
-            const itemi = target.findIndex(item => item[by] === val);
-
-            if (itemi > -1) target.splice(itemi, 1);
-            else target?.push(smylib.clone(value));
-            break;
-          case 'insert_beforei': {
-            if (!smylib.isArr(target) || value == null) break;
-            const { find, beforei } = value;
-            if (!smylib.isArr(find) || !smylib.isNum(beforei)) break;
-            const spreadTarget = [...target];
-            const index = spreadTarget.findIndex(item => this.isExpected(item, find));
-            const [item] = spreadTarget.splice(index, 1, insertBeforeiFakeArr);
-            spreadTarget.splice(beforei, 0, item);
-
-            penultimate[lastTrace] = spreadTarget.filter(insertBeforeiItIt);
-            break;
-          }
-          case 'concat':
-            const concatTarget = smylib.isArr(target) ? target : (penultimate[lastTrace] = []);
-            if (smylib.isArr(value)) {
-              const val: [] = this.filterUniqs(uniqs, concatTarget, value);
-              if (val == null) break;
-              concatTarget.push(...smylib.clone(val));
-            }
-            break;
-          case 'remove':
-            if (smylib.isArr(target) && value != null)
-              if (smylib.isNum(value)) target.splice(value, 1);
-              else {
-                const valuei = target.findIndex((source: any) => this.isExpected(source, value, realArgs));
-                if (valuei > -1) target.splice(valuei, 1);
-              }
-            break;
-          case 'remove_each':
-            if (smylib.isArr(target) && value != null) {
-              penultimate[lastTrace] = target.filter((source: any) => !this.isExpected(source, value, realArgs));
-            }
-            break;
-          case 'migrate':
-            if (penultimate && value) {
-              SMyLib.entries(penultimate).forEach(([, item]: [any, any]) => {
-                const val = value[item[lastTrace]];
-                if (val != null) item[lastTrace] = val;
-              });
-              let next =
-                +(penultimate as any[]).reduce((fin, currItem) => {
-                  return fin < currItem[lastTrace] ? currItem[lastTrace] : fin;
-                }, 0) || 0;
-              const signs: number[] = [];
-
-              (penultimate as any[]).forEach(item => {
-                const sign = item[lastTrace];
-                if (signs.includes(sign)) item[lastTrace] = ++next;
-
-                signs.push(sign);
-              });
-            }
-            break;
-        }
-
         if (method.startsWith('setOrPush')) {
           const key = method.slice(10);
           if (key && smylib.isArr(target) && value != null && value[key] != null) {
@@ -1165,6 +1056,121 @@ export class Executer {
 
             if (index < 0) target.push(value);
             else target[index] = value;
+          }
+        } else {
+          switch (method) {
+            case 'set':
+              if (penultimate) penultimate[lastTrace] = smylib.clone(value);
+              break;
+            case 'set_all':
+              if (target) SMyLib.entries(smylib.clone(value)).forEach(([key, val]) => (target[key] = val));
+              break;
+            case 'formula':
+              try {
+                if (penultimate && smylib.isStr(value)) {
+                  const val = this.replaceArgs(value, realArgs, auth);
+                  if (smylib.isStr(val)) {
+                    const body = val
+                      .replace(makeRegExp('/[^()X\\d-+* /]/g'), '')
+                      .replace(makeRegExp('/X/g'), '' + (target || 0));
+                    const data: { result?: number } = {};
+                    // eslint-disable-next-line no-new-func
+                    new Function('data', `data.result = ${body};`)(data);
+                    if (data.result != null) penultimate[lastTrace] = data.result;
+                  }
+                }
+              } catch (e) {
+                console.error(e);
+              }
+              break;
+            case 'push': {
+              const pushTarget = smylib.isArr(target) ? target : (penultimate[lastTrace] = []);
+              const val = this.filterUniqs(uniqs, pushTarget, value);
+              if (val == null) break;
+
+              pushTarget?.push(smylib.clone(val));
+              break;
+            }
+            case 'toggle_existance':
+              if (!smylib.isArr(target)) {
+                reject(`Целевой объект (${smylib.typeOf(target)?.replace('is', '')}) не является массивом`);
+                break;
+              }
+
+              if (target.includes(value)) target.splice(target.indexOf(value), 1);
+              else target?.push(smylib.clone(value));
+              break;
+            case 'toggle_by':
+              if (!smylib.isArr(target)) {
+                reject(`Целевой объект (${smylib.typeOf(target)?.replace('is', '')}) не является массивом`);
+                break;
+              }
+              if (value == null || !smylib.isStr(value.by)) {
+                reject('Отсутствует аргумент by#String');
+                break;
+              }
+              const { by, val } = value;
+              const itemi = target.findIndex(item => item[by] === val);
+
+              if (itemi > -1) target.splice(itemi, 1);
+              else target?.push(smylib.clone(value));
+              break;
+            case 'insert_beforei': {
+              if (!smylib.isArr(target) || value == null) break;
+              const { find, beforei } = value;
+              if (!smylib.isArr(find) || !smylib.isNum(beforei)) break;
+              const spreadTarget = [...target];
+              const index = spreadTarget.findIndex(item => this.isExpected(item, find));
+              const [item] = spreadTarget.splice(index, 1, insertBeforeiFakeArr);
+              spreadTarget.splice(beforei, 0, item);
+
+              penultimate[lastTrace] = spreadTarget.filter(insertBeforeiItIt);
+              break;
+            }
+            case 'concat':
+              const concatTarget = smylib.isArr(target) ? target : (penultimate[lastTrace] = []);
+              if (smylib.isArr(value)) {
+                const val: [] = this.filterUniqs(uniqs, concatTarget, value);
+                if (val == null) break;
+                concatTarget.push(...smylib.clone(val));
+              }
+              break;
+            case 'remove':
+              if (smylib.isArr(target) && value != null)
+                if (smylib.isNum(value)) target.splice(value, 1);
+                else {
+                  const valuei = target.findIndex((source: any) => this.isExpected(source, value, realArgs));
+                  if (valuei > -1) target.splice(valuei, 1);
+                }
+              break;
+            case 'remove_each':
+              if (smylib.isArr(target) && value != null) {
+                penultimate[lastTrace] = target.filter((source: any) => !this.isExpected(source, value, realArgs));
+              }
+              break;
+            case 'migrate':
+              if (penultimate && value) {
+                SMyLib.entries(penultimate).forEach(([, item]: [any, any]) => {
+                  const val = value[item[lastTrace]];
+                  if (val != null) item[lastTrace] = val;
+                });
+                let next =
+                  +(penultimate as any[]).reduce((fin, currItem) => {
+                    return fin < currItem[lastTrace] ? currItem[lastTrace] : fin;
+                  }, 0) || 0;
+                const signs: number[] = [];
+
+                (penultimate as any[]).forEach(item => {
+                  const sign = item[lastTrace];
+                  if (signs.includes(sign)) item[lastTrace] = ++next;
+
+                  signs.push(sign);
+                });
+              }
+              break;
+            default:
+              reject(`Неизвестный метод ${method}`);
+              break;
           }
         }
 

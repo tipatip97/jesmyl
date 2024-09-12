@@ -1,4 +1,5 @@
 import { ActionBoxOnFinalCallback, ActionBoxSetSystems, ActionTimer } from '../../models';
+import { sokiWhenRejButTs } from '../../values';
 import { LocalSokiAuth, SokiAppName } from '../soki/soki.model';
 
 export type ExecutionMethod =
@@ -7,7 +8,7 @@ export type ExecutionMethod =
   | 'set_all'
   | 'push'
   | 'concat'
-  | 'toggle'
+  | 'toggle_existance'
   | 'toggle_by'
   | 'migrate'
   | 'insert_beforei'
@@ -101,6 +102,11 @@ export type RealAccumulatableRuleSides =
   | ExecutionSide[]
   | ((realArgs?: ExecutionArgs, auth?: LocalSokiAuth | null) => ExecutionSide[] | undefined);
 
+export type ExecutorRuleReadRejecton =
+  | boolean
+  | number
+  | ((...args: unknown[]) => string | null | typeof sokiWhenRejButTs | boolean);
+
 export interface RealAccumulatableRule<
   Value = unknown,
   Args = Record<string, unknown>,
@@ -116,7 +122,7 @@ export interface RealAccumulatableRule<
   accesses: string[];
   setInEachValueItem?: ExecuterSetInEachValueItem;
   setEachInParent?: ExecuterSetInEachValueItem;
-  RRej?: boolean | number;
+  RRej?: ExecutorRuleReadRejecton;
   $$vars: Record<`$$${string}`, number>;
   canBeUnauthorized?: boolean;
 }

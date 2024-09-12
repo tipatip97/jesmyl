@@ -69,6 +69,10 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
     return this.rightsBalance(R) >= this.rightsBalance(rightR);
   };
 
+  checkInvertIsCan = (R: number | nil, rightR: number | nil) => {
+    return this.rightsBalance(R) > this.rightsBalance(rightR);
+  };
+
   rightsBalance = (R: number | nil): number => {
     if (isEmptyR(R)) return -1;
     const rstr = R.toString(2);

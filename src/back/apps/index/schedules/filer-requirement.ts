@@ -1,5 +1,6 @@
 import { ExecutionArgs, ExecutionDict, ExecutionReal } from '../../../complect/executer/Executer.model';
 import { FilerAppRequirement } from '../../../complect/filer/Filer.model';
+import smylib from '../../../shared/SMyLib';
 import {
   IScheduleWidget,
   IScheduleWidgetDay,
@@ -69,7 +70,7 @@ const mapCantReadSpecialsDayWithoutTech = (day: IScheduleWidgetDay, dayi: number
         list: day.list.map(mapCantReadSpecialsDayEvent),
       };
 
-type ScheduleWidgetOnCantReadExec = ExecutionDict<
+export type ScheduleWidgetOnCantReadExec = ExecutionDict<
   unknown,
   ExecutionArgs<
     unknown,
@@ -122,22 +123,10 @@ export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage> = {
 
     const userR = user.R ?? bag.schedule.ctrl.defu;
 
-    if (exec.args !== undefined) {
-      let tattMi = -1;
+    if (smylib.isFunc(rule.RRej)) {
+      const ret = rule.RRej(bag.schedule, user, exec, rule, auth);
 
-      try {
-        if (exec.args.tattMi !== undefined) tattMi = exec.args.tattMi;
-
-        if (exec.args.attKey !== undefined) {
-          tattMi = +exec.args.attKey.split(':')[2];
-          if (isNaN(tattMi)) tattMi = -1;
-        }
-
-        if (tattMi >= 0) {
-          const tatt = bag.schedule.tatts.find(tatt => tatt.mi === tattMi);
-          if (tatt !== undefined && !scheduleWidgetUserRights.checkIsCan(userR, tatt.R)) return whenRejButTs;
-        }
-      } catch (error) {}
+      return ret === true ? (isShareData ? 'block' : null) : ret === false ? null : ret;
     }
 
     if (!scheduleWidgetUserRights.checkIsHasRights(userR, ScheduleWidgetUserRoleRight.ReadSpecials)) {

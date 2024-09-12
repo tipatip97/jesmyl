@@ -133,7 +133,9 @@ export interface ScheduleWidgetAppAttBasic<AttValue extends any = any> {
   initVal: AttValue;
   isCustomize?: true;
   R: number;
+  Rs?: IScheduleWidgetUserMi[] | nil;
   U: number;
+  Us?: IScheduleWidgetUserMi[] | nil;
   routes?: 'React.ReactNode' | any;
 }
 

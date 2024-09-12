@@ -1,10 +1,12 @@
 import { filer } from '../../../../complect/filer/Filer';
 import { ActionBox, ActionBoxOnFinalCallback, ActionBoxValue } from '../../../../models';
 import smylib from '../../../../shared/SMyLib';
+import { sokiWhenRejButTs } from '../../../../values';
 import { makeTwiceKnownName } from '../../complect/makeTwiceKnownName';
-import { IScheduleWidget, IScheduleWidgetUserCati } from '../../models/ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetUser, IScheduleWidgetUserCati } from '../../models/ScheduleWidget.model';
 import { NounPronsType } from '../../models/nounProns.model';
 import { scheduleWidgetRegTypeRights, scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../rights';
+import { ScheduleWidgetOnCantReadExec } from '../filer-requirement';
 import { indexScheduleSetMessageInform } from '../tg-bot-inform/tg-inform';
 import { ScheduleWidgetActionBoxCleans } from './cleans';
 import { scheduleWidgetCtrlTypeActionBox } from './ctrl/type';
@@ -607,7 +609,36 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
         },
       },
       '/tatts': {
-        RRej: ScheduleWidgetUserRoleRight.ReadTitles,
+        RRej: (...args) => {
+          try {
+            const [schedule, user, exec] = args as [IScheduleWidget, IScheduleWidgetUser, ScheduleWidgetOnCantReadExec];
+
+            if (exec.args !== undefined) {
+              let tattMi = -1;
+
+              try {
+                if (exec.args.tattMi !== undefined) tattMi = exec.args.tattMi;
+
+                if (exec.args.attKey !== undefined) {
+                  tattMi = +exec.args.attKey.split(':')[2];
+                  if (isNaN(tattMi)) tattMi = -1;
+                }
+
+                if (tattMi >= 0) {
+                  const tatt = schedule.tatts.find(tatt => tatt.mi === tattMi);
+                  if (
+                    tatt !== undefined &&
+                    !scheduleWidgetUserRights.checkIsCan(user.R, tatt.R) &&
+                    !tatt.Rs?.includes(user.mi)
+                  )
+                    return sokiWhenRejButTs;
+                }
+              } catch (error) {}
+            }
+          } catch (error) {}
+
+          return true;
+        },
         expected: [],
         C: {
           setSystems: ['mi'],
@@ -618,9 +649,25 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
         '/[mi === {tattMi}]': {
           scopeNode: 'tattMi',
           '/{key}': {
-            scopeNode: 'field',
-            U: {
-              args: { key: '#String' },
+            args: { key: '#String' },
+
+            '<field>': {
+              scopeNode: 'field',
+              U: {
+                RRej: false,
+              },
+            },
+
+            '<accessList>': {
+              expected: [],
+              scopeNode: 'accessList',
+              U: {
+                RRej: false,
+                method: 'toggle_existance',
+                args: {
+                  key: ['Rs', 'Us'],
+                },
+              },
             },
           },
           '/titles': {
