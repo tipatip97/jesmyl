@@ -14,7 +14,9 @@ import {
   customAttUseRightsTitles,
   scheduleWidgetUserRights,
 } from '../../../../models';
-import useModal from '../../../modal/useModal';
+import Modal from '../../../modal/Modal/Modal';
+import { ModalBody } from '../../../modal/Modal/ModalBody';
+import { ModalHeader } from '../../../modal/Modal/ModalHeader';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
@@ -77,76 +79,26 @@ export default function ScheduleWidgetCustomAtt(
   const userR = rights.myUser?.R ?? rights.schedule.ctrl.defu;
   const myBalance = scheduleWidgetUserRights.rightsBalance(userR);
   const isCanRedact = scheduleWidgetUserRights.checkIsCan(userR, props.tatt.U);
-  const isRedact = props.isRedact;
 
-  const [setRuleModalNode] = useModal(
-    ({ header, body }) => {
-      return (
-        <>
-          {header(
-            <>
-              Кто {whoCan.action} вложение <span className="color--7">{props.tatt.title}</span>
-            </>,
-          )}
-          {body(
-            <>
-              <ScheduleWidgetRightControlList
-                scope={selfScope}
-                fieldName="field"
-                fieldKey={whoCan.rule}
-                rightCtrl={scheduleWidgetUserRights}
-                R={props.tatt[whoCan.rule]}
-                isReverse
-                isDisabled={type => myBalance < scheduleWidgetUserRights.rightLevel(type.id) + 2}
-              />
-            </>,
-          )}
-        </>
-      );
-    },
-    is => !is && setWhoCani(WhoCan.No),
-    whoCani !== WhoCan.No,
-  );
+  const [isOpenAttRedactor, setIsOpenAttRedactor] = useState<unknown>(false);
 
-  const [redactModalNode, redactModalScreen] = useModal(({ header, body }) => {
-    return (
-      <>
-        {header(
-          <span className="flex flex-gap full-width between">
-            <span>
-              <span className="color--7">{props.tatt.title} </span>- Редактирование шаблона
-            </span>
-            <StrongClipboardPicker />
-          </span>,
-        )}
-        {body(
-          <>
-            <ScheduleWidgetCustomAtt
-              {...props}
-              isRedact
-            />
-          </>,
-        )}
-      </>
-    );
-  });
+  const canReadUsers = props.tatt.Rs ?? [];
+  const canUpdateUsers = props.tatt.Us ?? [];
 
   return (
     <>
-      {isCanRedact && redactModalNode}
-      {isCanRedact && setRuleModalNode}
-      <div className={'margin-gap-v' + (isRedact ? '' : ' padding-gap bgcolor--5')}>
+      <div className={'margin-gap-v' + (props.isRedact ? '' : ' padding-gap bgcolor--5')}>
         {props.topContent}
-        {isRedact ||
+        {props.isRedact ||
           (isCanRedact && (
             <div className="flex flex-end full-width">
               <IconButton
                 Icon={IconPencilEdit01StrokeRounded}
-                onClick={() => redactModalScreen()}
+                onClick={setIsOpenAttRedactor}
               />
             </div>
           ))}
-        {isRedact && (
+        {props.isRedact && (
           <ScheduleWidgetIconChange
             scope={selfScope}
             icon={props.tatt.icon}
@@ -158,9 +110,9 @@ export default function ScheduleWidgetCustomAtt(
           fieldName="field"
           fieldKey="title"
           value={props.tatt}
-          isRedact={isRedact}
+          isRedact={props.isRedact}
           isImpossibleEmptyValue
-          Icon={isRedact ? IconBookmark01StrokeRounded : theIconFromPack(props.tatt.icon)?.StrokeRounded}
+          Icon={props.isRedact ? IconBookmark01StrokeRounded : theIconFromPack(props.tatt.icon)?.StrokeRounded}
           title="Название"
         />
         <StrongEditableField
@@ -169,7 +121,7 @@ export default function ScheduleWidgetCustomAtt(
           value={props.tatt}
           fieldKey="description"
           multiline
-          isRedact={isRedact}
+          isRedact={props.isRedact}
           Icon={IconFile01StrokeRounded}
           isImpossibleEmptyValue
           title="Описание вложения"
@@ -190,7 +142,7 @@ export default function ScheduleWidgetCustomAtt(
                             {scheduleWidgetUserRights.rightsBalance(props.tatt[whoCan.rule]) + 1}+
                           </span>
                         </span>
-                        {isRedact && isCanRedact && (
+                        {props.isRedact && isCanRedact && (
                           <IconButton
                             Icon={IconEdit01StrokeRounded}
                             onClick={() => setWhoCani(whoCani)}
@@ -203,7 +155,7 @@ export default function ScheduleWidgetCustomAtt(
                 );
               })}
             </div>
-            {isRedact ? (
+            {props.isRedact ? (
               customAttUseRightsTitles.map(({ title, id, top }) => {
                 return (
                   <div key={id}>
@@ -322,7 +274,7 @@ export default function ScheduleWidgetCustomAtt(
                                 fieldName=""
                                 isImpossibleEmptyValue
                                 value={title}
-                                isRedact={isRedact}
+                                isRedact={props.isRedact}
                                 multiline={customAttUseRights.checkIsHasIndividualRights(
                                   props.tatt.use,
                                   CustomAttUseRights.CheckTitles,
@@ -358,6 +310,68 @@ export default function ScheduleWidgetCustomAtt(
           </>
         )}
       </div>
+
+      {isCanRedact && whoCani !== WhoCan.No && (
+        <Modal onClose={() => setWhoCani(WhoCan.No)}>
+          <ModalHeader>
+            Кто {whoCan.action} вложение <span className="color--7">{props.tatt.title}</span>
+          </ModalHeader>
+          <ModalBody>
+            <ScheduleWidgetRightControlList
+              scope={selfScope}
+              fieldName="field"
+              fieldKey={whoCan.rule}
+              rightCtrl={scheduleWidgetUserRights}
+              R={props.tatt[whoCan.rule]}
+              isReverse
+              isDisabled={type => myBalance < scheduleWidgetUserRights.rightLevel(type.id) + 2}
+            />
+            <h3>... или участники</h3>
+            {rights.schedule.ctrl.users.map(user => {
+              const isForceChecked =
+                !!user.R && scheduleWidgetUserRights.checkInvertIsCan(user.R, props.tatt[whoCan.rule]);
+
+              return (
+                <StrongEvaButton
+                  key={user.mi}
+                  scope={selfScope}
+                  fieldName="accessList"
+                  fieldKey={`${whoCan.rule}s`}
+                  fieldValue={user.mi}
+                  cud="U"
+                  className="margin-gap-v flex-max"
+                  disabled={!user.R || isForceChecked}
+                  postfix={user.fio}
+                  Icon={
+                    isForceChecked || (whoCan.rule === 'U' ? canUpdateUsers : canReadUsers).includes(user.mi)
+                      ? IconCheckmarkSquare02StrokeRounded
+                      : IconSquareStrokeRounded
+                  }
+                />
+              );
+            })}
+          </ModalBody>
+        </Modal>
+      )}
+
+      {isCanRedact && isOpenAttRedactor && (
+        <Modal onClose={setIsOpenAttRedactor}>
+          <ModalHeader>
+            <span className="flex flex-gap full-width between">
+              <span>
+                <span className="color--7">{props.tatt.title} </span>- Редактирование вложения
+              </span>
+              <StrongClipboardPicker />
+            </span>
+          </ModalHeader>
+          <ModalBody>
+            <ScheduleWidgetCustomAtt
+              {...props}
+              isRedact
+            />
+          </ModalBody>
+        </Modal>
+      )}
     </>
   );
 }

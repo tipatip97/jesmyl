@@ -24,6 +24,7 @@ export const ScheduleWidgetWatchLiveTranslationButton = ({ schedule }: { schedul
       <IconButton
         Icon={IconComputerStrokeRounded}
         onClick={() => setIsOpen(is => !is)}
+        className="margin-gap-v"
         postfix="Следить за трансляцией"
       />
     </>

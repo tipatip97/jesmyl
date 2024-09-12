@@ -121,7 +121,7 @@ export default function ScheduleWidgetDayEventAtt(props: Props) {
       <div className="flex flex-gap inline-block between color--7">
         {attTitleNode}
         <div className="flex">
-          {isExpand && editIcon}
+          {props.isCanRedact && isExpand && editIcon}
           {notateNode}
         </div>
       </div>

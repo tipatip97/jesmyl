@@ -37,8 +37,19 @@ export default function ScheduleWidgetDayEventAtts(
     <>
       {atts.map(([attKey, att]) => {
         const appAtt = appAtts[attKey];
-        if (!appAtt || !scheduleWidgetUserRights.checkIsCan(userR, appAtt.R)) return null;
+
+        if (
+          !appAtt ||
+          (!scheduleWidgetUserRights.checkInvertIsCan(userR, appAtt.R) &&
+            (appAtt.Rs?.length ? rights.myUser && !appAtt.Rs.includes(rights.myUser.mi) : false))
+        )
+          return null;
+
         const scope = takeStrongScopeMaker(props.scope, ' attKey/', attKey);
+
+        const isCanUpdate =
+          scheduleWidgetUserRights.checkInvertIsCan(userR, appAtt.U) ||
+          (appAtt.Us?.length ? !!rights.myUser && appAtt.Us.includes(rights.myUser.mi) : false);
 
         return (
           <ScheduleWidgetDayEventAtt
@@ -52,7 +63,7 @@ export default function ScheduleWidgetDayEventAtts(
             schedule={props.schedule}
             event={props.event}
             isPast={props.isPast}
-            isCanRedact={scheduleWidgetUserRights.checkIsCan(userR, appAtt.U)}
+            isCanRedact={isCanUpdate}
           />
         );
       })}
