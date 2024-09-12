@@ -39,18 +39,20 @@ const error = (children: React.ReactNode) => <div className="color--ko full-size
 export default function TgDayEventComList() {
   const params = useParams();
   const dayi = +params.dayi! as NaNumber;
+  const attMi = params.attMi;
   const eventMi = +params.eventMi! as IScheduleWidgetDayEventMi | NaN;
   const schw = +params.schw! as IScheduleWidgetWid | NaN;
 
   useInitSoki('cm');
 
-  if (mylib.isNaN(dayi) || mylib.isNaN(eventMi) || mylib.isNaN(schw)) return error('Ссылка не действительна');
+  if (mylib.isNaN(dayi) || mylib.isNaN(eventMi) || mylib.isNaN(schw) || !attMi) return error('Ссылка не действительна');
 
   return (
     <Inner
       schw={schw}
       dayi={dayi}
       eventMi={eventMi}
+      attMi={attMi}
     />
   );
 }
@@ -59,10 +61,12 @@ const Inner = ({
   schw,
   dayi,
   eventMi,
+  attMi,
 }: {
   schw: IScheduleWidgetWid;
   dayi: number;
   eventMi: IScheduleWidgetDayEventMi;
+  attMi: string;
 }) => {
   const [isOpenListRedact, setIsOpenListRedact] = useState<unknown>(false);
   const [isOpenMorePopup, setIsOpenMorePopup] = useState(false);
@@ -83,7 +87,12 @@ const Inner = ({
   const event = day?.list.find(event => event.mi === eventMi);
   if (!event) return error('Событие не найдено');
 
-  const comsAtt = event.atts?.[attName] as CmComBindAttach | und;
+  console.log(event);
+
+  const comsAtt =
+    attMi !== '-'
+      ? (event.atts?.[`[SCH]:custom:${attMi}`]?.[attName as never] as CmComBindAttach | und)
+      : (event.atts?.[attName] as CmComBindAttach | und);
 
   if (!comsAtt) return error('Песен в событии нет');
   if (mylib.isArr(comsAtt)) return;
@@ -152,7 +161,7 @@ const Inner = ({
                   {isOpenMorePopup && (
                     <BottomPopup onClose={setIsOpenMorePopup}>
                       <CopyTextButton
-                        text={makeCmScheduleWidgetComListUrl(schedule.w, dayi, eventMi)}
+                        text={makeCmScheduleWidgetComListUrl(schedule.w, dayi, eventMi, attMi)}
                         withoutIcon
                         description={
                           <BottomPopupItem

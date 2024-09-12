@@ -15,7 +15,11 @@ import {
   ScheduleWidgetDayListItemTypeBox,
 } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
-import { ScheduleWidgetScopePhase, useScheduleWidgetAppAttsContext } from '../../useScheduleWidget';
+import {
+  ScheduleWidgetScopePhase,
+  takeStrongScopeMaker,
+  useScheduleWidgetAppAttsContext,
+} from '../../useScheduleWidget';
 import ScheduleWidgetDayEventPeriodicTranslation from './DayEventPeriodicTranslationAtt';
 
 const isNIs = (is: unknown) => !is;
@@ -101,17 +105,35 @@ export default function ScheduleWidgetDayEventAtt(props: Props) {
       } else attContent ??= <div className="error-message">Источник удалён</div>;
     }
 
-    attContent ??= isExpand && (
-      <div>
-        {appAtt.result?.(
-          attValue ?? appAtt.initVal,
-          scope,
-          isRedact,
-          is => setIsSelfRedact(is ?? isNIs),
-          props.schedule,
-        )}
-      </div>
-    );
+    if (appAtt.im) {
+      const att = appAtts[appAtt.im];
+
+      if (att) {
+        attContent ??= isExpand && (
+          <div>
+            {att.result?.(
+              props.att?.[appAtt.im as never] ?? att.initVal,
+              takeStrongScopeMaker(scope, ' imAttKey/', appAtt.im),
+              isRedact,
+              is => setIsSelfRedact(is ?? isNIs),
+              props.schedule,
+            )}
+          </div>
+        );
+      }
+    } else {
+      attContent ??= isExpand && (
+        <div>
+          {appAtt.result?.(
+            attValue ?? appAtt.initVal,
+            scope,
+            isRedact,
+            is => setIsSelfRedact(is ?? isNIs),
+            props.schedule,
+          )}
+        </div>
+      );
+    }
   } catch (error) {
     attContent = <div className="error-message">Контент не доступен</div>;
   }

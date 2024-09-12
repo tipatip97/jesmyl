@@ -29,6 +29,7 @@ import ScheduleWidgetIconChange from '../../complect/IconChange';
 import ScheduleWidgetRightControlList from '../../control/RightControlList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetCustomAttTitles from './CustomAttTitles';
+import { ScheduleWidgetCustomAttLocalImagineSelector } from './LocalImagine';
 
 const itIt = (it: unknown) => it;
 const itNIt = (it: unknown) => !it;
@@ -134,6 +135,7 @@ export default function ScheduleWidgetCustomAtt(
                   <IconButton
                     key={whoCan.rule}
                     Icon={whoCan.Icon}
+                    className="flex-max margin-gap-v"
                     postfix={
                       <div className="full-width flex between">
                         <span className="flex flex-gap">
@@ -150,12 +152,19 @@ export default function ScheduleWidgetCustomAtt(
                         )}
                       </div>
                     }
-                    className="flex-max margin-gap-v"
                   />
                 );
               })}
             </div>
-            {props.isRedact ? (
+
+            {props.isRedact && (
+              <ScheduleWidgetCustomAttLocalImagineSelector
+                id={props.tatt.im}
+                scope={selfScope}
+              />
+            )}
+
+            {props.isRedact && !props.tatt.im ? (
               customAttUseRightsTitles.map(({ title, id, top }) => {
                 return (
                   <div key={id}>

@@ -46,6 +46,29 @@ const addUserValue = {
   tgId: '{*tgId}',
 } as const;
 
+const cmComsListSetters: ActionBox = {
+  '<listKey>': {
+    scopeNode: 'listKey',
+    C: {},
+    D: {
+      method: 'remove',
+    },
+    '<move>': {
+      scopeNode: 'move',
+      U: {
+        method: 'insert_beforei',
+      },
+    },
+  },
+  '<singleKey>': {
+    scopeNode: 'singleKey',
+    D: {
+      method: 'delete',
+    },
+    U: {},
+  },
+};
+
 const newSchedule: ActionBoxValue<IScheduleWidget> = {
   w: '{schw}',
   title: '{title}',
@@ -683,6 +706,10 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
               },
             },
           },
+          '/im': {
+            scopeNode: 'imagine',
+            U: {},
+          },
         },
       },
       '/types': {
@@ -938,28 +965,18 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
                   D: {
                     method: 'delete',
                   },
-                  '/{key}': {
-                    scopeNode: 'listKey',
-                    C: {},
-                    D: {
-                      method: 'remove',
-                    },
-                    '<move>': {
-                      scopeNode: 'move',
-                      U: {
-                        method: 'insert_beforei',
+                  '/{imAttKey}': {
+                    scopeNode: 'imAttKey',
+                    expected: {},
+                    U: {
+                      args: {
+                        value: '#Dict',
+                        imAttKey: '#String',
                       },
                     },
-                    '/{selector}': {
-                      U: {},
-                    },
+                    '/{key}': cmComsListSetters,
                   },
-                  '/eventw': {
-                    D: {
-                      method: 'delete',
-                    },
-                    U: {},
-                  },
+                  '/{key}': cmComsListSetters,
                   '/list': {
                     scopeNode: 'checkList',
                     C: {

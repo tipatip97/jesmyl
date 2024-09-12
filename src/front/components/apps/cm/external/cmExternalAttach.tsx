@@ -18,11 +18,12 @@ export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
     R: ScheduleWidgetUserRoleRight.Free,
     U: scheduleWidgetUserRights.includeRights(ScheduleWidgetUserRoleRight.Redact),
     result: (value, scope, isRedact, switchIsRedact) => {
-      const { dayi, eventMi } = getObjectFromScope(scope);
+      const { dayi, eventMi, attKey } = getObjectFromScope(scope);
+      const [, , attMi] = attKey.split(':');
 
       return (
         <>
-          <Link to={`${dayi}/${eventMi}/com-list`}>
+          <Link to={`${dayi}/${eventMi}/${attMi || '-'}/com-list`}>
             <IconButton
               Icon={IconLinkSquare01SolidRounded}
               postfix="Открыть список"
@@ -41,7 +42,7 @@ export const cmOwnAppAtts: ScheduleWidgetAppAtts<'cm', CmComBindAttach> = {
     routes: (
       <>
         <Route
-          path=":dayi/:eventMi/com-list/*"
+          path=":dayi/:eventMi/:attMi/com-list/*"
           element={
             <Suspense>
               <TgDayEventComList />

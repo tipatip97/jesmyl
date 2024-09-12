@@ -126,9 +126,10 @@ export interface IScheduleWidgetDayEvent {
 
 export type ScheduleWidgetDayEventAttValues = Record<ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue>;
 
-export interface ScheduleWidgetAppAttBasic<AttValue extends any = any> {
+export type ScheduleWidgetAppAttBasic<AttValue extends any = any> = Record<`[SCH]:${string}`, unknown> & {
   icon: KnownIconName;
   title: string;
+  im?: `[SCH]:${string}` | nil;
   description: string;
   initVal: AttValue;
   isCustomize?: true;
@@ -137,7 +138,7 @@ export interface ScheduleWidgetAppAttBasic<AttValue extends any = any> {
   U: number;
   Us?: IScheduleWidgetUserMi[] | nil;
   routes?: 'React.ReactNode' | any;
-}
+};
 
 export type ScheduleWidgetAppAttCustomizableValueItem = [
   string | number | boolean,

@@ -13,6 +13,8 @@ import {
   IScheduleWidgetDayEvent,
   IScheduleWidgetUser,
   IScheduleWidgetWid,
+  ScheduleWidgetAttKey,
+  ScheduleWidgetDayEventAttValue,
 } from '../../models/ScheduleWidget.model';
 import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../rights';
 import ScheduleWidgetCleans from '../utils/Cleans';
@@ -161,27 +163,33 @@ export const indexScheduleSetMessageInform = (
               if (nextTimedEventi > -1) break;
             }
 
+            const map = ([key, value]: [ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValue]) => {
+              const [, , attMi] = key.split(':');
+
+              return (
+                attInformStorage[key]?.(
+                  value,
+                  isSetAttTitle ? ` (${schedule.types[event.type].title})` : '',
+                  schedule,
+                  dayi,
+                  event,
+                  attMi || '-',
+                ) ?? ''
+              );
+            };
+
             for (let attEventi = eventi; attEventi < day.list.length; attEventi++) {
               const event = day.list[attEventi];
               const eventTm = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
+
+              if (!event.atts) continue;
+
               const attEntries = SMyLib.entries(event.atts);
 
               if (!eventTm) isSetAttTitle = true;
               if (!isSetAttTitle && (event.atts == null || !attEntries.length)) break;
 
-              const attText = attEntries
-                .map(
-                  // eslint-disable-next-line no-loop-func
-                  ([key, value]) =>
-                    attInformStorage[key]?.(
-                      value,
-                      isSetAttTitle ? ` (${schedule.types[event.type].title})` : '',
-                      schedule,
-                      dayi,
-                      event,
-                    ) ?? '',
-                )
-                .join('');
+              const attText = attEntries.map(map).join('');
 
               if (attText) attsText += newPointLineMarker + attText;
               if (eventTm) break;

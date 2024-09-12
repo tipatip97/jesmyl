@@ -69,7 +69,7 @@ export default function CmExternalComListAttRedactList({ value, scope, setCcom, 
               onTermChange={term => setTerm(term)}
             />
             <div className="margin-gap-t full-height full-width over-y-auto">
-              {cat.wraps.map((wrap, wrapi) => {
+              {cat.wraps.slice(0, 30).map((wrap, wrapi) => {
                 const isIncludes = value.comws?.includes(wrap.item.wid);
 
                 return (
@@ -123,14 +123,16 @@ export default function CmExternalComListAttRedactList({ value, scope, setCcom, 
               value.eventw === event.wid ? (
                 <StrongEvaButton
                   scope={scope}
-                  fieldName="eventw"
+                  fieldName="singleKey"
+                  fieldKey="eventw"
                   cud="D"
                   Icon={IconCheckmarkSquare02StrokeRounded}
                 />
               ) : (
                 <StrongEvaButton
                   scope={scope}
-                  fieldName="eventw"
+                  fieldName="singleKey"
+                  fieldKey="eventw"
                   fieldValue={event.wid}
                   cud="U"
                   Icon={IconSquareStrokeRounded}

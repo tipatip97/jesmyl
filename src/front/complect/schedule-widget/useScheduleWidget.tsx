@@ -184,6 +184,7 @@ export type ScheduleWidgetScopePhase =
   | 'schw'
   | 'typei'
   | 'attKey'
+  | 'imAttKey'
   | 'dayi'
   | 'eventMi'
   | 'titlei'
