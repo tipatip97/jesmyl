@@ -4,6 +4,7 @@ import {
   ExecutionMethod,
   ExecutionSidesDict,
   ExecutionTrack,
+  ExecutorRuleReadRejecton,
 } from './complect/executer/Executer.model';
 import { LocalSokiAuth } from './complect/soki/soki.model';
 import { knownIconNames } from './knownIconNames';
@@ -44,7 +45,7 @@ export interface ActionBox<Value = any>
   isSequre?: boolean;
   setSystems?: ActionBoxSetSystems[];
   setItemSystems?: ActionBoxSetSystems[];
-  RRej?: number;
+  RRej?: ExecutorRuleReadRejecton;
   C?: ActionCRUD;
   U?: ActionCRUD;
   D?: ActionCRUD;
@@ -65,7 +66,7 @@ export interface ActionCRUD {
   setSystems?: ActionBoxSetSystems[];
   setItemSystems?: ActionBoxSetSystems[];
   uniqs?: string[];
-  RRej?: boolean | number;
+  RRej?: ExecutorRuleReadRejecton;
   shortTitle?: string;
   canBeUnauthorized?: boolean;
   title?: string | ((args: Record<string, unknown>) => string);
