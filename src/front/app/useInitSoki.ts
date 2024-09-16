@@ -4,13 +4,14 @@ import { soki } from '../soki';
 import { AppName } from './App.model';
 
 export const useInitSoki = (topAppName?: AppName) => {
-  const appName = useParams().appName ?? topAppName ?? 'index';
+  const params = useParams();
+  const appName = (topAppName ?? params.appName ?? 'index') as AppName;
 
   useEffect(() => {
     if (appName === undefined) return;
 
     return hookEffectLine()
-      .setTimeout(() => soki.pullCurrentAppData(appName as AppName), 500)
+      .setTimeout(() => soki.pullCurrentAppData(appName), 500)
       .effect();
   }, [appName]);
 };
