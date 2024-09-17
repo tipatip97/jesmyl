@@ -148,7 +148,7 @@ export default function IndexLoginAuth() {
               </>
             ) : null}
             <TheButton
-              className="send-button"
+              className="send-button pointer"
               disabled={MyLib.values(errors).filter(itNNil).length > 0}
               onClick={async () => {
                 if (mode === 'check') return;
@@ -252,13 +252,11 @@ export const LoginIndex = styled(PhaseContainerConfigurer)`
       > .the-icon {
         position: absolute;
         right: var(--padding-h);
-        cursor: pointer;
       }
     }
   }
 
   .send-button {
-    cursor: pointer;
     margin: 1.5em 0;
     border-radius: 0.8em;
     background-color: var(--color--3);

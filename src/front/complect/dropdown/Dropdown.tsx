@@ -33,7 +33,7 @@ export default function Dropdown<Id, Item extends DropdownItem<Id> = DropdownIte
   return (
     <Selector
       className={
-        'dropdown-selector flex between ' +
+        'dropdown-selector flex between pointer' +
         (props.className || '') +
         (isDropped ? ' dropped' : '') +
         (props.disabled ? ' disabled' : '')
@@ -124,7 +124,6 @@ const Selector = styled.div`
 
   position: relative;
   z-index: 300;
-  cursor: pointer;
   border-radius: 5px;
   background-color: var(--color--2);
   padding: 10px;

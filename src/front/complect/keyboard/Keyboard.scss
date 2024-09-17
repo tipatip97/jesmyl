@@ -57,7 +57,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
       border-radius: 0.2em;
       padding: 0.2em;
       width: 2.3em;
@@ -163,7 +162,6 @@
   --cursor-border: 1px solid var(--cursor-border-color);
 
   position: relative;
-  cursor: text;
   width: 100%;
   text-align: inherit;
 
@@ -334,7 +332,6 @@
     font-size: 0.7em;
 
     > * {
-      cursor: pointer;
       padding: 0.3em;
 
       &:not(:last-child):after {

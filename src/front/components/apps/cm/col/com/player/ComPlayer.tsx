@@ -182,7 +182,6 @@ const StyledPlayer = styled.div`
 
   .player-track {
     position: relative;
-    cursor: pointer;
     border-radius: 5px;
     background: var(--color--1);
     width: calc(100% - 80px);

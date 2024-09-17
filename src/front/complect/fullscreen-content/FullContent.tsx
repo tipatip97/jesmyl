@@ -55,7 +55,7 @@ export function FullContent({ onClose, closable, children, className, asRootAnch
           {closable || (
             <StyledCloseButton
               Icon={IconCancel01StrokeRounded}
-              className="close-button"
+              className="pointer close-button"
               onClick={close}
             />
           )}
@@ -134,7 +134,6 @@ const StyledContainerWrapper = styled.div`
     top: 10px;
     right: 10px;
     z-index: 100;
-    cursor: pointer;
   }
 `;
 

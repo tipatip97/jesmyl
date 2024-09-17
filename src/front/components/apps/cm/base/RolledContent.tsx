@@ -44,7 +44,7 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
       ref={containerRef}
       className={'roll-controled-container full-width full-height' + (isFullscreen ? ' fullscreen' : '')}
     >
-      <div className={'roll-controls flex column center' + (isRolling ? ' open' : '')}>
+      <div className={'roll-controls pointer flex column center' + (isRolling ? ' open' : '')}>
         <IconMinusSignStrokeRounded
           onClick={event => {
             event.stopPropagation();
@@ -83,7 +83,6 @@ const RollContent = styled.div`
     opacity: 0;
     z-index: 1;
     transition: opacity 0.7s;
-    cursor: pointer;
     height: var(--height);
     pointer-events: none;
 

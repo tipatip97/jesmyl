@@ -101,7 +101,7 @@ export class KeyboardInputStorage extends KeyboardStorageCallbacks {
           )}
         </div>
         {this.nullOrContextMenu() && (
-          <div className="menu-actions-with-selected">
+          <div className="menu-actions-with-selected pointer">
             {this.nullOrCanSelectAll() && <div onMouseDown={this.onSelectAllButton}>Выделить всё</div>}
             {this.nullOrCanCopy() && <div onMouseDown={this.onCopyButton}>Копировать</div>}
             {this.nullOrCanPaste() && <div onMouseDown={this.onPasteButton}>Вставить</div>}

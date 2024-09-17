@@ -111,57 +111,64 @@ export class EditableComCutBlock extends EditableComParseBlocks {
       };
 
       repeatedText.split('\n').forEach((line, linei) => {
-        const linePoss: (null | number)[] | und = ord.p?.[linei]?.toSorted(sortNums);
+        const linePositions: (null | number)[] | und = ord.p?.[linei]?.toSorted(sortNums);
 
-        if (linePoss == null) return;
+        if (linePositions == null) return;
 
-        let prevLen = 0;
+        let prevLineSegmentVowelsLength = 0;
 
-        if (linePoss[0] === -2) {
-          linePoss.splice(0, 1);
-          linePoss.push(-2);
+        if (linePositions[0] === -2) {
+          linePositions.splice(0, 1);
+          linePositions.push(-2);
         }
 
-        line.split('$').forEach(part => {
-          let linePos: null | number = null;
-          const partVowels = this.getVowelPositions(part);
+        line.split('$').forEach((segment, segmenti, segmenta) => {
+          const lineSegmentVowels = this.getVowelPositions(segment);
 
-          const partPositions: number[] = [];
-          positions.push(partPositions);
+          console.log({ segment });
 
-          const partChordLabels: string[] = [];
-          chordLabels.push(partChordLabels);
+          const lineSegmentPositions: number[] = [];
+          positions.push(lineSegmentPositions);
 
-          for (let posi = 0; posi < linePoss.length; posi++) {
-            linePos = linePoss[posi];
+          const lineSegmentChordLabels: string[] = [];
+          chordLabels.push(lineSegmentChordLabels);
 
-            if (linePos === null) continue;
-            if (linePos < 0) {
-              pushChord(partChordLabels);
+          for (let posi = 0; posi < linePositions.length; posi++) {
+            const positionInLine = linePositions[posi];
 
-              if (linePos === -1) {
-                if (partPositions.length === 0) partPositions.push(linePos);
-              } else if (linePos === -2) {
-                if (partPositions.length !== 0) partPositions.push(linePos);
+            console.log({ positionInLine });
+
+            if (positionInLine === null) continue;
+
+            if (positionInLine < 0) {
+              pushChord(lineSegmentChordLabels);
+
+              if (positionInLine === -1) {
+                if (lineSegmentPositions.length === 0) lineSegmentPositions.push(positionInLine);
+              } else if (positionInLine === -2) {
+                console.log({ segment2: segment });
+                if (segment.endsWith(' ') || segmenti === segmenta.length - 1)
+                  lineSegmentPositions.push(positionInLine);
               }
 
-              linePoss[posi] = null;
+              linePositions[posi] = null;
 
               continue;
             }
 
-            if (linePos >= partVowels.length + prevLen) break;
+            if (positionInLine >= lineSegmentVowels.length + prevLineSegmentVowelsLength) break;
 
-            partPositions.push(linePos - prevLen - (part.startsWith(' ') ? 1 : 0));
-            linePoss[posi] = null;
+            lineSegmentPositions.push(positionInLine - prevLineSegmentVowelsLength - (segment.startsWith(' ') ? 1 : 0));
+            linePositions[posi] = null;
 
-            pushChord(partChordLabels);
+            pushChord(lineSegmentChordLabels);
           }
 
-          const lasti = partVowels[partPositions[partPositions.length - 1]];
-          if (part[lasti] === ' ' && part.length - 1 === lasti) partPositions[partPositions.length - 1] = -2;
+          const lasti = lineSegmentVowels[lineSegmentPositions[lineSegmentPositions.length - 1]];
+          if (segment[lasti] === ' ' && segment.length - 1 === lasti)
+            lineSegmentPositions[lineSegmentPositions.length - 1] = -2;
 
-          prevLen += partVowels.length;
+          prevLineSegmentVowelsLength += lineSegmentVowels.length;
         });
       });
 

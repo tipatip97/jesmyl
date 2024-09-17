@@ -258,7 +258,7 @@ export default function ComRepeats() {
                     style={pos as CSSProperties}
                   >
                     <div
-                      className="button close"
+                      className="button close pointer"
                       onClick={event => {
                         event.stopPropagation();
                         reset();
@@ -281,7 +281,7 @@ export default function ComRepeats() {
                       return (
                         <div
                           key={currFlashCount}
-                          className={`button numeric${flashCount === currFlashCount ? ' active' : ''}`}
+                          className={`button pointer numeric${flashCount === currFlashCount ? ' active' : ''}`}
                           onClick={() => setFlashCount(currFlashCount)}
                         >
                           {currFlashCount}
@@ -290,7 +290,7 @@ export default function ComRepeats() {
                     })}
                     {isChordBlock || (
                       <div
-                        className="button flag"
+                        className="button flag pointer"
                         onClick={() => {
                           setField(
                             startOrd,
@@ -346,7 +346,6 @@ const Content = styled.div`
       justify-content: center;
       align-items: center;
       opacity: 1;
-      cursor: pointer;
       margin-left: 0.2em;
       border-radius: 0.3em;
 

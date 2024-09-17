@@ -40,7 +40,9 @@ export const HumansMoreContenter: BottomPopupContenter<{
                 setHumanListSortVariant(next);
               },
               rightNode: (
-                <div className="abs-action abs-full flex center">{humanFieldTranslations[humanListSortVariant]}</div>
+                <div className="pointer abs-action abs-full flex center">
+                  {humanFieldTranslations[humanListSortVariant]}
+                </div>
               ),
             },
           ],

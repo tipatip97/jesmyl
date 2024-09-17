@@ -1,4 +1,5 @@
 import { createGlobalStyle, css } from 'styled-components';
+import { cursors } from './cursorsBase64';
 
 const lightColors = (selector: string) => css`
   ${selector && `${selector} {`}
@@ -12,6 +13,18 @@ const lightColors = (selector: string) => css`
   --color--8: #fbfdf8;
   --color--ok: #47bb00;
   --color--ko: #ec6969;
+
+  &,
+  * {
+    ${cursors.defaultDark}
+  }
+
+  input[type='radio'],
+  input[type='button'],
+  .pointer,
+  .pointer * {
+    ${cursors.pointerDark}
+  }
   ${selector && '}'}
 `;
 
@@ -27,6 +40,18 @@ const darkColors = (selector: string) => css`
   --color--8: #fbfdf8;
   --color--ok: #9bec69;
   --color--ko: #ec6969;
+
+  &,
+  * {
+    ${cursors.defaultLight}
+  }
+
+  input[type='radio'],
+  input[type='button'],
+  .pointer,
+  .pointer * {
+    ${cursors.pointerLight}
+  }
   ${selector && '}'}
 `;
 

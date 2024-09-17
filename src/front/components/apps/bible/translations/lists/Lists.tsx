@@ -18,8 +18,6 @@ export default function BibleLists() {
 
 const Lists = styled.div`
   .bible-list-face {
-    cursor: pointer;
-
     &.current {
       background-color: var(--color--3);
       color: var(--color--1);

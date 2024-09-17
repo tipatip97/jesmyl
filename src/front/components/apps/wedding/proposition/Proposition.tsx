@@ -178,11 +178,11 @@ export default function WeddingProposition() {
                 <ConfButtonsWrapper className={guest.w != null ? 'display-none' : undefined}>
                   <InStockImg file="confButtons" />
                   <div
-                    className="will"
+                    className="will pointer"
                     onClick={myAnswerSetter(guest, WedGuestWillBe.Yes, setGuest, setIsAnswerLoading)}
                   />
                   <div
-                    className="no"
+                    className="no pointer"
                     onClick={myAnswerSetter(guest, WedGuestWillBe.No, setGuest, setIsAnswerLoading)}
                   />
                 </ConfButtonsWrapper>
@@ -363,7 +363,6 @@ const ConfButtonsWrapper = styled.div`
     top: 0;
     width: 49%;
     height: 80%;
-    cursor: pointer;
   }
 
   .will {

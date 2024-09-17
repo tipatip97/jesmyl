@@ -69,7 +69,6 @@
 
       &.shadow {
         stroke: grey;
-        cursor: pointer;
       }
 
       &.problem {
@@ -84,7 +83,6 @@
   }
 
   .chord-bare-adder {
-    cursor: pointer;
     fill: var(--color--1);
     stroke: var(--color--1);
 
@@ -95,7 +93,6 @@
   }
 
   .mute-string-indicator {
-    cursor: pointer;
     font-size: 15px;
 
     &:not(.button) {
@@ -103,7 +100,7 @@
     }
 
     &.button {
-      stroke: var(--color--4);
+      stroke: var(--color--ko);
       opacity: 0.7;
     }
   }

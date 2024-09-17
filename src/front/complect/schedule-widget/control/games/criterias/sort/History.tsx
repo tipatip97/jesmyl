@@ -86,6 +86,7 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenHistory({
       $point={point}
     >
       <StyledUndo
+        className="pointer"
         onClick={() => {
           const newPoint = point === null ? history.length - 1 : point - 1;
           setPoint(newPoint);
@@ -96,6 +97,7 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenHistory({
         }}
       />
       <StyledRedo
+        className="pointer"
         onClick={() => {
           const newPoint = point === null ? history.length - 1 : point + 1;
           setPoint(newPoint);
@@ -108,7 +110,6 @@ export default function ScheduleWidgetTeamsCriteriaSorterScreenHistory({
 
 const navCss = css`
   scale: 2;
-  cursor: pointer;
 `;
 
 const StyledUndo = styled(IconLinkBackwardStrokeRounded)`

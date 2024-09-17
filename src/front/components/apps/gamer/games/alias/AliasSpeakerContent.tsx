@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { isTouchDevice } from '../../../../../complect/device-differences';
-import IconButton from '../../../../../complect/the-icon/IconButton';
-import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import IconButton from '../../../../../complect/the-icon/IconButton';
+import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
+import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import { useMyPossibilitiesCurrentRoom } from '../../complect/rooms/room/hooks/possibilities';
 import { GamerAliasRoomStatePhase } from './Alias.model';
 import GamerAliasTimer from './AliasTimer';
@@ -11,7 +12,6 @@ import { useAliasComputeScore } from './hooks/compute-score';
 import { useAliasCurrentTeamNaked } from './hooks/current-team';
 import { useAliasSimpleExecs, useAliasStrikeWord } from './hooks/execs';
 import { useAliasRoomState } from './hooks/state';
-import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 
 const altWordInfo = { minus: 0, weight: 0, plus: 0 };
 
@@ -65,10 +65,10 @@ export default function AliasSpeakerContent() {
         >
           <GamerAliasTimer onTimeOut={setIsTimeOut} />
           {state?.phase === GamerAliasRoomStatePhase.Speech ? (
-            <div className="round-button flex center">{state.winfo?.word}</div>
+            <div className="round-button flex center pointer">{state.winfo?.word}</div>
           ) : (
             <div
-              className="round-button flex center"
+              className="round-button flex center pointer"
               onClick={startSpeech}
             >
               Начать
@@ -145,10 +145,6 @@ const ShowWordArea = styled.div`
   position: relative;
   padding: 30px 0;
   overflow-y: scroll;
-
-  .round-button {
-    cursor: pointer;
-  }
 
   &.speech {
     .round-button {

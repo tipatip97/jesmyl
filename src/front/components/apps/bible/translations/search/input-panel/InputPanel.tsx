@@ -23,18 +23,21 @@ export default function BibleSearchInputPanel({ inputRef, putOnSearchZone }: Pro
         <BibleSearchPanelSearchInput inputRef={inputRef} />
       )}
       <SwitchButton
+        className="pointer"
         $active={searchZone === 'global'}
         onClick={putOnSearchZone('global')}
       >
         текст
       </SwitchButton>
       <SwitchButton
+        className="pointer"
         $active={searchZone === 'inner'}
         onClick={putOnSearchZone('inner')}
       >
         глава
       </SwitchButton>
       <SwitchButton
+        className="pointer"
         $active={searchZone === 'address'}
         onClick={putOnSearchZone('address')}
       >
@@ -45,8 +48,6 @@ export default function BibleSearchInputPanel({ inputRef, putOnSearchZone }: Pro
 }
 
 const SwitchButton = styled.div<{ $active: boolean }>`
-  cursor: pointer;
-
   ${props =>
     props.$active &&
     css`

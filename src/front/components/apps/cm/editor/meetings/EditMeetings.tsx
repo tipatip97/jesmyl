@@ -6,7 +6,6 @@ import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import EditMeetingsEvent from './EditMeetingsEvent';
 import { EditMeetingsMore } from './EditMeetingsMore';
-import './Meetings.scss';
 import { useEditableMeetings } from './useEditableMeetings';
 
 export default function EditMeetings() {

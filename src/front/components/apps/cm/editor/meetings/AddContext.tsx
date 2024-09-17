@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
+import styled from 'styled-components';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
+import { IconCalendar01StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-01';
 import { EditableMeetingsEvent } from './EditableMeetingsEvent';
 import { useEditableMeetings } from './useEditableMeetings';
-import { IconCalendar01StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-01';
 
 export default function AddContext({ close, currPath }: { close: () => void; currPath: number[] }) {
   const [name, setName] = useState('');
@@ -22,13 +23,13 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
         .filter(ctx => ctx.toLowerCase().search(name.toLowerCase()) > -1)
         .map(context => {
           return (
-            <div
+            <Item
               key={context}
-              className="context-item"
+              className="context-item pointer"
               onClick={() => setName(context)}
             >
               {context}
-            </div>
+            </Item>
           );
         }),
     [contexts, name],
@@ -88,3 +89,8 @@ export default function AddContext({ close, currPath }: { close: () => void; cur
     </div>
   );
 }
+
+const Item = styled.div`
+  margin: 0.5em;
+  padding: 0.5em;
+`;

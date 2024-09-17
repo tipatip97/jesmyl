@@ -270,7 +270,6 @@ const Main = styled.div`
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
-    cursor: pointer;
   }
 
   /* Removes default focus */

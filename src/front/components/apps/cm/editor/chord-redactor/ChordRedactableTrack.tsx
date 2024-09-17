@@ -51,7 +51,7 @@ export default function ChordRedactableTrack({
                   return (
                     <polygon
                       key={lad}
-                      className={`chord-bare-adder ${isBare ? 'fill' : ''}`}
+                      className={`chord-bare-adder pointer ${isBare ? 'fill' : ''}`}
                       points={`${x1},${y1} ${x2},${y2} ${x3},${y2}`}
                       onClick={() => {
                         modifyTrack(track => {
@@ -122,7 +122,7 @@ export default function ChordRedactableTrack({
                         return (
                           <polyline
                             key={ladNum}
-                            className={`chord-point shadow${isProblem ? ' problem' : ''}`}
+                            className={`chord-point shadow pointer${isProblem ? ' problem' : ''}`}
                             points={`${x},${y} ${x},${y}`}
                             onClick={() => {
                               modifyTrack(track => {

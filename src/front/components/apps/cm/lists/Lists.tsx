@@ -66,7 +66,7 @@ export default function Lists() {
                     return !cat.wid ? null : (
                       <Link
                         key={cat.wid}
-                        className="item flex"
+                        className="pointer item flex"
                         to={`cat/${cat.wid}`}
                       >
                         <IconBookOpen02StrokeRounded className="margin-big-gap" />

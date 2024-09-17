@@ -104,11 +104,6 @@ body,
   color: var(--color--ok);
 }
 
-input[type='radio'],
-input[type='button'] {
-  cursor: pointer;
-}
-
 .inline-block {
   display: inline-block;
 }
@@ -544,11 +539,6 @@ textarea {
 
 .non-overscroll {
   overscroll-behavior: none;
-}
-
-.pointer,
-.pointer-children > * {
-  cursor: pointer;
 }
 
 .text-height-block {

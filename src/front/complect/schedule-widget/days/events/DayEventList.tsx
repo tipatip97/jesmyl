@@ -126,7 +126,7 @@ export default function ScheduleWidgetDayEventList({
                 key={event.mi}
                 className={
                   'day-event-wrapper flex flex-gap' +
-                  (moveEventMi === event.mi ? ' move-me' : '') +
+                  (moveEventMi === event.mi ? ' move-me pointer' : '') +
                   (isNeighbour ? ' neighbour' : '') +
                   (eventi === 0 ? ' first' : '')
                 }
@@ -242,7 +242,6 @@ const ScheduleWidgetDayEventWrapper = styled.div`
 
   &.move-me {
     opacity: 0.5;
-    cursor: pointer;
   }
 
   > .insert-panel {

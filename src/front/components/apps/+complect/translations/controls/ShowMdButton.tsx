@@ -16,7 +16,10 @@ export const ScreenTranslationControlPanelShowMdButton = memo(function ShowMdBut
 
   if (Parent)
     return (
-      <Parent onClick={onClick}>
+      <Parent
+        onClick={onClick}
+        className="pointer"
+      >
         <IconButton Icon={isCanShowTextTranslation ? IconTvSmartSolidRounded : IconTvSmartStrokeRounded} />
       </Parent>
     );

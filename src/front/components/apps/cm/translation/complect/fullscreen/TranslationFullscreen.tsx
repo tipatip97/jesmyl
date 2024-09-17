@@ -49,7 +49,7 @@ export default function TranslationFullscreen() {
           subUpdates={forceUpdates}
         />
         <div
-          className="top-area info-area left"
+          className="top-area info-area left pointer"
           onDoubleClick={prevCom}
         >
           <div className="description">
@@ -59,7 +59,7 @@ export default function TranslationFullscreen() {
           </div>
         </div>
         <div
-          className="top-area info-area right"
+          className="top-area info-area right pointer"
           onDoubleClick={nextCom}
         >
           <div className="description">
@@ -69,11 +69,11 @@ export default function TranslationFullscreen() {
           </div>
         </div>
         <IconCancel01StrokeRounded
-          className="close-info-button"
+          className="close-info-button pointer"
           onClick={() => setIsShowInfo(false)}
         />
         <div
-          className="bottom-area info-area left"
+          className="bottom-area info-area left pointer"
           onClick={prevText}
         >
           <div className="description">
@@ -83,7 +83,7 @@ export default function TranslationFullscreen() {
           </div>
         </div>
         <div
-          className="bottom-area info-area right"
+          className="bottom-area info-area right pointer"
           onClick={nextText}
         >
           <div className="description">
@@ -226,7 +226,6 @@ const StyledWrapper = styled.div`
     top: var(--half-safe-gap);
     right: var(--half-safe-gap);
     opacity: 0;
-    cursor: pointer;
     pointer-events: none;
   }
 
@@ -239,7 +238,6 @@ const StyledWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     color: #0000;
     text-align: center;
   }

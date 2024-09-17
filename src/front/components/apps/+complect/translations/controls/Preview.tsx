@@ -15,7 +15,7 @@ export const TranslationSlidePreview = ({ isPreview = true }: Props) => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   return (
-    <Wrapper>
+    <Wrapper className="pointer">
       {isSettingsOpen && currentConfig && (
         <FullContent onClose={setIsSettingsOpen}>
           <div className="flex center margin-big-gap-t">
@@ -93,7 +93,6 @@ const Wrapper = styled.div`
   user-select: none;
   white-space: pre;
 
-  cursor: pointer;
   border-radius: var(--radius);
 `;
 

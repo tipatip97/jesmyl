@@ -43,7 +43,7 @@ export default function EditContainerCorrectsInformer(
                   {message}
                   {onFix && (
                     <div
-                      className="fix-button"
+                      className="fix-button pointer"
                       onClick={() => onFix()}
                     >
                       {fixLabel || 'Исправить'}

@@ -31,7 +31,7 @@ export default function ChordApplicationsRedactor() {
               return (
                 <div>
                   <div
-                    className={`pre binder ${linePoss?.includes(-1) ? 'active' : ''}`}
+                    className={`pre binder pointer${linePoss?.includes(-1) ? ' active' : ''}`}
                     onClick={() => exec(ord?.setChordPosition(textLinei, -1))}
                   />
                   <ComLine
@@ -56,7 +56,7 @@ export default function ChordApplicationsRedactor() {
                     }}
                   />
                   <div
-                    className={'post binder' + (linePoss?.includes(-2) ? ' active' : '')}
+                    className={'post binder pointer' + (linePoss?.includes(-2) ? ' active' : '')}
                     onClick={() => {
                       exec(ord?.setChordPosition(textLinei, -2));
                     }}
@@ -89,7 +89,6 @@ const Content = styled.div`
   .binder {
     display: inline-block;
     vertical-align: middle;
-    cursor: pointer;
     background-color: var(--color--2);
     width: 1em;
     height: 1em;

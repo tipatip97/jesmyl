@@ -86,7 +86,6 @@ const ContainerPhase = styled.div<{ $withoutFooter: boolean | und }>`
     height: var(--header-height);
 
     .action-button {
-      cursor: pointer;
       padding: var(--main-gap);
     }
   }

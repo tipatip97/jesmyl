@@ -4,7 +4,7 @@ import { BottomPopupContentProps, BottomPopupSkeletIcon } from './model';
 
 export const bottomPopupContentPreparer = ({ items, footer }: BottomPopupContentProps) => {
   return (
-    <div className="abs-item flex column">
+    <div className="pointer abs-item flex column">
       {items.map((item, itemi) => {
         if (!item) return null;
         const map = (item: BottomPopupSkeletIcon, itemi: number): ReactNode => {
@@ -17,7 +17,7 @@ export const bottomPopupContentPreparer = ({ items, footer }: BottomPopupContent
             <div
               key={itemi}
               {...other}
-              className={`abs-item ${className || ''}`}
+              className={`pointer abs-item ${className || ''}`}
             >
               {anchorNode}
               <div className="flex flex-gap">

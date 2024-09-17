@@ -18,7 +18,7 @@ export default function TheButton({
         return (
           <Button
             {...props}
-            className={`the-button ${props.className || ''}${disabled ? ' disabled' : ''}`}
+            className={`the-button pointer ${props.className || ''}${disabled ? ' disabled' : ''}`}
             onClick={async event => {
               if (onClick && (await onConfirm())) onClick(event);
             }}
@@ -32,7 +32,6 @@ export default function TheButton({
 const Button = styled.div`
   display: inline-block;
   position: relative;
-  cursor: pointer;
   border: var(--color--2) 4px solid;
   border-radius: 2em;
   padding: 0.5em 2.2em;

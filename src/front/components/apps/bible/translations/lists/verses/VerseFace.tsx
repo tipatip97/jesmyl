@@ -11,7 +11,7 @@ export default memo(function BibleVerseFace({ versei, verse }: Props): JSX.Eleme
   return (
     <Face
       id={verseIdPrefix + versei}
-      className="bible-list-face"
+      className="bible-list-face pointer"
       dangerouslySetInnerHTML={{ __html: `${versei + 1}. ${verse}` }}
     />
   );
@@ -19,7 +19,6 @@ export default memo(function BibleVerseFace({ versei, verse }: Props): JSX.Eleme
 
 const Face = styled.div`
   max-width: 100%;
-  cursor: pointer;
   transition-property: background-color, color;
   transition-duration: 0.5s;
 

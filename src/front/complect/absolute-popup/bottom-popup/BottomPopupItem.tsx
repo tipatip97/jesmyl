@@ -26,6 +26,7 @@ export const BottomPopupItem = ({
     <StyledItem
       {...attrs}
       onClick={onClick}
+      className={'pointer ' + (attrs.className || '')}
     >
       <div className="flex flex-gap">
         <div className={`icon-box ${iconWrapperClassName || ''}`}>
@@ -45,21 +46,16 @@ const StyledItem = styled.div`
   padding: 7px 0;
   display: flex;
   align-items: center;
-  cursor: pointer;
   width: 100%;
   max-width: 450px;
 
   &.abs-full {
-    cursor: pointer;
-
     .abs-action {
       width: calc(6em + 20px);
     }
   }
 
   .abs-action {
-    cursor: pointer;
-
     > .abs-full,
     &.abs-full {
       width: calc(6em + 20px);

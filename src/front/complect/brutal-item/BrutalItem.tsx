@@ -18,7 +18,7 @@ export default function BrutalItem({
   onClick?: () => void;
 }) {
   const inner = (
-    <Item className="flex between relative">
+    <Item className="pointer flex between relative">
       <div className="nowrap over-hidden flex center">
         <div className="margin-big-gap">{icon}</div>
         <div className="ellipsis inline-block">{title}</div>
@@ -57,7 +57,6 @@ const Item = styled.div`
   --brutal-item-height: 60px;
   --brutal-item-gap-v: 7px;
 
-  cursor: pointer;
   margin-top: var(--brutal-item-gap-v);
   border-radius: 10px;
   background-color: var(--color--2);

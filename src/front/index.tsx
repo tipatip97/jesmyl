@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
+import { RuleSet, ThemeProvider } from 'styled-components';
 import App from './app/App';
 import { setPolyfills } from './complect/polyfills';
 import './index.scss';
@@ -36,6 +36,7 @@ export const renderComponentInNewWindow = (
   target?: string,
   features?: string,
   htmlNode?: HTMLElement,
+  addStyle?: RuleSet<object>,
 ) => {
   const linkNode = document.querySelector("link[href][rel='stylesheet']") as HTMLLinkElement | null;
 
@@ -52,6 +53,8 @@ export const renderComponentInNewWindow = (
     });
     style.innerText = styles;
   }
+
+  if (addStyle) style.innerText += addStyle;
 
   const win = window.open(url, target, features);
   if (win) {

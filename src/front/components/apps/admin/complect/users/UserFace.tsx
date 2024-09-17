@@ -9,7 +9,7 @@ export default function UserFace({ user }: { user: User }) {
   const { goTo } = useAdminNav();
   return (
     <div
-      className="user-face flex between full-width"
+      className="user-face pointer flex between full-width"
       onClick={() => goTo({ place: 'user', data: { cuser: user.login } })}
       {...propsOfClicker({ onCtxMenu: event => event.preventDefault() })}
     >

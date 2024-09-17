@@ -7,7 +7,7 @@ export default memo(function BibleChapterFace({ chapteri }: { chapteri: number }
   return (
     <div
       id={'bible-chapteri-' + chapteri}
-      className="bible-list-face"
+      className="bible-list-face pointer"
       onClick={putValSetter(chapteri)}
     >
       {chapteri + 1}

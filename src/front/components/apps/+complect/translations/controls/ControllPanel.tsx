@@ -25,15 +25,21 @@ export const ScreenTranslationControlPanel = memo(function ControlPanel({ onNext
 
   return (
     <div className="flex flex-gap between margin-big-gap-t">
-      <ControlButton onClick={onPrev}>
+      <ControlButton
+        className="pointer"
+        onClick={onPrev}
+      >
         <IconArrowLeft01StrokeRounded />
       </ControlButton>
-      <ControlButton onClick={onNext}>
+      <ControlButton
+        className="pointer"
+        onClick={onNext}
+      >
         <IconArrowRight01StrokeRounded />
       </ControlButton>
       <ControlButton
         title={currWin ? '' : 'Enter'}
-        className="start-translation flex"
+        className="start-translation flex pointer"
         disabled={!configs.length}
         onClick={watchTranslation}
       >
@@ -41,6 +47,7 @@ export const ScreenTranslationControlPanel = memo(function ControlPanel({ onNext
       </ControlButton>
       <ScreenTranslationControlPanelShowMdButton Parent={ControlButton} />
       <ControlButton
+        className="pointer"
         title="esc"
         onClick={() => switchIsVisible()}
       >
@@ -54,7 +61,6 @@ const ControlButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   border-radius: 15px;
   background-color: var(--color--1);
   width: 100%;

@@ -306,7 +306,7 @@ export const KEYBOARD_FLASH = memo(function ({
   ) => {
     return (
       <div
-        className={`keyboard-flash-key ${className} ${keyInFix === key ? 'key-in-fix' : ''}`}
+        className={`keyboard-flash-key pointer ${className} ${keyInFix === key ? 'key-in-fix' : ''}`}
         onMouseUp={onMouseUp || (() => currentInput.write(key))}
         onMouseDown={event => {
           event.stopPropagation();

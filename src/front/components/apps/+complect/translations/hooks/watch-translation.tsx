@@ -57,8 +57,27 @@ export const useWatchScreenTranslations = () => {
           );
         },
         undefined,
-        'cm-translation-window' + windowi,
-        `top=${100 * windowi},left=30000,width=30000,height=30000`,
+        undefined,
+        `top=10000,left=30000,width=30000,height=30000,directories=0,titlebar=0,toolbar=0,location=0,status=0,menubar=0,scrollbars=no`,
+        undefined,
+        css`
+          body {
+            * {
+              transition: filter 0.3s;
+              transition-delay: 0.2s;
+            }
+
+            &:not(:fullscreen) * * * {
+              filter: blur(50px);
+              opacity: 0;
+            }
+
+            &:fullscreen * * * {
+              filter: blur(0px);
+              opacity: 1;
+            }
+          }
+        `,
       );
 
     const len = configs.length - windows.length;

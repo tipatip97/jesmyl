@@ -34,7 +34,6 @@ const Screen = styled.div`
   }
 
   > .item {
-    cursor: pointer;
     margin-top: 10px;
     width: 100%;
     height: 30px;

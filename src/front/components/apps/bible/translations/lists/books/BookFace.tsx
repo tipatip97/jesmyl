@@ -13,7 +13,7 @@ export default memo(function BibleBookFace({ titles, booki }: Props): JSX.Elemen
   return (
     <Face
       id={'bible-booki-' + booki}
-      className="bible-list-face"
+      className="bible-list-face pointer"
       onClick={() => setValue(booki, 0, 0)}
     >
       {booki + 1} <span className="title">{titles[1]}</span>

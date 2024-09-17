@@ -20,7 +20,7 @@ export const CmTranslationSlideLine = () => {
                 onClick={() => setTexti(texti)}
               >
                 <div>{texti + 1}</div>
-                <CmSlideLineItemInnerStyle className={currTexti === texti ? 'active' : ''}>
+                <CmSlideLineItemInnerStyle className={'pointer ' + (currTexti === texti ? 'active' : '')}>
                   <div dangerouslySetInnerHTML={{ __html: text }} />
                 </CmSlideLineItemInnerStyle>
               </LineItem>
@@ -32,9 +32,8 @@ export const CmTranslationSlideLine = () => {
   );
 };
 
-export const CmSlideLineItemInnerStyle = styled.div`
+const CmSlideLineItemInnerStyle = styled.div`
   display: flex;
-  cursor: pointer;
   border: solid 1px transparent;
   background: black;
   padding: 5px;

@@ -33,7 +33,7 @@ export default function AppFooterItem({ to, iconPack, title, search }: Props) {
   return (
     <StyledLink
       to={to}
-      className={isActive ? 'active' : undefined}
+      className={'pointer ' + (isActive ? 'active' : '')}
     >
       <div className="icon-container">{isActive ? <iconPack.TwotoneRounded /> : <iconPack.BulkRounded />}</div>
       <div className="title">{title}</div>
@@ -45,7 +45,6 @@ const StyledLink = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
   width: 25%;
 
   > .icon-container {

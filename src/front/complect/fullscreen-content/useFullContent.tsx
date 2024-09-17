@@ -60,7 +60,7 @@ export default function useFullContent<PassValue>(
           {mode === 'closable' ? null : (
             <IconButton
               Icon={IconCancel01StrokeRounded}
-              className="close-button"
+              className="pointer close-button"
               onClick={onClose}
             />
           )}
@@ -92,7 +92,6 @@ const ContainerWrapper = styled.div`
       top: 10px;
       right: 10px;
       z-index: 100;
-      cursor: pointer;
     }
   }
 `;

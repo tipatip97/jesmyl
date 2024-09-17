@@ -10,6 +10,7 @@ import BibleTranslationControlledBottomPanel from './BottomPanel';
 import { BibleTranslationControlledTopPanel } from './TopPanel';
 import { bibleVerseiAtom } from './lists/atoms';
 import BibleSearchPanel from './search/Panel';
+import { useInitSoki } from '../../../../app/useInitSoki';
 
 interface Props {
   head: ReactNode;
@@ -20,6 +21,7 @@ export default function BibleTranslationControlled({ head, headTitle }: Props): 
   useLoadBibleChaptersCombine();
   const inkSync = useBibleSlideSyncInkrementer();
   const switchVersei = useAtomInkrement(bibleVerseiAtom);
+  useInitSoki('bible');
 
   useEffect(() => inkSync(1), [inkSync]);
 

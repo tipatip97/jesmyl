@@ -27,8 +27,6 @@
   }
 
   .clear-button {
-    cursor: pointer;
-
     &.hidden {
       opacity: 0;
     }
@@ -45,10 +43,6 @@
   margin-bottom: calc(var(--logo-border-size) * 2 + 2px);
   padding: 0 0.4em;
   height: var(--size);
-
-  &:not(.not-pointer) {
-    cursor: pointer;
-  }
 
   &.current {
     font-weight: bold;
@@ -115,7 +109,6 @@
 
 .the-icon {
   &.as-button-circle {
-    cursor: pointer;
     margin: 5px;
     border-radius: 100%;
     background: var(--color--2);
