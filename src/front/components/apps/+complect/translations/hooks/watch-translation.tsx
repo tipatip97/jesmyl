@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { css } from 'styled-components';
 import { renderComponentInNewWindow } from '../../../../..';
+import { cursors } from '../../../../../cursorsBase64';
 import { useScreenTranslationConfigsValue } from '../molecules';
 import { useCurrentForceViweAppContext } from '../Translation.contexts';
 import { TranslationScreen } from '../TranslationScreen';
@@ -65,6 +66,10 @@ export const useWatchScreenTranslations = () => {
             * {
               transition: filter 0.3s;
               transition-delay: 0.2s;
+
+              &:not(.any) {
+                ${cursors.defaultLight}
+              }
             }
 
             &:not(:fullscreen) * * * {

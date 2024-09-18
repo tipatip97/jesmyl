@@ -54,7 +54,7 @@ export const renderComponentInNewWindow = (
     style.innerText = styles;
   }
 
-  if (addStyle) style.innerText += addStyle;
+  if (addStyle) style.innerText += Array.from(addStyle).join('');
 
   const win = window.open(url, target, features);
   if (win) {
