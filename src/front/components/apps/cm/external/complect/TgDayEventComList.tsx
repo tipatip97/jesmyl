@@ -87,8 +87,6 @@ const Inner = ({
   const event = day?.list.find(event => event.mi === eventMi);
   if (!event) return error('Событие не найдено');
 
-  console.log(event);
-
   const comsAtt =
     attMi !== '-'
       ? (event.atts?.[`[SCH]:custom:${attMi}`]?.[attName as never] as CmComBindAttach | und)

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import { CmComBindAttach } from '../../../../../models';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';
-import { ComFace } from '../../col/com/face/ComFace';
+import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 import CmExternalComListAttRedactList from './RedactList';
 import TheComForFullScreen from './TheComForFullScreen';
@@ -25,29 +25,23 @@ export default function CmExternalComListAtt({ value, scope, isRedact, switchIsR
   const cat = useCcat(true);
   const { meetings } = useMeetings();
   const currentEvent = value.eventw == null ? null : meetings?.stack?.find(event => event.w === value.eventw!);
+  const comws = useMemo(
+    () => (currentEvent ? (value.comws ? [...currentEvent.s, ...value.comws] : currentEvent.s) : value.comws),
+    [currentEvent, value.comws],
+  );
 
   return (
     <>
       {!currentEvent && !value.comws?.length && <div>Песен нет</div>}
-      {cat &&
-        (currentEvent ? (value.comws ? [...currentEvent.s, ...value.comws] : currentEvent.s) : value.comws)?.map(
-          (comw, comwi) => {
-            const com = cat.coms.find(com => com.wid === comw);
-            if (com === undefined) return null;
-
-            return (
-              <ComFace
-                key={comw}
-                com={com}
-                comi={comwi}
-                importantOnClick={() => {
-                  setCcom(com);
-                  setIsOpenComposition(true);
-                }}
-              />
-            );
-          },
-        )}
+      {cat && (
+        <ComFaceList
+          list={comws}
+          importantOnClick={com => {
+            setCcom(com);
+            setIsOpenComposition(true);
+          }}
+        />
+      )}
 
       {isRedact && (
         <FullContent onClose={switchIsRedact}>

@@ -1,9 +1,8 @@
 import { FC } from 'react';
-import useAbsoluteFloatPopup from '../../../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import useSelectedComs from '../../../../base/useSelectedComs';
 import { Com } from '../../Com';
 import { useCcomw } from '../../useCcom';
-import { FreeComFaceProps } from '../ComFace.model';
+import { ListComFaceProps } from '../ComFace.model';
 import { ComFaceListComList } from './_ComList';
 import { ComFaceListWidList } from './_WidList';
 import { IComFaceList } from './model';
@@ -26,22 +25,19 @@ export const ComFaceList = (props: Props) => {
 };
 
 interface WrapperProps extends IComFaceList {
-  Component: FC<IComFaceList & FreeComFaceProps>;
+  Component: FC<IComFaceList & ListComFaceProps>;
   ccom: Com | und;
   className?: string;
 }
 
 const ComFaceListWrapper = ({ Component, ...props }: WrapperProps) => {
   const ccomw = useCcomw();
-  const { openAbsoluteFloatPopup, closeAbsoluteFloatPopup } = useAbsoluteFloatPopup();
   const { selectedComPosition, toggleSelectedCom } = useSelectedComs();
 
   return (
     <Component
       {...props}
       ccomw={ccomw}
-      closeAbsoluteFloatPopup={closeAbsoluteFloatPopup}
-      openAbsoluteFloatPopup={openAbsoluteFloatPopup}
       selectedComPosition={selectedComPosition}
       toggleSelectedCom={toggleSelectedCom}
     />

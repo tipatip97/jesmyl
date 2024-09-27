@@ -1,3 +1,4 @@
+import { FaceItem } from '../../../../../complect/FaceItem';
 import { IconMoreVerticalCircle01StrokeRounded } from '../../../../../complect/the-icon/icons/more-vertical-circle-01';
 import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
 import { LeaderCleans } from '../LeaderCleans';
@@ -8,8 +9,8 @@ export default function GroupFace({ group, onMoreClick }: { group: LeaderGroupIm
   const { goToGroup, humans } = useLeaderGroups();
 
   return (
-    <div
-      className="face-item flex between"
+    <FaceItem
+      className="flex between"
       onClick={event => {
         event.stopPropagation();
         goToGroup(group.w);
@@ -33,6 +34,6 @@ export default function GroupFace({ group, onMoreClick }: { group: LeaderGroupIm
           }}
         />
       )}
-    </div>
+    </FaceItem>
   );
 }

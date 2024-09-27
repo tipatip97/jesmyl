@@ -6,7 +6,6 @@ import { IconArrowRight02StrokeRounded } from '../../../../../complect/the-icon/
 import { IconCalendar03StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-03';
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
-import { ComFace } from '../../col/com/face/ComFace';
 import { useCmEditorExecs } from '../atoms';
 import { ExecVision } from '../CmEditor.model';
 import { EditableCom } from '../col/compositions/com/EditableCom';
@@ -36,15 +35,7 @@ export default function ExecsVisor() {
               .flat()
               .map((comw, comwi) => {
                 flowCom = cols.coms.find(com => com.wid === comw);
-                return (
-                  flowCom && (
-                    <ComFace
-                      key={comw}
-                      com={flowCom}
-                      comi={comwi}
-                    />
-                  )
-                );
+                return flowCom;
               })
               .filter(val => val != null)
         : fieldn === 'tonLevel'

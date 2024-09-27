@@ -1,20 +1,27 @@
 import styled from 'styled-components';
+import { CmComWid } from '../../../../../../../back/apps/cm/Cm.enums';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import { IconAddCircleHalfDotStrokeRounded } from '../../../../../../complect/the-icon/icons/add-circle-half-dot';
 import { IconCancelCircleHalfDotStrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-circle-half-dot';
 import { IconRemoveCircleHalfDotStrokeRounded } from '../../../../../../complect/the-icon/icons/remove-circle-half-dot';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../../complect/the-icon/icons/star';
+import { useAuth } from '../../../../../index/molecules';
 import useSelectedComs from '../../../base/useSelectedComs';
 import ComFaceContextMenuEditorItems from '../../../editor/col/compositions/ComFaceContextMenuEditorItems';
 import { useMarks } from '../../../lists/marks/useMarks';
-import './ComFace.scss';
 
-export default function ComFaceContextMenu({ onClick, comWid }: { onClick: () => void; comWid: number }) {
+interface Props {
+  onClick: (reset: null) => void;
+  comWid: CmComWid;
+}
+
+export default function ComFaceContextMenu({ onClick, comWid }: Props) {
   const { isMarked, toggleMarked } = useMarks();
   const isComMarked = isMarked(comWid);
   const { clearSelectedComws, selectedComws, selectedComPosition: isSelected, toggleSelectedCom } = useSelectedComs();
   const [confirmNode, confirm] = useConfirm();
+  const auth = useAuth();
 
   return (
     <StyledMenu>
@@ -23,7 +30,7 @@ export default function ComFaceContextMenu({ onClick, comWid }: { onClick: () =>
         Icon={isComMarked ? IconStarStrokeRounded : IconStarSolidRounded}
         postfix={isComMarked ? 'Удалить из Избранного' : 'Добавить в Избранное'}
         onClick={() => {
-          onClick();
+          onClick(null);
           toggleMarked(comWid);
         }}
       />
@@ -41,7 +48,7 @@ export default function ComFaceContextMenu({ onClick, comWid }: { onClick: () =>
           }}
         />
       )}
-      <ComFaceContextMenuEditorItems onClick={onClick} />
+      {auth.level > 49 && <ComFaceContextMenuEditorItems />}
     </StyledMenu>
   );
 }

@@ -1,3 +1,4 @@
+import { FaceItem } from '../../../../../../complect/FaceItem';
 import { IconCubeStrokeRounded } from '../../../../../../complect/the-icon/icons/cube';
 import { useGamerCurrentOfflineGameName, useGamerOfflineRooms } from '../../../molecules';
 import { gamerOfflineRoomGames } from '../../../useGamerNav';
@@ -21,9 +22,8 @@ export default function GamerOfflineRoomList() {
         const gameData = gamerOfflineRoomGames.find(({ phase: [gameName] }) => room.currentGame === gameName)?.data;
 
         return (
-          <div
+          <FaceItem
             key={`room ${room.w}`}
-            className="face-item"
             onClick={() => goToOfflineRoom(room.w)}
           >
             <div className="face-logo">{gameData?.Icon ? <gameData.Icon /> : <IconCubeStrokeRounded />}</div>
@@ -31,7 +31,7 @@ export default function GamerOfflineRoomList() {
               <span className="color--7">{room.name}</span>
               {gameData?.title ? ` ● ${gameData.title}` : ''}
             </div>
-          </div>
+          </FaceItem>
         );
       })}
     </>

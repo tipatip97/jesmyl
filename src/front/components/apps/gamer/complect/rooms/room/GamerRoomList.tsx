@@ -1,8 +1,15 @@
+import { FaceItem } from '../../../../../../complect/FaceItem';
 import { IconClock01SolidRounded, IconClock01StrokeRounded } from '../../../../../../complect/the-icon/icons/clock-01';
 import { IconCubeStrokeRounded } from '../../../../../../complect/the-icon/icons/cube';
 import { IconHelpCircleStrokeRounded } from '../../../../../../complect/the-icon/icons/help-circle';
-import { IconSquareLock02SolidRounded, IconSquareLock02StrokeRounded } from '../../../../../../complect/the-icon/icons/square-lock-02';
-import { IconUserRemove01SolidRounded, IconUserRemove01StrokeRounded } from '../../../../../../complect/the-icon/icons/user-remove-01';
+import {
+  IconSquareLock02SolidRounded,
+  IconSquareLock02StrokeRounded,
+} from '../../../../../../complect/the-icon/icons/square-lock-02';
+import {
+  IconUserRemove01SolidRounded,
+  IconUserRemove01StrokeRounded,
+} from '../../../../../../complect/the-icon/icons/user-remove-01';
 import { gamerRoomGames } from '../../../useGamerNav';
 import useGamerOfflineRoomsActions from './hooks/go-to-room';
 import { useMyPossibilitiesInRoom } from './hooks/possibilities';
@@ -37,9 +44,8 @@ export default function GamerRoomList() {
                 : gameData?.Icon ?? IconCubeStrokeRounded;
 
         return (
-          <div
+          <FaceItem
             key={room.w}
-            className="face-item"
             onClick={() => goToRoom(room.w)}
           >
             <div className="face-logo">
@@ -49,7 +55,7 @@ export default function GamerRoomList() {
               <span className="color--7">{room.name}</span>
               {gameData?.title ? ` ● ${gameData.title}` : ''}
             </div>
-          </div>
+          </FaceItem>
         );
       })}
     </>

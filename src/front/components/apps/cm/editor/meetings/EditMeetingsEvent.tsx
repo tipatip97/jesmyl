@@ -17,7 +17,7 @@ import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-ico
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
 import CmTranslationComListContextInZeroCat from '../../base/translations/InZeroCat';
-import { ComFace } from '../../col/com/face/ComFace';
+import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import { cmCompositionRoute } from '../../routing/cmRoutingApp';
 import { EditableCat } from '../col/categories/EditableCat';
 import { useEditableCcat } from '../col/categories/useEditableCcat';
@@ -51,9 +51,9 @@ export default function EditMeetingsEvent() {
   });
 
   if (!currentEvent) return null;
-  const usedComList = (currentEvent.coms || []).concat(currentEvent.prevComs || []);
+  const usedComwList = (currentEvent.coms?.map(com => com.wid) || []).concat(currentEvent.prevComws || []);
   const comsLength = currentEvent.coms?.length || 0;
-  const prevComsLength = currentEvent.prevComs?.length || 0;
+  const prevComsLength = currentEvent.prevComws?.length || 0;
 
   return (
     <Routes>
@@ -83,39 +83,35 @@ export default function EditMeetingsEvent() {
 
                 <div className="list-title sticky">{prevComsLength ? 'Новый список' : 'Прикреплённые песни'}</div>
                 {comsLength ? (
-                  currentEvent.coms?.map((com, comi) => (
-                    <ComFace
-                      key={com.wid}
-                      com={com}
-                      comi={comi}
-                      selectable={false}
-                      importantOnClick={(_, __, event) => event.preventDefault()}
-                      description={() => (
-                        <div
-                          className="flex"
-                          onClick={event => event.stopPropagation()}
-                        >
-                          {comsLength === 1 || comi === 0 || (
-                            <StyledMoveButton
-                              Icon={IconArrowDataTransferVerticalStrokeRounded}
-                              className="margin-big-gap-h"
-                              onClick={event => {
-                                event.preventDefault();
-                                exec(currentEvent.moveCom(comi));
-                              }}
-                            />
-                          )}
-                          <IconDelete01StrokeRounded
-                            className="color--ko"
+                  <ComFaceList
+                    list={currentEvent.coms}
+                    selectable={false}
+                    importantOnClick={(_, __, event) => event.preventDefault()}
+                    comDescription={(com, comi) => (
+                      <div
+                        className="flex"
+                        onClick={event => event.stopPropagation()}
+                      >
+                        {comsLength === 1 || comi === 0 || (
+                          <StyledMoveButton
+                            Icon={IconArrowDataTransferVerticalStrokeRounded}
+                            className="margin-big-gap-h"
                             onClick={event => {
                               event.preventDefault();
-                              exec(currentEvent.removeCom(com));
+                              exec(currentEvent.moveCom(comi));
                             }}
                           />
-                        </div>
-                      )}
-                    />
-                  ))
+                        )}
+                        <IconDelete01StrokeRounded
+                          className="color--ko"
+                          onClick={event => {
+                            event.preventDefault();
+                            exec(currentEvent.removeCom(com.wid));
+                          }}
+                        />
+                      </div>
+                    )}
+                  />
                 ) : (
                   <div className="flex center margin-gap">Песен нет</div>
                 )}
@@ -130,29 +126,25 @@ export default function EditMeetingsEvent() {
                           className="pointer color--ok"
                           onClick={event => {
                             event.stopPropagation();
-                            exec(currentEvent.mergePrevComs(currentEvent.prevComs));
+                            exec(currentEvent.mergePrevComs(currentEvent.prevComws));
                           }}
                         />
                       )}
                     </div>
-                    {currentEvent.prevComs?.map((com, comi) => (
-                      <ComFace
-                        key={com.wid}
-                        com={com}
-                        comi={comi}
-                        selectable={false}
-                        importantOnClick={(_, __, event) => event.preventDefault()}
-                        description={() => (
-                          <IconButton
-                            Icon={comsLength ? IconArrowUp02StrokeRounded : IconPlusSignCircleStrokeRounded}
-                            onClick={event => {
-                              event.stopPropagation();
-                              exec(currentEvent.mergePrevComs([com]));
-                            }}
-                          />
-                        )}
-                      />
-                    ))}
+                    <ComFaceList
+                      list={currentEvent.prevComws}
+                      selectable={false}
+                      importantOnClick={(_, __, event) => event.preventDefault()}
+                      comDescription={com => (
+                        <IconButton
+                          Icon={comsLength ? IconArrowUp02StrokeRounded : IconPlusSignCircleStrokeRounded}
+                          onClick={event => {
+                            event.stopPropagation();
+                            exec(currentEvent.mergePrevComs([com.wid]));
+                          }}
+                        />
+                      )}
+                    />
                   </>
                 ) : null}
                 <div className="list-title sticky">
@@ -173,26 +165,20 @@ export default function EditMeetingsEvent() {
                       debounce={500}
                       onTermChange={term => setTerm(term)}
                     />
-                    {zcat?.wraps.map(({ item: com }, wrapi) => {
-                      return (
-                        <ComFace
-                          key={com.wid}
-                          com={com}
-                          comi={wrapi}
-                          selectable={false}
-                          description={() =>
-                            usedComList.indexOf(com) < 0 ? (
-                              <IconPlusSignCircleStrokeRounded
-                                onClick={event => {
-                                  event.preventDefault();
-                                  exec(currentEvent.mergeStack([com.wid]));
-                                }}
-                              />
-                            ) : null
-                          }
-                        />
-                      );
-                    })}
+                    <ComFaceList
+                      list={zcat?.wraps.map(wrap => wrap.item)}
+                      selectable={false}
+                      comDescription={com =>
+                        usedComwList.indexOf(com.wid) < 0 ? (
+                          <IconPlusSignCircleStrokeRounded
+                            onClick={event => {
+                              event.preventDefault();
+                              exec(currentEvent.mergeStack([com.wid]));
+                            }}
+                          />
+                        ) : null
+                      }
+                    />
                   </>
                 )}
               </>

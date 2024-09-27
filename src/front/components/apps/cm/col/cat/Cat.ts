@@ -72,4 +72,17 @@ export class Cat extends BaseNamed<IExportableCat> implements ICat {
 
     return this.wraps;
   }
+
+  sortedSearch(term = this.term, isNumberSearch?: boolean) {
+    if (term) {
+      return mylib.searchRateWithSort(
+        this.coms,
+        term,
+        ['name', 'number', ['orders', mylib.c.INDEX, 'text']],
+        isNumberSearch,
+      );
+    } else {
+      return { list: Promise.resolve(this.coms.map(com => ({ item: com }))), reset: () => {} };
+    }
+  }
 }

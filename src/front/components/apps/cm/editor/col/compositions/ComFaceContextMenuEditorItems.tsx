@@ -7,7 +7,7 @@ import useSelectedComs from '../../../base/useSelectedComs';
 import MeetingsInner from '../../../lists/meetings/MeetingsInner';
 import { useEditableMeetings } from '../../meetings/useEditableMeetings';
 
-export default function ComFaceContextMenuEditorItems({ onClick }: { onClick: () => void }) {
+export default function ComFaceContextMenuEditorItems() {
   const { meetings, goToEvent } = useEditableMeetings();
   const exec = useExerExec();
   const { selectedComws } = useSelectedComs();
@@ -33,10 +33,7 @@ export default function ComFaceContextMenuEditorItems({ onClick }: { onClick: ()
         <IconButton
           Icon={IconCalendar03StrokeRounded}
           postfix="Выбранные в событие"
-          onClick={() => {
-            setIsShowFull(true);
-            onClick();
-          }}
+          onClick={() => setIsShowFull(true)}
         />
       )}
     </>

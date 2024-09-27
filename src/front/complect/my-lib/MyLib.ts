@@ -101,72 +101,122 @@ export class MyLib extends SMyLib {
     const words = normalWords.map(word => word.toLowerCase());
     const wordRegs = normalWords.map(word => this.internationalWordReg(word, isNumberSearch));
 
-    return items
-      .reduce((ferries: RetItem[], item, itemi) => {
-        let rate = 0;
-        let deep = 0;
-        const ferry = (): RetItem => ({ item, deep, rate }) as never;
+    return items.reduce((ferries: RetItem[], item, itemi) => {
+      let rate = 0;
+      let deep = 0;
+      const ferry = (): RetItem => ({ item, deep, rate }) as never;
 
-        if (
-          places.some((place, placei) => {
-            deep = placei;
-            const num = ([this.c.INDEX, this.c.POSITION] as Trace[]).indexOf(place as never);
-            if (num > -1) {
-              if (
-                words.some(word =>
-                  word && words.length > 1
-                    ? (itemi + num).toString() === word
-                    : (itemi + num).toString().startsWith(word),
-                )
-              ) {
-                rate = 1;
-                return true;
-              }
-              return false;
-            }
-
-            const searchInPlace = (str: string, level: number) => {
-              str = str.toLowerCase();
-              let noWord = false;
-
-              const currRate = words.reduce((accRate: number | null, _word, wordi) => {
-                if (noWord) return null;
-                const index = str.search(wordRegs[wordi]);
-                if (index < 0) {
-                  noWord = true;
-                  return null;
-                }
-                return (accRate as number) + index + level;
-              }, null);
-
-              if (noWord || currRate == null) return false;
-
-              rate = currRate;
+      if (
+        places.some((place, placei) => {
+          deep = placei;
+          const num = ([this.c.INDEX, this.c.POSITION] as Trace[]).indexOf(place as never);
+          if (num > -1) {
+            if (
+              words.some(word =>
+                word && words.length > 1
+                  ? (itemi + num).toString() === word
+                  : (itemi + num).toString().startsWith(word),
+              )
+            ) {
+              rate = 1;
               return true;
-            };
+            }
+            return false;
+          }
 
-            const search = (track: Trace[] | Trace, target: any, level: number) => {
-              let searched;
-              ([] as Trace[]).concat(track).reduce((target, trace, tracei, tracea) => {
-                if (!target) return null;
-                if (trace === this.c.INDEX) {
-                  searched = target.some((o: any) => search(track.slice(tracei + 1), o, (level + tracei) * 10));
-                  return null;
-                }
-                if (tracei >= tracea.length - 1) searched = searchInPlace(target[trace as string], level);
-                return target[trace as string];
-              }, target);
-              return searched;
-            };
+          const searchInPlace = (str: string, level: number) => {
+            str = str.toLowerCase();
+            let noWord = false;
 
-            return search(place, item, placei);
-          })
-        )
-          ferries.push(ferry());
+            const currRate = words.reduce((accRate: number | null, _word, wordi) => {
+              if (noWord) return null;
+              const index = str.search(wordRegs[wordi]);
+              if (index < 0) {
+                noWord = true;
+                return null;
+              }
+              return (accRate as number) + index + level;
+            }, null);
 
-        return ferries;
-      }, [])
-      .sort((a, b) => a.rate - b.rate);
+            if (noWord || currRate == null) return false;
+
+            rate = currRate;
+            return true;
+          };
+
+          const search = (track: Trace[] | Trace, target: any, level: number) => {
+            let searched;
+            ([] as Trace[]).concat(track).reduce((target, trace, tracei, tracea) => {
+              if (!target) return null;
+              if (trace === this.c.INDEX) {
+                searched = target.some((o: any) => search(track.slice(tracei + 1), o, (level + tracei) * 10));
+                return null;
+              }
+              if (tracei >= tracea.length - 1) searched = searchInPlace(target[trace as string], level);
+              return target[trace as string];
+            }, target);
+            return searched;
+          };
+
+          return search(place, item, placei);
+        })
+      )
+        ferries.push(ferry());
+
+      return ferries;
+    }, []);
+  }
+
+  searchRateWithSort<T, R extends { item: T; deep: number; rate: number; field: string }, RetItem extends R = R>(
+    items: T[],
+    searchWord: string,
+    places: (Trace[] | Trace)[],
+    isNumberSearch?: boolean,
+  ): { list: Promise<RetItem[]>; reset: () => void } {
+    const { promise, reject, resolve } = Promise.withResolvers<RetItem[]>();
+    let reseter: { t: TimeOut } = { t: undefined };
+
+    const result = this.searchRate<T, R, RetItem>(items, searchWord, places, isNumberSearch);
+
+    setTimeout(() => {
+      resolve(this.qsort(result, (a, b) => a.rate - b.rate, 3, reseter));
+    }, 0);
+
+    return {
+      list: promise,
+      reset: () => {
+        reject();
+        clearTimeout(reseter.t);
+      },
+    };
+  }
+
+  qsort<Item>(items: Item[], compareFn?: (a: Item, b: Item) => number, interval = 0, reseter?: { t: TimeOut }) {
+    compareFn ??= (a, b) => (a > b ? 1 : a === b ? 0 : -1);
+    reseter ??= { t: undefined };
+
+    const sort = async (items: Item[]): Promise<Item[]> => {
+      if (items.length < 2) return items;
+
+      const { promise, resolve } = Promise.withResolvers<Item[]>();
+
+      reseter.t = setTimeout(async () => {
+        const less = [];
+        const great = [];
+        const pivot = items[0];
+        const list = items.slice(1);
+
+        for (const item of list)
+          if (compareFn(item, pivot) < 1) less.push(item);
+          else great.push(item);
+
+        resolve((await sort(less)).concat(pivot, await sort(great)));
+      }, interval);
+
+      return promise;
+    };
+
+    return sort(items);
   }
 
   correctRegExp(str: string, flags = '', transformer?: (str: string, reps: number) => string) {

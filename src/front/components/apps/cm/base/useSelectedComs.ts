@@ -39,17 +39,28 @@ export default function useSelectedComs() {
     });
   }, [searchParams, setSearchParams, setSelectedComws]);
 
-  const ret = {
-    selectedComws,
-    takeSelectedComs,
-    selectedComPosition: (comWid: number) => selectedComws.indexOf(comWid) + 1,
-    updateSelectedComws: (selectedComws: number[]) => setSelectedComws(selectedComws),
-    clearSelectedComws: () => ret.updateSelectedComws([]),
-    toggleSelectedCom: (comWid: number) => {
-      ret.updateSelectedComws(
-        ret.selectedComPosition(comWid) ? selectedComws.filter(comw => comWid !== comw) : [...selectedComws, comWid],
+  const updateSelectedComws = useCallback(
+    (selectedComws: number[]) => setSelectedComws(selectedComws),
+    [setSelectedComws],
+  );
+
+  const selectedComPosition = useCallback((comWid: number) => selectedComws.indexOf(comWid) + 1, [selectedComws]);
+
+  const toggleSelectedCom = useCallback(
+    (comWid: number) => {
+      updateSelectedComws(
+        selectedComPosition(comWid) ? selectedComws.filter(comw => comWid !== comw) : [...selectedComws, comWid],
       );
     },
+    [selectedComPosition, selectedComws, updateSelectedComws],
+  );
+
+  return {
+    selectedComws,
+    takeSelectedComs,
+    selectedComPosition,
+    updateSelectedComws,
+    clearSelectedComws: () => updateSelectedComws([]),
+    toggleSelectedCom,
   };
-  return ret;
 }

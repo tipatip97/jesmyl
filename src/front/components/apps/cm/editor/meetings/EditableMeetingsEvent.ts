@@ -5,11 +5,12 @@ import { IExportableMeetingsEvent } from '../../../../../../back/apps/cm/Meeting
 import { MeetingsEvent } from '../../lists/meetings/MeetingsEvent';
 import { EditableCom } from '../col/compositions/com/EditableCom';
 import { EditableCols } from '../col/EditableCols';
+import { CmComWid } from '../../../../../../back/apps/cm/Cm.enums';
 
 export class EditableMeetingsEvent extends MeetingsEvent {
   initialName = this.name;
   cols?: EditableCols;
-  prevComs?: EditableCom[];
+  prevComws?: CmComWid[];
   coms?: EditableCom[];
 
   constructor(top: IExportableMeetingsEvent, cols?: EditableCols) {
@@ -69,12 +70,12 @@ export class EditableMeetingsEvent extends MeetingsEvent {
     this.contextw = contextw;
   }
 
-  removeCom(com: EditableCom) {
+  removeCom(comw: CmComWid) {
     this.setStack(() => {
-      this.stack = this.stack.filter(comw => com.wid !== comw);
+      this.stack = this.stack.filter(cw => comw !== cw);
 
-      if (this.prevComs) this.prevComs.push(com);
-      else this.prevComs = [com];
+      if (this.prevComws) this.prevComws.push(comw);
+      else this.prevComws = [comw];
     });
   }
 
@@ -97,9 +98,9 @@ export class EditableMeetingsEvent extends MeetingsEvent {
 
   mergeStack(value: number[]) {
     this.setStack(() => {
-      const isNoPrevComs = !this.prevComs;
+      const isNoPrevComs = !this.prevComws;
 
-      if (isNoPrevComs) this.prevComs = this.coms;
+      if (isNoPrevComs) this.prevComws = this.coms?.map(com => com.wid);
 
       this.stack = isNoPrevComs
         ? mylib.clone(value)
@@ -107,10 +108,10 @@ export class EditableMeetingsEvent extends MeetingsEvent {
     });
   }
 
-  mergePrevComs(coms?: EditableCom[]) {
-    if (coms) {
-      this.mergeStack(coms.map(com => com.wid));
-      this.prevComs = this.prevComs?.filter(prev => !coms.some(com => prev === com));
+  mergePrevComs(comws?: CmComWid[]) {
+    if (comws) {
+      this.mergeStack(comws.map(comw => comw));
+      this.prevComws = this.prevComws?.filter(prev => !comws.some(comw => prev === comw));
     }
   }
 

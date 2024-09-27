@@ -29,6 +29,7 @@ export default function EditComposition() {
     <StyledContainer
       className="edit-composition"
       headTitle={`#${ccom.number} ${ccom.initialName || ccom.name}`}
+      rememberProps={['comw']}
       head={
         <>
           {connectionNode}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import StrongEvaButton from '../../../../../complect/strong-control/StrongEvaButton';
@@ -12,7 +12,7 @@ import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/
 import { CmComBindAttach } from '../../../../../models';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';
-import { ComFace } from '../../col/com/face/ComFace';
+import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 import CmExternalComListAttRedactListOrder from './RedactListOrder';
@@ -35,6 +35,8 @@ export default function CmExternalComListAttRedactList({ value, scope, setCcom, 
   const [term, setTerm] = useState(cat?.term || '');
   const { meetings } = useMeetings();
   const currentEvent = value.eventw == null ? null : meetings?.stack?.find(event => event.w === value.eventw!);
+
+  const coms = useMemo(() => cat?.wraps.slice(0, 30).map(wrap => wrap.item), [cat?.wraps]);
 
   return (
     <>
@@ -69,46 +71,41 @@ export default function CmExternalComListAttRedactList({ value, scope, setCcom, 
               onTermChange={term => setTerm(term)}
             />
             <div className="margin-gap-t full-height full-width over-y-auto">
-              {cat.wraps.slice(0, 30).map((wrap, wrapi) => {
-                const isIncludes = value.comws?.includes(wrap.item.wid);
+              <ComFaceList
+                list={coms}
+                importantOnClick={com => {
+                  setCcom(com);
+                  setIsOpenComposition(true);
+                }}
+                comDescription={com => {
+                  const isIncludes = value.comws?.includes(com.wid);
 
-                return (
-                  <ComFace
-                    key={wrap.item.wid}
-                    comi={wrapi}
-                    {...wrap}
-                    com={wrap.item}
-                    importantOnClick={() => {
-                      setCcom(wrap.item);
-                      setIsOpenComposition(true);
-                    }}
-                    description={() => (
-                      <div onClick={cbStopper}>
-                        {isIncludes ? (
-                          <StrongEvaButton
-                            scope={scope}
-                            fieldName="listKey"
-                            fieldKey="comws"
-                            fieldValue={['.', '===', wrap.item.wid]}
-                            cud="D"
-                            Icon={IconMinusSignSquareStrokeRounded}
-                            className="color--ko"
-                          />
-                        ) : (
-                          <StrongEvaButton
-                            scope={scope}
-                            fieldName="listKey"
-                            fieldKey="comws"
-                            fieldValue={wrap.item.wid}
-                            cud="C"
-                            Icon={IconPlusSignCircleStrokeRounded}
-                          />
-                        )}
-                      </div>
-                    )}
-                  />
-                );
-              })}
+                  return (
+                    <div onClick={cbStopper}>
+                      {isIncludes ? (
+                        <StrongEvaButton
+                          scope={scope}
+                          fieldName="listKey"
+                          fieldKey="comws"
+                          fieldValue={['.', '===', com.wid]}
+                          cud="D"
+                          Icon={IconMinusSignSquareStrokeRounded}
+                          className="color--ko"
+                        />
+                      ) : (
+                        <StrongEvaButton
+                          scope={scope}
+                          fieldName="listKey"
+                          fieldKey="comws"
+                          fieldValue={com.wid}
+                          cud="C"
+                          Icon={IconPlusSignCircleStrokeRounded}
+                        />
+                      )}
+                    </div>
+                  );
+                }}
+              />
             </div>
           </>
         )}

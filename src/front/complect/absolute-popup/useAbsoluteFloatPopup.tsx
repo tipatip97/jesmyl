@@ -1,8 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { atom, useAtom } from '../atoms';
 import Portal from '../popups/[complect]/Portal';
 import useMountTransition from '../popups/useMountTransition';
-import './AbsolutePopup.scss';
 
 let popupContent: ReactNode = null;
 let floatElement: HTMLDivElement | null;
@@ -16,35 +15,39 @@ const isOpenAtom = atom(false);
 export default function useAbsoluteFloatPopup() {
   const [isAbsoluteFloatPopupOpen, close] = useAtom(isOpenAtom);
 
-  const ret = {
+  const closeAbsoluteFloatPopup = useCallback(() => {
+    close(false);
+    if (isFloated) popupContent = null;
+    if (isClosed) return false;
+    isClosed = true;
+    return true;
+  }, [close]);
+
+  return {
     isAbsoluteFloatPopupOpen,
-    closeAbsoluteFloatPopup: () => {
-      close(false);
-      if (isFloated) popupContent = null;
-      if (isClosed) return false;
-      isClosed = true;
-      return true;
-    },
-    openAbsoluteFloatPopup: (content: ReactNode, x: number, y: number, closable = true) => {
-      isClosable = closable;
-      isClosed = false;
-      onOpenPopup?.(ret.closeAbsoluteFloatPopup);
-      popupContent = content;
-      close(true);
+    closeAbsoluteFloatPopup,
+    openAbsoluteFloatPopup: useCallback(
+      (content: ReactNode, x: number, y: number, closable = true) => {
+        isClosable = closable;
+        isClosed = false;
+        onOpenPopup?.(closeAbsoluteFloatPopup);
+        popupContent = content;
+        close(true);
 
-      setTimeout(() => {
-        if (!floatElement) return;
-        const top =
-          y + floatElement.clientHeight > window.innerHeight ? window.innerHeight - floatElement.clientHeight - 5 : y;
-        const left =
-          x + floatElement.clientWidth > window.innerWidth ? window.innerWidth - floatElement.clientWidth - 5 : x;
+        setTimeout(() => {
+          if (!floatElement) return;
+          const top =
+            y + floatElement.clientHeight > window.innerHeight ? window.innerHeight - floatElement.clientHeight - 5 : y;
+          const left =
+            x + floatElement.clientWidth > window.innerWidth ? window.innerWidth - floatElement.clientWidth - 5 : x;
 
-        floatElement.style.top = `${top}px`;
-        floatElement.style.left = `${left}px`;
-      });
-    },
+          floatElement.style.top = `${top}px`;
+          floatElement.style.left = `${left}px`;
+        });
+      },
+      [close, closeAbsoluteFloatPopup],
+    ),
   };
-  return ret;
 }
 
 export function ABSOLUTE__FLOAT__POPUP({ onOpen }: { onOpen: (close: () => boolean) => void }) {

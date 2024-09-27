@@ -125,8 +125,6 @@ export class EditableComCutBlock extends EditableComParseBlocks {
         line.split('$').forEach((segment, segmenti, segmenta) => {
           const lineSegmentVowels = this.getVowelPositions(segment);
 
-          console.log({ segment });
-
           const lineSegmentPositions: number[] = [];
           positions.push(lineSegmentPositions);
 
@@ -136,8 +134,6 @@ export class EditableComCutBlock extends EditableComParseBlocks {
           for (let posi = 0; posi < linePositions.length; posi++) {
             const positionInLine = linePositions[posi];
 
-            console.log({ positionInLine });
-
             if (positionInLine === null) continue;
 
             if (positionInLine < 0) {
@@ -146,7 +142,6 @@ export class EditableComCutBlock extends EditableComParseBlocks {
               if (positionInLine === -1) {
                 if (lineSegmentPositions.length === 0) lineSegmentPositions.push(positionInLine);
               } else if (positionInLine === -2) {
-                console.log({ segment2: segment });
                 if (segment.endsWith(' ') || segmenti === segmenta.length - 1)
                   lineSegmentPositions.push(positionInLine);
               }

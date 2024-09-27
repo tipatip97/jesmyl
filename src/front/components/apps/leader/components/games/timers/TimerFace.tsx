@@ -7,6 +7,7 @@ import { LeaderCleans } from '../../LeaderCleans';
 import { GameTimerMode } from './GameTimer.model';
 import LeaderGameTimerMaster from './GameTimerMaster';
 import useGameTimer from './useGameTimer';
+import { FaceItem } from '../../../../../../complect/FaceItem';
 
 export default function LeaderGameTimerFace({
   timerw,
@@ -39,10 +40,7 @@ export default function LeaderGameTimerFace({
   return (
     <>
       {timerNode}
-      <div
-        className="face-item"
-        onClick={() => openTimer()}
-      >
+      <FaceItem onClick={() => openTimer()}>
         <span
           className={`face-logo ${selectedPosition ? 'selected' : ''}`}
           selected-position={selectedPosition || null}
@@ -76,7 +74,7 @@ export default function LeaderGameTimerFace({
             </div>
           )}
         </span>
-      </div>
+      </FaceItem>
     </>
   );
 }

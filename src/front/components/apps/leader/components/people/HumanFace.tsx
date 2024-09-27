@@ -6,6 +6,7 @@ import { IconMoreVerticalCircle01StrokeRounded } from '../../../../../complect/t
 import { useLeaderCcontext } from '../contexts/useContexts';
 import { HumanMoreContenter } from './HumanMore';
 import { HumanImportable } from './People.model';
+import { FaceItem } from '../../../../../complect/FaceItem';
 
 export default function HumanFace({
   human,
@@ -30,8 +31,8 @@ export default function HumanFace({
   return (
     <>
       {humanMoreNode}
-      <div
-        className="face-item flex between"
+      <FaceItem
+        className="flex between"
         onClick={event => {
           event.stopPropagation();
           openHumanMore();
@@ -55,7 +56,7 @@ export default function HumanFace({
               }}
             />
           ))}
-      </div>
+      </FaceItem>
     </>
   );
 }

@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
 import { IconUserBlock01StrokeRounded } from '../../../../complect/the-icon/icons/user-block-01';
 import { GamerRoomMember, GamerRoomMemberStatus } from '../Gamer.model';
+import { FaceItem } from '../../../../complect/FaceItem';
 
 interface Props {
   member: GamerRoomMember;
@@ -23,8 +24,8 @@ export default function RoomMemberFace({
   icon,
 }: Props) {
   return (
-    <div
-      className={`face-item ${isClickable ? '' : 'not-pointer'} ${className || ''} flex between full-width`}
+    <FaceItem
+      className={`${isClickable ? '' : 'not-pointer'} ${className || ''} flex between full-width`}
       onClick={isClickable ? onClick : undefined}
     >
       <div className="face-logo">
@@ -47,6 +48,6 @@ export default function RoomMemberFace({
           )}
         </span>
       </div>
-    </div>
+    </FaceItem>
   );
 }

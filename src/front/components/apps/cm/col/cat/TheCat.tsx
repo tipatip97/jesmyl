@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import DebouncedSearchInput, { useIsNumberSearch } from '../../../../../complect/DebouncedSearchInput';
+import { hookEffectPipe, setTimeoutPipe } from '../../../../../complect/hookEffectPipe';
 import LoadIndicatedContent from '../../../../../complect/load-indicated-content/LoadIndicatedContent';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import CmTranslationComListContextInCat from '../../base/translations/InCat';
@@ -14,7 +15,7 @@ import { CatSpecialSearches } from './Cat.complect';
 import { TheCatSpecialSearches } from './SpecialSearches';
 import { useCcat } from './useCcat';
 
-const mapExtractItem = <Item,>({ item }: { item: Item }) => item;
+const mapExtractItem = <Item,>({ item }: { item: Item }): Item => item;
 
 export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
   const cat = useCcat(all);
@@ -32,15 +33,35 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
       return;
     }
 
-    const coms = cat.search(term, isNumberSearch)?.map(mapExtractItem);
+    let resetSearch: (() => void) | null = null;
 
-    if (coms == null) return;
+    return hookEffectPipe()
+      .pipe(
+        setTimeoutPipe(async () => {
+          try {
+            const { list, reset } = cat.sortedSearch(term, isNumberSearch);
 
-    setFilteredComs(coms);
+            resetSearch = reset;
+
+            const coms = (await list)?.map(mapExtractItem);
+
+            if (coms == null) return;
+
+            setFilteredComs(coms);
+          } catch (error) {}
+        }),
+      )
+      .effect(() => resetSearch?.());
   }, [cat, isNumberSearch, mapper, term]);
 
   const listRef = useRef<HTMLDivElement>(null);
   const categoryTitleRef = useRef<HTMLDivElement>(null);
+
+  const limitedComs = useMemo(() => {
+    if (!term.length) return filteredComs;
+
+    return filteredComs?.slice(0, 30);
+  }, [filteredComs, term.length]);
 
   const Context = all ? CmTranslationComListContextInZeroCat : CmTranslationComListContextInCat;
 
@@ -61,7 +82,6 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                     className="debounced-searcher round-styled"
                     initialTerm={term}
                     onSearch={term => {
-                      cat.search(term, isNumberSearch);
                       if (term === '') setMapper(null);
                     }}
                     debounce={10}
@@ -103,7 +123,7 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                     </div>
                     <div className="com-list">
                       <ComFaceList
-                        list={filteredComs}
+                        list={limitedComs}
                         isNeedRenderingDelay
                       />
                     </div>
