@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
+import { useAtomValue } from '../../../../complect/atoms';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconBookOpen02StrokeRounded } from '../../../../complect/the-icon/icons/book-open-02';
 import { soki } from '../../../../soki';
 import { useSwitchCurrentTranslationTextApp } from '../../../apps/+complect/translations/hooks/current-app';
-import { useComTranslationBlock } from '../../../apps/cm/atoms';
+import { translationBlockAtom } from '../../../apps/cm/atoms';
 import { useCcom } from '../../../apps/cm/col/com/useCcom';
 import CmTranslationControlled from '../../../apps/cm/translation/complect/controlled/CmTranslationControlled';
 import { useCmScreenTranslationConfigs } from '../../../apps/cm/translation/complect/controlled/hooks/configs';
@@ -21,7 +22,7 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
   const ccom = useCcom();
   const [config] = useCmScreenTranslationConfigs();
   const switchCurrApp = useSwitchCurrentTranslationTextApp();
-  const [currTexti] = useComTranslationBlock();
+  const currTexti = useAtomValue(translationBlockAtom);
 
   useEffect(() => {
     if (isCantTranslateLive) return;

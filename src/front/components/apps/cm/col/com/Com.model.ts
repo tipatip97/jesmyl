@@ -14,7 +14,7 @@ export type MigratableComToolName = (typeof menuComToolNameList)[number] | Migra
 export const menuComToolNameList = [
   'fullscreen-mode',
   'mark-com',
-  'translation',
+  'show-translation',
   'chords-variant',
   'chord-images',
   'selected-toggle',

@@ -57,7 +57,7 @@ const toolsDict: Record<MigratableComToolName, React.ReactNode> = {
   'mark-com': <MarkedComTool />,
   'fullscreen-mode': <FullscreenTool />,
   'chords-variant': <ChordsVariantTool />,
-  translation: <TranslationTool />,
+  'show-translation': <TranslationTool />,
   'chord-images': <ChordImagesTool />,
   'selected-toggle': <SelectedToggleTool />,
   'open-player': <OpenPlayerTool />,
@@ -65,6 +65,7 @@ const toolsDict: Record<MigratableComToolName, React.ReactNode> = {
   'is-mini-anchor': <MiniAnchorSwitchTool />,
   'edit-com': <RedactComTool />,
 };
+const toolKeys = MyLib.keys(toolsDict);
 
 export const useMigratableListComTools = () => {
   const ccom = useCcom();
@@ -76,9 +77,7 @@ export const useMigratableListComTools = () => {
   };
 
   return (
-    <ComToolsCcomContext.Provider value={ccom}>
-      {MyLib.keys(toolsDict).map(mapTools, mapToolsSelf)}
-    </ComToolsCcomContext.Provider>
+    <ComToolsCcomContext.Provider value={ccom}>{toolKeys.map(mapTools, mapToolsSelf)}</ComToolsCcomContext.Provider>
   );
 };
 

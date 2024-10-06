@@ -25,13 +25,7 @@ export const ComTool = (props: Parameters<typeof BottomPopupItem>[0]) => {
     );
   }
 
-  return props.path ? (
-    <Link to={props.path}>
-      <Bottom {...props} />
-    </Link>
-  ) : (
-    <Bottom {...props} />
-  );
+  return <Bottom {...props} />;
 };
 
 const Bottom = (props: Parameters<typeof BottomPopupItem>[0]) => {

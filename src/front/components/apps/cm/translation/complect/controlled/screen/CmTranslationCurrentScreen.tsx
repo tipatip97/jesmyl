@@ -4,7 +4,8 @@ import {
   useGetScreenTranslationConfig,
   useScreenTranslationCurrentConfigi,
 } from '../../../../../+complect/translations/hooks/configs';
-import { useComTranslationBlock } from '../../../../atoms';
+import { useAtomValue } from '../../../../../../../complect/atoms';
+import { translationBlockAtom } from '../../../../atoms';
 import { FontSizeContainProps } from '../../../../base/font-size-contain/FontSizeContain.model';
 import { useCmCurrentComTexts } from '../../hooks/get-com-text';
 import { useCmScreenTranslationConfig } from '../hooks/configs';
@@ -16,7 +17,7 @@ export const CmTranslationCurrentScreen = (props: TranslationScreenProps & Parti
   const currentConfigi = useScreenTranslationCurrentConfigi();
   const currentConfig = useCmScreenTranslationConfig(props.screeni ?? currentConfigi);
   const texts = useCmCurrentComTexts(currentConfig?.pushKind);
-  const [currTexti] = useComTranslationBlock();
+  const currTexti = useAtomValue(translationBlockAtom);
   const forceUpdates = useScreenWinResizeListen(props.win);
   const isVisible = useIsScreenTranslationTextVisible();
 

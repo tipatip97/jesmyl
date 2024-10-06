@@ -125,13 +125,17 @@ export const ComTools = () => {
       </div>
       {comToolsNode}
 
-      <div className="fade-05 full-width margin-gap-v">
+      <div className="fade-05 full-width margin-gap-v color--7">
         {catMentions(cols, ccom).map((mention, mentioni) => (
           <React.Fragment key={mentioni}>
             {mentioni ? ', ' : ''}
             <span className="nowrap">{mention}</span>
           </React.Fragment>
         ))}
+      </div>
+
+      <div className="full-width fade-05 flex center font-size:0.7em margin-gap-v">
+        Добавлено: {new Date(ccom.wid).toLocaleString('ru')}
       </div>
     </>
   );
