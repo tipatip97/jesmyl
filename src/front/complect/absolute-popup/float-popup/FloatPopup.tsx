@@ -23,16 +23,15 @@ export function FloatPopup<Additions>({
     if (contentRef.current === null) return;
     const node = contentRef.current;
 
-    node.style.top = `0px`;
-    node.style.left = `0px`;
+    node.style.top = `10000px`;
+    node.style.left = `10000px`;
 
     setTimeout(() => {
       const top = coords.y + node.clientHeight + 40 > window.innerHeight ? coords.y - node.clientHeight : coords.y;
-
       const left = coords.x + node.clientWidth + 40 > window.innerWidth ? coords.x - node.clientWidth : coords.x;
 
-      node.style.top = `${top}px`;
-      node.style.left = `${left}px`;
+      node.style.top = `${top >= 0 ? top : 5}px`;
+      node.style.left = `${left >= 0 ? left : 5}px`;
     });
   }, [coords.x, coords.y]);
 

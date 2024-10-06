@@ -5,7 +5,7 @@ import { Com } from '../Com';
 export interface ComFaceInheritProps {
   groupClass?: string;
   comDescription?: (com: Com, comi: number) => ReactNode;
-  isWithoutIds?: boolean;
+  isPutCcomFaceOff?: boolean;
 }
 
 export interface ListComFaceProps {

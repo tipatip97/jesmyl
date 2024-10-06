@@ -14,6 +14,7 @@ import CopyTextButton from '../../../../complect/CopyTextButton';
 import Dropdown from '../../../../complect/dropdown/Dropdown';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconPlusSignCircleStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign-circle';
+import { IconDownload04StrokeRounded } from '../../../../complect/the-icon/icons/download-04';
 import { useAuth } from '../../../index/molecules';
 import { WedCleans } from '../Cleans';
 import { GuestConversation } from '../guest/complect/GuestConversation';
@@ -21,6 +22,7 @@ import { WedGuestEditorModal } from '../guest/GuestEditorModal';
 import { WedGuestFace } from '../guest/GuestFace';
 import { WedGuestListAdder } from '../guest/GuestListAdder';
 import { wedMolecule } from '../molecules';
+import { GuestListExcelZipper } from '../guest/GuestListExcelZipper';
 
 const defGuest: WedGuest = { fn: FirstName.def, c: WedGuestConversation.Single, s: WedGuestSex.Man };
 
@@ -58,6 +60,7 @@ export default function WeddingAdmin() {
   const [guest, setGuest] = useState(defGuest);
   const [isOpenGuestEditor, setIsOpenGuestEditor] = useState(false);
   const [isOpenGuestListLoader, setIsOpenGuestListLoader] = useState(false);
+  const [isOpenGuestListExcelZipper, setIsOpenGuestListExcelZipper] = useState(false);
   const [term, setTerm] = useState('');
   const [showMode, setShowMode] = useState(Show.None);
   const auth = useAuth();
@@ -201,6 +204,18 @@ export default function WeddingAdmin() {
         onClick={() => setIsOpenGuestListLoader(true)}
         postfix="Добавить несколько гостей"
       />
+      <IconButton
+        Icon={IconDownload04StrokeRounded}
+        className="margin-big-gap color--3"
+        onClick={() => setIsOpenGuestListExcelZipper(true)}
+        postfix="Сформировать Excel список"
+      />
+      {isOpenGuestListExcelZipper && (
+        <GuestListExcelZipper
+          guests={guests}
+          setIsOpen={setIsOpenGuestListExcelZipper}
+        />
+      )}
       {isOpenGuestEditor && (
         <WedGuestEditorModal
           guest={guest}

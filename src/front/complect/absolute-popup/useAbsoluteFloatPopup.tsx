@@ -41,8 +41,8 @@ export default function useAbsoluteFloatPopup() {
           const left =
             x + floatElement.clientWidth > window.innerWidth ? window.innerWidth - floatElement.clientWidth - 5 : x;
 
-          floatElement.style.top = `${top}px`;
-          floatElement.style.left = `${left}px`;
+          floatElement.style.top = `${top >= 0 ? top : 5}px`;
+          floatElement.style.left = `${left >= 0 ? left : 5}px`;
         });
       },
       [close, closeAbsoluteFloatPopup],

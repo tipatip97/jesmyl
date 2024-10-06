@@ -59,14 +59,16 @@ export const CmLiveTranslationList = (props: Props) => {
   }, [props.com, props.config.pushKind, props.texti]);
 
   useEffect(() => {
-    const element = document.querySelector(querySelector);
+    try {
+      const element = document.querySelector(querySelector);
 
-    if (element === null) return;
+      if (element === null) return;
 
-    element.scrollIntoView({ block: 'center' });
+      element.scrollIntoView({ block: 'center' });
 
-    element.classList.add('current');
-    return () => element.classList.remove('current');
+      element.classList.add('current');
+      return () => element.classList.remove('current');
+    } catch (error) {}
   }, [querySelector]);
 
   return (

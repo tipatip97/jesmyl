@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { RuleSet, ThemeProvider } from 'styled-components';
 import App from './app/App';
+import { logFrontErrors } from './complect/error-catcher';
 import { setPolyfills } from './complect/polyfills';
 import './index.scss';
 import './lib.scss';
@@ -10,7 +11,6 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import StyledGlobalStyles from './styledGlobalStyles';
 import { styledDefaultTheme } from './styledTheme';
-import { logFrontErrors } from './complect/error-catcher';
 
 export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {
   createRoot(node).render(

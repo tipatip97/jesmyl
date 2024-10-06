@@ -32,6 +32,10 @@ export enum WifeName {
   def = '',
 }
 
+export enum WedGuestComment {
+  def = '',
+}
+
 export interface WedGuest {
   mi?: number;
   fn: FirstName;
@@ -40,7 +44,7 @@ export interface WedGuest {
   c: WedGuestConversation;
   s: WedGuestSex;
   w?: WedGuestWillBe;
-  t?: string;
+  t?: WedGuestComment;
   g?: WedGuestPropositionSent;
 }
 

@@ -40,6 +40,7 @@ export const CmLiveTranslationScreen = (props: Props) => {
       com={com}
       text={text}
       nextText={nextText}
+      texti={props.texti}
       config={props.config}
     />
   );

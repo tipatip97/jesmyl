@@ -107,7 +107,7 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                       <div className="list-title sticky">Последние:</div>
                       <ComFaceList
                         list={laterComs}
-                        isWithoutIds
+                        isPutCcomFaceOff
                       />
                     </div>
                     <div
@@ -122,10 +122,7 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                       )}
                     </div>
                     <div className="com-list">
-                      <ComFaceList
-                        list={limitedComs}
-                        isNeedRenderingDelay
-                      />
+                      <ComFaceList list={limitedComs} />
                     </div>
                   </>
                 )

@@ -200,7 +200,7 @@ export default function WeddingProposition() {
                     <CommentInput
                       value={guest.t}
                       onChange={event => {
-                        setGuest({ ...guest, t: event.currentTarget.value || undefined });
+                        setGuest({ ...guest, t: (event.currentTarget.value as never) || undefined });
                       }}
                     />
                   </CommentInputWrapper>

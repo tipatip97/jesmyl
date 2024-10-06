@@ -70,6 +70,7 @@ import { iconPackOfDashboardSquareAdd } from './icons/dashboard-square-add';
 import { iconPackOfDashboardSquareRemove } from './icons/dashboard-square-remove';
 import { iconPackOfDelete01 } from './icons/delete-01';
 import { iconPackOfDelete02 } from './icons/delete-02';
+import { iconPackOfDownload04 } from './icons/download-04';
 import { iconPackOfEdit01 } from './icons/edit-01';
 import { iconPackOfEdit02 } from './icons/edit-02';
 import { iconPackOfEqualSignSquare } from './icons/equal-sign-square';
@@ -263,6 +264,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   DashboardSquareRemove: iconPackOfDashboardSquareRemove,
   Delete01: iconPackOfDelete01,
   Delete02: iconPackOfDelete02,
+  Download04: iconPackOfDownload04,
   Edit01: iconPackOfEdit01,
   Edit02: iconPackOfEdit02,
   EqualSignSquare: iconPackOfEqualSignSquare,

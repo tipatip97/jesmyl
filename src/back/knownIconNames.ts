@@ -71,6 +71,7 @@ export const knownIconNames = [
   'DashboardSquareRemove',
   'Delete01',
   'Delete02',
+  'Download04',
   'Edit01',
   'Edit02',
   'EqualSignSquare',

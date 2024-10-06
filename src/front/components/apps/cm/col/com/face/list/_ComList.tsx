@@ -22,9 +22,12 @@ interface Props extends IComFaceList, ListComFaceProps {
 
 const initComsBefore = 10;
 const initComsAfter = 18;
-const loadComsOnScroll = 10;
+const loadComsOnScroll = 15;
+
+const currentComwIdPrefix = 'com_face_wid_';
 
 const inkNumFunc = (n: number) => n + 1;
+const isRejectScrollDivision = isIPhone;
 
 export const ComFaceListComList = (props: Props) => {
   const navigate = useNavigate();
@@ -43,29 +46,30 @@ export const ComFaceListComList = (props: Props) => {
   const ccomi = mylib.isNum(props.ccomw) ? indexsHashMap[props.ccomw] || 0 : 0;
 
   const [, forceUpdate] = useState(0);
-  const limits = useRef(
-    isIPhone
-      ? { start: 0, finish: props.list.length }
-      : { start: ccomi - initComsBefore, finish: ccomi + initComsAfter },
-  );
+  const limits = useRef({ start: isRejectScrollDivision ? 0 : ccomi - initComsBefore, finish: ccomi + initComsAfter });
 
   useEffect(() => {
-    limits.current.start = ccomi - initComsBefore;
     limits.current.finish = ccomi + initComsAfter;
     forceUpdate(inkNumFunc);
+
+    if (isRejectScrollDivision) return;
+
+    limits.current.start = ccomi - initComsBefore;
   }, [ccomi, props.list]);
 
   useEffect(() => {
-    const node = document.getElementById(`com_face_wid_${props.ccomw}`);
+    if (listRef.current === null || props.ccomw === undefined || props.isPutCcomFaceOff) return;
 
-    if (props.ccomw === undefined || node === null) return;
+    const node = listRef.current.querySelector(`#${currentComwIdPrefix}${props.ccomw}`);
+
+    if (node === null) return;
 
     return hookEffectPipe()
       .pipe(
         setTimeoutPipe(() => {
           const parent = (function get(node: HTMLElement | null): HTMLElement | null {
             return node && (node.scrollHeight > node.clientHeight ? node : get(node.parentElement));
-          })(node);
+          })(node as never);
 
           if (parent == null) {
             node.scrollIntoView({ block: 'center' });
@@ -79,10 +83,10 @@ export const ComFaceListComList = (props: Props) => {
         }),
       )
       .effect();
-  }, [props.ccomw, props.isNeedRenderingDelay]);
+  }, [props.ccomw, props.isPutCcomFaceOff]);
 
   useEffect(() => {
-    if (isIPhone || listRef.current === null) return;
+    if (listRef.current === null) return;
 
     let scrollElement = listRef.current as HTMLElement | null;
 
@@ -93,6 +97,8 @@ export const ComFaceListComList = (props: Props) => {
     }
 
     let prevScrollTop: number | null = null;
+    let isIgnoreScroll = false;
+    const resetIgnoreScroll = () => (isIgnoreScroll = false);
 
     return hookEffectPipe()
       .pipe(
@@ -103,22 +109,26 @@ export const ComFaceListComList = (props: Props) => {
               return;
             }
 
+            if (isIgnoreScroll) return;
+
             if (
               prevScrollTop > scrollElement.scrollTop &&
-              scrollElement.scrollTop < scrollElement.clientHeight &&
+              scrollElement.scrollTop < scrollElement.clientHeight * 2 &&
               limits.current.start >= 0
             ) {
               limits.current.start -= loadComsOnScroll;
               forceUpdate(inkNumFunc);
-            }
-
-            if (
+              isIgnoreScroll = true;
+              setTimeout(resetIgnoreScroll, 50);
+            } else if (
               prevScrollTop < scrollElement.scrollTop &&
-              scrollElement.scrollTop > scrollElement.scrollHeight - scrollElement.clientHeight * 1.3 &&
+              scrollElement.scrollTop > scrollElement.scrollHeight - scrollElement.clientHeight * 2 &&
               limits.current.finish < props.list.length
             ) {
               limits.current.finish += loadComsOnScroll;
               forceUpdate(inkNumFunc);
+              isIgnoreScroll = true;
+              setTimeout(resetIgnoreScroll, 50);
             }
 
             prevScrollTop = scrollElement.scrollTop;
@@ -139,9 +149,9 @@ export const ComFaceListComList = (props: Props) => {
             elem = elem.parentElement;
           }
 
-          if (!elem?.id.startsWith('com_face_wid_')) return;
+          if (!elem?.id.startsWith(currentComwIdPrefix)) return;
 
-          const comw = +elem.id.slice('com_face_wid_'.length);
+          const comw = +elem.id.slice(currentComwIdPrefix.length);
 
           if (mylib.isNaN(comw)) return;
 
@@ -178,9 +188,9 @@ export const ComFaceListComList = (props: Props) => {
             elem = elem.parentElement;
           }
 
-          if (!elem?.id.startsWith('com_face_wid_')) return;
+          if (!elem?.id.startsWith(currentComwIdPrefix)) return;
 
-          const comw = +elem.id.slice('com_face_wid_'.length);
+          const comw = +elem.id.slice(currentComwIdPrefix.length);
 
           if (mylib.isNaN(comw)) return;
 
@@ -199,6 +209,7 @@ export const ComFaceListComList = (props: Props) => {
       $ccomw={props.ccomw}
       $accentComw={floatMenuCoords?.comw}
       $selectedComws={selectedComws}
+      $isPutCcomFaceOff={props.isPutCcomFaceOff}
       className={props.className}
       ref={listRef}
       {...clickerProps}
@@ -212,7 +223,7 @@ export const ComFaceListComList = (props: Props) => {
               <div className="flex center margin-gap-v color--7">{props.titles[comi]}</div>
             )}
             <FaceItem
-              id={props.isWithoutIds ? undefined : `com_face_wid_${com.wid}`}
+              id={`${currentComwIdPrefix}${com.wid}`}
               className={`flex between pointer ${comi}-comi ` + (props.groupClass || '')}
             >
               <div className="face-logo">
@@ -243,38 +254,43 @@ const StyledContainer = styled.div<{
   $ccomw: CmComWid | NaN | nil;
   $accentComw: number | nil;
   $selectedComws: CmComWid[];
+  $isPutCcomFaceOff: boolean | nil;
 }>`
   * {
     transition: opacity 0.4s;
   }
 
-  ${props => {
-    return css`
-      #com_face_wid_${props.$ccomw} {
+  ${props =>
+    !props.$isPutCcomFaceOff &&
+    css`
+      #${currentComwIdPrefix}${props.$ccomw} {
         font-weight: bold;
       }
+    `}
 
+  ${props => {
+    return css`
       ${props.$accentComw
         ? css`
-            > :not(#com_face_wid_${props.$accentComw}) {
+            > :not(#${currentComwIdPrefix}${props.$accentComw}) {
               opacity: 0.4;
             }
           `
         : ''}
 
-      ${props.$selectedComws
-        .map((comw, comwi) => {
-          return Array.from(css`
-            #com_face_wid_${comw} .face-logo {
-              border-color: var(--color--3);
-
-              &::after {
-                content: '${comwi + 1}';
-              }
-            }
-          `).join('');
-        })
-        .join(' ')}
+      ${props.$selectedComws.map(selectedComwMapper).join(' ')}
     `;
   }}
 `;
+
+const selectedComwMapper = (comw: CmComWid, comwi: number) => {
+  return Array.from(css`
+    #${currentComwIdPrefix}${comw} .face-logo {
+      border-color: var(--color--3);
+
+      &::after {
+        content: '${comwi + 1}';
+      }
+    }
+  `).join('');
+};
