@@ -109,48 +109,29 @@ export class EditableComOrders extends EditableComCorrects {
       ord.top.isNextAnchorOrd ||
       (ord.top.isNextAnchorOrd && !ordi) ||
       (index => !(index < 0 || index === cmExer.execs.length - 1))(
-        cmExer.execs.findIndex(exec => exec.action === 'comMigrateOrders' && exec.args?.comw === this.wid),
+        cmExer.execs.findIndex(exec => exec.action === 'comResortOrders' && exec.args?.comw === this.wid),
       )
     );
   }
 
   migrateOrder(topOrd: EditableOrder) {
-    if (!this.orders) return;
-    const { top: { source: { w: to = null } = {} } = {} } = topOrd.top.next || topOrd.top.prev || {};
+    const orders = this.ords;
 
-    if (to == null) {
-      return;
-    }
+    if (!orders) return;
 
-    const prev: Record<number, number> = {};
-    const value: Record<number, number> = {};
-    const from = topOrd.top.w;
-    const min = Math.min(from, to);
-    const max = Math.max(from, to);
+    const basei = orders.findIndex(ord => ord.w === topOrd.wid);
+    const prev = orders.map(ord => ord.w);
 
-    this.ords.forEach(ord => {
-      if (ord.w > min && ord.w <= max) {
-        prev[ord.w] = ord.w - 1;
-        prev[ord.w - 1] = ord.w;
-      }
-    });
+    [orders[basei], orders[basei + 1]] = [orders[basei + 1], orders[basei]];
 
-    this.orders.forEach(ord => {
-      if (ord.top.source && prev[ord.wid] != null && !ord.top.isAnchorInherit) ord.top.source.w = prev[ord.wid];
-    });
-
-    this.orders.forEach(ord => {
-      const originWid = ord.originWid;
-      if (originWid != null && ord.top.source && ord.top.source.w !== originWid) value[originWid] = ord.top.source.w;
-    });
+    const value = orders.map(ord => ord.w);
 
     this.exec({
       value,
-      method: 'migrate',
-      action: 'comMigrateOrders',
-      args: {
-        value,
-      },
+      prev,
+      method: 'resort',
+      action: 'comResortOrders',
+      args: { value, prev },
     });
 
     this.afterOrderChange();

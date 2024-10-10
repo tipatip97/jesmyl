@@ -1,9 +1,24 @@
 import React from 'react';
 import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import ComLine from '../line/ComLine';
-import { ITheOrderProps } from './Order.model';
+import { IComLineProps, IComOrdHeaderProps } from './Order.model';
+import { Order } from './Order';
+import { Com } from '../Com';
+import { ChordVisibleVariant } from '../../../Cm.model';
 
-export default function TheOrder(props: ITheOrderProps) {
+interface Props {
+  asLineComponent?: (props: IComLineProps) => React.ReactNode;
+  asHeaderComponent?: (props: IComOrdHeaderProps) => React.ReactNode;
+  isMiniAnchor?: boolean;
+  orderUnit: Order;
+  orderUniti: number;
+  com: Com;
+  chordVisibleVariant: ChordVisibleVariant;
+  showInvisibles?: boolean;
+  specialClassId?: string;
+}
+
+export default function TheOrder(props: Props) {
   const orderUnit = props.orderUnit;
 
   if (

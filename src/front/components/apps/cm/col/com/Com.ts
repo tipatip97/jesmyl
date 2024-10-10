@@ -360,7 +360,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
   setOrders() {
     if (!blockStyles) return null;
-    const tops = this.ords.sort((a, b) => a.w - b.w);
+    const tops = this.ords;
     const orders: ReturnType<typeof this.orderConstructor>[] = [];
     let minimals: [string?, number?][] = [];
     const styles = blockStyles.styles;

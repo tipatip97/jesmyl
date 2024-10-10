@@ -13,7 +13,7 @@ export const cmMolecule = new Molecule<CmState>(
     chordTracks: {},
     comTopTools: ['mark-com', 'fullscreen-mode', 'chords-variant'],
     translationScreenConfigs: [defaultCmConfig],
-    comComments: {},
+    comComments: {} as never,
     isMetronomeHide: true,
     metronomeAccentes: '1000',
     metronomeMainSound: '380',
@@ -21,6 +21,7 @@ export const cmMolecule = new Molecule<CmState>(
     cols: null,
     meetings: { contexts: [] },
     eventContext: [],
+    isShowComHashComments: false,
 
     speedRollKf: 10,
   },

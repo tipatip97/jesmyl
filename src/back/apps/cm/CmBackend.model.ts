@@ -48,7 +48,6 @@ export interface IExportableOrder extends InheritancableOrder {
   t?: number | null; // Текстовый блок
   u?: number; // Целевой айди
   inh?: Inheritancables; //
-  originWid?: number; // Неизменяемый уникальный айди
 }
 
 export interface IExportableCom {

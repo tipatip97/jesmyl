@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled, { css, RuleSet } from 'styled-components';
 import { useAtomValue } from '../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../complect/backSwipableContainerMaker';
 import { ChordVisibleVariant } from '../../Cm.model';
@@ -9,7 +9,7 @@ import { cmComFontSizeAtom, cmMolecule } from '../../molecules';
 import { Com } from './Com';
 import './Com.scss';
 import TheCom from './TheCom';
-import TheComComment from './TheComComment';
+import { useComBlockCommentStyles as useComBlockComment } from './complect/useComBlockCommentStyles';
 
 let onPrevCom: () => void;
 let onNextCom: () => void;
@@ -35,6 +35,7 @@ export default function TheControlledCom({
   const isMiniAnchor = useAtomValue(isMiniAnchorAtom);
   const listRef = useRef<HTMLDivElement>(null);
   const [, setSearchParams] = useSearchParams();
+  const { commentStyles, commentBlockNode } = useComBlockComment(com);
 
   onNextCom = () => {
     if (!comList?.length) return;
@@ -61,7 +62,10 @@ export default function TheControlledCom({
   };
 
   return (
-    <RollControled className="composition-content">
+    <StyledRollControled
+      $commentStyles={commentStyles}
+      className="composition-content"
+    >
       <WithScrollProgress
         {...swiper}
         className="relative full-height"
@@ -74,11 +78,15 @@ export default function TheControlledCom({
           isMiniAnchor={isMiniAnchor}
           listRef={listRef}
         />
-        <TheComComment comw={com.wid} />
+        {commentBlockNode}
       </WithScrollProgress>
-    </RollControled>
+    </StyledRollControled>
   );
 }
+
+const StyledRollControled = styled(RollControled)<{ $commentStyles?: RuleSet<object> | string }>`
+  ${props => props.$commentStyles}
+`;
 
 const WithScrollProgress = styled.div<{ $listHeight: number | null | und }>`
   ${props => {
@@ -94,6 +102,7 @@ const WithScrollProgress = styled.div<{ $listHeight: number | null | und }>`
           height: ${props.$listHeight}px;
           background-color: var(--color--7);
           opacity: 0.02;
+          pointer-events: none;
 
           animation: WithProgress linear;
           animation-timeline: scroll();

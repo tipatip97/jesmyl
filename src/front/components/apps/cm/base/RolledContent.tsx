@@ -42,7 +42,11 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
       {...props}
       onClick={() => setIsRolling(is => !is)}
       ref={containerRef}
-      className={'roll-controled-container full-width full-height' + (isFullscreen ? ' fullscreen' : '')}
+      className={
+        'roll-controled-container full-width full-height' +
+        (isFullscreen ? ' fullscreen' : '') +
+        ('' + props.className || '')
+      }
     >
       <div className={'roll-controls pointer flex column center' + (isRolling ? ' open' : '')}>
         <IconMinusSignStrokeRounded

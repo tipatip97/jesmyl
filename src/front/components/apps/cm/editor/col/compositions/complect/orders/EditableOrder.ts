@@ -14,7 +14,6 @@ import { EditableCom } from '../../com/EditableCom';
 export class EditableOrder extends Order {
   _regions?: EditableOrderRegion<EditableOrder>[];
   com: EditableCom;
-  readonly originWid = this.top.source ? this.top.source.originWid ?? (this.top.source.originWid = this.wid) : this.wid;
 
   constructor(top: IExportableOrderTop, com: EditableCom) {
     super(top, com);

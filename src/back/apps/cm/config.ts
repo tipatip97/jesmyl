@@ -267,11 +267,11 @@ const config: FilerAppConfig = {
           },
           '/o/w': {
             level: 50,
-            action: 'comMigrateOrders',
+            action: 'comResortOrders',
             title: 'В песне "$name" была пересортировка блоков',
-            method: 'migrate',
+            method: 'resort',
             args: {
-              value: '#Object',
+              value: '#List',
             },
           },
           '/a': {

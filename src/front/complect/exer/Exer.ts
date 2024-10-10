@@ -72,10 +72,7 @@ export class Exer<Storage extends ExerStorage> {
 
     if (isPrevented) return null;
 
-    if (method === 'migrate' && lastExec && lastExec.method === method && lastExec.scope === scope) {
-      if (!Object.keys(value || {}).length) this.execs.splice(lasti, 1);
-      else this.execs.splice(lasti, 1, (retExec = new Exec(exec, this.rules)));
-    } else if (method === 'set') {
+    if (method === 'set' || method === 'resort') {
       if (prevExec)
         if (mylib.isEq(prevExec.prev, value)) this.execs.splice(prevExeci, 1);
         else {

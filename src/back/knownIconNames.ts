@@ -127,6 +127,7 @@ export const knownIconNames = [
   'MinusSignSquare',
   'MoreVerticalCircle01',
   'MusicNote01',
+  'Note03',
   'NoteEdit',
   'Notification01',
   'NotificationOff01',

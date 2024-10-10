@@ -126,6 +126,7 @@ import { iconPackOfMinusSignCircle } from './icons/minus-sign-circle';
 import { iconPackOfMinusSignSquare } from './icons/minus-sign-square';
 import { iconPackOfMoreVerticalCircle01 } from './icons/more-vertical-circle-01';
 import { iconPackOfMusicNote01 } from './icons/music-note-01';
+import { iconPackOfNote03 } from './icons/note-03';
 import { iconPackOfNoteEdit } from './icons/note-edit';
 import { iconPackOfNotification01 } from './icons/notification-01';
 import { iconPackOfNotificationOff01 } from './icons/notification-off-01';
@@ -320,6 +321,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   MinusSignSquare: iconPackOfMinusSignSquare,
   MoreVerticalCircle01: iconPackOfMoreVerticalCircle01,
   MusicNote01: iconPackOfMusicNote01,
+  Note03: iconPackOfNote03,
   NoteEdit: iconPackOfNoteEdit,
   Notification01: iconPackOfNotification01,
   NotificationOff01: iconPackOfNotificationOff01,

@@ -1,11 +1,10 @@
 import { ReactNode } from 'react';
 import { IExportableOrder, IExportableOrderFieldValues, OrderRepeats } from '../../../../../../models';
-import { ChordVisibleVariant } from '../../../Cm.model';
 import { StyleBlock } from '../block-styles/StyleBlock';
 import { Com } from '../Com';
 import { Order } from './Order';
 
-export type INewExportableOrder = Omit<IExportableOrder, 'w' | 'originWid'>;
+export type INewExportableOrder = Omit<IExportableOrder, 'w'>;
 
 export type EditableOrderRegion<Ord extends Order> = {
   count: number;
@@ -54,7 +53,7 @@ export interface IExportableOrderTop extends IExportableOrder {
   anchorInheritIndex?: number;
   sourceIndex?: number;
   viewIndex?: number;
-  header?: (bag?: OrderTopHeaderBag, isRequired?: boolean) => ReactNode;
+  header?: (bag?: OrderTopHeaderBag, isRequired?: boolean) => string;
   style?: StyleBlock;
 }
 
@@ -78,18 +77,6 @@ export interface OrderField {
   isExt?: boolean;
   extIf?: (poss?: [] | null) => boolean;
   type: string | string[];
-}
-
-export interface ITheOrderProps {
-  asLineComponent?: (props: IComLineProps) => ReactNode;
-  asHeaderComponent?: (props: IComOrdHeaderProps) => ReactNode;
-  isMiniAnchor?: boolean;
-  orderUnit: Order;
-  orderUniti: number;
-  com: Com;
-  chordVisibleVariant: ChordVisibleVariant;
-  showInvisibles?: boolean;
-  specialClassId?: string;
 }
 
 export interface IComOrdHeaderProps extends IComOrdProps {

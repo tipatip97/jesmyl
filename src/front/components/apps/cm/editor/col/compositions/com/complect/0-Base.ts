@@ -98,7 +98,6 @@ export class EditableComBase extends Com {
       t: this.texts,
       o: this.ords.map(topOrd => {
         const ord = mylib.clone(topOrd);
-        delete ord.originWid;
         delete ord.header;
 
         if (!ord.p?.length) delete ord.p;

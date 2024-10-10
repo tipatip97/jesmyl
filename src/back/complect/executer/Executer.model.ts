@@ -10,7 +10,7 @@ export type ExecutionMethod =
   | 'concat'
   | 'toggle_existance'
   | 'toggle_by'
-  | 'migrate'
+  | 'resort'
   | 'insert_beforei'
   | 'remove'
   | 'remove_each'

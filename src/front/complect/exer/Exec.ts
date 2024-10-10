@@ -34,7 +34,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
     this.action = exec.action;
     this.method = exec.method;
     this.data = exec.data;
-    if (exec.method === 'set') this.prev = mylib.clone(exec.prev);
+    if (exec.method === 'set' || exec.method === 'resort') this.prev = mylib.clone(exec.prev);
     this.corrects = exec.corrects;
 
     this.setReals(exec, execKeys);
@@ -90,7 +90,7 @@ export class Exec<Value> extends SourceBased<ClientExecutionDict> {
         this.args = {
           ...this.args,
           ...exec.args,
-          ...(this.method === 'set' ? { prev: this.prev } : null),
+          ...(this.method === 'set' || this.method === 'resort' ? { prev: this.prev } : null),
         };
       if (exec.corrects && this.corrects) this.corrects.setAll(exec.corrects);
     }

@@ -1148,24 +1148,9 @@ export class Executer {
                 penultimate[lastTrace] = target.filter((source: any) => !this.isExpected(source, value, realArgs));
               }
               break;
-            case 'migrate':
-              if (penultimate && value) {
-                SMyLib.entries(penultimate).forEach(([, item]: [any, any]) => {
-                  const val = value[item[lastTrace]];
-                  if (val != null) item[lastTrace] = val;
-                });
-                let next =
-                  +(penultimate as any[]).reduce((fin, currItem) => {
-                    return fin < currItem[lastTrace] ? currItem[lastTrace] : fin;
-                  }, 0) || 0;
-                const signs: number[] = [];
-
-                (penultimate as any[]).forEach(item => {
-                  const sign = item[lastTrace];
-                  if (signs.includes(sign)) item[lastTrace] = ++next;
-
-                  signs.push(sign);
-                });
+            case 'resort':
+              if (smylib.isArr(penultimate) && smylib.isArr(value)) {
+                penultimate.sort((a: any, b: any) => value.indexOf(a[lastTrace]) - value.indexOf(b[lastTrace]));
               }
               break;
             default:

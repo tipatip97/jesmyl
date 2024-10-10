@@ -1,3 +1,4 @@
+import { CmComWid } from '../../../../back/apps/cm/Cm.enums';
 import { IExportableMeetings } from '../../../../back/apps/cm/Meetings.model';
 import { ClientExecutionDict } from '../../../complect/exer/Exer.model';
 import { IExportableCols } from '../../../models';
@@ -23,7 +24,8 @@ export interface CmState {
   marks: number[];
   meetings: IExportableMeetings;
   comFontSize: number;
-  comComments: Record<number, string>;
+  comComments: Record<CmComWid, string>;
+  isShowComHashComments: boolean;
   chordTracks: ChordPack;
   comTopTools: MigratableComToolName[];
   isMiniAnchor: boolean;
