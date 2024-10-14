@@ -9,7 +9,7 @@ import { cmComFontSizeAtom, cmMolecule } from '../../molecules';
 import { Com } from './Com';
 import './Com.scss';
 import TheCom from './TheCom';
-import { useComBlockCommentStyles as useComBlockComment } from './complect/useComBlockCommentStyles';
+import { useComCommentBlock as useComBlockComment } from './complect/comment-parser/useComCommentBlock';
 
 let onPrevCom: () => void;
 let onNextCom: () => void;
