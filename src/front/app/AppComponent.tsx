@@ -1,4 +1,5 @@
 import { SetStateAction, useEffect, useMemo, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { ABSOLUTE__FLOAT__POPUP } from '../complect/absolute-popup/useAbsoluteFloatPopup';
 import { contextCreator } from '../complect/contextCreator';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
@@ -10,9 +11,9 @@ import listenThemeChanges from '../complect/theme-changer';
 import { useFullScreen } from '../complect/useFullscreen';
 import { useAppFontFamilyAtom, useCurrentApp } from '../components/index/molecules';
 import { applyFontFamilyFromMyFiles } from '../components/index/parts/actions/files/utils/set-font-family-effect';
+import { IndexAdvertisingReminder } from '../components/index/parts/advertising/Reminder';
 import { useIsReadyRouter } from '../components/router/atoms';
 import './App.scss';
-import { Outlet } from 'react-router-dom';
 
 listenThemeChanges();
 
@@ -86,6 +87,7 @@ export default function AppComponent() {
           />
           <ABSOLUTE__FLOAT__POPUP onOpen={() => {}} />
           <Outlet />
+          <IndexAdvertisingReminder />
         </div>
         <KEYBOARD_FLASH {...keyboardProps} />
       </div>

@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { makeAppActionLink } from '../../../../app/AppActions';
+import { makeAppActionLink } from '../../../../app/AppServiceActions';
 import { IconEdit02StrokeRounded } from '../../../../complect/the-icon/icons/edit-02';
 import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import { IconNotification01StrokeRounded } from '../../../../complect/the-icon/icons/notification-01';

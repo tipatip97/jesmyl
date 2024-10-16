@@ -5,13 +5,13 @@ import { TheIconLoading } from '../complect/the-icon/IconLoading';
 import { AppName } from './App.model';
 import { useInitSoki } from './useInitSoki';
 
-export const appServiceActionsRouteName = 'app-actions' as const;
+export const scheduleWidgetActionsRouteName = 'app-actions' as const;
 
 const appNameKey = 'a';
 const keyKey = 'k';
 const valueKey = 'v';
 
-export const AppServiceActions = () => {
+const AppServiceActions = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [searchParams] = useSearchParams();
@@ -65,10 +65,12 @@ export const AppServiceActions = () => {
 export const makeAppActionLink = (appName: AppName, key: string, value: string) => {
   const url = new URL(window.location.origin);
 
-  url.pathname = appServiceActionsRouteName;
+  url.pathname = scheduleWidgetActionsRouteName;
   url.searchParams.set(valueKey, value);
   url.searchParams.set(appNameKey, appName);
   url.searchParams.set(keyKey, key);
 
   return url.toString();
 };
+
+export default AppServiceActions;

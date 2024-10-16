@@ -1,3 +1,4 @@
+import React, { Suspense } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
@@ -8,7 +9,7 @@ import useFullContent from '../../../../complect/fullscreen-content/useFullConte
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import { scheduleWidgetListPageRoute } from '../../../../complect/schedule-widget/general/ListPageRoute';
-import { IconComputerSettingsStrokeRounded } from '../../../../complect/the-icon/icons/computer-settings';
+import { IconCloudStrokeRounded } from '../../../../complect/the-icon/icons/cloud';
 import { IconInformationCircleStrokeRounded } from '../../../../complect/the-icon/icons/information-circle';
 import { IconRefreshStrokeRounded } from '../../../../complect/the-icon/icons/refresh';
 import { IconSettings02StrokeRounded } from '../../../../complect/the-icon/icons/settings-02';
@@ -16,13 +17,13 @@ import { checkIsThereNewSW } from '../../../../serviceWorkerRegistration';
 import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import IndexActions from '../actions/Actions';
+import IndexAdvertisingPage from '../advertising/Page';
 import IndexAbout from '../IndexAbout';
 import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthButton';
 import IndexSettings from '../settings/Settings';
 import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
 import { UserMore } from './UserMore';
-import React, { Suspense } from 'react';
 
 const IndexAuthorization = React.lazy(() => import('../login/IndexAuthorization'));
 
@@ -92,12 +93,12 @@ export default function IndexMain() {
                     />
                   </Link>
                   <Link
-                    to="actions"
+                    to="advertising"
                     className="full-width"
                   >
                     <BrutalItem
-                      icon={<IconComputerSettingsStrokeRounded />}
-                      title="Взаимодействие"
+                      icon={<IconCloudStrokeRounded />}
+                      title="Посмотреть стороннюю рекламу"
                     />
                   </Link>
                   <BrutalItem
@@ -151,7 +152,24 @@ export default function IndexMain() {
         path="settings/*"
         element={<IndexSettings />}
       />
+
+      <Route
+        path="advertising"
+        element={<IndexAdvertisingPage />}
+      />
+
       {scheduleWidgetListPageRoute}
     </Routes>
   );
 }
+
+// (function clicker() {
+//   document.querySelector('[data-testid="campaign-card-add-adunit"]')?.click();
+//   setTimeout(() => {
+//     document.querySelector('[data-testid="ContextRtbFooter.Create"]')?.click();
+//     setTimeout(() => {
+//       document.querySelector('[data-testid="ContextRtbFooter.Done"]')?.click();
+//       setTimeout(clicker, 2000);
+//     }, 3000);
+//   }, 3000);
+// })();

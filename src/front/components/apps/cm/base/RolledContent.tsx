@@ -45,7 +45,7 @@ export default function RollControled(props: PropsWithChildren<HTMLAttributes<HT
       className={
         'roll-controled-container full-width full-height' +
         (isFullscreen ? ' fullscreen' : '') +
-        ('' + props.className || '')
+        ('' + (props.className || ''))
       }
     >
       <div className={'roll-controls pointer flex column center' + (isRolling ? ' open' : '')}>

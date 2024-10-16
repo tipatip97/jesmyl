@@ -54,16 +54,24 @@
     />
 
     <title>JesmyL</title>
-  </head>
 
-  <script
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"
-  ></script>
-  <script
-    async
-    src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"
-  ></script>
+    <!-- Yandex.RTB -->
+    <script>
+      window.yaContextCb = window.yaContextCb || [];
+    </script>
+    <script
+      src="https://yandex.ru/ads/system/context.js"
+      async
+    ></script>
+    <script
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"
+    ></script>
+    <script
+      async
+      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"
+    ></script>
+  </head>
 
   <body translate="no">
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -71,4 +79,31 @@
     <div id="root"></div>
     <div id="qr-code-application-container"></div>
   </body>
+
+  <script>
+    const floatNode = document.createElement('div');
+    const placeNode = document.createElement('div');
+
+    floatNode.id = 'yandex_rtb_R-A-float';
+
+    placeNode.id = 'yandex_rtb_R-A-place';
+    placeNode.hidden = true;
+
+    placeNode.appendChild(floatNode);
+    document.body.appendChild(placeNode);
+    const prefixMiddle = 'R-A-12370450-';
+    const prefix = `yandex_rtb_${prefixMiddle}`;
+
+    Array.from({ length: +localStorage.countOfAdvertisingBanners || 30 }, () => null).forEach((_null, numi) => {
+      const renderTo = `${prefix}${numi + 1}`;
+      const blockId = `${prefixMiddle}${numi + 1}`;
+
+      const node = document.createElement('div');
+      floatNode.appendChild(node);
+
+      node.id = renderTo;
+
+      window.yaContextCb.push(() => Ya.Context.AdvManager.render({ blockId, renderTo }));
+    });
+  </script>
 </html>

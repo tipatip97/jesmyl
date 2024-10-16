@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './App.scss';
-import AppComponent from './AppComponent';
 import { lastVisitedRouteLsName } from './AppFooter';
 import AppRouter from './AppRouter';
 

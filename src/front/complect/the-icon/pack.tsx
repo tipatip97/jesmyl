@@ -56,6 +56,7 @@ import { iconPackOfCheckmarkSquare04 } from './icons/checkmark-square-04';
 import { iconPackOfCircle } from './icons/circle';
 import { iconPackOfCircleArrowDataTransferDiagonal } from './icons/circle-arrow-data-transfer-diagonal';
 import { iconPackOfClock01 } from './icons/clock-01';
+import { iconPackOfCloud } from './icons/cloud';
 import { iconPackOfCloudDownload } from './icons/cloud-download';
 import { iconPackOfCloudUpload } from './icons/cloud-upload';
 import { iconPackOfComputer } from './icons/computer';
@@ -251,6 +252,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   Circle: iconPackOfCircle,
   CircleArrowDataTransferDiagonal: iconPackOfCircleArrowDataTransferDiagonal,
   Clock01: iconPackOfClock01,
+  Cloud: iconPackOfCloud,
   CloudDownload: iconPackOfCloudDownload,
   CloudUpload: iconPackOfCloudUpload,
   Computer: iconPackOfComputer,

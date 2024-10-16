@@ -1,24 +1,22 @@
-import React, { memo, Suspense, useEffect } from 'react';
-import { Route, Routes, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { atom, useAtomSet, useAtomValue } from '../complect/atoms';
-import IndexMain from '../components/index/parts/main/IndexMain';
-import { soki } from '../soki';
+import React, { Suspense, useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { atom, useAtomValue } from '../complect/atoms';
 import { AppName } from './App.model';
-import { AppServiceActions, appServiceActionsRouteName as scheduleWidgetActionsRouteName } from './AppActions';
-import { useInitSoki } from './useInitSoki';
-import { routingApps } from './routing-apps';
+import { scheduleWidgetActionsRouteName } from './AppServiceActions';
 
 const AppComponent = React.lazy(() => import('./AppComponent'));
+const AppRouterProvider = React.lazy(() => import('./AppRouterProvider'));
+const AppServiceActions = React.lazy(() => import('./AppServiceActions'));
 const Wedding = React.lazy(() => import('../components/apps/wedding/Wedding'));
 const ScheduleWidgetTgDayView = React.lazy(() => import('../complect/schedule-widget/general/TgDayView'));
 
-const AppRouter = memo(() => {
+const AppRouter = () => {
   return (
     <Routes>
       <Route element={<AppComponent />}>
         <Route
           path=":appName/*"
-          element={<Router />}
+          element={<AppRouterProvider />}
         />
         <Route
           path="schedule-day/*"
@@ -43,7 +41,7 @@ const AppRouter = memo(() => {
       />
     </Routes>
   );
-});
+};
 
 const Redirect = () => {
   const appName = useAtomValue(appNameAtom);
@@ -58,28 +56,6 @@ const Redirect = () => {
   return <></>;
 };
 
-const otherRoute = (
-  <Route
-    path="!other/*"
-    element={<IndexMain />}
-  />
-);
-
 const appNameAtom = atom<AppName>('cm');
-
-const Router = () => {
-  const params = useParams();
-  const app = routingApps[params.appName as AppName] ?? routingApps['cm'];
-  const [searchs] = useSearchParams();
-  const setAppName = useAtomSet(appNameAtom);
-
-  useEffect(() => {
-    soki.addUrl();
-    if (app) setAppName(app.appName);
-  }, [app, params, searchs, setAppName]);
-  useInitSoki();
-
-  return <>{app?.router(otherRoute)}</>;
-};
 
 export default AppRouter;

@@ -6,7 +6,7 @@ import { StyledModal, StyledModalScreen, StyledModalScreenWrapper } from '../sty
 export interface Props {
   mood?: 'ok' | 'ko';
   children: React.ReactNode;
-  onClose?: (isOpen: false) => void;
+  onClose: (isOpen: false) => void;
 }
 
 export default function Modal({ mood, children, onClose }: Props) {

@@ -4,16 +4,14 @@ import { AppName, appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { useAtomValue } from '../../../../complect/atoms';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
-import useToast from '../../../../complect/modal/useToast';
 import mylib, { MyLib } from '../../../../complect/my-lib/MyLib';
-import Noty from '../../../../complect/notifications/Noti';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../complect/the-icon/IconCheckbox';
 import { IconArrowDownDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-down-double';
 import { IconArrowUpDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-up-double';
+import { IconComputerSettingsStrokeRounded } from '../../../../complect/the-icon/icons/computer-settings';
 import { IconKeyboardStrokeRounded } from '../../../../complect/the-icon/icons/keyboard';
-import { IconMessage01StrokeRounded } from '../../../../complect/the-icon/icons/message-01';
 import { IconPaintBoardStrokeRounded } from '../../../../complect/the-icon/icons/paint-board';
 import { IconRssErrorStrokeRounded } from '../../../../complect/the-icon/icons/rss-error';
 import { IconSourceCodeCircleStrokeRounded } from '../../../../complect/the-icon/icons/source-code-circle';
@@ -50,7 +48,6 @@ export default function IndexSettings() {
   const auth = useAuth();
   const statistic = useAtomValue(statisticAtom);
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
-  const [modalNode, toast] = useToast();
   const [appFontFamily, setAppFontFamily] = useAppFontFamilyAtom();
   const connectionNode = useConnectionState('margin-gap');
 
@@ -70,6 +67,15 @@ export default function IndexSettings() {
         />
       </Link>
     ),
+    <Link
+      to="../actions"
+      className="full-width"
+    >
+      <BrutalItem
+        icon={<IconComputerSettingsStrokeRounded />}
+        title="Взаимодействие"
+      />
+    </Link>,
     <BrutalItem
       icon={<IconKeyboardStrokeRounded />}
       title="Фирменная клавиатура"
@@ -86,15 +92,6 @@ export default function IndexSettings() {
       title="Анимации"
       onClick={indexSimpleValIsPlayAnimations.switch}
       box={<IconCheckbox simpleValuer={indexSimpleValIsPlayAnimations} />}
-    />,
-    <BrutalItem
-      icon={<IconMessage01StrokeRounded />}
-      title="Проверить PUSH"
-      onClick={() => {
-        Noty.checkPermission()
-          ?.then(res => toast(`PUSH состояние: ${res}`))
-          .catch(() => toast('Ошибка при открытии PUSH', { mood: 'ko' }));
-      }}
     />,
     <BrutalItem
       icon={<IconTextStrokeRounded />}
@@ -135,7 +132,6 @@ export default function IndexSettings() {
             head={connectionNode}
             content={
               <>
-                {modalNode}
                 {settingsList.length ? (
                   settingsList.map((button, buttoni) => {
                     return <React.Fragment key={buttoni}>{button}</React.Fragment>;

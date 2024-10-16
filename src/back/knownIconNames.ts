@@ -57,6 +57,7 @@ export const knownIconNames = [
   'Circle',
   'CircleArrowDataTransferDiagonal',
   'Clock01',
+  'Cloud',
   'CloudDownload',
   'CloudUpload',
   'Computer',

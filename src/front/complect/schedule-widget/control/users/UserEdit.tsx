@@ -7,7 +7,7 @@ import {
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
 import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
-import { makeAppActionLink } from '../../../../app/AppActions';
+import { makeAppActionLink } from '../../../../app/AppServiceActions';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetRightControlList from '../RightControlList';
 
