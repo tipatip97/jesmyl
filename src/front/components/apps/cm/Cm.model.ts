@@ -24,7 +24,7 @@ export interface CmState {
   marks: number[];
   meetings: IExportableMeetings;
   comFontSize: number;
-  comComments: Record<CmComWid, string>;
+  comComments: Partial<Record<CmComWid, string>>;
   isShowComHashComments: boolean;
   chordTracks: ChordPack;
   comTopTools: MigratableComToolName[];

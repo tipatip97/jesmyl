@@ -16,6 +16,7 @@ export class Atom<
   private setInTopStorage: (value: Value) => void = () => {};
 
   onValueChange?: (value: Value) => void;
+  onValueSetForServerUserStore?: (value: Value) => void;
   rem: () => void;
   getStorageValue: () => Promise<Value>;
 
@@ -70,13 +71,19 @@ export class Atom<
     this.setInTopStorage(value);
   };
 
-  set = (value: Value | ((prev: Value) => Value), isPreventSave?: boolean) => {
+  set = (
+    value: Value | ((prev: Value) => Value),
+    isPreventSave?: boolean,
+    isRejectValueSetForServerUserStoreCallbackInvoke?: boolean,
+  ) => {
     const val = mylib.isFunc(value) ? value(this.value) : value;
 
     if (val === undefined || (mylib.isNum(val) && isNaN(val))) return;
 
     this.onValueChange?.(val);
     this.justSet(val);
+
+    if (!isRejectValueSetForServerUserStoreCallbackInvoke) this.onValueSetForServerUserStore?.(val);
 
     if (isPreventSave === true) return;
 

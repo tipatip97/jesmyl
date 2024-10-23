@@ -6,17 +6,17 @@ import { IconArrowRight02StrokeRounded } from '../../../../../complect/the-icon/
 import { IconCalendar03StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-03';
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
+import { cmMolecule } from '../../molecules';
 import { useCmEditorExecs } from '../atoms';
 import { ExecVision } from '../CmEditor.model';
 import { EditableCom } from '../col/compositions/com/EditableCom';
 import { useEditableCols } from '../col/useEditableCols';
 import { EditableMeetingsEvent } from '../meetings/EditableMeetingsEvent';
 import { useEditableMeetings } from '../meetings/useEditableMeetings';
-import { cmEditorMolecule } from '../molecules';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import './ExecsVisor.scss';
 
-const rulesAtom = cmEditorMolecule.select(s => s.rules);
+const rulesAtom = cmMolecule.select(s => s.rules);
 
 export default function ExecsVisor() {
   const [lookList, setLookList] = useState<(number | nil)[]>([]);

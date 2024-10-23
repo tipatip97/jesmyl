@@ -19,7 +19,7 @@ export const useLoadBibleChaptersCombine = () => {
   useEffect(() => {
     if (combine?.chapters != null) return;
 
-    const timeout = setTimeout(() => soki.pullCurrentAppData('bible'), 1000);
+    const timeout = setTimeout(() => soki.makeInitialRequests('bible'), 1000);
 
     return () => clearTimeout(timeout);
   }, [combine?.chapters]);

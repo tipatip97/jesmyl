@@ -1,8 +1,9 @@
 import { atom, Molecule } from '../../../complect/atoms';
 import { CmState } from './Cm.model';
+import { CmEditorStoraged } from './editor/CmEditor.model';
 import { defaultCmConfig } from './translation/complect/controlled/hooks/configs';
 
-export const cmMolecule = new Molecule<CmState>(
+export const cmMolecule = new Molecule<CmState & CmEditorStoraged>(
   {
     chordVisibleVariant: 0,
     laterComwList: [],
@@ -13,7 +14,7 @@ export const cmMolecule = new Molecule<CmState>(
     chordTracks: {},
     comTopTools: ['mark-com', 'fullscreen-mode', 'chords-variant'],
     translationScreenConfigs: [defaultCmConfig],
-    comComments: {} as never,
+    comComments: {},
     isMetronomeHide: true,
     metronomeAccentes: '1000',
     metronomeMainSound: '380',
@@ -24,8 +25,16 @@ export const cmMolecule = new Molecule<CmState>(
     isShowComHashComments: false,
 
     speedRollKf: 10,
+
+    // editor
+    mp3Rules: [],
+    rules: [],
+    eeStorage: {},
   },
   'cm',
+  {
+    serverStored: ['marks', 'comComments'],
+  },
 );
 
 export const cmEventContextAtom = cmMolecule.select(s => s.eventContext);

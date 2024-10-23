@@ -8,20 +8,8 @@ import leader from '../../apps/leader/config';
 import wed from '../../apps/wed/config';
 import smylib, { SMyLib } from '../../shared/SMyLib';
 import { makeRegExp } from '../makeRegExp';
-import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName, SokiClientUpdateCortage } from '../soki/soki.model';
-import {
-  FilerAppConfig,
-  FilerAppRequirement,
-  FilerAppStore,
-  FilerContent,
-  FilerContentData,
-  FilerContents,
-  FilerWatcher,
-  SimpleKeyValue,
-} from './Filer.model';
-
-const itIt = (it: unknown) => it;
-const retNull = () => null;
+import { rootDirective, SokiAppName } from '../soki/soki.model';
+import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContents, FilerWatcher } from './Filer.model';
 
 export class Filer {
   contents = {} as FilerContents;
@@ -241,73 +229,6 @@ export class Filer {
         reject('' + e);
       }
     });
-  }
-
-  getContents(appName: SokiAppName, pullCortage: SokiClientUpdateCortage, auth?: LocalSokiAuth | null): PullEventValue {
-    try {
-      const [pullIndexLastUpdate, pullIndexMd5, pullAppLastUpdate, pullAppMd5] = pullCortage;
-
-      let appLastUpdates = {
-        cts: pullAppLastUpdate || 0,
-        ts: pullAppLastUpdate || 0,
-      };
-      let indexLastUpdates = {
-        cts: pullIndexLastUpdate || 0,
-        ts: pullIndexLastUpdate || 0,
-      };
-
-      const getContents = ([fixName, fixData]: [string, FilerContentData], ts: { cts: number; ts: number }) => {
-        if (fixData.level > (auth?.level || 0) || ts.ts >= fixData.mtime) return null;
-        if (ts.cts < fixData.mtime) ts.cts = fixData.mtime;
-
-        return {
-          key: fixName,
-          value: fixData.prepareContent ? fixData.prepareContent(fixData.data, auth) : fixData.data,
-        };
-      };
-
-      const getRulesData =
-        auth && auth.level > 49
-          ? (config: FilerAppConfig, md5: string | nil) => {
-              return config && md5 !== config.actions.shortRulesMd5
-                ? { key: 'rules', value: config.actions.shortRules }
-                : null;
-            }
-          : retNull;
-
-      const indexMd5 = this.appConfigs.index.actions.shortRulesMd5;
-      const appMd5 = this.appConfigs[appName]?.actions.shortRulesMd5;
-
-      return {
-        contents: [
-          SMyLib.entries(this.contents.index)
-            .map(entries => getContents(entries, indexLastUpdates))
-            .concat(getRulesData(this.appConfigs.index, pullIndexMd5))
-            .filter(itIt) as SimpleKeyValue<SokiAppName>[],
-
-          SMyLib.entries(this.contents[appName])
-            .map(entries => getContents(entries, appLastUpdates))
-            .concat(getRulesData(this.appConfigs[appName], pullAppMd5))
-            .filter(itIt) as SimpleKeyValue<SokiAppName>[],
-        ],
-        appName,
-        updates: [
-          indexLastUpdates.cts === pullIndexLastUpdate ? 0 : indexLastUpdates.cts,
-          indexMd5 === pullIndexMd5 ? '' : indexMd5,
-
-          appLastUpdates.cts === pullAppLastUpdate ? 0 : appLastUpdates.cts,
-          appMd5 === pullAppMd5 ? '' : appMd5,
-        ],
-      };
-    } catch (error) {
-      console.error('CATCHED', error);
-
-      return {
-        contents: [[], []],
-        appName,
-        updates: [null, null, null, null],
-      };
-    }
   }
 }
 

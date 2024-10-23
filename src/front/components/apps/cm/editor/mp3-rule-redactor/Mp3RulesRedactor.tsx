@@ -5,11 +5,11 @@ import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/ic
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { CmMp3Rule } from '../../../../../models';
 import { cmExer } from '../../CmExer';
-import { cmEditorMolecule } from '../molecules';
+import { cmMolecule } from '../../molecules';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';
 import Mp3RuleEditor from './Mp3RuleEditor';
 
-const mp3RulesAtom = cmEditorMolecule.select(s => s.mp3Rules);
+const mp3RulesAtom = cmMolecule.select(s => s.mp3Rules);
 
 export default function Mp3RulesRedactor() {
   const [newRules, updateNewRules] = useState<CmMp3Rule[]>([]);

@@ -11,7 +11,7 @@ export const useInitSoki = (topAppName?: AppName) => {
     if (appName === undefined) return;
 
     return hookEffectLine()
-      .setTimeout(() => soki.pullCurrentAppData(appName), 500)
+      .setTimeout(() => soki.makeInitialRequests(appName), 500)
       .effect();
   }, [appName]);
 };

@@ -4,9 +4,9 @@ import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInp
 import SendButton from '../../../../../../../../complect/sends/send-button/SendButton';
 import serviceMaster from '../../../../../../../../complect/service/serviceMaster';
 import { CmMp3ContainsPageResult } from '../../../../../../../../models';
-import { cmEditorMolecule } from '../../../../molecules';
+import { cmMolecule } from '../../../../../molecules';
 
-const mp3RulesAtom = cmEditorMolecule.select(s => s.mp3Rules);
+const mp3RulesAtom = cmMolecule.select(s => s.mp3Rules);
 
 export default function ObserveUrlResource({
   onSuccess,

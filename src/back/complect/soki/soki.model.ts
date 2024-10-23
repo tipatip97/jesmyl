@@ -2,6 +2,7 @@ import { User } from 'node-telegram-bot-api';
 import WebSocket from 'ws';
 import { ExecutionDict, ExecutionReal } from '../executer/Executer.model';
 import { SimpleKeyValue } from '../filer/Filer.model';
+import { ServerStoreContent } from './parts/120-ServerStore';
 import { SokiSharedKey, SokiSharedValueType } from './values';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible', 'wed'] as const;
@@ -51,6 +52,7 @@ export interface SokiServerEvent {
     value: string;
   };
   sharedData?: SokiSharedData;
+  freshUserContents?: ServerStoreContent[];
 }
 
 export type SokiSharedData = {
@@ -98,6 +100,7 @@ export interface SokiClientEventBody {
     prefix?: string;
     key: SokiSharedKey;
   };
+  userContents?: ServerStoreContent[];
 }
 
 export type SokiClientSubData<

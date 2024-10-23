@@ -17,11 +17,10 @@ import {
 import environment from '../back/environments/environment';
 import { AppName } from './app/App.model';
 import { Molecule } from './complect/atoms';
-import { JStorage, lsJStorageLSSwitcherName } from './complect/JStorage';
-import mylib from './complect/my-lib/MyLib';
+import { lsJStorageLSSwitcherName } from './complect/JStorage';
+import mylib, { MyLib } from './complect/my-lib/MyLib';
 import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-shareds';
 import { bibleMolecule } from './components/apps/bible/molecules';
-import { cmEditorMolecule } from './components/apps/cm/editor/molecules';
 import { cmMolecule } from './components/apps/cm/molecules';
 import { wedMolecule } from './components/apps/wedding/molecules';
 import { takeDeviceId } from './components/index/complect/takeDeviceId';
@@ -32,7 +31,6 @@ import {
   setAuthValue,
   setUpdateRequisitesValue,
 } from './components/index/molecules';
-import { appStorage } from './shared/jstorages';
 
 const version = { ...versionNum };
 
@@ -65,10 +63,16 @@ export class SokiTrip {
 
   private molecules: Partial<{ [Key in AppName]: Molecule<any, Key> }> = {
     index: indexMolecule,
-    cm: cmMolecule.with(cmEditorMolecule),
+    cm: cmMolecule,
     bible: bibleMolecule,
     wed: wedMolecule,
   };
+
+  constructor() {
+    MyLib.values(this.molecules).forEach(
+      molecule => (molecule.onServerStorageValueSend = (userContents, appName) => soki.send({ userContents }, appName)),
+    );
+  }
 
   appName() {
     const parts = window.location.pathname.split('/', 2);
@@ -134,20 +138,19 @@ export class SokiTrip {
             Eventer.invoke(this.authListeners, true);
             const appName = this.appName();
             if (appName === null) return;
-            this.pullCurrentAppData(appName);
+            this.makeInitialRequests(appName);
             mylib.values(this.subscriptions).forEach(body => body && this.sendForce(body, appName));
           }
 
+          const molecule = this.molecules[event.appName];
+
           if (event.execs && event.appName) {
             const execs = event.execs;
-            const appStore = appStorage[event.appName];
-            const molecule = this.molecules[event.appName];
-            const contents = mylib.clone({ ...appStore.properties, ...molecule?.values() });
+            const contents = mylib.clone({ ...molecule?.getValues() });
 
             Executer.executeReals(contents, event.execs.list)
               .then(fixes => {
                 if (molecule !== undefined) fixes.forEach(fix => molecule.set(fix, contents[fix]));
-                else appStore.refreshAreas(fixes, contents);
 
                 this.setLastUpdates(event.appName!, [null, null, execs.lastUpdate, null]);
               })
@@ -159,14 +162,16 @@ export class SokiTrip {
           if (event.sharedData !== undefined)
             this.onGetSharedData[event.sharedData.key]?.(event.sharedData.value as never);
 
-          if (event.download) {
-            const store = this.molecules[event.appName] ?? appStorage[event.appName];
-
+          if (event.download && molecule) {
             try {
-              store.set(event.download.key, JSON.parse(event.download.value));
+              molecule.set(event.download.key, JSON.parse(event.download.value));
             } catch (error) {
-              store.set(event.download.key, event.download.value);
+              molecule.set(event.download.key, event.download.value);
             }
+          }
+
+          if (event.freshUserContents && molecule) {
+            molecule.saveFreshContents(event.freshUserContents);
           }
         }
       } catch (e) {}
@@ -199,7 +204,7 @@ export class SokiTrip {
     setUpdateRequisitesValue(null);
   }
 
-  async pullCurrentAppData(appName: SokiAppName) {
+  async makeInitialRequests(appName: SokiAppName) {
     const {
       index: [indexLastUpdate = 0, indexRulesMd5 = ''] = [],
       [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [],
@@ -208,13 +213,14 @@ export class SokiTrip {
     this.send(
       {
         pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5],
+        userContents: this.molecules[appName]?.makeServerStoreSequest(),
       },
       appName,
     ).on(event => event.pull && this.updatedPulledData(event.pull));
   }
 
   updatedPulledData(pull: PullEventValue) {
-    const update = (pullContents: SimpleKeyValue<string, unknown>[], store: Molecule<unknown> | JStorage<unknown>) => {
+    const update = (pullContents: SimpleKeyValue<string, unknown>[], store: Molecule<unknown> | nil) => {
       if (!pullContents.length) return;
 
       const fixes: string[] = [];
@@ -224,18 +230,19 @@ export class SokiTrip {
         fixes.push(key);
       });
 
-      if (store instanceof Molecule) fixes.forEach(fix => store.set(fix as never, contents[fix]));
-      else store.refreshAreas(fixes as never, contents);
+      if (store) fixes.forEach(fix => store.set(fix as never, contents[fix]));
     };
 
     const {
       contents: [indexContents, appContents],
       updates,
     } = pull;
-    const appStore = this.molecules[pull.appName] ?? appStorage[pull.appName];
+    const appStore = this.molecules[pull.appName];
+
+    if (!appStore) return;
 
     update(appContents, appStore);
-    update(indexContents, this.molecules.index ?? appStorage.index);
+    update(indexContents, this.molecules.index);
 
     appContents.forEach(({ key, value }) => appStore.set(key, value));
     indexContents.forEach(({ key, value }) => indexMolecule.set(key as never, value as never));
@@ -243,7 +250,7 @@ export class SokiTrip {
   }
 
   onAppChange(appName: SokiAppName) {
-    this.pullCurrentAppData(appName);
+    this.makeInitialRequests(appName);
   }
 
   getCurrentUrl() {

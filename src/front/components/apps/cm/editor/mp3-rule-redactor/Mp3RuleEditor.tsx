@@ -5,9 +5,9 @@ import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconEdit02StrokeRounded } from '../../../../../complect/the-icon/icons/edit-02';
 import { CmMp3Rule } from '../../../../../models';
-import { cmEditorMolecule } from '../molecules';
+import { cmMolecule } from '../../molecules';
 
-const mp3RulesAtom = cmEditorMolecule.select(s => s.mp3Rules);
+const mp3RulesAtom = cmMolecule.select(s => s.mp3Rules);
 
 export default function Mp3RuleEditor(
   props: Partial<CmMp3Rule> & {

@@ -1,7 +1,7 @@
 import { Exer } from '../../../complect/exer/Exer';
-import { cmEditorMolecule } from './editor/molecules';
+import { cmMolecule } from './molecules';
 
 export const cmExer = new Exer(
   'cm',
-  cmEditorMolecule.select(s => s.rules),
+  cmMolecule.select(s => s.rules),
 );
