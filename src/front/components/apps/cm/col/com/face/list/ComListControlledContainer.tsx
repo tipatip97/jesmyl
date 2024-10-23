@@ -29,16 +29,16 @@ export const ComListControlledContainer = (props: Props) => {
           event.preventDefault();
 
           if (props.selectable === false) return;
-          let elem = event.nativeEvent.target as HTMLElement | null;
+          let foundElementWithFaceItemClassName = event.nativeEvent.target as HTMLElement | null;
 
-          while (elem) {
-            if (elem.classList.contains('face-item')) break;
-            elem = elem.parentElement;
+          while (foundElementWithFaceItemClassName) {
+            if (foundElementWithFaceItemClassName.classList.contains('face-item')) break;
+            foundElementWithFaceItemClassName = foundElementWithFaceItemClassName.parentElement;
           }
 
-          if (!elem?.id.startsWith(currentComwIdPrefix)) return;
+          if (!foundElementWithFaceItemClassName?.id.startsWith(currentComwIdPrefix)) return;
 
-          const comw = +elem.id.slice(currentComwIdPrefix.length);
+          const comw = +foundElementWithFaceItemClassName.id.slice(currentComwIdPrefix.length);
 
           if (mylib.isNaN(comw)) return;
 

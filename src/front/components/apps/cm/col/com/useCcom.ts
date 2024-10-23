@@ -2,10 +2,10 @@ import { useEffect, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { CmComWid } from '../../../../../../back/apps/cm/Cm.enums';
 import { atom, useAtomSet, useAtomValue } from '../../../../../complect/atoms';
+import mylib from '../../../../../complect/my-lib/MyLib';
 import { useNumComUpdates } from '../../atoms';
 import { useCols } from '../../cols/useCols';
 import { Com } from './Com';
-import mylib from '../../../../../complect/my-lib/MyLib';
 
 export const useCcomw = (): CmComWid | NaN => {
   const params = useParams();

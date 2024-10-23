@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
 import { isIPhone } from '../../../../../../../complect/device-differences';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../complect/hookEffectPipe';
@@ -23,23 +23,44 @@ export const useComListShownLimitsController = (listRef: React.RefObject<HTMLDiv
     return indexs;
   }, [props.list]);
 
-  const ccomi = mylib.isNum(props.ccomw) ? indexsHashMap[props.ccomw] || 0 : 0;
-  const limitsRef = useRef(
-    props.titles
-      ? { start: 0, finish: props.list.length }
-      : { start: isRejectScrollDivision ? 0 : ccomi - initComsBefore, finish: ccomi + initComsAfter },
-  );
+  const limits = useMemo(() => {
+    const ccomi = mylib.isNum(props.ccomw) ? indexsHashMap[props.ccomw] || 0 : 0;
+
+    let initialLimits;
+
+    if (props.titles) {
+      initialLimits = { start: 0, finish: props.list.length, initStart: 0, initFinish: props.list.length };
+    } else {
+      const startLimitPlus = initComsAfter - (props.list.length - ccomi);
+      const finishLimitPlus = initComsBefore - ccomi;
+
+      const initialStartLimit = ccomi - initComsBefore - (startLimitPlus > 0 ? startLimitPlus : 0);
+      const initialFinishLimit = ccomi + initComsAfter + (finishLimitPlus > 0 ? finishLimitPlus : 0);
+
+      const initStart = isRejectScrollDivision ? 0 : initialStartLimit < 0 ? 0 : initialStartLimit;
+      const initFinish = initialFinishLimit > props.list.length - 1 ? props.list.length - 1 : initialFinishLimit;
+
+      initialLimits = {
+        start: initStart,
+        finish: initFinish,
+        initStart,
+        initFinish,
+      };
+    }
+
+    return initialLimits;
+  }, [indexsHashMap, props.ccomw, props.list.length, props.titles]);
 
   useEffect(() => {
     if (props.titles) return;
 
-    limitsRef.current.finish = ccomi + initComsAfter;
+    limits.finish = limits.initFinish;
     forceUpdate(inkNumFunc);
 
     if (isRejectScrollDivision) return;
 
-    limitsRef.current.start = ccomi - initComsBefore;
-  }, [ccomi, props.list, props.titles]);
+    limits.start = limits.initStart;
+  }, [limits, props.list, props.titles]);
 
   useEffect(() => {
     if (listRef.current === null || props.titles) return;
@@ -73,18 +94,18 @@ export const useComListShownLimitsController = (listRef: React.RefObject<HTMLDiv
               if (
                 prevScrollTop > scrollElement.scrollTop &&
                 scrollElement.scrollTop < scrollElement.clientHeight * 2 &&
-                limitsRef.current.start >= 0
+                limits.start >= 0
               ) {
-                limitsRef.current.start -= loadComsOnScroll;
+                limits.start -= loadComsOnScroll;
                 forceUpdate(inkNumFunc);
                 isIgnoreScroll = true;
                 setTimeout(resetIgnoreScroll, 50);
               } else if (
                 prevScrollTop < scrollElement.scrollTop &&
                 scrollElement.scrollTop > scrollElement.scrollHeight - scrollElement.clientHeight * 2 &&
-                limitsRef.current.finish < props.list.length
+                limits.finish < props.list.length
               ) {
-                limitsRef.current.finish += loadComsOnScroll;
+                limits.finish += loadComsOnScroll;
                 forceUpdate(inkNumFunc);
                 isIgnoreScroll = true;
                 setTimeout(resetIgnoreScroll, 50);
@@ -97,7 +118,7 @@ export const useComListShownLimitsController = (listRef: React.RefObject<HTMLDiv
     }, 500);
 
     return onUnmount;
-  }, [props.list.length, listRef, props.titles]);
+  }, [props.list.length, listRef, props.titles, limits]);
 
-  return limitsRef.current;
+  return limits;
 };

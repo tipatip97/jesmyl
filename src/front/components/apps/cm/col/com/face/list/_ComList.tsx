@@ -23,9 +23,7 @@ export const ComFaceListComList = (props: ComFaceListProps) => {
 
   const isSetWids = !(props.titles && mylib.keys(props.titles).length);
   const setComDescription = props.comDescription
-    ? (com: Com, comi: number) => (
-        <div className={faceItemDescriptionClassName}>{props.comDescription?.(com, comi)}</div>
-      )
+    ? (com: Com, comi: number) => <div className={faceItemDescriptionClassName}>{props.comDescription!(com, comi)}</div>
     : () => null;
 
   return (
