@@ -117,8 +117,9 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
     }
   }
 
-  async doOnExecs({ appName, capsule, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
+  async doOnExecs({ appName, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
     if (eventBody.execs === undefined) return false;
+    const capsule = this.capsules.get(client);
 
     this.execExecs(appName, eventBody.execs, eventData.auth, capsule?.auth, client, requestId).then(result => {
       if (result.errorMessage !== undefined) {

@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import SourceBased from '../../../../../../complect/SourceBased';
 import { Order } from '../order/Order';
 import { IExportableStyleProp } from './BlockStyles.model';
@@ -8,12 +9,15 @@ export class StyleBlock extends SourceBased<IExportableStyleProp> {
   }
 
   normName(name: string) {
-    return name.replace(/ /g, '_').replace(/\+/g, '_plus').replace(/>/g, '_shift');
+    return name
+      .replace(makeRegExp('/ /g'), '_')
+      .replace(makeRegExp('/\\+/g'), '_plus')
+      .replace(makeRegExp('/>/g'), '_shift');
   }
 
   getStyleName(ord: Order) {
     return `${this.normName(this.key)} ${this.isInherit ? 'inherit' : ''} ${this.normName(
-      ord.top.leadOrd?.top.style?.key || '',
+      ord.me.leadOrd?.me.style?.key || '',
     )}`;
   }
 

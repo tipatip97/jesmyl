@@ -1,18 +1,19 @@
+import { makeRegExp } from '../../../../back/complect/makeRegExp';
+import { IconEdit02StrokeRounded } from '../../../complect/the-icon/icons/edit-02';
+import { IconPlusSignStrokeRounded } from '../../../complect/the-icon/icons/plus-sign';
+import { IconSchoolReportCardStrokeRounded } from '../../../complect/the-icon/icons/school-report-card';
 import { ExpandableContent } from '../../expand/ExpandableContent';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import TheIcon from '../../the-icon/TheIcon';
-import { IconEdit02StrokeRounded } from '../../../complect/the-icon/icons/edit-02';
-import { IconPlusSignStrokeRounded } from '../../../complect/the-icon/icons/plus-sign';
-import { IconSchoolReportCardStrokeRounded } from '../../../complect/the-icon/icons/school-report-card';
 import { IScheduleWidgetListCat } from '../ScheduleWidget.model';
 import ScheduleWidgetIconChange from '../complect/IconChange';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetListUnit from './Unit';
 
-const reg = /([а-яё]?[йуеъыаоэяиью]+[а-яё]).+/i;
+const reg = makeRegExp('/([а-яё]?[йуеъыаоэяиью]+[а-яё]).+/i');
 const cutTitle = (title: string) => title.replace(reg, '$1.');
 
 export function ScheduleWidgetListCategory({

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { BottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import { useBottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
@@ -9,36 +11,35 @@ import { ChordVisibleVariant } from '../../../../../Cm.model';
 import TheOrder from '../../../../../col/com/order/TheOrder';
 import { EditableCom } from '../../com/EditableCom';
 import { useEditableCcom } from '../../useEditableCcom';
-import { OrdersRedactorOrderTools } from './OrdersRedactorOrderTools';
+import { OrdersRedactorOrderTools, OrdersRedactorOrderToolsProps } from './OrdersRedactorOrderTools';
 import { OrdersRedactorAdditions } from './additions/Additions';
 
 export default function OrdersRedactor() {
   const ccom = useEditableCcom();
-  const [popupToolsNode, , openToolsPopup] = useBottomPopup(OrdersRedactorOrderTools);
   const [popupAddsNode, , openAddsPopup] = useBottomPopup<EditableCom | und>(OrdersRedactorAdditions, ccom);
   const exec = useExerExec();
+  const [toolProps, setToolProps] = useState<OrdersRedactorOrderToolsProps | false>(false);
 
   if (!ccom) return null;
 
   return (
     <div className="orders-redactor">
-      {popupToolsNode}
       {popupAddsNode}
       {ccom.orders?.map((ord, ordi, orda) => {
-        const leadHeader = ord.top.header?.(
+        const leadHeader = ord.me.header(
           {
             isEdit: true,
-            isTexted: ord.top.isInherit,
+            isTexted: ord.me.isInherit,
             repeats: ord.repeatsTitle,
           },
           true,
         );
-        const blockHeader = ord.top.isInherit ? `${leadHeader} ${ord.type}` : leadHeader;
+        const blockHeader = ord.me.isInherit ? `${leadHeader} ${ord.type}` : leadHeader;
 
-        const editNode = !ord.top.isAnchorInherit && (
+        const editNode = !ord.me.isAnchorInherit && (
           <IconEdit02StrokeRounded
             className="margin-gap-h pointer vertical-middle"
-            onClick={() => openToolsPopup({ blockHeader, ccom, ord, ordi })}
+            onClick={() => setToolProps({ blockHeader, ccom, onClose: setToolProps, ord, ordi })}
           />
         );
         const isWithHead = ord.isWithHead();
@@ -47,10 +48,10 @@ export default function OrdersRedactor() {
         return (
           <div
             key={ordi}
-            className={ord.top.isAnchorInherit ? 'inherit-block' : ''}
+            className={ord.me.isAnchorInherit ? 'inherit-block' : ''}
           >
             <div className="margin-big-gap-h">
-              {isWithHead ? null : ord.top.isAnchorInherit ? (
+              {isWithHead ? null : ord.me.isAnchorInherit ? (
                 <Icon
                   onClick={() => {
                     exec(
@@ -94,6 +95,14 @@ export default function OrdersRedactor() {
           onClick={() => openAddsPopup(ccom)}
         />
       </div>
+      {toolProps && (
+        <BottomPopup
+          onClose={setToolProps}
+          isPreventCloseOnClick
+        >
+          <OrdersRedactorOrderTools {...toolProps} />
+        </BottomPopup>
+      )}
     </div>
   );
 }

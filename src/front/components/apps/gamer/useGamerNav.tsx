@@ -20,6 +20,7 @@ import { toStopAliasGame } from './games/alias/hooks/execs';
 import { SPY_ROLE, unsecretSpyRole } from './games/spy/hooks/locations';
 import { OfflineGameShare } from './games/spy/offline-room/SpyOfflineRoom.model';
 import { gamerMolecule } from './molecules';
+import { makeRegExp } from '../../../../back/complect/makeRegExp';
 
 const LazyGamerApp = React.lazy(() => import('./GamerApp'));
 const LazyTheGamerPassport = React.lazy(() => import('./complect/GamerPassport'));
@@ -93,7 +94,7 @@ export const gamerOfflineRoomGames: GamerRoomGameSkelet<{
       qrDataCatcher: (passport, data) => {
         if (!passport.login) return;
         const [location, spiesCount, iterations, memberStrList] = (data.value as OfflineGameShare) || [];
-        const members = memberStrList.match(/\.|.{0,32}/g);
+        const members = memberStrList.match(makeRegExp('/\\.|.{0,32}/g'));
         if (!members) return;
         const md5passport = mylib.md5(passport.login);
         const memberi = members.indexOf(md5passport);

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 
 interface Props {
   onError: (error: Error) => void;
@@ -28,8 +29,8 @@ export const CodeExecutionScreen = ({ onError, onLog }: Props) => {
           return;
         }
         const execTextLines = code
-          .replace(/[ ;\n,]+$/, '')
-          .split(/\n+/)
+          .replace(makeRegExp('/[ ;\\n,]+$/'), '')
+          .split(makeRegExp('/\\n+/'))
           .map(line => line.trim())
           .filter(line => !line.startsWith('//'));
 

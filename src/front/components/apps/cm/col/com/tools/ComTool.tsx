@@ -8,24 +8,17 @@ export const [ComToolItemAttrsContext, useComToolItemAttrsContext] = contextCrea
   HTMLAttributes<HTMLDivElement> | und
 >(undefined);
 
-export const ComTool = (props: Parameters<typeof BottomPopupItem>[0]) => {
-  if (useIsComToolIconItemsContext()) {
-    return props.path ? (
-      <Link to={props.path}>
-        <props.Icon
-          className="pointer"
-          onClick={props.onClick}
-        />
-      </Link>
-    ) : (
-      <props.Icon
-        className="pointer"
-        onClick={props.onClick}
-      />
-    );
-  }
+export const ComTool = ({ path, ...props }: Parameters<typeof BottomPopupItem>[0]) => {
+  const itemNode = useIsComToolIconItemsContext() ? (
+    <props.Icon
+      className="pointer"
+      onClick={props.onClick}
+    />
+  ) : (
+    <Bottom {...props} />
+  );
 
-  return <Bottom {...props} />;
+  return path ? <Link to={path}>{itemNode}</Link> : itemNode;
 };
 
 const Bottom = (props: Parameters<typeof BottomPopupItem>[0]) => {

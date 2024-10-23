@@ -11,6 +11,7 @@ import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useLaterComList from '../../base/useLaterComList';
 import { cmMolecule, isOpenChordImagesAtom } from '../../molecules';
 import './Com.scss';
+import { ComNotFoundPage } from './ComNotFoundPage';
 import TheControlledCom from './TheControlledCom';
 import ChordImagesList from './chord-card/ChordImagesList';
 import ComPlayer from './player/ComPlayer';
@@ -45,15 +46,7 @@ export default function TheComposition() {
     if (comListElem.current) comListElem.current.scrollTop = 0;
   }, [ccom?.wid]);
 
-  if (ccom == null) {
-    return (
-      <ComContainer
-        className="composition-container"
-        headTitle="Упс"
-        content="Песня не найдена("
-      />
-    );
-  }
+  if (ccom == null) return <ComNotFoundPage />;
 
   return (
     <ComContainer

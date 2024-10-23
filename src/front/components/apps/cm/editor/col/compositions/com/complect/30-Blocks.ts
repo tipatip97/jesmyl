@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
 import { EditableComOrders } from './20-Orders';
 
@@ -13,7 +14,7 @@ export class EditableComBlocks extends EditableComOrders {
 
     this.exec({
       uniq: [coln, coli],
-      prev: (coln === 'texts' ? this.texts : this.chords)?.[coli]?.replace(/^\s+|\s+$/gm, ''),
+      prev: (coln === 'texts' ? this.texts : this.chords)?.[coli]?.replace(makeRegExp('/^\\s+|\\s+$/gm'), ''),
       value: execValue,
       method: 'set',
       action: 'changeBlocks',

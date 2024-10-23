@@ -13,7 +13,7 @@ import {
   translationPushKinds,
 } from './Com.complect';
 import { Order } from './order/Order';
-import { IExportableOrderTop, OrderTopHeaderBag } from './order/Order.model';
+import { IExportableOrderMe, OrderTopHeaderBag } from './order/Order.model';
 
 export class Com extends BaseNamed<IExportableCom> {
   initial: Record<string, any>;
@@ -23,8 +23,9 @@ export class Com extends BaseNamed<IExportableCom> {
   number: string = '';
   initialName: string;
   excludedModulations: number[] = [];
+
   protected _o?: Order[];
-  protected _ords?: IExportableOrder[];
+  protected _ords?: IExportableOrderMe[];
   private _chordLabels?: string[][][];
   private _usedChords?: Record<string, string>;
 
@@ -207,7 +208,7 @@ export class Com extends BaseNamed<IExportableCom> {
     let curr = 0;
     const orders = this.orders ?? [];
     const len = orders.length;
-    const newlineReg = /\n/;
+    const newlineReg = makeRegExp('/\\n/');
 
     for (let ordi = 0; ordi < len; ) {
       const ord = orders[ordi];
@@ -220,7 +221,7 @@ export class Com extends BaseNamed<IExportableCom> {
       curr += ord.text.split(newlineReg).length;
       let nextOrd = orders[++ordi];
 
-      while (nextOrd?.top.isInherit) {
+      while (nextOrd?.me.isInherit) {
         if (nextOrd.isRealText()) curr += nextOrd.text.split(newlineReg).length;
 
         nextOrd = orders[++ordi];
@@ -313,7 +314,7 @@ export class Com extends BaseNamed<IExportableCom> {
       this._chordLabels?.push(ordLabels);
       const chords = this.actualChords(ord.chordsi, currTransPosition);
 
-      if (!this.excludedModulations.includes(ord.wid) && ord.top.style?.isModulation) {
+      if (!this.excludedModulations.includes(ord.wid) && ord.me.style?.isModulation) {
         currTransPosition = (this.transPosition || 0) + (ord.fieldValues?.md || 0);
       }
 
@@ -345,14 +346,16 @@ export class Com extends BaseNamed<IExportableCom> {
     return chords && Com.withBemoles(this.transBlock(chords, position), this.isBemoled);
   }
 
-  get ords(): IExportableOrderTop[] {
-    if (this._ords == null) this._ords = [...(this.getBasic('o') || [])];
+  protected emptyOrderHeader = () => '';
+  protected mapTopOrdInOrdMe = (top: IExportableOrder): IExportableOrderMe => ({ top, header: this.emptyOrderHeader });
+  get ords() {
+    if (this._ords == null) this._ords = [...(this.getBasic('o') || [])].map(this.mapTopOrdInOrdMe);
 
-    return this._ords as IExportableOrderTop[];
+    return this._ords;
   }
 
-  orderConstructor(top: IExportableOrderTop) {
-    return new Order(top, this);
+  orderConstructor(me: IExportableOrderMe) {
+    return new Order(me, this);
   }
 
   get orders(): Order[] | null {
@@ -360,7 +363,7 @@ export class Com extends BaseNamed<IExportableCom> {
   }
   setOrders() {
     if (!blockStyles) return null;
-    const tops = this.ords;
+    const ords = this.ords;
     const orders: ReturnType<typeof this.orderConstructor>[] = [];
     let minimals: [string?, number?][] = [];
     const styles = blockStyles.styles;
@@ -368,26 +371,27 @@ export class Com extends BaseNamed<IExportableCom> {
     let viewIndex = 0;
     let prev, prevOrd;
 
-    const getStyle = (o: Partial<IExportableOrderTop> | nil) => {
-      return o && o.s != null ? styles.find((prop: StyleBlock) => prop.key === o.s) : null;
+    const getStyle = (ord: IExportableOrderMe | nil) => {
+      return ord?.top.s != null ? styles.find((prop: StyleBlock) => prop.key === ord.top.s) : null;
     };
 
-    const setMin = (src: Partial<IExportableOrderTop>) => {
-      const style = src.init ? src.init.style : src.style;
-      const styleName = style?.key.trim();
-      if (style?.isModulation) minimals = [];
-      src.m = minimals.some(([s, c]) => styleName === s && src.c === c) ? 0 : 1;
-      minimals.push([styleName, src.c]);
+    const setMin = (src: IExportableOrderMe) => {
+      const styleName = src.style?.key.trim();
+      if (src.style?.isModulation) minimals = [];
+      src.top.m = minimals.some(([s, c]) => styleName === s && src.top.c === c) ? 0 : 1;
+      minimals.push([styleName, src.top.c]);
     };
 
-    const header = (ord: IExportableOrderTop, style: StyleBlock, numered = true) => {
+    const header = (ord: IExportableOrderMe, style: StyleBlock, numered = true) => {
       const type = style.key.trim();
       const number =
-        numered && ord.v !== 0
-          ? (groups[type] = groups[type] == null ? 1 : ord.a == null ? groups[type] + 1 : groups[type])
+        numered && ord.top.v !== 0
+          ? (groups[type] = groups[type] == null ? 1 : ord.top.a == null ? groups[type] + 1 : groups[type])
           : '';
 
-      return (bag: OrderTopHeaderBag = {}) => {
+      return (bag: OrderTopHeaderBag | nil) => {
+        bag ??= {};
+
         return (
           (style.title[this.langi] || style.title[0]) +
           (bag.isEdit
@@ -399,128 +403,129 @@ export class Com extends BaseNamed<IExportableCom> {
       };
     };
 
-    for (let topi = 0; topi < tops.length; topi++) {
-      const ordTop = tops[topi];
-      if (ordTop == null) {
-        orders.push(this.orderConstructor({ header: () => '' } as never));
+    for (let topi = 0; topi < ords.length; topi++) {
+      const ordMe = ords[topi];
+      if (ordMe == null) {
+        orders.push(this.orderConstructor({ header: this.emptyOrderHeader, top: {} } as IExportableOrderMe));
         continue;
       }
-      const targetOrd: Order | nil = ordTop.a == null ? null : orders.find(o => o.unique === ordTop.a);
-      const top = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, ordTop);
+      const targetOrd: Order | nil = ordMe.top.a == null ? null : orders.find(o => o.unique === ordMe.top.a);
+      const me = Order.getWithExtendableFields(targetOrd?.me, ordMe);
 
-      const style = getStyle(top);
+      const style = getStyle(me);
 
       if (!style) {
         orders.push(
           this.orderConstructor({
-            source: ordTop,
-            header: () => '',
-          } as never),
+            top: ordMe.top,
+            source: ordMe,
+            header: this.emptyOrderHeader,
+          }),
         );
         continue;
       }
 
       if (style.isInherit) continue;
 
-      top.style = style;
-      top.source = ordTop;
-      top.isNextInherit = !!getStyle(tops[topi + 1])?.isInherit;
-      top.isNextAnchorOrd = !!(ordTop.u != null && tops[topi + 1] && tops[topi + 1].a === ordTop.u);
-      top.isPrevTargetOrd = !!(targetOrd && tops[topi - 1] === targetOrd.top.source);
-      top.targetOrd = targetOrd;
-      top.watchOrd = targetOrd;
-      top.isAnchor = ordTop.a != null;
-      top.isTarget = ordTop.u != null && tops.some(o => o.a === ordTop.u);
-      top.viewIndex = viewIndex++;
-      top.sourceIndex = tops.indexOf(ordTop);
+      me.style = style;
+      me.source = ordMe;
+      me.isNextInherit = !!getStyle(ords[topi + 1])?.isInherit;
+      me.isNextAnchorOrd = !!(ordMe.top.u != null && ords[topi + 1] && ords[topi + 1].top.a === ordMe.top.u);
+      me.isPrevTargetOrd = !!(targetOrd && ords[topi - 1] === targetOrd.me.source);
+      me.targetOrd = targetOrd;
+      me.watchOrd = targetOrd;
+      me.isAnchor = ordMe.top.a != null;
+      me.isTarget = ordMe.top.u != null && ords.some(me => me.top.a === ordMe.top.u);
+      me.viewIndex = viewIndex++;
+      me.sourceIndex = ords.indexOf(ordMe);
 
-      setMin(top);
+      setMin(me);
 
-      const newOrder = this.orderConstructor(top as IExportableOrderTop);
+      const newOrder = this.orderConstructor(me);
       orders.push(newOrder);
 
-      top.header = newOrder.isEmptyHeader
-        ? (bag, isRequired) => (isRequired ? header(ordTop, style, false)(bag) : '')
-        : targetOrd && targetOrd.top.header! && !top.source.s
-          ? targetOrd.top.header
-          : header(ordTop, style);
+      me.header = newOrder.isEmptyHeader
+        ? (bag, isRequired) => (isRequired ? header(ordMe, style, false)(bag) : '')
+        : targetOrd && targetOrd.me.header! && !me.source.top.s
+          ? targetOrd.me.header
+          : header(ordMe, style);
 
-      top.prev = prev || null;
+      me.prev = prev || null;
 
-      if (prev) prev.top.next = newOrder;
+      if (prev) prev.me.next = newOrder;
       prev = newOrder;
 
-      if (!top.isAnchor) {
-        top.prevOrd = prevOrd || null;
-        if (prevOrd) prevOrd.top.nextOrd = newOrder;
+      if (!me.isAnchor) {
+        me.prevOrd = prevOrd || null;
+        if (prevOrd) prevOrd.me.nextOrd = newOrder;
         prevOrd = newOrder;
       }
 
-      let isAnchorInheritPlus = top.a != null;
+      let isAnchorInheritPlus = me.top.a != null;
 
-      if (targetOrd && top.a != null) {
-        const srcIndex = targetOrd.top.sourceIndex || 0;
+      if (targetOrd && me.top.a != null) {
+        const srcIndex = targetOrd.me.sourceIndex || 0;
         let anci = srcIndex + 1;
-        let anc = tops[anci];
+        let anc = ords[anci];
         let ancStyle = getStyle(anc);
         let anchorInheritIndex = 0;
 
         while (ancStyle?.isInherit) {
           isAnchorInheritPlus = true;
-          const ancTop = Order.getWithExtendableFields(targetOrd.top.source as IExportableOrderTop, anc);
+          const ancMe = Order.getWithExtendableFields(targetOrd.me.source, anc);
 
-          ancTop.isAnchorInherit = true;
-          ancTop.isInherit = true;
-          ancTop.style = ancStyle;
-          ancTop.source = anc;
-          ancTop.header = top.header;
-          ancTop.init = top as IExportableOrderTop;
-          ancTop.targetOrd = targetOrd;
-          ancTop.leadOrd = newOrder;
-          ancTop.watchOrd = orders[srcIndex + anchorInheritIndex + 1];
-          ancTop.isNextInherit = !!getStyle(tops[anci + 1])?.isInherit;
-          ancTop.anchorInheritIndex = anchorInheritIndex++;
-          ancTop.viewIndex = viewIndex++;
-          ancTop.sourceIndex = tops.indexOf(targetOrd.top.source as IExportableOrderTop);
+          ancMe.isAnchorInherit = true;
+          ancMe.isInherit = true;
+          ancMe.style = ancStyle;
+          ancMe.source = anc;
+          ancMe.header = me.header;
+          ancMe.init = me.top;
+          ancMe.targetOrd = targetOrd;
+          ancMe.leadOrd = newOrder;
+          ancMe.watchOrd = orders[srcIndex + anchorInheritIndex + 1];
+          ancMe.isNextInherit = !!getStyle(ords[anci + 1])?.isInherit;
+          ancMe.anchorInheritIndex = anchorInheritIndex++;
+          ancMe.viewIndex = viewIndex++;
+          ancMe.sourceIndex = ords.indexOf(targetOrd.me);
 
-          setMin(ancTop);
+          setMin(ancMe);
 
-          const newAncOrd = this.orderConstructor(ancTop as IExportableOrderTop);
+          const newAncOrd = this.orderConstructor(ancMe);
           orders.push(newAncOrd);
 
-          anc = tops[++anci];
+          anc = ords[++anci];
           ancStyle = getStyle(anc);
         }
       }
 
       let nexti = topi + 1;
-      let next = tops[nexti];
+      let next = ords[nexti];
       let nextStyle = getStyle(next);
 
       while (nextStyle?.isInherit) {
-        const nextTop = Order.getWithExtendableFields(targetOrd?.top.source as IExportableOrderTop, next);
+        const nextMe = Order.getWithExtendableFields(targetOrd?.me.source, next);
 
-        nextTop.isInherit = true;
-        nextTop.style = nextStyle;
-        nextTop.leadOrd = newOrder;
-        nextTop.prev = prev;
-        nextTop.init = top as IExportableOrderTop;
-        nextTop.isNextInherit = !!getStyle(tops[nexti + 1])?.isInherit;
-        nextTop.isAnchorInheritPlus = isAnchorInheritPlus;
-        nextTop.header = top.header;
-        nextTop.source = next;
-        nextTop.viewIndex = viewIndex++;
-        nextTop.sourceIndex = tops.indexOf(next);
+        nextMe.isInherit = true;
+        nextMe.style = nextStyle;
+        nextMe.leadOrd = newOrder;
+        nextMe.prev = prev;
+        nextMe.init = me.top;
+        nextMe.isNextInherit = !!getStyle(ords[nexti + 1])?.isInherit;
+        nextMe.isAnchorInheritPlus = isAnchorInheritPlus;
+        nextMe.header = me.header;
+        nextMe.source = next;
+        nextMe.viewIndex = viewIndex++;
+        nextMe.sourceIndex = ords.indexOf(next);
 
-        setMin(nextTop);
+        setMin(nextMe);
 
-        const newNextOrd = this.orderConstructor(nextTop as IExportableOrderTop);
+        const newNextOrd = this.orderConstructor(nextMe);
         orders.push(newNextOrd);
 
-        if (prev) prev.top.next = newNextOrd;
+        if (prev) prev.me.next = newNextOrd;
         prev = newNextOrd;
 
-        next = tops[++nexti];
+        next = ords[++nexti];
         nextStyle = getStyle(next);
       }
     }

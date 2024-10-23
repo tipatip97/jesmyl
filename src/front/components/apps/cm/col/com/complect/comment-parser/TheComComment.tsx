@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
 import { useAtom } from '../../../../../../../complect/atoms';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
@@ -12,6 +12,8 @@ import { IconMessageQuestionStrokeRounded } from '../../../../../../../complect/
 import { IconNote03StrokeRounded } from '../../../../../../../complect/the-icon/icons/note-03';
 import { cmMolecule } from '../../../../molecules';
 import TheComCommentInfo from './TheComCommentInfo';
+
+const callbackStopper: CallbackStopper = event => event.stopPropagation();
 
 interface Props {
   comw: CmComWid;
@@ -28,6 +30,12 @@ export default function TheComComment({ comw, isRedact, setIsRedact }: Props) {
   const [comments, setComments] = useAtom(comCommentsAtom);
   const [isShowConHashComments, setIsShowConHashComments] = useAtom(isShowConHashCommentsAtom);
   const [isShowInfoModal, setIsShowInfoModal] = useState(false);
+  const [comment, setComment] = useState(comments[comw]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setComments(prev => ({ ...prev, [comw]: comment })), [comment, setComments]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setComment(comments[comw]), [isRedact, comw]);
 
   return (
     <>
@@ -64,8 +72,9 @@ export default function TheComComment({ comw, isRedact, setIsRedact }: Props) {
           multiline
           withoutCloseButton
           className="full-width bgcolor--2"
-          value={comments[comw] ?? ''}
-          onChange={comment => setComments(prev => ({ ...prev, [comw]: comment }))}
+          value={comment}
+          onChange={setComment}
+          onKeyDown={callbackStopper}
         />
       ) : (
         <div className="white-pre-line padding-big-gap-b">{comments[comw]}</div>

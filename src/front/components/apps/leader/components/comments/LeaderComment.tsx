@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import useAbsoluteFloatPopup from '../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { TheIconLoading } from '../../../../../complect/the-icon/IconLoading';
 import { IconAlert02StrokeRounded } from '../../../../../complect/the-icon/icons/alert-02';
 import { IconPauseStrokeRounded } from '../../../../../complect/the-icon/icons/pause';
 import { LeaderCommentImportable } from './LeaderComment.model';
-import useLeaderComments from './useLeaderComments';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 
 const templaterBag = {
   commentTime: (wid: number) => {
@@ -30,12 +29,12 @@ export default function LeaderComment({
   className?: string;
 }) {
   const date = comment.w && new Date(comment.w);
-  const commentLines = comment.comment.split(/\n/);
+  const commentLines = comment.comment.split(makeRegExp('/\\n/'));
   const isNeedCut = commentLines.length > 5 || comment.comment.length > 150;
   const [isHiddenPart, setIsHiddenPart] = useState(isNeedCut);
   const commentText = isHiddenPart ? commentLines.slice(0, 4).join('\n').slice(0, 150) + ' ...' : comment.comment;
-  const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
-  const { sendAllComments } = useLeaderComments();
+  // const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
+  // const { sendAllComments } = useLeaderComments();
 
   return (
     <div
@@ -44,24 +43,24 @@ export default function LeaderComment({
         isError || isWaitedToSend
           ? event => {
               event.preventDefault();
-              openAbsoluteFloatPopup(
-                <>
-                  <div
-                    className="pointer error-text"
-                    onClick={() => onRejectSend?.()}
-                  >
-                    Отменить отправку
-                  </div>
-                  <div
-                    className="pointer"
-                    onClick={() => sendAllComments()}
-                  >
-                    Повторить отправку всех
-                  </div>
-                </>,
-                event.clientX,
-                event.clientY,
-              );
+              // openAbsoluteFloatPopup(
+              //   <>
+              //     <div
+              //       className="pointer error-text"
+              //       onClick={() => onRejectSend?.()}
+              //     >
+              //       Отменить отправку
+              //     </div>
+              //     <div
+              //       className="pointer"
+              //       onClick={() => sendAllComments()}
+              //     >
+              //       Повторить отправку всех
+              //     </div>
+              //   </>,
+              //   event.clientX,
+              //   event.clientY,
+              // );
             }
           : undefined
       }

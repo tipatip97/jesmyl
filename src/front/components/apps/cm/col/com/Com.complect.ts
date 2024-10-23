@@ -3,9 +3,9 @@ import { MyLib } from '../../../../../complect/my-lib/MyLib';
 
 export const ruUaSingLettersStr = 'уеыаоэяиёюіїє ' as const;
 export const iRuUaReg = makeRegExp(`/[${ruUaSingLettersStr}]/i`);
-export const gSimpleHashChordReg = /[ACDEFGH]#?/g;
-export const gSimpleBemoleChordReg = /[ABCDEFGH]b?/g;
-export const gSimpleHashedEachLetterChordReg = /[A-H]#/g;
+export const gSimpleHashChordReg = makeRegExp('/[ACDEFGH]#?/g');
+export const gSimpleBemoleChordReg = makeRegExp('/[ABCDEFGH]b?/g');
+export const gSimpleHashedEachLetterChordReg = makeRegExp('/[A-H]#/g');
 
 export const simpleHashChords = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'];
 

@@ -6,6 +6,16 @@ export class SokiServerTransfers {
   capsules = new Map<WebSocket, SokiCapsule>();
   clients = new Map<string, WebSocket>();
 
+  actionWithCapsule(client: WebSocket, cb: (capsule: SokiCapsule) => void, triesCount = 10) {
+    const tryAction = (triesCount: number) => {
+      const capsule = this.capsules.get(client);
+      if (capsule !== undefined) return cb(capsule);
+      if (triesCount > 0) setTimeout(tryAction, 10, triesCount - 1);
+    };
+
+    tryAction(triesCount);
+  }
+
   send(
     data: SokiServerEvent,
     client?:

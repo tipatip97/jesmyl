@@ -16,10 +16,6 @@ export class JStorage<Scope> {
 
   properties: Record<keyof Scope, any> = {} as never;
 
-  setLSGetter: () => void;
-  setLSSetter: () => void;
-  setLSRemover: () => void;
-
   constructor(name: string) {
     Eventer.listenValue(onUpdates, () => {
       const db = idb.result;
@@ -31,54 +27,26 @@ export class JStorage<Scope> {
     this.transaction = mode => idb.result.transaction(name, mode).objectStore(name);
     this.readyState = () => idb.readyState;
 
-    this.setLSGetter = () => {
+    if (localStorage[lsJStorageLSSwitcherName]) {
       this.get = key => {
         try {
           const str = localStorage.getItem(`[${name}]:${key as never}`);
-
           if (str === null) return;
-
           return JSON.parse(str);
         } catch (error) {}
       };
-    };
 
-    this.setLSSetter = () => {
       this.setValue = (key, value) => {
         try {
           localStorage.setItem(`[${name}]:${key as never}`, JSON.stringify(value));
         } catch (error) {}
       };
-    };
 
-    this.setLSRemover = () => {
       this.rem = key => {
         try {
           localStorage.removeItem(`[${name}]:${key as never}`);
         } catch (error) {}
       };
-    };
-
-    if (localStorage[lsJStorageLSSwitcherName]) {
-      this.setLSGetter();
-      this.setLSSetter();
-      this.setLSRemover();
-    } else {
-      let countDown = 100;
-
-      const check = () => {
-        try {
-          this.transaction('readwrite').put('', '');
-        } catch (error) {
-          if (countDown-- > 0) setTimeout(check, 3);
-          else {
-            localStorage[lsJStorageLSSwitcherName] = 'true';
-            window.location.reload();
-          }
-        }
-      };
-
-      check();
     }
   }
 

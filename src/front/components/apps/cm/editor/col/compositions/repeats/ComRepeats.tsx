@@ -115,12 +115,12 @@ export default function ComRepeats() {
                 return (
                   <>
                     {props.headerNode}
-                    {ord.top.watchOrd ? (
+                    {ord.me.watchOrd ? (
                       <>
                         <IconLinkBackwardStrokeRounded
                           className="vertical-middle pointer margin-gap-h"
                           onClick={() => {
-                            ord.top.watchOrd?.element?.scrollIntoView();
+                            ord.me.watchOrd?.element?.scrollIntoView();
                           }}
                         />
                         <IconPinStrokeRounded

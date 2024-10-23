@@ -5,6 +5,7 @@ import { useIsCanShowTextTranslation } from './atoms';
 
 interface Props {
   children: React.ReactNode;
+  className?: string;
 }
 
 const emptyFunc = () => {};

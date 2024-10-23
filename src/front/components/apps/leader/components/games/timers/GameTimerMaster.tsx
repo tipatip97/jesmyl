@@ -104,7 +104,7 @@ export default function LeaderGameTimerMaster({
                       )}
                       {mode === GameTimerMode.TimerTotal && (
                         <div
-                          className="start-total flex center background--7 color--1 pointer"
+                          className="start-total flex center bgcolor--7 color--1 pointer"
                           onClick={() => use.startTotalTimer()}
                         >
                           СТАРТ

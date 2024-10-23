@@ -10,6 +10,7 @@ import smylib from '../../shared/SMyLib';
 import { TgLogger } from './log/log-bot';
 import { JTgBotCallbackQuery, JTgBotChatMessageCallback } from './model';
 import { JesmylTelegramBotWrapper } from './tg-bot-wrapper';
+import { makeRegExp } from '../../complect/makeRegExp';
 
 const botName = 'jesmylbot';
 
@@ -87,7 +88,7 @@ export class JesmylTelegramBot {
   }
 
   convertNickFromId = (() => {
-    const reg = /./g;
+    const reg = makeRegExp('/./g');
     const callback = (all: string) => 'jesmylibot'[all as never];
 
     return (id: number, addTPrefix?: boolean) => (addTPrefix === false ? '' : 't:') + ('' + id).replace(reg, callback);

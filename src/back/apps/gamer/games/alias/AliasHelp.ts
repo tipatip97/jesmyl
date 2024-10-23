@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../complect/makeRegExp';
 import smylib, { SMyLib } from '../../../../shared/SMyLib';
 import { makeTwiceKnownName } from '../../../index/complect/makeTwiceKnownName';
 import { NounPronsType } from '../../../index/models/nounProns.model';
@@ -129,7 +130,7 @@ export class AliasHelp {
               minus: 1,
               plus: weight,
               word: isSpecialMax
-                ? noun.toUpperCase().replace(/[^-а-яё ]/gi, '')
+                ? noun.toUpperCase().replace(makeRegExp('/[^-а-яё ]/gi'), '')
                 : makeTwiceKnownName(pronounsSorted[nouni], noun).join(' ').toUpperCase(),
             };
           }),

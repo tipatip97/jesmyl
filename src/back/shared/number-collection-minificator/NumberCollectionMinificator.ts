@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../complect/makeRegExp';
 import smylib from '../SMyLib';
 
 type InsideDigit = 1 | 2 | 3 | 4;
@@ -13,12 +14,11 @@ export function NumberCollectionMinificator<InsideDigits extends [InsideDigit?, 
         ? [number, number]
         : [number, number, number];
 
-  const decodeReg = new RegExp(
-    '(\\d+)(\\.' +
-      (insideDigits?.map(digits => `(${digits === 1 ? '\\d' : `\\d{1,${digits}}`})?`).join('') || '') +
-      ')?(\\d+)?',
+  const decodeReg = makeRegExp(
+    `/(\\d+)(\\.${
+      insideDigits?.map(digits => `(${digits === 1 ? '\\d' : `\\d{1,${digits}}`})?`).join('') || ''
+    })?(\\d+)?/`,
   );
-  const zeroEndedReg = /(\d+)([1-9]*)(0+)$/;
 
   return {
     check: <Digits = InsideDigits>(digits: Digits) => digits,
@@ -52,7 +52,7 @@ export function NumberCollectionMinificator<InsideDigits extends [InsideDigit?, 
         tail = general < 0 && num && num < 4 ? last + '3' : last;
       } else if (last > 999999999) tail += general < 0 ? 2 : 1;
       else {
-        const comps = ('' + last).match(zeroEndedReg);
+        const comps = ('' + last).match(makeRegExp('/(\\d+)([1-9]*)(0+)$/'));
         if (comps) {
           const [, digits, nines, zeros] = comps;
           tail = digits + nines + zeros.slice(0, -1) + (general < 0 ? '2' : '1');

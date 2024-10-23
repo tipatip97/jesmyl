@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { BibleBooki, BibleChapteri, BibleVersei } from '../../model';
 import { useBibleSingleAddressSetter } from '../../translations/lists/atoms';
 import BibleReaderChapter from './complect/Chapter';
 
 interface Props {
   chapterList: { __html: string }[][] | und;
-  currentBooki: number;
-  currentChapteri?: number;
-  currentVersei?: number;
+  currentBooki: BibleBooki;
+  currentChapteri?: BibleChapteri;
+  currentVersei?: BibleVersei;
 }
 
 export default function BibleReaderBook({
@@ -44,7 +45,7 @@ export default function BibleReaderBook({
   useEffect(() => {
     if (chapterList == null || listRef.current === null) return;
     const listNode = listRef.current;
-    const topsMap = new Map<number, { chapteri: number; versei: number }>();
+    const topsMap = new Map<number, { chapteri: BibleChapteri; versei: BibleVersei }>();
     let scrollTimeout: TimeOut;
     let isScrollingTimeout: TimeOut;
     let resizeDebounceTimeOut: TimeOut;

@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../back/complect/makeRegExp';
 import SourceBased from '../../../../complect/SourceBased';
 import { ClientExecutionDict } from '../../../../complect/exer/Exer.model';
 import mylib from '../../../../complect/my-lib/MyLib';
@@ -169,7 +170,7 @@ export class LeaderCleans {
     return (
       (humans &&
         this.extractWidables(humans, group.mentors)
-          .map(mentor => mentor.name.replace(/([А-ЯЁ])[а-яё]+ (.+)/, '$2 $1'))
+          .map(mentor => mentor.name.replace(makeRegExp('/([А-ЯЁ])[а-яё]+ (.+)/'), '$2 $1'))
           .join(', ')) ||
       'Лидеров нет'
     );

@@ -1,9 +1,10 @@
 import { memo } from 'react';
+import { BibleChapteri, BibleVersei } from '../../../model';
 
 interface Props {
   html: { __html: string };
-  versei: number;
-  chapteri: number;
+  versei: BibleVersei;
+  chapteri: BibleChapteri;
 }
 
 export default memo(function BibleReaderVerseText({ html, versei, chapteri }: Props): JSX.Element {

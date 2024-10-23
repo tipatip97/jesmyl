@@ -2,7 +2,11 @@ import { memo } from 'react';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
-import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../hooks/address/address';
+import {
+  useBibleTranslationJoinAddressSetter,
+  useGetterJoinedAddressMaxValues,
+  useSetBibleAddressIndexes,
+} from '../../hooks/address/address';
 import { BibleTranslationAddress } from '../../model';
 import BibleTranslationArchiveJoinedAddressText from './JoinedAddress';
 import BibleTranslationArchiveJoinedContentText from './JoinedContentText';
@@ -20,6 +24,7 @@ const itemClassName = 'nowrap pointer margin-gap-b';
 export default memo(function BibleTranslationArchive({ title, list, onRemove }: Props): JSX.Element {
   const setAddress = useSetBibleAddressIndexes();
   const setJoinAddress = useBibleTranslationJoinAddressSetter();
+  const getJoinAddressMaxes = useGetterJoinedAddressMaxValues();
 
   return (
     <>
@@ -59,11 +64,7 @@ export default memo(function BibleTranslationArchive({ title, list, onRemove }: 
             className={itemClassName}
             onClick={() => {
               setJoinAddress(item);
-
-              const booki = Math.max(...mylib.keys(item));
-              const chapteri = Math.max(...mylib.keys(item[booki]));
-
-              setAddress(booki, chapteri, Math.max(...item[booki][chapteri]));
+              setAddress(...getJoinAddressMaxes(item));
             }}
           >
             <span className="color--7">

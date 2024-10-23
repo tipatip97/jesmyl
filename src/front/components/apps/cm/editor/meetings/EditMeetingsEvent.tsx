@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
-import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
-import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
+import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
@@ -33,24 +33,11 @@ export default function EditMeetingsEvent() {
   const zcat: EditableCat | und = useEditableCcat(0);
   const [term, setTerm] = useState(zcat?.term || '');
   const [isClosedComList, setIsClosedComList] = useState(true);
-  const [fullNode, openFullContent] = useFullContent(() => <MeetingsEventHistory />);
-
-  const [popupNode, openPopup] = useBottomPopup((isOpen, close) => {
-    return (
-      isOpen && (
-        <IconButton
-          Icon={IconLeftToRightListBulletStrokeRounded}
-          postfix="История"
-          onClick={() => {
-            openFullContent(true);
-            close();
-          }}
-        />
-      )
-    );
-  });
+  const [isOpenHistory, setIsOpenHistory] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
 
   if (!currentEvent) return null;
+
   const usedComwList = (currentEvent.coms?.map(com => com.wid) || []).concat(currentEvent.prevComws || []);
   const comsLength = currentEvent.coms?.length || 0;
   const prevComsLength = currentEvent.prevComws?.length || 0;
@@ -64,11 +51,9 @@ export default function EditMeetingsEvent() {
             className="edit-meeitngs"
             headTitle={`Событие - ${currentEvent.name}`}
             contentClass="no-padding-top"
-            onMoreClick={openPopup}
+            onMoreClick={setIsMoreOpen}
             content={
               <>
-                {popupNode}
-                {fullNode}
                 <EditContainerCorrectsInformer>
                   Название
                   <KeyboardInput
@@ -180,6 +165,28 @@ export default function EditMeetingsEvent() {
                       }
                     />
                   </>
+                )}
+
+                {isOpenHistory && (
+                  <FullContent
+                    onClose={setIsOpenHistory}
+                    closable
+                  >
+                    <MeetingsEventHistory />
+                  </FullContent>
+                )}
+
+                {isMoreOpen && (
+                  <BottomPopup onClose={setIsMoreOpen}>
+                    <IconButton
+                      Icon={IconLeftToRightListBulletStrokeRounded}
+                      postfix="История"
+                      onClick={() => {
+                        setIsOpenHistory(true);
+                        setIsMoreOpen(false);
+                      }}
+                    />
+                  </BottomPopup>
                 )}
               </>
             }

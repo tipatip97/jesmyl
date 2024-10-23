@@ -1,22 +1,22 @@
-import mylib from '../../../../../../../../complect/my-lib/MyLib';
+import { IExportableOrder } from '../../../../../../../../models';
 import { cmExer } from '../../../../../CmExer';
-import { IExportableOrderTop, INewExportableOrder } from '../../../../../col/com/order/Order.model';
+import { IExportableOrderMe, INewExportableOrder } from '../../../../../col/com/order/Order.model';
 import { EditableOrder } from '../../complect/orders/EditableOrder';
 import { EditableComCorrects } from './10-Corrects';
 
-const keysIExportableOrderTop: (keyof IExportableOrderTop)[] = ['t', 's', 'a', 'u', 'c'];
+const keysIExportableOrderTop: (keyof IExportableOrder)[] = ['t', 's', 'a', 'u', 'c'];
 
 export class EditableComOrders extends EditableComCorrects {
   protected _o?: EditableOrder[];
 
-  get ords(): IExportableOrderTop[] {
-    if (this._ords == null) this._ords = mylib.clone(this.getBasic('o')) ?? [];
+  get ords() {
+    if (this._ords == null) this._ords = this.getBasic('o')?.map(this.mapTopOrdInOrdMe) ?? [];
 
-    return this._ords as IExportableOrderTop[];
+    return this._ords as IExportableOrderMe[];
   }
 
   get orders(): EditableOrder[] | null {
-    return this._o || (this.setOrders() as EditableOrder[]);
+    return this._o || (this.setOrders() as []);
   }
 
   afterOrderChange() {
@@ -45,10 +45,10 @@ export class EditableComOrders extends EditableComCorrects {
       },
     });
 
-    const ord: IExportableOrderTop = { w, header: () => '' };
+    const ord: IExportableOrderMe = { top: { w }, header: this.emptyOrderHeader };
 
     keysIExportableOrderTop.forEach(key => {
-      if (topOrd[key as never] != null) ord[key] = topOrd[key as never];
+      if (topOrd[key as never] != null) ord.top[key] = topOrd[key as never];
     });
 
     this.ords.push(ord);
@@ -56,7 +56,7 @@ export class EditableComOrders extends EditableComCorrects {
   }
 
   isOrdWithHead(ord: EditableOrder) {
-    return !ord.top.isInherit && !ord.top.isAnchorInheritPlus && !ord.isEmptyHeader;
+    return !ord.me.isInherit && !ord.me.isAnchorInheritPlus && !ord.isEmptyHeader;
   }
 
   getOrdersOnBlockDeletion(coln: 'texts' | 'chords', coli: number) {
@@ -90,7 +90,7 @@ export class EditableComOrders extends EditableComCorrects {
     let isSelfOrd = false;
 
     return (
-      ord.top.isAnchorInherit ||
+      ord.me.isAnchorInherit ||
       ordi === ords.length - 1 ||
       !ords.some(currOrd => {
         if (currOrd === ord) {
@@ -98,16 +98,16 @@ export class EditableComOrders extends EditableComCorrects {
           return false;
         }
         if (!isSelfOrd) return false;
-        return !currOrd.top.isAnchorInherit;
+        return !currOrd.me.isAnchorInherit;
       })
     );
   }
 
   isCantMigrateOrder(ord: EditableOrder, ordi: number) {
     return (
-      (!ordi && ord.top.isNextInherit) ||
-      ord.top.isNextAnchorOrd ||
-      (ord.top.isNextAnchorOrd && !ordi) ||
+      (!ordi && ord.me.isNextInherit) ||
+      ord.me.isNextAnchorOrd ||
+      (ord.me.isNextAnchorOrd && !ordi) ||
       (index => !(index < 0 || index === cmExer.execs.length - 1))(
         cmExer.execs.findIndex(exec => exec.action === 'comResortOrders' && exec.args?.comw === this.wid),
       )
@@ -119,12 +119,12 @@ export class EditableComOrders extends EditableComCorrects {
 
     if (!orders) return;
 
-    const basei = orders.findIndex(ord => ord.w === topOrd.wid);
-    const prev = orders.map(ord => ord.w);
+    const basei = orders.findIndex(ord => ord.top.w === topOrd.wid);
+    const prev = orders.map(ord => ord.top.w);
 
     [orders[basei], orders[basei + 1]] = [orders[basei + 1], orders[basei]];
 
-    const value = orders.map(ord => ord.w);
+    const value = orders.map(ord => ord.top.w);
 
     this.exec({
       value,
@@ -137,7 +137,7 @@ export class EditableComOrders extends EditableComCorrects {
     this.afterOrderChange();
   }
 
-  removeOrderBlock({ wid, isAnchor, top }: EditableOrder) {
+  removeOrderBlock({ wid, isAnchor, me }: EditableOrder) {
     this.exec({
       action: 'removeOrderBlock',
       uniq: wid,
@@ -145,14 +145,14 @@ export class EditableComOrders extends EditableComCorrects {
       args: {
         ordw: wid,
         isAnchor: +isAnchor,
-        blockn: top.header?.(),
+        blockn: me.header(),
       },
       anti: ({ action, args, args: { comw } = {} }) => {
         if (action === 'comAddOrderBlock' && comw === this.wid && wid === args?.wid)
           return strategy => strategy.RememberNew;
       },
     });
-    const index = this.ords.findIndex(o => o.w === wid);
+    const index = this.ords.findIndex(o => o.top.w === wid);
 
     this.ords.splice(index, 1);
     this.afterOrderChange();
@@ -161,7 +161,7 @@ export class EditableComOrders extends EditableComCorrects {
   }
 
   getNextOrdWid() {
-    return (this.ords?.reduce((w, ord) => (ord.w == null || ord.w < w ? w : ord.w), -1) ?? -1) - -1;
+    return (this.ords?.reduce((w, ord) => (ord.top.w == null || ord.top.w < w ? w : ord.top.w), -1) ?? -1) - -1;
   }
 
   addOrderAnchor(ord: EditableOrder) {
@@ -171,18 +171,18 @@ export class EditableComOrders extends EditableComCorrects {
     }
 
     const anchor = ord.takeUniq();
-    const wid = this.getNextOrdWid();
+    const nextWid = this.getNextOrdWid();
 
-    this.ords.push({ a: anchor, w: wid, header: () => '' });
+    this.ords.push({ top: { a: anchor, w: nextWid }, header: this.emptyOrderHeader });
     this.afterOrderChange();
 
     return this.exec({
       action: 'comAddOrderAnchorBlock',
       method: 'push',
       args: {
-        ordw: wid,
+        ordw: nextWid,
         anchor,
-        blockn: ord.top.header?.(),
+        blockn: ord.me.header(),
       },
     });
   }
@@ -190,9 +190,9 @@ export class EditableComOrders extends EditableComCorrects {
   updateOrderSticks(coln: 'texts' | 'chords', coli: number, delta: number, isReset?: boolean) {
     const ccoln = coln === 'texts' ? 't' : 'c';
     this.ords.forEach((ord, ordi) => {
-      const colIndex = ord[ccoln] || 0;
+      const colIndex = ord.top[ccoln] || 0;
       if (isReset ? colIndex >= coli : colIndex > coli) {
-        const value = isReset && ord[ccoln] === coli ? -1 : colIndex - -delta;
+        const value = isReset && ord.top[ccoln] === coli ? -1 : colIndex - -delta;
 
         this.exec({
           uniq: [ordi, coln],
@@ -204,10 +204,10 @@ export class EditableComOrders extends EditableComCorrects {
             coln: coln === 'texts' ? 't' : 'c',
             value,
             ordi,
-            ordw: ord.w,
+            ordw: ord.top.w,
           },
         });
-        ord[ccoln] = value;
+        ord.top[ccoln] = value;
       }
     });
     this.afterOrderChange();

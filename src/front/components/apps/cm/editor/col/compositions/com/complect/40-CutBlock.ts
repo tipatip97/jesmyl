@@ -12,7 +12,7 @@ export class EditableComCutBlock extends EditableComParseBlocks {
   ordersOnChange: EditableOrder[] = [];
 
   cutBlock(coli: number, ords: EditableOrder[]) {
-    const firstText = ords[0].top.text;
+    const firstText = ords[0].me.text;
     if (!firstText) return;
 
     this.changeBlock('texts', coli, firstText);
@@ -22,22 +22,22 @@ export class EditableComCutBlock extends EditableComParseBlocks {
       ord.exec({
         uniq: ord.wid,
         prev: ord.top.p,
-        value: ord.top.positions,
+        value: ord.me.positions,
         method: 'set',
         action: 'comSetOrderChordPositionBlock',
         args: {
-          value: ord.top.positions,
+          value: ord.me.positions,
           ordw: ord.wid,
         },
       });
 
-      const source = ord.com._ords?.find(({ w }) => w === ord.wid);
-      if (source) source.p = ord.top.positions;
+      const source = ord.com._ords?.find(({ top: { w } }) => w === ord.wid);
+      if (source) source.top.p = ord.me.positions;
 
-      if (ord.chordsi == null || changedChordsiSet.has(ord.chordsi) || !ord.top.chordLabels) return;
+      if (ord.chordsi == null || changedChordsiSet.has(ord.chordsi) || !ord.me.chordLabels) return;
       changedChordsiSet.add(ord.chordsi);
 
-      const chords = ord.top.chordLabels.map(mapJoinBySpace).join('\n').replace(makeRegExp('/B/g'), 'A#');
+      const chords = ord.me.chordLabels.map(mapJoinBySpace).join('\n').replace(makeRegExp('/B/g'), 'A#');
 
       this.changeBlock('chords', ord.chordsi, chords);
     });
@@ -58,7 +58,7 @@ export class EditableComCutBlock extends EditableComParseBlocks {
   }
 
   prepareCutBlock(texti: number) {
-    const ords = this.ords.filter(ord => ord.t === texti && ord.c !== undefined);
+    const ords = this.ords.filter(ord => ord.top.t === texti && ord.top.c !== undefined);
     if (ords.length === 0) return;
 
     const comTexts = this.texts;
@@ -78,17 +78,23 @@ export class EditableComCutBlock extends EditableComParseBlocks {
     if (dollarsCount)
       ords.forEach(ord => {
         this.ords.forEach(comOrd => {
-          if (comOrd.t == null || comOrd.c == null || ord.c !== comOrd.c || comTexts[comOrd.t] === cleanText) return;
+          if (
+            comOrd.top.t == null ||
+            comOrd.top.c == null ||
+            ord.top.c !== comOrd.top.c ||
+            comTexts[comOrd.top.t] === cleanText
+          )
+            return;
 
-          const ordTextDollarsCount = comTexts[comOrd.t].match(makeRegExp('/\\$/g'))?.length;
+          const ordTextDollarsCount = comTexts[comOrd.top.t].match(makeRegExp('/\\$/g'))?.length;
 
           if (
             ordTextDollarsCount !== dollarsCount &&
-            comTexts[comOrd.t].split('\n').length === cleanText.split('\n').length
+            comTexts[comOrd.top.t].split('\n').length === cleanText.split('\n').length
           ) {
             disabledReason = this.fixCorrectError(
               982346544100137,
-              comOrd.t,
+              comOrd.top.t,
               `Не совпадает количество символов $ для разбивки текстов`,
             );
           }
@@ -96,14 +102,14 @@ export class EditableComCutBlock extends EditableComParseBlocks {
       });
 
     ords.forEach(ord => {
-      if (ord.c == null || ord.t == null) return;
+      if (ord.top.c == null || ord.top.t == null) return;
 
       const repeatedText = Order.makeRepeatedText(cleanText, ord.repeats);
 
       const positions: number[][] = [];
       const chordLabels: string[][] = [];
 
-      const chordsLine = this.transBlock(comChords[ord.c]).trim().split(makeRegExp('/\\s+/'));
+      const chordsLine = this.transBlock(comChords[ord.top.c]).trim().split(makeRegExp('/\\s+/'));
 
       const pushChord = (partChordLabels: string[]) => {
         partChordLabels.push(chordsLine[0]);
@@ -111,7 +117,7 @@ export class EditableComCutBlock extends EditableComParseBlocks {
       };
 
       repeatedText.split('\n').forEach((line, linei) => {
-        const linePositions: (null | number)[] | und = ord.p?.[linei]?.toSorted(sortNums);
+        const linePositions: (null | number)[] | und = ord.top.p?.[linei]?.toSorted(sortNums);
 
         if (linePositions == null) return;
 
@@ -171,11 +177,14 @@ export class EditableComCutBlock extends EditableComParseBlocks {
 
       const newOrd = new EditableOrder(
         {
-          ...ord,
+          top: {
+            ...ord.top,
+            v: 1,
+          } as const,
           positions,
           text: newText,
-          v: 1,
           chordLabels,
+          header: this.emptyOrderHeader,
         },
         this as never,
       );

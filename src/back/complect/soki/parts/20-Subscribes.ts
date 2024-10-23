@@ -70,19 +70,19 @@ export class SokiServerSubscribes extends SokiServerTransfers implements SokiSer
     subscribers.forEach((_, client) => this.send({ statistic: this.statistic, appName: 'index' }, client));
   }
 
-  async doOnSubscribes({ capsule, client, eventBody }: SokiServerDoActionProps) {
-    if (capsule === undefined) return false;
+  async doOnSubscribes({ client, eventBody }: SokiServerDoActionProps) {
+    this.actionWithCapsule(client, capsule => {
+      if (eventBody.subscribe !== undefined) {
+        this.subscriptions[eventBody.subscribe].map.set(client, capsule);
+        this.subscriptions[eventBody.subscribe].onClientSubscribe(client, capsule);
+        capsule.subscribeData = eventBody.subscribeData;
+      }
 
-    if (eventBody.subscribe !== undefined) {
-      this.subscriptions[eventBody.subscribe].map.set(client, capsule);
-      this.subscriptions[eventBody.subscribe].onClientSubscribe(client, capsule);
-      capsule.subscribeData = eventBody.subscribeData;
-    }
-
-    if (eventBody.unsubscribe !== undefined) {
-      this.subscriptions[eventBody.unsubscribe].onClientUnsubscribe(client);
-      this.subscriptions[eventBody.unsubscribe].map.delete(client);
-    }
+      if (eventBody.unsubscribe !== undefined) {
+        this.subscriptions[eventBody.unsubscribe].onClientUnsubscribe(client);
+        this.subscriptions[eventBody.unsubscribe].map.delete(client);
+      }
+    });
 
     return false;
   }

@@ -22,13 +22,13 @@ export default function TheOrder(props: Props) {
   const orderUnit = props.orderUnit;
 
   if (
-    (props.isMiniAnchor && (orderUnit.top.isAnchorInherit || orderUnit.top.isAnchorInheritPlus)) ||
+    (props.isMiniAnchor && (orderUnit.me.isAnchorInherit || orderUnit.me.isAnchorInheritPlus)) ||
     (!props.showInvisibles && !orderUnit.isVisible)
   )
     return null;
   const { orderUniti, com } = props;
 
-  const className = orderUnit.top.style?.getStyleName(orderUnit);
+  const className = orderUnit.me.style?.getStyleName(orderUnit);
 
   if (props.isMiniAnchor && orderUnit.isAnchor && !orderUnit.isOpened) {
     return (
@@ -37,7 +37,7 @@ export default function TheOrder(props: Props) {
         className={`${className} styled-header anchor`}
         ref={el => el && (orderUnit.element = el)}
       >
-        {orderUnit.top.header?.({
+        {orderUnit.me.header({
           isTexted: false,
           repeats: orderUnit.repeatsTitle,
         })}
@@ -50,9 +50,9 @@ export default function TheOrder(props: Props) {
       ? !(!props.chordVisibleVariant || (!orderUnit.isMin && props.chordVisibleVariant === 1))
       : true;
 
-  const blockHeader = orderUnit.top.isInherit
+  const blockHeader = orderUnit.me.isInherit
     ? null
-    : orderUnit.top.header?.({
+    : orderUnit.me.header({
         isTexted,
         repeats: orderUnit.texti == null ? orderUnit.repeatsTitle : '',
       });

@@ -1,18 +1,16 @@
 import { useCallback } from 'react';
-import { atom, useAtom, useAtomSet, useAtomValue } from '../../../../../../../complect/atoms';
+import { useAtom, useAtomSet, useAtomValue } from '../../../../../../../complect/atoms';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
 import { BibleTranslationAddress } from '../../../../model';
 import { bibleMolecule } from '../../../../molecules';
-
-const planAtom = atom<BibleTranslationAddress[]>([]);
 
 const translationPlanAtom = bibleMolecule.select(s => s.translationPlan);
 
 export const useBibleTranslationPlan = () => useAtomValue(translationPlanAtom);
 
 export const useBibleTranslationAddToPlan = () => {
-  const planRef = useActualRef(useAtom(planAtom));
+  const planRef = useActualRef(useAtom(translationPlanAtom));
 
   return useCallback(
     (item: BibleTranslationAddress) => {
@@ -30,7 +28,7 @@ export const useBibleTranslationAddToPlan = () => {
 };
 
 export const useBibleClearTranslationPlanSetter = () => {
-  const setPlan = useAtomSet(planAtom);
+  const setPlan = useAtomSet(translationPlanAtom);
 
   return useCallback(() => setPlan([]), [setPlan]);
 };

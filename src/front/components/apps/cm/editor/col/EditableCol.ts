@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import { ExecArgs, FreeExecDict } from '../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { BaseNamed, BaseNamedExportables } from '../../base/BaseNamed';
@@ -157,11 +158,11 @@ export class EditableCol<Col extends BaseNamedExportables> extends BaseNamed<Col
     const warnings: ICorrect[] = [];
     const unknowns: ICorrect[] = [];
 
-    text.split(/[^а-яёіґїє]/i).forEach(realWord => {
-      if (!realWord.match(/[её]/i) || realWord.match(/[іґїє]/i)) return;
+    text.split(makeRegExp('/[^а-яёіґїє]/i')).forEach(realWord => {
+      if (!realWord.match(makeRegExp('/[её]/i')) || realWord.match(makeRegExp('/[іґїє]/i'))) return;
       const lower = realWord.toLowerCase();
-      const word = lower.replace(/ё/g, 'е');
-      const parts = lower.split(/[а-дж-я]*([её])/).filter(p => p);
+      const word = lower.replace(makeRegExp('/ё/g'), 'е');
+      const parts = lower.split(makeRegExp('/[а-дж-я]*([её])/')).filter(p => p);
 
       if (eeStorage.get(word) == null) {
         unknowns.push({

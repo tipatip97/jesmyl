@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import { atom, useAtom, useAtomSet, useAtomValue } from '../../../../../../../complect/atoms';
+import { useAtom, useAtomSet, useAtomValue } from '../../../../../../../complect/atoms';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
 import { BibleTranslationAddress } from '../../../../model';
+import { bibleMolecule } from '../../../../molecules';
 
-const historyAtom = atom<BibleTranslationAddress[]>([]);
+const historyAtom = bibleMolecule.select(s => s.translationHistory);
 
 export const useBibleTranslationHistory = () => useAtomValue(historyAtom);
 

@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../complect/makeRegExp';
 import smylib, { SMyLib } from '../../../shared/SMyLib';
 
 type Replacer<Ret> = (substring: string, ...args: string[]) => Ret;
@@ -68,14 +69,14 @@ const wordRegEnds: Record<string, Record<string, EndVariantsDict>> = {
 };
 
 const regEnds: [RegExp, [RegExp, EndVariantsDict][]][] = SMyLib.entries(wordRegEnds).map(([end, variants]) => [
-  new RegExp(end),
-  SMyLib.entries(variants).map(([end, dict]) => [new RegExp(end), dict]),
+  makeRegExp(`/${end}/`),
+  SMyLib.entries(variants).map(([end, dict]) => [makeRegExp(`/${end}/`), dict]),
 ]);
 
 const allAll = (all: string) => all;
 
 const fixNoun = (() => {
-  const reg = /[^- а-яё\d"]/gi;
+  const reg = makeRegExp('/[^- а-яё\\d"]/gi');
   return (noun: string) => noun.replace(reg, '') + (noun.startsWith('"') ? '"' : '');
 })();
 

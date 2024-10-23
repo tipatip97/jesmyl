@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled, { css, RuleSet } from 'styled-components';
 import { useAtomValue } from '../../../../../complect/atoms';
@@ -10,6 +10,7 @@ import { Com } from './Com';
 import './Com.scss';
 import TheCom from './TheCom';
 import { useComCommentBlock as useComBlockComment } from './complect/comment-parser/useComCommentBlock';
+import { addEventListenerPipe, hookEffectPipe } from '../../../../../complect/hookEffectPipe';
 
 let onPrevCom: () => void;
 let onNextCom: () => void;
@@ -60,6 +61,19 @@ export default function TheControlledCom({
       setSearchParams({ comw: '' + comList[comList.length - 1].wid });
     }
   };
+
+  useEffect(() => {
+    return hookEffectPipe()
+      .pipe(
+        addEventListenerPipe(window, 'keydown', event => {
+          if (!event.ctrlKey) return;
+
+          if (event.key === 'ArrowLeft') onPrevCom();
+          if (event.key === 'ArrowRight') onNextCom();
+        }),
+      )
+      .effect();
+  }, []);
 
   return (
     <StyledRollControled

@@ -2,5 +2,5 @@ import { useBibleSingleSlideText } from '../../hooks/texts';
 import { BibleTranslationSingleAddress } from '../../model';
 
 export default function BibleTranslationArchiveSingleContentText({ item }: { item: BibleTranslationSingleAddress }) {
-  return <>{useBibleSingleSlideText(...item, true)}</>;
+  return <span dangerouslySetInnerHTML={{ __html: useBibleSingleSlideText(...item, true) }} />;
 }

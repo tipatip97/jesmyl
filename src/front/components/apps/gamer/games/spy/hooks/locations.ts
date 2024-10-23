@@ -3,6 +3,7 @@ import mylib from '../../../../../../complect/my-lib/MyLib';
 import { useSpyLocations } from '../molecules';
 import { SpyRoomState } from '../Spy.model';
 import { useSpyRoomStateNaked } from './state';
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 
 export const SPY_ROLE = '<SPY>';
 
@@ -20,7 +21,7 @@ export const secretSpyRole = (word: string[]) => {
 export const unsecretSpyRole = (word: string | und) => {
   if (word === undefined) return '';
   try {
-    const role = decodeURIComponent(escape(atob(word))).replace(/[^а-яё -]/gi, '');
+    const role = decodeURIComponent(escape(atob(word))).replace(makeRegExp('/[^а-яё -]/gi'), '');
     return role === 'ШПИОН' ? SPY_ROLE : role;
   } catch (e) {
     return word;

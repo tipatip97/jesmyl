@@ -86,7 +86,7 @@ export class EditableComCorrects extends EditableComBase {
     } else {
       let isThereErrors;
       let mistakes = '';
-      const text = (value || '').replace(/[^-ієїа-яё().,":;!?\s']+/gi, all => {
+      const text = (value || '').replace(makeRegExp('/[^-ієїа-яё().,":;!?\\s\']+/gi'), all => {
         isThereErrors = true;
         mistakes += all;
         return `[${all}]`;

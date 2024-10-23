@@ -44,11 +44,9 @@ export default function TextsChordsRedactor({ ccoln }: { ccoln: 'texts' | 'chord
                               .unique(
                                 ords.map(
                                   o =>
-                                    `${
-                                      o.top.isAnchor || o.top.isAnchorInherit || o.top.isAnchorInheritPlus
-                                        ? '&#9875;'
-                                        : ''
-                                    }${o.top.header?.()}${o.top.style?.isInherit ? ` ${o.top.style.key}` : ''}`,
+                                    (o.me.isAnchor || o.me.isAnchorInherit || o.me.isAnchorInheritPlus
+                                      ? '&#9875;'
+                                      : '') + `${o.me.header()}${o.me.style?.isInherit ? ` ${o.me.style.key}` : ''}`,
                                 ),
                                 o => o,
                               )

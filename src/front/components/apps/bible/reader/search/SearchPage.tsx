@@ -7,7 +7,7 @@ import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleBookList } from '../../hooks/texts';
 import BibleSearchResults from '../../translations/search/Results';
 import { useBibleTranslationSearchResultSelectedSet } from '../../translations/search/hooks/results';
-import BibleSearchPanelSearchInput from '../../translations/search/input-panel/SearchInput';
+import BibleSearchPanelSearchTextInput from '../../translations/search/input-panel/SearchTextInput';
 import { useBibleSearchZone } from '../../translations/search/selectors';
 
 const emptyArr: [] = [];
@@ -66,7 +66,7 @@ export default function BibleReaderSearchPage() {
                 setInnerZone('chapter');
               }}
             />
-            <BibleSearchPanelSearchInput inputRef={inputRef} />
+            <BibleSearchPanelSearchTextInput inputRef={inputRef} />
             <BibleSearchResults
               inputRef={inputRef}
               height="calc(100% - 100px)"

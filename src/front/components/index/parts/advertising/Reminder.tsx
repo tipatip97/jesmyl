@@ -15,11 +15,13 @@ export const IndexAdvertisingReminder = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (lastRemindTsActualRef.current === 0 || Date.now() - lastRemindTsActualRef.current > remindIntervalTs) {
-        setLastRemindTs(Date.now());
-        setIsOpenModal(true);
-      }
-    }, 100);
+      if (lastRemindTsActualRef.current) {
+        if (Date.now() - lastRemindTsActualRef.current > remindIntervalTs) {
+          setLastRemindTs(Date.now());
+          setIsOpenModal(true);
+        }
+      } else setLastRemindTs(Date.now());
+    }, 1000);
   }, [lastRemindTsActualRef, setLastRemindTs]);
 
   return (

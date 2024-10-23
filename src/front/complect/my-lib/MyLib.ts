@@ -1,6 +1,7 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable eqeqeq */
 
+import { makeRegExp } from '../../../back/complect/makeRegExp';
 import { SMyLib } from '../../models';
 
 const constants = {
@@ -82,10 +83,10 @@ export class MyLib extends SMyLib {
   ];
 
   internationalWordReg(word: string, isNumberSearch?: boolean) {
-    return RegExp(
-      (isNumberSearch ? this.numberSearchReplacements : this.textSearchReplacements)
+    return makeRegExp(
+      `/${(isNumberSearch ? this.numberSearchReplacements : this.textSearchReplacements)
         .reduce((acc, [from, to]) => acc.replace(from, to), word)
-        .toLowerCase(),
+        .toLowerCase()}/`,
     );
   }
 
@@ -96,8 +97,8 @@ export class MyLib extends SMyLib {
     isNumberSearch?: boolean,
   ): RetItem[] {
     const normalWords = isNumberSearch
-      ? searchWord.split(/0+/).filter(word => word)
-      : searchWord.split(/[^а-яёa-z0-9ґї'ʼє]+/i).filter(word => word);
+      ? searchWord.split(makeRegExp('/0+/')).filter(word => word)
+      : searchWord.split(makeRegExp("/[^а-яёa-z0-9ґї'ʼє]+/i")).filter(word => word);
     const words = normalWords.map(word => word.toLowerCase());
     const wordRegs = normalWords.map(word => this.internationalWordReg(word, isNumberSearch));
 
@@ -221,7 +222,7 @@ export class MyLib extends SMyLib {
 
   correctRegExp(str: string, flags = '', transformer?: (str: string, reps: number) => string) {
     let reps = 0;
-    const string = str.replace(/[[\]\\$^*()+|?.<>{}]/g, all => {
+    const string = str.replace(makeRegExp('/[[\\]\\\\$^*()+|?.<>{}]/g'), all => {
       reps++;
       return `\\${all}`;
     });
@@ -357,7 +358,7 @@ export class MyLib extends SMyLib {
 
     parent.setAttribute(attrName, attrVal);
 
-    const scroll = (posMode = 's' || 'c' || 'e', dir = 'v' || 'h') => {
+    const scroll = (posMode: 's' | 'c' | 'e' = 's', dir: 'v' | 'h' = 'v') => {
       const [pos, vol]: ['Top' | 'Left', 'Height' | 'Width'] = dir === 'v' ? ['Top', 'Height'] : ['Left', 'Width'];
 
       const parentScroll = parent[`scroll${pos}`];
@@ -400,7 +401,8 @@ export class MyLib extends SMyLib {
     ].forEach(([sReg, eReg, nsReg, neReg, ncReg, dir]: any[]) => {
       if (is(sReg)) scroll('s', dir);
       else if (is(eReg)) scroll('e', dir);
-      else if (is(nsReg) || is(neReg) ? is(/center/i) : is(/center/i) && !is(ncReg)) scroll('c', dir);
+      else if (is(nsReg) || is(neReg) ? is(makeRegExp('/center/i')) : is(makeRegExp('/center/i')) && !is(ncReg))
+        scroll('c', dir);
     });
 
     if (isStatic) parent.style.position = prevPosition;

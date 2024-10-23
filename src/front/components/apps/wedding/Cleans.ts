@@ -83,8 +83,8 @@ export class WedCleans {
     return (
       `${this.miInText(guest.mi)}:` +
       this.makeGuestFullName(guest)
-        .replace(/ +/g, '-')
-        .replace(/[а-яё]/gi, all => {
+        .replace(makeRegExp('/ +/g'), '-')
+        .replace(makeRegExp('/[а-яё]/gi'), all => {
           const letter = trans[all.toLowerCase()];
 
           return all === all.toLowerCase() ? letter : letter.toUpperCase();

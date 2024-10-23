@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import * as bibleTitlesJSON from '../../../../../back/apps/bible/bibleBookTitles.json';
 import { MyLib } from '../../../../complect/my-lib/MyLib';
 import { soki } from '../../../../soki';
-import { BibleTranslationJoinAddress } from '../model';
+import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress, BibleVersei } from '../model';
 import { useBibleTranslatesContext } from '../translates/TranslatesContext';
 import { translateDescriptions } from '../translates/complect';
 import { useBibleShowTranslatesValue } from '../translates/hooks';
@@ -37,9 +37,9 @@ export const useBibleCurrentChapterList = () => {
 export const useBibleBookList = () => bibleTitles.titles;
 
 export const useBibleSingleSlideText = (
-  booki: number,
-  chapteri: number,
-  versei: number,
+  booki: BibleBooki,
+  chapteri: BibleChapteri,
+  versei: BibleVersei,
   isSetFirstTranslate?: boolean,
   isSetAddress?: boolean,
 ) => {
@@ -66,14 +66,14 @@ export const useBibleSingleSlideText = (
 export const useBibleSlideText = () => {};
 
 export const useBibleJoinedSlideText = (
-  joinAddress: BibleTranslationJoinAddress | null,
+  joinAddress: BibleTranslationJoinAddress | nil,
   isSetFirstTranslate?: boolean,
   isSetAddress?: boolean,
 ) => {
   const showTranslates = useBibleShowTranslatesValue();
   const translates = useBibleTranslatesContext();
 
-  if (joinAddress === null) return '';
+  if (joinAddress == null) return '';
 
   const pasteText = (chapters: (string[][] | null)[] | und) => {
     if (chapters === undefined) return '';
@@ -129,7 +129,12 @@ export const useBibleJoinedSlideText = (
     .join('</br>');
 };
 
-export const useBibleSimpleAddressText = (booki: number, chapteri: number, versei: number, titleVariant: 0 | 1 = 0) => {
+export const useBibleSimpleAddressText = (
+  booki: BibleBooki,
+  chapteri: BibleChapteri,
+  versei: BibleVersei,
+  titleVariant: 0 | 1 = 0,
+) => {
   return `${bibleTitles.titles[booki][titleVariant]} ${chapteri + 1}:${versei + 1}`;
 };
 

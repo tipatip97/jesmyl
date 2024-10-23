@@ -1,6 +1,6 @@
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
 import { IconTextStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/text';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
@@ -8,12 +8,12 @@ import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsChangeText = ({
-  props: { ccom, ord, ordi, blockHeader },
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+  ccom,
+  ord,
+  ordi,
+  blockHeader,
+  onClose,
+}: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
 
   const blockHeaderHtml = (textPre = '', textPost = '') =>
@@ -53,7 +53,7 @@ export const OrdersRedactorOrderToolsChangeText = ({
                       }),
                     );
                     close();
-                    closePopup();
+                    onClose(false);
                   }}
                 />
               );
@@ -67,9 +67,9 @@ export const OrdersRedactorOrderToolsChangeText = ({
   return (
     <>
       {modalNode}
-      <IconButton
+      <BottomPopupItem
         Icon={IconTextStrokeRounded}
-        postfix="Заменить текст"
+        title="Заменить текст"
         onClick={openModal}
       />
     </>

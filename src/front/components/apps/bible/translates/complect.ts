@@ -1,3 +1,5 @@
+import { BibleBooki } from '../model';
+
 export const bibleDefaultTranslates = ['rst'] as const;
 export const bibleOtherTranslates = ['nrt', 'kas'] as const;
 export const bibleAllTranslates = [...bibleDefaultTranslates, ...bibleOtherTranslates] as const;
@@ -12,7 +14,7 @@ export const translateDescriptions: Record<BibleTranslateName, string> = {
   kas: 'Новый Завет. Перевод Кассиана (Безобразова)',
 };
 
-export const translateFilter: Record<BibleTranslateName, (booki: number) => boolean> = {
+export const translateFilter: Record<BibleTranslateName, (booki: BibleBooki) => boolean> = {
   kas: booki => booki < 39,
   rst: () => false,
   nrt: () => false,

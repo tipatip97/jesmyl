@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { hookEffectPipe, setTimeoutPipe } from '../../../../../../../complect/hookEffectPipe';
 import { cmMolecule } from '../../../../molecules';
 import { Com } from '../../Com';
 import { Order } from '../../order/Order';
@@ -12,91 +13,100 @@ export const useComBlockCommentUpdateBlockNames = (
   setComments: ReturnType<typeof cmMolecule.take<'comComments'>>['set'],
 ) => {
   useEffect(() => {
-    const initialOrders = com?.orders;
+    return hookEffectPipe()
+      .pipe(
+        setTimeoutPipe(() => {
+          if (!com || !comComment || visibleOrders == null) return;
 
-    if (!comComment || visibleOrders == null || initialOrders == null) return;
+          const initialOrders = com?.orders;
 
-    const newComment = comComment?.replace(
-      ComBlockCommentMakerCleans.commentsParseReg,
-      (
-        $all,
-        $before,
-        $beforeSpaces,
-        $hashes,
-        $blockHashPosition,
-        $modificators,
-        _$info,
-        $secretWidStr,
-        $blockHeader,
-        $beforeCommentSpaces,
-        $comment,
-      ) => {
-        let secretWidStr = '';
-        let blockHeader = '';
-        let blockHashPosition = +$blockHashPosition;
+          if (initialOrders == null) return;
 
-        if ($secretWidStr) {
-          const unsecredWid = ComBlockCommentMakerCleans.makeSecretToWid($secretWidStr);
-          const unsecredVisibleOrderi = visibleOrders.findIndex(ord => ord.wid === unsecredWid);
-          const unsecredVisibleOrder = visibleOrders[unsecredVisibleOrderi];
+          const newComment = comComment?.replace(
+            ComBlockCommentMakerCleans.commentsParseReg,
+            (
+              $all,
+              $before,
+              $beforeSpaces,
+              $hashes,
+              $blockHashPosition,
+              _$associations,
+              $secretWidStr,
+              $modificators,
+              _$info,
+              _$blockHeader,
+              $beforeCommentSpaces,
+              $comment,
+            ) => {
+              let secretWidStr = '';
+              let blockHeader = '';
+              let blockHashPosition = +$blockHashPosition;
 
-          if (unsecredVisibleOrder == null) {
-            const unsecretInvisibleOrderi = initialOrders.findIndex(ord => ord.wid === unsecredWid);
-            const unsecretInvisibleOrder = initialOrders[unsecretInvisibleOrderi];
+              if ($secretWidStr) {
+                const unsecredWid = ComBlockCommentMakerCleans.makeSecretToWid($secretWidStr);
+                const unsecredVisibleOrderi = visibleOrders.findIndex(ord => ord.wid === unsecredWid);
+                const unsecredVisibleOrder = visibleOrders[unsecredVisibleOrderi];
 
-            if (unsecretInvisibleOrder) {
-              secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(unsecretInvisibleOrder.wid);
-              blockHeader = unsecretInvisibleOrder.top.header?.() || '';
+                if (unsecredVisibleOrder == null) {
+                  const unsecretInvisibleOrderi = initialOrders.findIndex(ord => ord.wid === unsecredWid);
+                  const unsecretInvisibleOrder = initialOrders[unsecretInvisibleOrderi];
 
-              blockHashPosition = 0;
-            } else {
-              const fromBlockHashPositionOrder = visibleOrders[+$blockHashPosition - 1] as Order | nil;
+                  if (unsecretInvisibleOrder) {
+                    secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(unsecretInvisibleOrder.wid);
+                    blockHeader = unsecretInvisibleOrder.me.header() || '';
 
-              if (fromBlockHashPositionOrder == null) {
-                secretWidStr = '';
-                blockHeader = '';
-                blockHashPosition = 0;
+                    blockHashPosition = 0;
+                  } else {
+                    const fromBlockHashPositionOrder = visibleOrders[+$blockHashPosition - 1] as Order | nil;
+
+                    if (fromBlockHashPositionOrder == null) {
+                      secretWidStr = '';
+                      blockHeader = '';
+                      blockHashPosition = 0;
+                    } else {
+                      const fromHashOrderi = visibleOrders.findIndex(ord => ord.wid === fromBlockHashPositionOrder.wid);
+
+                      secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(fromBlockHashPositionOrder.wid);
+                      blockHeader = fromBlockHashPositionOrder.me.header() || '';
+
+                      blockHashPosition = fromHashOrderi + 1;
+                    }
+                  }
+                } else {
+                  secretWidStr = $secretWidStr;
+                  blockHeader = unsecredVisibleOrder.me.header() || '';
+
+                  blockHashPosition = unsecredVisibleOrderi + 1;
+                }
               } else {
-                const fromHashOrderi = visibleOrders.findIndex(ord => ord.wid === fromBlockHashPositionOrder.wid);
+                const fromBlockHashPositionOrder = visibleOrders[+$blockHashPosition - 1] as Order | nil;
+
+                if (fromBlockHashPositionOrder == null) return $all;
 
                 secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(fromBlockHashPositionOrder.wid);
-                blockHeader = fromBlockHashPositionOrder.top.header?.() || '';
-
-                blockHashPosition = fromHashOrderi + 1;
+                blockHeader = fromBlockHashPositionOrder.me.header() || '';
               }
-            }
-          } else {
-            secretWidStr = $secretWidStr;
-            blockHeader = unsecredVisibleOrder.top.header?.() || '';
 
-            blockHashPosition = unsecredVisibleOrderi + 1;
-          }
-        } else {
-          const fromBlockHashPositionOrder = visibleOrders[+$blockHashPosition - 1] as Order | nil;
+              return (
+                `${$before}${$beforeSpaces}${$hashes}${blockHashPosition || ''}${
+                  secretWidStr ? `_${secretWidStr}` : ''
+                }${$modificators || ''}` +
+                (blockHeader ? ` [${blockHeader}]` : ' ') +
+                (`${$beforeCommentSpaces || (isRedact ? '' : ' ')}` || ' ') +
+                `${$comment || ''}`
+              );
+            },
+          );
 
-          if (fromBlockHashPositionOrder == null) return $all;
+          if (
+            ComBlockCommentMakerCleans.spaceFreeText(comComment) ===
+            ComBlockCommentMakerCleans.spaceFreeText(newComment)
+          )
+            return;
 
-          secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(fromBlockHashPositionOrder.wid);
-          blockHeader = fromBlockHashPositionOrder.top.header?.() || '';
-        }
-
-        if (isRedact) blockHeader = $blockHeader;
-
-        return (
-          `${$before}${$beforeSpaces}${$hashes}${blockHashPosition || ''}${$modificators}` +
-          (blockHeader ? (isRedact ? ` [${blockHeader}]` : ` [${`${secretWidStr} `}${blockHeader}]`) : ' ') +
-          `${$beforeCommentSpaces || (isRedact ? '' : ' ')}` +
-          `${$comment || ''}`
-        );
-      },
-    );
-
-    if (
-      !com ||
-      ComBlockCommentMakerCleans.spaceFreeText(comComment) === ComBlockCommentMakerCleans.spaceFreeText(newComment)
-    )
-      return;
-
-    setComments(prev => ({ ...prev, [com.wid]: isRedact ? newComment : newComment.trim() }));
+          setComments(prev => ({ ...prev, [com.wid]: isRedact ? newComment : newComment.trim() }));
+        }, 500),
+      )
+      .effect();
   }, [visibleOrders, com, comComment, isRedact, setComments]);
 };

@@ -1,9 +1,7 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import { IComLineProps } from '../order/Order.model';
-
-const spacePlusReg_g = / +/g;
-const spaceReg = / /;
 
 export default function ComLine(props: IComLineProps) {
   const className = `composition-line line-num-${props.textLinei}`;
@@ -43,7 +41,7 @@ export default function ComLine(props: IComLineProps) {
 
   if (props.isJoinLetters !== false)
     points = vowelPositions.filter(
-      (lett, letti) => !letti || linePositions.includes(letti) || props.textLine[lett].match(spaceReg),
+      (lett, letti) => !letti || linePositions.includes(letti) || props.textLine[lett].match(makeRegExp('/ /')),
     );
 
   const isHasPre = linePositions.includes(-1);
@@ -82,7 +80,7 @@ export default function ComLine(props: IComLineProps) {
 
     const baseTextBitOriginal = props.textLine.slice(index, indexa[indexi + 1]);
     const origBits = baseTextBitOriginal
-      .split(spacePlusReg_g)
+      .split(makeRegExp('/ +/g'))
       .map((txt, txti) => (
         <React.Fragment key={txti}>{txt && <span dangerouslySetInnerHTML={{ __html: txt }} />}</React.Fragment>
       ));
@@ -115,7 +113,7 @@ export default function ComLine(props: IComLineProps) {
             (isChorded || isChordedFirst || isChordedLast ? ' chorded' : '') +
             (isChordedLast ? ' post' : '') +
             (isChordedFirst ? ' pre' : '') +
-            (baseTextBitOriginal.match(spaceReg) ? ' spaced-word' : '') +
+            (baseTextBitOriginal.match(makeRegExp('/ /')) ? ' spaced-word' : '') +
             (baseTextBitOriginal === ' ' ? ' space-word' : '') +
             (isChorded && isLast && isHasPost ? ' twice' : '')
           }

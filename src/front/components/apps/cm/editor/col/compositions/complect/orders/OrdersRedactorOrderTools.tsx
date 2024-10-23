@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { BottomPopupContenter } from '../../../../../../../../complect/absolute-popup/bottom-popup/model';
 import { EditableCom } from '../../com/EditableCom';
 import { EditableOrder } from './EditableOrder';
 import { OrdersRedactorOrderToolsAnchor } from './tools/Anchor';
@@ -8,70 +7,33 @@ import { OrdersRedactorOrderToolsBlockType } from './tools/BlockType';
 import { OrdersRedactorOrderToolsChangeText } from './tools/ChangeText';
 import { OrdersRedactorOrderToolsChordBind } from './tools/ChordBind';
 import { OrdersRedactorOrderToolsEmptyHeader } from './tools/EmptyHeader';
+import { OrdersRedactorOrderToolsHiddenOnMin } from './tools/HiddenOnMin';
 import { OrdersRedactorOrderToolsModulation } from './tools/Modulation';
 import { OrdersRedactorOrderToolsVisibility } from './tools/Visibility';
-import { OrdersRedactorOrderToolsHiddenOnMin } from './tools/HiddenOnMin';
 
 export interface OrdersRedactorOrderToolsProps {
   ccom: EditableCom;
   ord: EditableOrder;
   ordi: number;
   blockHeader: ReactNode;
+  onClose: (isOpen: false) => void;
 }
 
-export const OrdersRedactorOrderTools: BottomPopupContenter<OrdersRedactorOrderToolsProps | und> = (
-  isOpen,
-  close,
-  _prepare,
-  props,
-) => {
-  if (props === undefined || !isOpen) return null;
-
+export const OrdersRedactorOrderTools = (props: OrdersRedactorOrderToolsProps) => {
   return (
     <>
-      <OrdersRedactorOrderToolsBlockType
-        props={props}
-        closePopup={close}
-      />
-      <OrdersRedactorOrderToolsChordBind
-        props={props}
-        closePopup={close}
-      />
-      <OrdersRedactorOrderToolsVisibility
-        props={props}
-        closePopup={close}
-      />
-      {props.ord.isAnchor || props.ord.top.isInherit || (
-        <OrdersRedactorOrderToolsAnchor
-          props={props}
-          closePopup={close}
-        />
-      )}
-      {props.ord.top.style?.isModulation && (
-        <OrdersRedactorOrderToolsModulation
-          props={props}
-          closePopup={close}
-        />
-      )}
+      <OrdersRedactorOrderToolsBlockType {...props} />
+      <OrdersRedactorOrderToolsChordBind {...props} />
+      <OrdersRedactorOrderToolsVisibility {...props} />
+      {props.ord.isAnchor || props.ord.me.isInherit || <OrdersRedactorOrderToolsAnchor {...props} />}
+      {props.ord.me.style?.isModulation && <OrdersRedactorOrderToolsModulation {...props} />}
       {props.ord.isAnchor ? (
-        <OrdersRedactorOrderToolsHiddenOnMin
-          props={props}
-          closePopup={close}
-        />
+        <OrdersRedactorOrderToolsHiddenOnMin {...props} />
       ) : (
-        <OrdersRedactorOrderToolsChangeText
-          props={props}
-          closePopup={close}
-        />
+        <OrdersRedactorOrderToolsChangeText {...props} />
       )}
-      <OrdersRedactorOrderToolsEmptyHeader
-        props={props}
-        closePopup={close}
-      />
-      <OrdersRedactorOrderToolsAnchorDelete
-        props={props}
-        closePopup={close}
-      />
+      <OrdersRedactorOrderToolsEmptyHeader {...props} />
+      <OrdersRedactorOrderToolsAnchorDelete {...props} />
     </>
   );
 };

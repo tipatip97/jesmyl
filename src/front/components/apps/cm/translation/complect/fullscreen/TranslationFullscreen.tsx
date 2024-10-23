@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { atom, useAtom } from '../../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../../complect/backSwipableContainerMaker';
 import { IconCancel01StrokeRounded } from '../../../../../../complect/the-icon/icons/cancel-01';
@@ -111,7 +111,32 @@ const StyledScreen = styled(FontSizeContain)`
   }
 `;
 
-const styledContainerAnimationName: [] = [];
+const closeInfoAnimation = keyframes`${css`
+  from {
+    margin-left: 0px;
+  }
+  20% {
+    margin-left: 0px;
+  }
+  20% {
+    margin-left: 30px;
+  }
+  45% {
+    margin-left: 20px;
+  }
+  50% {
+    margin-left: 30px;
+  }
+  55% {
+    margin-left: 20px;
+  }
+  70% {
+    margin-left: 30px;
+  }
+  to {
+    margin-left: 0px;
+  }
+`}`;
 
 const StyledContainer = styled.div<{ $isShowInfo: boolean }>`
   position: relative;
@@ -136,34 +161,7 @@ const StyledContainer = styled.div<{ $isShowInfo: boolean }>`
   ${props =>
     props.$isShowInfo &&
     css`
-      animation: ${props.theme.id(styledContainerAnimationName)} 3s;
-
-      @keyframes ${props.theme.id(styledContainerAnimationName)} {
-        from {
-          margin-left: 0px;
-        }
-        20% {
-          margin-left: 0px;
-        }
-        20% {
-          margin-left: 30px;
-        }
-        45% {
-          margin-left: 20px;
-        }
-        50% {
-          margin-left: 30px;
-        }
-        55% {
-          margin-left: 20px;
-        }
-        70% {
-          margin-left: 30px;
-        }
-        to {
-          margin-left: 0px;
-        }
-      }
+      animation: ${closeInfoAnimation} 3s;
 
       ${StyledWrapper} {
         --first-bg: #999;

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
@@ -81,7 +82,7 @@ export default function NewComposition({ close }: { close: () => void }) {
             if (rule.textQuery) {
               const pre: HTMLPreElement | null = div.querySelector(rule.textQuery);
               if (pre) {
-                if (rule.isHTML) setTextAsValue(pre.innerHTML.replace(/<(\/ ?)?br( ?\/)?>/g, '\n'));
+                if (rule.isHTML) setTextAsValue(pre.innerHTML.replace(makeRegExp('/<(\\/ ?)?br( ?\\/)?>/g'), '\n'));
                 else setTextAsValue(pre.innerText);
               }
             }

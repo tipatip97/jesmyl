@@ -1,6 +1,7 @@
 import { Html5Qrcode } from 'html5-qrcode';
 import { useCallback, useMemo, useState } from 'react';
 import { makeSharedLink } from '../../../back/complect/link-coder/linkMaker';
+import { makeRegExp } from '../../../back/complect/makeRegExp';
 import { AppName, appNames } from '../../app/App.model';
 import useToast from '../modal/useToast';
 import mylib from '../my-lib/MyLib';
@@ -72,7 +73,7 @@ export default function useQRMaster() {
       if (len > 150) {
         const parts: QRMasterConnectData<string>[] =
           valueStr
-            .match(/(.{0,100})/g)
+            .match(makeRegExp('/(.{0,100})/g'))
             ?.filter(part => part)
             .map((part, parti, parta) => partMapper(part, parti, parta.length)) || [];
         if (parts) {

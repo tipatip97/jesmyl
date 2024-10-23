@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { TranslationSlidePreview } from '../../../../+complect/translations/controls/Preview';
+import mylib from '../../../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { Com } from '../../../col/com/Com';
 import { ComFaceList } from '../../../col/com/face/list/ComFaceList';
@@ -12,15 +13,15 @@ import { CmTranslationControlPanel } from './ControllPanel';
 import { CmTranslationSlideLine } from './SlideLine';
 import { useScreenKeyDownListen } from './screen/hooks/keydown-listen';
 import { CmTranslateScreenConfigurations } from './screens/ScreenConfigurations';
-import mylib from '../../../../../../complect/my-lib/MyLib';
 
 interface Props {
   head?: ReactNode;
   comList?: Com[];
   headTitle?: ReactNode;
+  backButtonPath?: string;
 }
 
-export default function CmTranslationControlled({ head, comList, headTitle }: Props) {
+export default function CmTranslationControlled({ head, comList, headTitle, backButtonPath }: Props) {
   const [, setSearchParams] = useSearchParams();
 
   const { comPack } = useCmScreenTranslationComNavigations();
@@ -32,7 +33,7 @@ export default function CmTranslationControlled({ head, comList, headTitle }: Pr
   return (
     <PhaseContainerConfigurer
       className=""
-      backButtonPath={mylib.isNaN(ccomw) ? undefined : `../${ccomw}`}
+      backButtonPath={backButtonPath ?? mylib.isNaN(ccomw) ? undefined : `../${ccomw}`}
       headTitle={
         headTitle ? (
           <>

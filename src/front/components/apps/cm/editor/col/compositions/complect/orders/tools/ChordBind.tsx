@@ -1,19 +1,13 @@
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
 import { IconOptionStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/option';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
-export const OrdersRedactorOrderToolsChordBind = ({
-  props: { ccom, ord, ordi },
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+export const OrdersRedactorOrderToolsChordBind = ({ ccom, ord, ordi, onClose }: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
 
   const [modalNode, openModal] = useModal(({ header, body }, close) => {
@@ -34,7 +28,7 @@ export const OrdersRedactorOrderToolsChordBind = ({
               />
             </pre>
             {ccom.chords?.map((chordsBlock, chordsBlocki) => {
-              const targetOrd = ord.top.targetOrd;
+              const targetOrd = ord.me.targetOrd;
 
               const chordIndex =
                 targetOrd && (ord.chordsi == null || ord.chordsi === -1) ? targetOrd.chordsi : ord.chordsi;
@@ -61,7 +55,7 @@ export const OrdersRedactorOrderToolsChordBind = ({
                     );
                     close();
                     exec();
-                    closePopup();
+                    onClose(false);
                   }}
                   postfix={
                     <pre>
@@ -82,9 +76,9 @@ export const OrdersRedactorOrderToolsChordBind = ({
   return (
     <>
       {modalNode}
-      <IconButton
+      <BottomPopupItem
         Icon={IconOptionStrokeRounded}
-        postfix="Аккорды"
+        title="Аккорды"
         onClick={openModal}
       />
     </>

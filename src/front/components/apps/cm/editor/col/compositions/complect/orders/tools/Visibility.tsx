@@ -1,24 +1,18 @@
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import { IconViewStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/view';
 import { IconViewOffStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/view-off';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
-export const OrdersRedactorOrderToolsVisibility = ({
-  props: { ccom, ord, blockHeader },
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+export const OrdersRedactorOrderToolsVisibility = ({ onClose, ord, blockHeader }: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
 
   return (
-    <IconButton
+    <BottomPopupItem
       Icon={ord.isVisible ? IconViewOffStrokeRounded : IconViewStrokeRounded}
-      postfix={ord.isVisible ? 'Скрыть блок' : 'Показать блок'}
+      title={ord.isVisible ? 'Скрыть блок' : 'Показать блок'}
       onClick={async () => {
-        closePopup();
+        onClose(false);
         exec(
           ord.setField('v', ord.antiIsVisible, {
             b: blockHeader,

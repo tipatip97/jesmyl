@@ -1,16 +1,17 @@
 import { memo } from 'react';
 import { useBibleTranslationAddressIndexesSetter } from '../../hooks/address/address';
 import { useBibleBookList } from '../../hooks/texts';
+import { BibleBooki, BibleChapteri, BibleVersei } from '../../model';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
 import { useBibleShowTranslatesValue } from '../../translates/hooks';
 
 interface Props {
-  booki: number;
-  chapteri: number;
-  versei: number;
+  booki: BibleBooki;
+  chapteri: BibleChapteri;
+  versei: BibleVersei;
   splitReg: RegExp;
   resulti: number;
-  onClick?: (booki: number, chapteri: number, versei: number) => void;
+  onClick?: (booki: BibleBooki, chapteri: BibleChapteri, versei: BibleVersei) => void;
 }
 
 export default memo(function BibleSearchResultVerse({

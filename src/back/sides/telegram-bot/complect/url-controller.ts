@@ -1,6 +1,7 @@
 import TelegramBot, { SendMessageOptions } from 'node-telegram-bot-api';
-import { JesmylTelegramBot } from '../tg-bot';
+import { makeRegExp } from '../../../complect/makeRegExp';
 import { JTgBotCallbackQuery } from '../model';
+import { JesmylTelegramBot } from '../tg-bot';
 
 const getFullName = ({ first_name, last_name }: { first_name: string; last_name?: string }) =>
   `${first_name}${last_name === undefined ? '' : ` ${last_name}`}`;
@@ -17,8 +18,8 @@ export const tgBotUrlController = async (
   const domainRegStr = `[a-z][${urlWordParts}]+\\.[${urlWordParts}./]{2,}`;
   const urlRegStr = `${domainRegStr}[${urlWordParts}?.#=$&]*`;
 
-  const urlReg = RegExp(`(${urlRegStr})`);
-  const domainReg = RegExp(`(${domainRegStr})`, 'g');
+  const urlReg = makeRegExp(`/(${urlRegStr})/`);
+  const domainReg = makeRegExp(`/(${domainRegStr})/g`);
 
   const knownUrlsSet: Set<string> = new Set();
   const makeUrlHyperlink = (url: string) => `<a href="http://${url}">${url}</a>`;

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import useSelectedComs from '../../../../base/useSelectedComs';
 import { Com } from '../../Com';
 import { useCcomw } from '../../useCcom';
-import { ListComFaceProps } from '../ComFace.model';
+import { ListComFaceForSelectionsProps } from '../ComFace.model';
 import { ComFaceListComList } from './_ComList';
 import { ComFaceListWidList } from './_WidList';
 import { IComFaceList } from './model';
@@ -25,7 +25,7 @@ export const ComFaceList = (props: Props) => {
 };
 
 interface WrapperProps extends IComFaceList {
-  Component: FC<IComFaceList & ListComFaceProps>;
+  Component: FC<IComFaceList & ListComFaceForSelectionsProps>;
   ccom: Com | und;
   className?: string;
 }

@@ -1,18 +1,25 @@
 import styled from 'styled-components';
+import { usePutBibleChapteriSetter } from '../../../hooks/address/chapters';
 import { useBibleCurrentChapterList } from '../../../hooks/texts';
-import BibleChapterFace from './ChapterFace';
+
+export const chapteriIdPrefix = 'bible-chapteri-';
 
 export default function BibleChapterList() {
   const chapters = useBibleCurrentChapterList();
+  const putValSetter = usePutBibleChapteriSetter();
 
   return (
     <Container>
       {chapters?.map((_chapter, chapteri) => {
         return (
-          <BibleChapterFace
+          <div
             key={chapteri}
-            chapteri={chapteri}
-          />
+            id={chapteriIdPrefix + chapteri}
+            className="bible-list-face pointer"
+            onClick={putValSetter(chapteri)}
+          >
+            {chapteri + 1}
+          </div>
         );
       })}
     </Container>

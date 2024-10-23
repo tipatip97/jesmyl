@@ -4,19 +4,16 @@ import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
 import { Order } from '../../order/Order';
 
 export class ComBlockCommentMakerCleans {
-  private static numberAssociationLine = 'wQtsLSzfFZ';
+  private static numberAssociationLine = 'iwvthjkfsz';
 
   static spaceFreeText = (text: string) => text.replace(makeRegExp('/\\s+/g'), '');
 
   static commentsParseReg = makeRegExp(
-    `/(^|\\n)( *)(#{1,2})(\\d*)(!?) *(\\[([${this.numberAssociationLine}]*) ?(.+?)\\])?( *)([\\w\\W]+?)(?=\\n *#|$)/g`,
+    `/(^|\\n)( *)(#{1,2})(\\d*)(_?([${this.numberAssociationLine}]*)(!?))? *(\\[(.+?)\\])?( *)([\\w\\W]+?)(?=\\n *#|$)/g`,
   );
-  // [$all, $before, $beforeSpaces, $hashes, $blockHashPosition, $modificators, _$info, $secretWidStr, $blockHeader, $beforeCommentSpaces, $comment]
+  // [$all, $before, $beforeSpaces, $hashes, $blockHashPosition, $associations, $secretWidStr, $modificators, $info, $blockHeader, $beforeCommentSpaces, $comment]
 
-  static simpleCommentsParseReg = makeRegExp(`/(^|\\n)(#{1,2})(\\d*)(!?)( *)(\\[[${this.numberAssociationLine}]+ *)/g`);
-  // [$all, $before, $hashes, $blockiPosition, $modificator, $spaces, $comment];
-
-  static withHeaderTextOrderFilter = (ord: Order) => ord.isVisible && !ord.top.isInherit;
+  static withHeaderTextOrderFilter = (ord: Order) => ord.isVisible && !ord.me.isInherit;
 
   static makeSecretToWid = (infoWidStr: string) =>
     infoWidStr

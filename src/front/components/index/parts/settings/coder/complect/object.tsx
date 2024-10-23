@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { CoderResultComponent } from './model';
 import { CoderResultValue } from './value';
@@ -5,7 +6,6 @@ import { CoderValueExpandable } from './value-expandable';
 
 export const CoderResultObject: CoderResultComponent<{}> = ({ value, name, scope, isObjectParent }) => {
   const keys = mylib.keys(value);
-  const clearNameReg = /^\w+$/;
   const resultName = name ?? value.constructor.name;
   const scopeName = isObjectParent
     ? scope
@@ -25,7 +25,7 @@ export const CoderResultObject: CoderResultComponent<{}> = ({ value, name, scope
         keys.length === 0
           ? '...'
           : keys.map(key => {
-              const keyBrackets = clearNameReg.test(key) ? '' : '"';
+              const keyBrackets = makeRegExp('/^\\w+$/').test(key) ? '' : '"';
 
               return (
                 <div key={key}>

@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
 import useModal from '../../../../../../../../complect/modal/useModal';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
@@ -45,12 +46,12 @@ export const ComRepeatsRemoveButton = ({ isChordBlock, startOrd, ord, textLinei,
                   fl?: number | und,
                   fw?: number | und,
                 ) => {
-                  const lines = (ord?.text || '').split(/\n+/);
+                  const lines = (ord?.text || '').split(makeRegExp('/\\n+/'));
                   return (isBeg ? lines.slice(l || 0, fl == null ? fl : fl + 1) : lines.slice(0, (l || 0) + 1))
                     .map(line =>
                       (isBeg
-                        ? (line || '').split(/ +/).slice(w || 0, fw == null ? fw : fw + 1)
-                        : (line || '').split(/ +/).slice(0, (w || 0) + 1)
+                        ? (line || '').split(makeRegExp('/ +/')).slice(w || 0, fw == null ? fw : fw + 1)
+                        : (line || '').split(makeRegExp('/ +/')).slice(0, (w || 0) + 1)
                       ).join(' '),
                     )
                     .join('\n');
@@ -143,7 +144,7 @@ export const ComRepeatsRemoveButton = ({ isChordBlock, startOrd, ord, textLinei,
           event.stopPropagation();
 
           if (isChordBlock) {
-            if (await confirm(`Сбросить повторения блока "${startOrd.top.header?.() || ''}"?`, 'Сброс')) {
+            if (await confirm(`Сбросить повторения блока "${startOrd.me.header() || ''}"?`, 'Сброс')) {
               startOrd.setField(coln, 0);
               reset();
             }

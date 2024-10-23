@@ -1,29 +1,23 @@
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import { IconMessage01StrokeRounded } from '../../../../../../../../../complect/the-icon/icons/message-01';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
-export const OrdersRedactorOrderToolsEmptyHeader = ({
-  props,
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+export const OrdersRedactorOrderToolsEmptyHeader = (props: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
 
   return (
     <>
-      <IconButton
+      <BottomPopupItem
         Icon={IconMessage01StrokeRounded}
-        postfix={`${props.ord.isEmptyHeader ? 'Вернуть' : 'Убрать'} название блока`}
+        title={`${props.ord.isEmptyHeader ? 'Вернуть' : 'Убрать'} название блока`}
         onClick={() => {
           exec(
             props.ord.setField('e', props.ord.isEmptyHeader ? 0 : 1, {
               def: 0,
             }),
           );
-          closePopup();
+          props.onClose(false);
         }}
       />
     </>

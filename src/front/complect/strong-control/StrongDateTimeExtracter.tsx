@@ -3,6 +3,7 @@ import mylib from '../my-lib/MyLib';
 import { StrongControlProps } from './Strong.model';
 import StrongEditableField from './field/StrongEditableField';
 import { TheIconType } from '../the-icon/model';
+import { makeRegExp } from '../../../back/complect/makeRegExp';
 
 type TakeDateComponent = 'NO' | 'year' | 'month' | 'day';
 type TakeTimeComponent = 'hour' | 'min' | 'sec' | 'ms';
@@ -39,7 +40,7 @@ export default function StrongInputDateTimeExtracter(
   const [timeImagine, setTimeImagine] = useState('');
 
   useEffect(() => {
-    const digits = inputValue.split(/\D+/).reverse().filter(itIt);
+    const digits = inputValue.split(makeRegExp('/\\D+/')).reverse().filter(itIt);
     const date = new Date();
 
     let dateString = '';
@@ -82,10 +83,7 @@ export default function StrongInputDateTimeExtracter(
         date.setHours(+txt.trim());
         timeString = txt + timeString;
       }
-      timeString = timeString
-        .trim()
-        .replace(/ (\d{3})/, '.$1')
-        .replace(/ /g, ':');
+      timeString = timeString.trim().replace(makeRegExp('/ (\\d{3})/'), '.$1').replace(makeRegExp('/ /g'), ':');
     } else date.setHours(0, 0, 0, 0);
 
     if (props.takeDate !== 'NO') {
@@ -107,7 +105,7 @@ export default function StrongInputDateTimeExtracter(
         date.setDate(+txt.trim());
         dateString = txt + dateString;
       }
-      dateString = dateString.trim().replace(/ /g, '.');
+      dateString = dateString.trim().replace(makeRegExp('/ /g'), '.');
     }
 
     setTimeImagine(`${dateString}${timeString && dateString ? ', ' : ''}${timeString}`);

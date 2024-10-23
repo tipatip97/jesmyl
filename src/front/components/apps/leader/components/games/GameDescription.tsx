@@ -1,14 +1,13 @@
 import { useState } from 'react';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import StrongEditableField from '../../../../../complect/strong-control/field/StrongEditableField';
+import { IconFile02StrokeRounded } from '../../../../../complect/the-icon/icons/file-02';
 import { TeamGameImportable } from '../../Leader.model';
 import { LeaderCleans } from '../LeaderCleans';
-import { IconFile02StrokeRounded } from '../../../../../complect/the-icon/icons/file-02';
 
-const newl2moreReg = /\n{2,}/;
-const newlReg = /\n/;
 const upperName = '^([А-ЯЁ]+ [А-ЯЁ\\d]+)';
-const upperNameMatchReg = new RegExp(upperName);
-const lineMatchReg = new RegExp(`${upperName}(.+?)(-?\\d+([.,]\\d+)?)(.*)`);
+const upperNameMatchReg = makeRegExp(`/${upperName}/`);
+const lineMatchReg = makeRegExp(`/${upperName}(.+?)(-?\\d+([.,]\\d+)?)(.*)/`);
 
 const minSetter = ['MIN'] as const;
 const maxSetter = ['MAX'] as const;
@@ -19,10 +18,10 @@ export function GameDescription({ game, redactable }: { game: TeamGameImportable
   let value = game.dsc;
 
   if (!isRedact && value) {
-    const blocks = value.split(newl2moreReg);
+    const blocks = value.split(makeRegExp('/\\n{2,}/'));
     value = '';
     blocks.forEach(block => {
-      const blocks = block.split(newlReg);
+      const blocks = block.split(makeRegExp('/\\n/'));
       value += '\n';
       let max = 0;
       let min = 0;
@@ -35,7 +34,7 @@ export function GameDescription({ game, redactable }: { game: TeamGameImportable
           const lineParts = line.match(lineMatchReg);
           if (lineParts !== null) {
             const [, teamTitle, separation, numbers, , rest] = lineParts;
-            const num = +numbers.replace(/,/, '.');
+            const num = +numbers.replace(makeRegExp('/,/'), '.');
             if (max < num) max = num + 1;
             if (min > num) min = num - 1;
 

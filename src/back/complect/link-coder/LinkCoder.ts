@@ -1,7 +1,7 @@
 import smylib, { SMyLib } from '../../shared/SMyLib';
+import { makeRegExp } from '../makeRegExp';
 
 const objMarker = '*';
-const objMarkerReg = new RegExp(`\\${objMarker}`);
 
 const stringEncodeValue = (value: any) =>
   JSON.stringify(value).replace(/\*/g, '%2a').replace(/ /g, '*').replace(/"/g, '%22');
@@ -100,7 +100,7 @@ export default class LinkCoder<
           if (valueDict === undefined) {
             result[valueKey as keyof Args] = valueDict = {} as never;
           }
-          valueDict[zippedKey.replace(objMarkerReg, '')] = stringDecodeValue(value);
+          valueDict[zippedKey.replace(makeRegExp(`/\\${objMarker}/`), '')] = stringDecodeValue(value);
         }
       });
 

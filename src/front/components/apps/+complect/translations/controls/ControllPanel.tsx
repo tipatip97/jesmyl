@@ -4,10 +4,10 @@ import { IconArrowLeft01StrokeRounded } from '../../../../../complect/the-icon/i
 import { IconArrowRight01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-right-01';
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
 import { IconPlayStrokeRounded } from '../../../../../complect/the-icon/icons/play';
-import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
-import { useToggleIsScreenTranslationTextVisible } from '../atoms';
+import { IconQrCodeSolidRounded, IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/qr-code';
 import { useWatchScreenTranslations } from '../hooks/watch-translation';
 import { useScreenTranslationCurrentWindow, useScreenTranslationWindows } from '../hooks/windows';
+import { useTranslationIsInitialSlideShow, useTranslationIsInitialSlideShowSet } from '../initial-slide-context';
 import { useScreenTranslationConfigsValue } from '../molecules';
 import { ScreenTranslationControlPanelShowMdButton } from './ShowMdButton';
 
@@ -21,7 +21,8 @@ export const ScreenTranslationControlPanel = memo(function ControlPanel({ onNext
   const windows = useScreenTranslationWindows();
   const currWin = useScreenTranslationCurrentWindow();
   const watchTranslation = useWatchScreenTranslations();
-  const switchIsVisible = useToggleIsScreenTranslationTextVisible();
+  const setIsInitialSlideShow = useTranslationIsInitialSlideShowSet();
+  const isInitialSlideShow = useTranslationIsInitialSlideShow();
 
   return (
     <div className="flex flex-gap between margin-big-gap-t">
@@ -48,10 +49,10 @@ export const ScreenTranslationControlPanel = memo(function ControlPanel({ onNext
       <ScreenTranslationControlPanelShowMdButton Parent={ControlButton} />
       <ControlButton
         className="pointer"
-        title="esc"
-        onClick={() => switchIsVisible()}
+        title="Backspace"
+        onClick={() => setIsInitialSlideShow(is => !is)}
       >
-        <IconSquareStrokeRounded />
+        {isInitialSlideShow ? <IconQrCodeSolidRounded /> : <IconQrCodeStrokeRounded />}
       </ControlButton>
     </div>
   );

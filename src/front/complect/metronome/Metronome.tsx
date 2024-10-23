@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { cmMolecule } from '../../components/apps/cm/molecules';
 import { useAtom } from '../atoms';
 import { isTouchDevice } from '../device-differences';
@@ -206,8 +206,23 @@ export const Metronome = ({ meterSize = 4, bpm = 120 }: Props) => {
 let changeMainSoundTimeout: TimeOut;
 let changeSecondarySoundTimeout: TimeOut;
 
-const PulseAnimationName1 = ['pulse1'] as const;
-const PulseAnimationName2 = ['pulse2'] as const;
+const scalePulse1 = keyframes`${css`
+  0% {
+    scale: 1;
+  }
+  100% {
+    scale: 2;
+  }
+`}`;
+
+const scalePulse2 = keyframes`${css`
+  from {
+    scale: 1;
+  }
+  to {
+    scale: 2;
+  }
+`}`;
 
 const StyledMeterDots = styled.div`
   > * {
@@ -216,32 +231,14 @@ const StyledMeterDots = styled.div`
     background-color: var(--color--7);
     border-radius: var(--size);
     opacity: 0.7;
-    animation: ${props => props.theme.id(PulseAnimationName1)} 0.25s;
+    animation: ${scalePulse1} 0.25s;
 
     &.current {
-      animation: ${props => props.theme.id(PulseAnimationName2)} 0.2s;
+      animation: ${scalePulse2} 0.2s;
     }
 
     &.accent {
       opacity: 1;
-    }
-  }
-
-  @keyframes ${props => props.theme.id(PulseAnimationName1)} {
-    from {
-      scale: 1;
-    }
-    to {
-      scale: 2;
-    }
-  }
-
-  @keyframes ${props => props.theme.id(PulseAnimationName2)} {
-    from {
-      scale: 1;
-    }
-    to {
-      scale: 2;
     }
   }
 `;

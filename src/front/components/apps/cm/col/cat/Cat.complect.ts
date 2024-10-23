@@ -61,7 +61,7 @@ export const catSpecialSearches: Record<`@${string}`, CatSpecialSearches> = {
         return coms.filter(
           com =>
             com.ords?.some(ord =>
-              mylib.isNum(ord.r) ? `${ord.r}`.match(reg) : MyLib.keys(ord.r).some(key => key.match(reg)),
+              mylib.isNum(ord.top.r) ? `${ord.top.r}`.match(reg) : MyLib.keys(ord.top.r).some(key => key.match(reg)),
             ),
         );
       } catch (error) {
@@ -89,15 +89,15 @@ export const catSpecialSearches: Record<`@${string}`, CatSpecialSearches> = {
         com =>
           com.ords?.some(
             ord =>
-              ord.c != null &&
-              ord.p &&
-              com.chords?.[ord.c]
+              ord.top.c != null &&
+              ord.top.p &&
+              com.chords?.[ord.top.c]
                 .split('\n')
                 .some(
                   (line, linei, linea) =>
                     line &&
                     linei < linea.length - 1 &&
-                    line.trim().split(' ').filter(itIt).length !== ord.p![linei]?.length,
+                    line.trim().split(' ').filter(itIt).length !== ord.top.p![linei]?.length,
                 ),
           ),
       );

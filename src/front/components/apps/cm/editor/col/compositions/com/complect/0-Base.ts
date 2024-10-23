@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import { FreeExecDict } from '../../../../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../../../../complect/my-lib/MyLib';
 import { IExportableCom } from '../../../../../../../../models';
@@ -97,8 +98,7 @@ export class EditableComBase extends Com {
       c: this.chords,
       t: this.texts,
       o: this.ords.map(topOrd => {
-        const ord = mylib.clone(topOrd);
-        delete ord.header;
+        const ord = mylib.clone(topOrd.top);
 
         if (!ord.p?.length) delete ord.p;
 
@@ -109,10 +109,7 @@ export class EditableComBase extends Com {
 
   takeStyleByTitle(text: string) {
     if (!text) return;
-    const preparedText = text
-      .toLowerCase()
-      .replace(/[^а-я]/g, '')
-      .trim();
+    const preparedText = text.toLowerCase().replace(makeRegExp('/[^а-я]/g'), '').trim();
     return blockStyles?.styles.find(style => style.tags?.some(tag => preparedText.startsWith(tag)));
   }
 

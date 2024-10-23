@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';
@@ -29,7 +30,7 @@ export default function CategoryBinds() {
                   if (cat.dict?.[ccom.wid]) exec(cat.removeNativeNumber(ccom, exec));
                   return;
                 }
-                if (value.match(/\D/)) return;
+                if (value.match(makeRegExp('/\\D/'))) return;
                 exec(cat.setNativeNumber(ccom, value));
               }}
             />

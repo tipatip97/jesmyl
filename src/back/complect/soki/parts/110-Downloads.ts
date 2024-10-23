@@ -4,8 +4,9 @@ import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerShareds } from './105-Shareds';
 
 export class SokiServerDownloads extends SokiServerShareds implements SokiServerDoAction<'Downloads'> {
-  async doOnDownloads({ appName, client, eventBody, requestId, capsule }: SokiServerDoActionProps) {
+  async doOnDownloads({ appName, client, eventBody, requestId }: SokiServerDoActionProps) {
     if (eventBody.download === undefined) return false;
+    const capsule = this.capsules.get(client);
     const key = eventBody.download;
 
     fs.readFile(filer.fileNamePath(appName, key), null, (error, data) => {

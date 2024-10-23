@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
 import { useCols } from '../../../../cols/useCols';
 import { Com } from '../../Com';
-import { ListComFaceProps } from '../ComFace.model';
+import { ListComFaceForSelectionsProps } from '../ComFace.model';
 import { ComFaceListComList } from './_ComList';
 import { IComFaceList } from './model';
 
-interface Props extends IComFaceList, ListComFaceProps {
+interface Props extends IComFaceList, ListComFaceForSelectionsProps {
   list: CmComWid[];
   titles?: Record<number, string>;
 }

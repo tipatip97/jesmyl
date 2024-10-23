@@ -1,16 +1,28 @@
-import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
 import { FullContent } from '../../fullscreen-content/FullContent';
 import IconButton from '../../the-icon/IconButton';
 import { IScheduleWidget } from '../ScheduleWidget.model';
 import { ScheduleWidgetLiveTranslation } from './Live';
 
+const queryKey = 'follow';
+
 export const ScheduleWidgetWatchLiveTranslationButton = ({ schedule }: { schedule: IScheduleWidget }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const setIsOpen = (isOpen: unknown) => {
+    setSearchParams(prev => {
+      if (isOpen) return { ...prev, [queryKey]: 'inner' };
+
+      prev.delete(queryKey);
+
+      return prev;
+    });
+  };
 
   return (
     <>
-      {isOpen && (
+      {searchParams.has(queryKey) && (
         <FullContent
           onClose={setIsOpen}
           containerClassName=""
@@ -23,7 +35,7 @@ export const ScheduleWidgetWatchLiveTranslationButton = ({ schedule }: { schedul
       )}
       <IconButton
         Icon={IconComputerStrokeRounded}
-        onClick={() => setIsOpen(is => !is)}
+        onClick={setIsOpen}
         className="margin-gap-v"
         postfix="Следить за трансляцией"
       />

@@ -14,6 +14,7 @@ import useConnectionState from '../../useConnectionState';
 import { LoginIndex } from './IndexLoginAuth';
 import { TgNativeAuth } from './TgNativeAuth';
 import { useAuthErrors } from './atoms';
+import { makeRegExp } from '../../../../../back/complect/makeRegExp';
 
 export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => void }) {
   const [authCode, setAuthCode] = useState('');
@@ -137,7 +138,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                             const codeStr = await navigator.clipboard.readText();
                             if (authCode === codeStr) return;
 
-                            if (/^\d{5,6}$/.test(codeStr)) {
+                            if (makeRegExp('/^\\d{5,6}$/').test(codeStr)) {
                               setAuthCode(codeStr);
                               onAuthSend(codeStr)
                                 .catch(showToast)

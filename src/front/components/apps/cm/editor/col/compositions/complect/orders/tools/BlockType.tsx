@@ -1,28 +1,31 @@
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
-import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
+import { useState } from 'react';
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
-import useModal from '../../../../../../../../../complect/modal/useModal';
+import Modal from '../../../../../../../../../complect/modal/Modal/Modal';
+import { ModalBody } from '../../../../../../../../../complect/modal/Modal/ModalBody';
+import { ModalHeader } from '../../../../../../../../../complect/modal/Modal/ModalHeader';
+import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
+import { IconCubeStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/cube';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
 import { blockStyles } from '../../../../../../col/com/block-styles/BlockStyles';
 import TheOrder from '../../../../../../col/com/order/TheOrder';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
-import { IconCubeStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/cube';
 
-export const OrdersRedactorOrderToolsBlockType = ({
-  props: { ccom, ord, ordi },
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+export const OrdersRedactorOrderToolsBlockType = ({ ccom, ord, ordi, onClose }: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
+  const [isModalOpen, setIsModalOpen] = useState<unknown>(false);
 
-  const [modalNode, openModal] = useModal(({ header, body }, close) => {
-    return (
-      <>
-        {header(<>Тип блока</>)}
-        {body(
-          <>
+  return (
+    <>
+      <BottomPopupItem
+        Icon={IconCubeStrokeRounded}
+        title="Тип блока"
+        onClick={setIsModalOpen}
+      />
+      {isModalOpen && (
+        <Modal onClose={setIsModalOpen}>
+          <ModalHeader>Тип блока</ModalHeader>
+          <ModalBody>
             <TheOrder
               orderUnit={ord}
               orderUniti={ordi}
@@ -30,7 +33,7 @@ export const OrdersRedactorOrderToolsBlockType = ({
               com={ccom}
             />
             {blockStyles?.styles.map(styleBlock => {
-              if ((ordi === 0 || ord.top.isTarget) && styleBlock.isInherit) return null;
+              if ((ordi === 0 || ord.me.isTarget) && styleBlock.isInherit) return null;
 
               const newBlockn = styleBlock.title[ccom.langi || 0];
               return (
@@ -41,27 +44,16 @@ export const OrdersRedactorOrderToolsBlockType = ({
                   className="margin-gap-t"
                   onChange={() => {
                     exec(ord.setField('s', styleBlock.key, { newBlockn }, exec));
-                    close();
-                    closePopup();
+                    setIsModalOpen(false);
+                    onClose(false);
                   }}
                   postfix={newBlockn}
                 />
               );
             })}
-          </>,
-        )}
-      </>
-    );
-  });
-
-  return (
-    <>
-      {modalNode}
-      <IconButton
-        Icon={IconCubeStrokeRounded}
-        postfix="Тип блока"
-        onClick={openModal}
-      />
+          </ModalBody>
+        </Modal>
+      )}
     </>
   );
 };

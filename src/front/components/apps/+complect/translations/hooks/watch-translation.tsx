@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { css } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 import { renderComponentInNewWindow } from '../../../../..';
 import { cursors } from '../../../../../cursorsBase64';
 import { useScreenTranslationConfigsValue } from '../molecules';
@@ -34,10 +34,6 @@ export const useWatchScreenTranslations = () => {
 
           win.document.title = getCurrentConfig(windowi)?.title ?? win.document.title;
 
-          const style = win.document.createElement('style');
-          win.document.body.appendChild(style);
-          style.innerHTML = newWindowBaseStyle;
-
           const closeWin = () => win.close();
 
           window.addEventListener('unload', closeWin);
@@ -50,39 +46,19 @@ export const useWatchScreenTranslations = () => {
           });
 
           return (
-            <TranslationScreen
-              screeni={windowi}
-              win={win}
-              forceViewApp={forceViewApp}
-            />
+            <>
+              <TranslationScreen
+                screeni={windowi}
+                win={win}
+                forceViewApp={forceViewApp}
+              />
+              <StyledTranslationGlobalStyles />
+            </>
           );
         },
         undefined,
         undefined,
         `top=10000,left=30000,width=30000,height=30000,directories=0,titlebar=0,toolbar=0,location=0,status=0,menubar=0,scrollbars=no`,
-        undefined,
-        css`
-          body {
-            * {
-              transition: filter 0.3s;
-              transition-delay: 0.2s;
-
-              &:not(.any) {
-                ${cursors.defaultLight}
-              }
-            }
-
-            &:not(:fullscreen) * * * {
-              filter: blur(50px);
-              opacity: 0;
-            }
-
-            &:fullscreen * * * {
-              filter: blur(0px);
-              opacity: 1;
-            }
-          }
-        `,
       );
 
     const len = configs.length - windows.length;
@@ -94,12 +70,31 @@ export const useWatchScreenTranslations = () => {
   return watchTranslation;
 };
 
-const newWindowBaseStyle =
-  '' +
-  css`
-    body {
-      margin: 0;
-      padding: 0;
-      user-select: none;
+const styles = css`
+  body {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+
+    * {
+      transition: filter 0.3s;
+      transition-delay: 0.2s;
+
+      &:not(.any) {
+        ${cursors.defaultLight}
+      }
     }
-  `;
+
+    &:not(:fullscreen) * * * {
+      filter: blur(50px);
+      opacity: 0;
+    }
+
+    &:fullscreen * * * {
+      filter: blur(0px);
+      opacity: 1;
+    }
+  }
+`;
+
+const StyledTranslationGlobalStyles = createGlobalStyle`${styles}`;

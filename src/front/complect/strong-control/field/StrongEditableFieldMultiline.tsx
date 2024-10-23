@@ -1,5 +1,6 @@
 import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import { useState } from 'react';
+import { makeRegExp } from '../../../../back/complect/makeRegExp';
 import style from './Multiline.module.scss';
 
 const isNIs = (is: boolean) => !is;
@@ -8,8 +9,6 @@ const onImageClick: React.MouseEventHandler<HTMLImageElement> = event => {
   const src = event.currentTarget.getAttribute('prop-src');
   if (src) window.open(src);
 };
-
-const refReg = /!\[[^\]]+] *\[[^\]]+\]/g;
 
 const ImgContainer = (props: { src: string; alt: string }) => {
   if (!props.src) return null;
@@ -31,11 +30,10 @@ const options: MarkdownToJSX.Options = {
   },
 };
 
-const newlReg = /\n/;
 const shortFinishLine = 4;
 
 export default function StrongEditableFieldMultiline({ value }: { value: string }) {
-  const lines = value.slice(0, 150).trim().split(newlReg, 6);
+  const lines = value.slice(0, 150).trim().split(makeRegExp('/\\n/'), 6);
 
   let finishLine = shortFinishLine;
 
@@ -46,7 +44,7 @@ export default function StrongEditableFieldMultiline({ value }: { value: string 
       finishLine = 5;
     }
 
-    if (lines.at(-1)!.includes('![') || lines.at(-1)!.search(/https?:\/\//) !== -1) {
+    if (lines.at(-1)!.includes('![') || lines.at(-1)!.search(makeRegExp('/https?:\\/\\//')) !== -1) {
       finishLine = finishLine - 1;
     }
   }
@@ -66,7 +64,9 @@ export default function StrongEditableFieldMultiline({ value }: { value: string 
       onClick={isExpandable ? () => setisExpand(isNIs) : undefined}
     >
       <Markdown options={options}>
-        {content.includes('![') ? content.replace(refReg, '*[Ссылки не работают]*') : content}
+        {content.includes('![')
+          ? content.replace(makeRegExp('/!\\[[^\\]]+] *\\[[^\\]]+\\]/g'), '*[Ссылки не работают]*')
+          : content}
       </Markdown>
     </div>
   );

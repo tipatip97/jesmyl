@@ -1,9 +1,9 @@
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { TranslationSlidePreview } from '../../+complect/translations/controls/Preview';
 import BibleLists from './lists/Lists';
 
-export const BibleTranslationControlledTopPanel = memo(function TopPanel(): JSX.Element {
+export const BibleTranslationControlledTopPanel = function TopPanel(): JSX.Element {
   const [isPreview, setIsPreview] = useState(true);
 
   return (
@@ -22,7 +22,7 @@ export const BibleTranslationControlledTopPanel = memo(function TopPanel(): JSX.
       <BibleLists />
     </StyledTopPanel>
   );
-});
+};
 
 const StyledTopPanel = styled.div`
   display: grid;

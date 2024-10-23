@@ -76,7 +76,7 @@ export const ScheduleWidgetLiveTranslation = ({ onClose, schedule, isShowMarkdow
   }, [auth.login, liveData, onClose, schedule.w, subscribeData]);
 
   useEffect(() => {
-    soki.send({ subscribe: 'liveData', subscribeData: subscribeData }, 'index');
+    soki.send({ subscribe: 'liveData', subscribeData }, 'index');
 
     return () => {
       soki.send({ unsubscribe: 'liveData' }, 'index');

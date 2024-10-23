@@ -35,9 +35,11 @@ export class SokiServerFiles extends SokiServerLiveTransfers implements SokiServ
     });
   }
 
-  async doOnPullData({ appName, capsule, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
+  async doOnPullData({ appName, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
     if (eventBody.pullData === undefined) return false;
     if (!eventData.appName) return false;
+
+    const capsule = this.capsules.get(client);
     if (capsule) capsule.appName = eventData.appName;
 
     this.sendStatistic();

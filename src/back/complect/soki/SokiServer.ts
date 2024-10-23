@@ -30,7 +30,6 @@ export class SokiServer extends SokiServerDownloads {
           eventBody: eventData.body,
           appName: eventData.appName,
           requestId: eventData.requestId,
-          capsule: this.capsules.get(client),
         };
 
         if (await this.doOnConnect(doProps)) return;

@@ -3,15 +3,15 @@ import { useAtomSet } from '../../../../../../complect/atoms';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from '../../../hooks/address/address';
 import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
+import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress, BibleVersei } from '../../../model';
 import { bibleVerseiAtom } from '../atoms';
-import { BibleTranslationJoinAddress } from '../../../model';
-import { verseIdPrefix } from './VerseList';
+import { verseiIdPrefix } from './VerseList';
 
 export const useVerseListListeners = (
   verseListNodeRef: { current: HTMLDivElement | null },
-  currentBooki: number,
-  currentChapteri: number,
-  currentVersei: number,
+  currentBooki: BibleBooki,
+  currentChapteri: BibleChapteri,
+  currentVersei: BibleVersei,
 ) => {
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
@@ -29,10 +29,10 @@ export const useVerseListListeners = (
       .addEventListener(verseListNode, 'mousedown', event => {
         const verseNode = event.target as HTMLDivElement | null;
 
-        if (verseNode === null || !verseNode.id.startsWith(verseIdPrefix)) return;
+        if (verseNode === null || !verseNode.id.startsWith(verseiIdPrefix)) return;
         const ctrlKey = event.ctrlKey;
         const shiftKey = event.shiftKey;
-        const versei = +verseNode.id.slice(verseIdPrefix.length);
+        const versei = +verseNode.id.slice(verseiIdPrefix.length);
 
         clearTimeout(clickTimeout);
         if (isDblClick) {
@@ -55,11 +55,11 @@ export const useVerseListListeners = (
             return;
           }
 
-          let newJoin: BibleTranslationJoinAddress | null = { ...currentJoinAddress };
+          let newJoin = { ...currentJoinAddress } as BibleTranslationJoinAddress; // | null;
           setVersei(versei);
 
-          if (currentJoinAddress === null) {
-            const verses = ((newJoin[currentBooki] = {} as BibleTranslationJoinAddress[number])[currentChapteri] =
+          if (currentJoinAddress == null) {
+            const verses = ((newJoin[currentBooki] = {} as BibleTranslationJoinAddress[BibleBooki])[currentChapteri] =
               [] as number[]);
 
             if (ctrlKey) {
@@ -100,7 +100,7 @@ export const useVerseListListeners = (
               delete newJoin[currentBooki][currentChapteri];
               if (mylib.keys(newJoin[currentBooki]).length === 0) {
                 delete newJoin[currentBooki];
-                if (mylib.keys(newJoin).length === 0) newJoin = null;
+                if (mylib.keys(newJoin).length === 0) newJoin = null!;
               }
             }
           }

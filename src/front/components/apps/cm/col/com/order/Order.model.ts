@@ -25,9 +25,10 @@ export type EditableOrderRegion<Ord extends Order> = {
   others: number[] | null;
 };
 
-export interface IExportableOrderTop extends IExportableOrder {
-  source?: IExportableOrderTop;
-  init?: IExportableOrderTop;
+export interface IExportableOrderMe {
+  top: IExportableOrder;
+  source?: IExportableOrderMe;
+  init?: IExportableOrder;
   targetOrd?: Order | nil;
   leadOrd?: Order;
   watchOrd?: Order | nil;
@@ -53,7 +54,7 @@ export interface IExportableOrderTop extends IExportableOrder {
   anchorInheritIndex?: number;
   sourceIndex?: number;
   viewIndex?: number;
-  header?: (bag?: OrderTopHeaderBag, isRequired?: boolean) => string;
+  header: (bag?: OrderTopHeaderBag | nil, isRequired?: boolean) => string;
   style?: StyleBlock;
 }
 

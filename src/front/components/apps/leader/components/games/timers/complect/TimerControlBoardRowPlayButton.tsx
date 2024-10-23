@@ -1,4 +1,3 @@
-import useAbsoluteFloatPopup from '../../../../../../../complect/absolute-popup/useAbsoluteFloatPopup';
 import propsOfClicker from '../../../../../../../complect/clicker/propsOfClicker';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 import { IconPlayCircle02StrokeRounded } from '../../../../../../../complect/the-icon/icons/play-circle-02';
@@ -19,7 +18,7 @@ export default function TimerControlBoardRowPlayButton({
   onTeamwReset: () => void;
   onStartForRow: (rowi: number, value?: number) => void;
 }) {
-  const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
+  // const { openAbsoluteFloatPopup } = useAbsoluteFloatPopup();
 
   return (
     <>
@@ -33,19 +32,19 @@ export default function TimerControlBoardRowPlayButton({
             event.preventDefault();
             event.stopPropagation();
             if (!timer.starts?.[rowi] || LeaderCleans.isTimerRowFinished(timer, game, rowi, false)) return;
-            openAbsoluteFloatPopup(
-              <div
-                className="nowrap"
-                onClick={() => {
-                  onTeamwReset();
-                  if (LeaderCleans.getTimerStartTs(timer, game, rowi)) onStartForRow(rowi, 0);
-                }}
-              >
-                Сбросить начало
-              </div>,
-              event.clientX,
-              event.clientY,
-            );
+            // openAbsoluteFloatPopup(
+            //   <div
+            //     className="nowrap"
+            //     onClick={() => {
+            //       onTeamwReset();
+            //       if (LeaderCleans.getTimerStartTs(timer, game, rowi)) onStartForRow(rowi, 0);
+            //     }}
+            //   >
+            //     Сбросить начало
+            //   </div>,
+            //   event.clientX,
+            //   event.clientY,
+            // );
           },
         })}
       />

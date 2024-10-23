@@ -36,7 +36,7 @@ export default function ComOrders(props: IComOrdersProps) {
             orderUniti={orderUniti}
             asLineComponent={asLineComponent}
             asHeaderComponent={({ headerNode }) => {
-              return orderUnit.top.style?.isModulation ? (
+              return orderUnit.me.style?.isModulation ? (
                 <span
                   className={'pointer flex ' + (isExcludedModulation ? 'color--ko' : 'color--7')}
                   onClick={event => {

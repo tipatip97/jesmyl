@@ -1,4 +1,5 @@
 import { ReactNode, useMemo, useState } from 'react';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconClock01StrokeRounded } from '../../../../../complect/the-icon/icons/clock-01';
@@ -119,7 +120,8 @@ export default function LeaderCommentBlock({
               disabled={!commentText}
               onClick={() => {
                 const comment = textAdditions.reduce(
-                  (text, { char, inText }) => (char && inText && text.replace(RegExp(char, 'g'), inText)) || text,
+                  (text, { char, inText }) =>
+                    (char && inText && text.replace(makeRegExp(`/${char}/g`), inText)) || text,
                   commentText,
                 );
                 setCommentText('');

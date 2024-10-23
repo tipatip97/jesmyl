@@ -17,7 +17,6 @@ import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 import CmExternalComListAttRedactListOrder from './RedactListOrder';
 
-const cbStopper: CallbackStopper = event => event.stopPropagation();
 const emptyFunc = () => {};
 
 interface Props {
@@ -78,31 +77,25 @@ export default function CmExternalComListAttRedactList({ value, scope, setCcom, 
                   setIsOpenComposition(true);
                 }}
                 comDescription={com => {
-                  const isIncludes = value.comws?.includes(com.wid);
-
-                  return (
-                    <div onClick={cbStopper}>
-                      {isIncludes ? (
-                        <StrongEvaButton
-                          scope={scope}
-                          fieldName="listKey"
-                          fieldKey="comws"
-                          fieldValue={['.', '===', com.wid]}
-                          cud="D"
-                          Icon={IconMinusSignSquareStrokeRounded}
-                          className="color--ko"
-                        />
-                      ) : (
-                        <StrongEvaButton
-                          scope={scope}
-                          fieldName="listKey"
-                          fieldKey="comws"
-                          fieldValue={com.wid}
-                          cud="C"
-                          Icon={IconPlusSignCircleStrokeRounded}
-                        />
-                      )}
-                    </div>
+                  return value.comws?.includes(com.wid) ? (
+                    <StrongEvaButton
+                      scope={scope}
+                      fieldName="listKey"
+                      fieldKey="comws"
+                      fieldValue={['.', '===', com.wid]}
+                      cud="D"
+                      Icon={IconMinusSignSquareStrokeRounded}
+                      className="color--ko"
+                    />
+                  ) : (
+                    <StrongEvaButton
+                      scope={scope}
+                      fieldName="listKey"
+                      fieldKey="comws"
+                      fieldValue={com.wid}
+                      cud="C"
+                      Icon={IconPlusSignCircleStrokeRounded}
+                    />
                   );
                 }}
               />

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import environment from '../../../back/environments/environment';
 import { IconArrowRight01StrokeRounded } from '../../complect/the-icon/icons/arrow-right-01';
 import { IconBookmark03StrokeRounded } from '../../complect/the-icon/icons/bookmark-03';
 import { IconCalendar03StrokeRounded } from '../../complect/the-icon/icons/calendar-03';
@@ -11,7 +12,6 @@ import { IconShapesStrokeRounded } from '../../complect/the-icon/icons/shapes';
 import { useAuth } from '../../components/index/molecules';
 import ShareEvaButton from '../ShareEvaButton';
 import mylib from '../my-lib/MyLib';
-import { crossApplicationLinkCoder } from '../qr-code/useQRMaster';
 import StrongButton from '../strong-control/StrongButton';
 import StrongControlDateTimeExtracter from '../strong-control/StrongDateTimeExtracter';
 import StrongEvaButton from '../strong-control/StrongEvaButton';
@@ -35,6 +35,7 @@ import {
   takeScheduleStrongScopeMaker,
   useScheduleWidgetRights,
 } from './useScheduleWidget';
+import { makeRegExp } from '../../../back/complect/makeRegExp';
 
 const msInMin = mylib.howMs.inMin;
 
@@ -62,11 +63,7 @@ export default function ScheduleWidget({
       <span className="flex flex-gap">
         {schedule && (
           <ShareEvaButton
-            url={crossApplicationLinkCoder.encode({
-              appName: 'index',
-              key: 'schw',
-              value: schedule.w,
-            })}
+            url={`${environment.host}/cm/!other/schs/${schedule.w}`}
             title={schedule.title}
             text={`Мероприятие ${schedule.title}${schedule.dsc ? `: ${schedule.dsc}` : ''}`}
           />
@@ -77,7 +74,10 @@ export default function ScheduleWidget({
   );
 
   const date = useMemo(() => new Date(schedule?.start || Date.now()), [schedule?.start]);
-  const dateValue = useMemo(() => (date.getTime() ? date.toLocaleDateString().replace(/\./g, ' ') : ''), [date]);
+  const dateValue = useMemo(
+    () => (date.getTime() ? date.toLocaleDateString().replace(makeRegExp('/\\./g'), ' ') : ''),
+    [date],
+  );
 
   const [updates, setUpdates] = useState<null | number>(null);
   useEffect(() => {

@@ -56,6 +56,7 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
           />
         }
         headTitle={headTitle}
+        backButtonPath=".."
       />
     </ScheduleWidgetCurrentCmTranslationList>
   );

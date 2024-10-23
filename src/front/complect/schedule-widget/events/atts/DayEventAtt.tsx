@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../back/complect/makeRegExp';
 import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import { IconViewStrokeRounded } from '../../../../complect/the-icon/icons/view';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
@@ -24,7 +25,7 @@ import ScheduleWidgetDayEventPeriodicTranslation from './DayEventPeriodicTransla
 
 const isNIs = (is: unknown) => !is;
 const makeReg = (phase: ScheduleWidgetScopePhase) => {
-  return new RegExp(`(${phase}${strongScopeKeyValueSeparator})\\d+`);
+  return makeRegExp(`/(${phase}${strongScopeKeyValueSeparator})\\d+/`);
 };
 
 const dayPhaseMarkerReg = makeReg('dayi');

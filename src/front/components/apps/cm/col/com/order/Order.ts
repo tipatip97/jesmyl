@@ -2,36 +2,36 @@ import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
 import SourceBased from '../../../../../../complect/SourceBased';
 import {
+  IExportableOrder,
   IExportableOrderFieldValues,
   InheritancableOrder,
   OrderRepeats,
   SpecialOrderRepeats,
 } from '../../../../../../models';
 import { Com } from '../Com';
-import { EditableOrderRegion, IExportableOrderTop } from './Order.model';
+import { EditableOrderRegion, IExportableOrderMe } from './Order.model';
 
 const emptyArr: [] = [];
 const itIt = (it: unknown) => it;
 
-export class Order extends SourceBased<IExportableOrderTop> {
+export class Order extends SourceBased<IExportableOrder> {
   _regions?: EditableOrderRegion<Order>[];
   com: Com;
   element?: HTMLDivElement;
+  me: IExportableOrderMe;
 
-  constructor(top: IExportableOrderTop, com: Com) {
-    super(top);
+  constructor(me: IExportableOrderMe, com: Com) {
+    super(me.top);
     this.com = com;
 
-    this.texti = mylib.isNum(top.t) ? top.t : null;
+    this.texti = mylib.isNum(me.top.t) ? me.top.t : null;
 
-    this.fieldValues = top.f;
+    this.fieldValues = me.top.f;
+    this.me = me;
   }
 
-  static getWithExtendableFields(
-    source: IExportableOrderTop,
-    target: IExportableOrderTop,
-  ): Partial<IExportableOrderTop> {
-    return { ...source, ...target };
+  static getWithExtendableFields(source: IExportableOrderMe | und, target: IExportableOrderMe): IExportableOrderMe {
+    return { ...source, ...target, top: { ...source?.top, ...target.top } };
   }
 
   get isMin() {
@@ -39,17 +39,17 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   get wid() {
-    return this.top.source?.w || this.top.w;
+    return this.me.source?.top.w || this.top.w;
   }
   set wid(val: number) {
-    this.top.source && (this.top.source.w = val);
+    this.me.source && (this.me.source.top.w = val);
   }
 
   get unique() {
-    return this.top.source?.u ?? this.top.u;
+    return this.me.source?.top.u ?? this.top.u;
   }
   set unique(val) {
-    this.top.source && (this.top.source.u = val);
+    this.me.source && (this.me.source.top.u = val);
   }
 
   get isAnchor() {
@@ -78,7 +78,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   get chordsi() {
-    return this.getBasic('c') ?? this.top.watchOrd?.getBasic('c');
+    return this.getBasic('c') ?? this.me.watchOrd?.getBasic('c');
   }
   set chordsi(val) {
     this.setExportable('c', val);
@@ -93,11 +93,11 @@ export class Order extends SourceBased<IExportableOrderTop> {
 
   get positions(): (number[] | null)[] | nil {
     return (
-      this.top.positions ??
+      this.me.positions ??
       this.getInheritance('p') ??
-      this.top.watchOrd?.top.source?.p ??
-      this.top.targetOrd?.top.source?.p ??
-      (this.top.source && (this.top.source.p = []))
+      this.me.watchOrd?.me.source?.top.p ??
+      this.me.targetOrd?.me.source?.top.p ??
+      (this.me.source && (this.me.source.top.p = []))
     );
   }
   set positions(val) {
@@ -112,22 +112,22 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   get text() {
-    return this.top.text ?? ((this.texti != null && this.com.texts && this.com.texts[this.texti]) || '');
+    return this.me.text ?? ((this.texti != null && this.com.texts && this.com.texts[this.texti]) || '');
   }
 
   get chords() {
-    return this.top.chords ?? ((this.chordsi != null && this.com.chords?.[this.chordsi]) || '');
+    return this.me.chords ?? ((this.chordsi != null && this.com.chords?.[this.chordsi]) || '');
   }
 
   get chordLabels() {
-    return this.top.chordLabels;
+    return this.me.chordLabels;
   }
 
   get isVisible(): boolean {
-    return this.top.isAnchorInheritPlus || this.top.isAnchorInherit
-      ? !(!this.top.leadOrd?.isVisible || this.getInheritance('v') === 0)
-      : this.top.isInherit
-        ? !(this.getBasic('v') === 0 || (this.top.leadOrd && !this.top.leadOrd.isVisible))
+    return this.me.isAnchorInheritPlus || this.me.isAnchorInherit
+      ? !(!this.me.leadOrd?.isVisible || this.getInheritance('v') === 0)
+      : this.me.isInherit
+        ? !(this.getBasic('v') === 0 || (this.me.leadOrd && !this.me.leadOrd.isVisible))
         : this.getBasic('v') !== 0;
   }
   set isVisible(val) {
@@ -154,11 +154,11 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   get repeats(): OrderRepeats | null {
-    if (this.top.isAnchorInherit) {
+    if (this.me.isAnchorInherit) {
       return this.getInheritance('r') as never;
-    } else if (this.top && this.top.source && this.top.source.r != null) return this.top.source.r;
+    } else if (this.me && this.me.source && this.me.source.top.r != null) return this.me.source.top.r;
     else {
-      const repeats = this.top.repeats ?? this.getTargetFirst('r');
+      const repeats = this.me.repeats ?? this.getTargetFirst('r');
       const nrepeats = {} as SpecialOrderRepeats;
       const reg = makeRegExp('/[a-z]/i', true);
 
@@ -173,13 +173,13 @@ export class Order extends SourceBased<IExportableOrderTop> {
   }
 
   set repeats(val: OrderRepeats | null) {
-    if (this.top.isAnchorInherit && this.top.leadOrd?.top.source) {
-      const inh = this.top.leadOrd.top.source.inh || { r: {} };
+    if (this.me.isAnchorInherit && this.me.leadOrd?.me.source) {
+      const inh = this.me.leadOrd.me.source.top.inh || { r: {} };
       const repeats = (inh.r = (inh.r || {}) as Record<number, OrderRepeats | null>);
 
-      if (this.top.anchorInheritIndex != null) repeats[this.top.anchorInheritIndex] = val;
-      this.top.leadOrd.top.source.inh = inh as never;
-    } else if (this.top.source) this.top.source.r = val;
+      if (this.me.anchorInheritIndex != null) repeats[this.me.anchorInheritIndex] = val;
+      this.me.leadOrd.me.source.top.inh = inh as never;
+    } else if (this.me.source) this.me.source.top.r = val;
   }
 
   setRepeats(val: OrderRepeats | null) {
@@ -308,7 +308,7 @@ export class Order extends SourceBased<IExportableOrderTop> {
                 count,
               };
             } else {
-              const letter: string | undefined = (/[a-z]/i.exec(key) || emptyArr)[0];
+              const letter: string | undefined = (makeRegExp('/[a-z]/i').exec(key) || emptyArr)[0];
 
               if (letter !== undefined) {
                 const [first, second, third] = key.split(makeRegExp('/[:a-z]/i')).map(num => parseInt(num));
@@ -396,16 +396,17 @@ export class Order extends SourceBased<IExportableOrderTop> {
 
   getInheritance<Key extends keyof InheritancableOrder>(fieldn: Key): InheritancableOrder[Key] | nil {
     return (
-      this.top.isAnchorInherit
-        ? this.top.watchOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex || 0] ??
-          this.top.leadOrd?.top.source?.inh?.[fieldn]?.[this.top.anchorInheritIndex || 0]
-        : this.top.source?.[fieldn]
+      this.me.isAnchorInherit
+        ? this.me.watchOrd?.me.source?.top.inh?.[fieldn]?.[this.me.anchorInheritIndex || 0] ??
+          this.me.watchOrd?.getBasic(fieldn) ??
+          this.me.leadOrd?.me.source?.top.inh?.[fieldn]?.[this.me.anchorInheritIndex || 0]
+        : this.me.source?.top[fieldn]
     ) as never;
   }
 
-  getTargetFirst<Key extends keyof IExportableOrderTop>(fieldn: Key): IExportableOrderTop[Key] {
+  getTargetFirst<Key extends keyof IExportableOrder>(fieldn: Key): IExportableOrder[Key] {
     return (
-      this.top?.targetOrd?.top.source?.[fieldn] ?? (this.getInheritance(fieldn as never) as never) ?? this.top[fieldn]
+      this.me?.targetOrd?.me.source?.top[fieldn] ?? (this.getInheritance(fieldn as never) as never) ?? this.top[fieldn]
     );
   }
 

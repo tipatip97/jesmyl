@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-accessed';
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
@@ -7,8 +8,6 @@ import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-ico
 import { useAuth } from '../../../../index/molecules';
 import { gamerExer } from '../../gamerExer';
 import { useSpyLocations } from './molecules';
-
-const incorrectNameReg = /[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i;
 
 export default function SpyLocations({ isForceShow }: { isForceShow?: boolean }) {
   const [isOpenAdder, setIsOpenAdder] = useState(false);
@@ -23,7 +22,7 @@ export default function SpyLocations({ isForceShow }: { isForceShow?: boolean })
   if (isForceShow) return locationsNode;
 
   const isShortNewName = newName.length < 3;
-  const incorrectsInNewName = newName.match(incorrectNameReg);
+  const incorrectsInNewName = newName.match(makeRegExp('/[^а-яё -]+|[- ]{2,}|^[ -]|[ -]$/i'));
   const upperName = newName.toUpperCase();
   const isInclusiveNewName = locations?.some(loc => loc === upperName);
 

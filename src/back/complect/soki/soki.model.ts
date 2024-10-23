@@ -201,7 +201,6 @@ export interface SokiServerDoActionProps {
   eventData: SokiClientEvent;
   eventBody: SokiClientEventBody;
   client: WebSocket;
-  capsule: SokiCapsule | und;
   requestId: string | und;
 }
 

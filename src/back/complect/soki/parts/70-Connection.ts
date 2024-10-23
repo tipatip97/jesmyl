@@ -25,6 +25,16 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
   async doOnConnect({ appName, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
     if (eventBody.connect === undefined) return false;
 
+    let auth: LocalSokiAuth | null;
+    const setCapsule = () => {
+      this.capsules.set(client, {
+        auth,
+        deviceId: eventData.deviceId,
+        version: eventData.version,
+        urls: eventData.urls,
+      });
+    };
+
     if (eventData.auth === undefined) {
       this.setVisit({
         version: eventData.version,
@@ -33,7 +43,10 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
         nick: '',
         urls: eventData.urls,
       });
+
       this.send({ authorized: false, appName: eventData.appName }, client);
+
+      setCapsule();
       return true;
     }
 
@@ -49,7 +62,6 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
       );
     };
 
-    let auth: LocalSokiAuth | null;
     const passw = eventData.auth.passw;
 
     if (eventData.auth.tgId) {
@@ -82,12 +94,8 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
           urls: eventData.urls,
         });
 
-      this.capsules.set(client, {
-        auth,
-        deviceId: eventData.deviceId,
-        version: eventData.version,
-        urls: eventData.urls,
-      });
+      setCapsule();
+
       this.clients.set(eventData.deviceId, client);
 
       this.send({ authorized: true, appName }, client);

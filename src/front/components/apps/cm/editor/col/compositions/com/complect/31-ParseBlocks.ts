@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import { blockStyles } from '../../../../../col/com/block-styles/BlockStyles';
 import { StyleBlock } from '../../../../../col/com/block-styles/StyleBlock';
 import { INewExportableOrder } from '../../../../../col/com/order/Order.model';
@@ -9,14 +10,13 @@ import {
 } from '../../../../Editor.complect';
 import { EditableComBlocks } from './30-Blocks';
 
-const freeSlavicLineReg_gi = new RegExp(`[^${slavicLowerLettersStr} ]`, 'gi');
-const ruDifferentReg = new RegExp(`[${ruDifferentLowerLettersStr}]`);
-const uaDifferentReg = new RegExp(`[${uaDifferentLowerLettersStr}]`);
-const melodicLettersReg = /[аеёиоуэыяюaeouiіїє]/gi;
+const freeSlavicLineReg_gi = makeRegExp(`/[^${slavicLowerLettersStr} ]/gi`);
+const ruDifferentReg = makeRegExp(`/[${ruDifferentLowerLettersStr}]/`);
+const uaDifferentReg = makeRegExp(`/[${uaDifferentLowerLettersStr}]/`);
 
 export class EditableComParseBlocks extends EditableComBlocks {
   async parseBlocksFromClipboard(value: string, cb?: (blocks: string[]) => boolean) {
-    const blocks: string[] = value.trim().split(/\n\s*\n/);
+    const blocks: string[] = value.trim().split(makeRegExp('/\\n\\s*\\n/'));
 
     if ((cb && cb(blocks)) !== false) this.parseBlocks(blocks);
   }
@@ -47,7 +47,7 @@ export class EditableComParseBlocks extends EditableComBlocks {
     };
     const inheritStyle = blockStyles?.styles.find(({ isInherit }) => isInherit);
 
-    (typeof blocks === 'string' ? blocks.split(/\n+\s*\n+/) : blocks).forEach(block => {
+    (typeof blocks === 'string' ? blocks.split(makeRegExp('/\\n+\\s*\\n+/')) : blocks).forEach(block => {
       if (!block) return;
       const unit: Unit = {};
       const textLines: string[] = [];
@@ -55,7 +55,7 @@ export class EditableComParseBlocks extends EditableComBlocks {
       units.push(unit);
 
       block.split('\n').forEach((line, linei) => {
-        const freeLine = line.replace(/\s+/g, ' ').trim();
+        const freeLine = line.replace(makeRegExp('/\\s+/g'), ' ').trim();
 
         if (languagei !== null) {
           setLanguagei(ruDifferentReg, freeLine, 0);
@@ -71,7 +71,7 @@ export class EditableComParseBlocks extends EditableComBlocks {
           chordLines.push(freeLine);
         } else {
           if (textLines.length === 0) {
-            const letters = freeLine.match(melodicLettersReg);
+            const letters = freeLine.match(makeRegExp('/[аеёиоуэыяюaeouiіїє]/gi'));
             const slogs = letters?.length;
             if (slogs !== undefined) {
               if (slogUnits[slogs] === undefined) slogUnits[slogs] = [];

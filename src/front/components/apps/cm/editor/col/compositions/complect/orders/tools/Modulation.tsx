@@ -1,7 +1,7 @@
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
 import mylib from '../../../../../../../../../complect/my-lib/MyLib';
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
 import { IconFlashStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/flash';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';
@@ -14,13 +14,7 @@ const intervals = '.'
   .map((_, i) => i + 1)
   .reverse();
 
-export const OrdersRedactorOrderToolsModulation = ({
-  props: { ccom, ord, ordi },
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+export const OrdersRedactorOrderToolsModulation = ({ ccom, ord, ordi, onClose }: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
 
   const [modalNode, openModal] = useModal(({ header, body }, close) => {
@@ -47,7 +41,7 @@ export const OrdersRedactorOrderToolsModulation = ({
                     ccom.resetChordLabels();
                     exec();
                     close();
-                    closePopup();
+                    onClose(false);
                   }}
                   postfix={`Повышение на ${position} ${mylib.declension(position, 'полутон', 'полутона', 'полутонов')}`}
                 />
@@ -62,9 +56,9 @@ export const OrdersRedactorOrderToolsModulation = ({
   return (
     <>
       {modalNode}
-      <IconButton
+      <BottomPopupItem
         Icon={IconFlashStrokeRounded}
-        postfix="Значение модуляции"
+        title="Значение модуляции"
         onClick={openModal}
       />
     </>

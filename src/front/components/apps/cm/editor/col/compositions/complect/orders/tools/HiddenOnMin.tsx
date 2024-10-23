@@ -1,29 +1,23 @@
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
 import { IconLink02StrokeRounded } from '../../../../../../../../../complect/the-icon/icons/link-02';
 import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
-export const OrdersRedactorOrderToolsHiddenOnMin = ({
-  props,
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+export const OrdersRedactorOrderToolsHiddenOnMin = (props: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
 
   return (
     <>
-      <IconButton
+      <BottomPopupItem
         Icon={IconLink02StrokeRounded}
-        postfix={`${props.ord.isOpened ? 'Скрывать' : 'Показывать'} в свёрнутом режиме`}
+        title={`${props.ord.isOpened ? 'Скрывать' : 'Показывать'} в свёрнутом режиме`}
         onClick={() => {
           exec(
             props.ord.setField('o', props.ord.isOpened ? 0 : 1, {
               def: 0,
             }),
           );
-          closePopup();
+          props.onClose(false);
         }}
       />
     </>

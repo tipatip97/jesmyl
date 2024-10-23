@@ -1,5 +1,6 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { renderComponentInNewWindow } from '../..';
+import { addEventListenerPipe, hookEffectPipe } from '../hookEffectPipe';
 
 interface Props {
   target?: string;
@@ -44,12 +45,14 @@ const Inner = memo((props: Props & { onClose: (isRender: false) => void }) => {
         const nodes = win.document.body.children;
         if (nodes.length > 1) nodes[0].remove();
 
-        return hookEffectLine()
-          .addEventListener(win, 'beforeunload' as never, () => {
-            parentNode.insertBefore(blockNode, div);
-            div.remove();
-            props.onClose(false);
-          })
+        return hookEffectPipe()
+          .pipe(
+            addEventListenerPipe(win, 'beforeunload' as never, () => {
+              parentNode.insertBefore(blockNode, div);
+              div.remove();
+              props.onClose(false);
+            }),
+          )
           .effect(() => {
             timeout = setTimeout(() => {
               win.close();

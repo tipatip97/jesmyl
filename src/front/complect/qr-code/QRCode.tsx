@@ -1,11 +1,12 @@
 import QRCodeGenerator from 'qrcode';
 import { HTMLAttributes } from 'react';
+import styled from 'styled-components';
 
 export default function QRCode({ text, ...props }: HTMLAttributes<HTMLCanvasElement> & { text: string }) {
   return (
-    <canvas
+    <StyledCanvas
       {...props}
-      className={`qr-code ${props.className || ''}`}
+      className={`qr-code power up ${props.className || ''}`}
       ref={element => {
         if (!element) return;
 
@@ -20,3 +21,9 @@ export default function QRCode({ text, ...props }: HTMLAttributes<HTMLCanvasElem
     />
   );
 }
+
+const StyledCanvas = styled.canvas`
+  &.qr-code {
+    filter: contrast(10);
+  }
+`;

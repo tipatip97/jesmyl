@@ -83,6 +83,7 @@ export const knownIconNames = [
   'File02',
   'FileImport',
   'FileMusic',
+  'FileNotFound',
   'Flag03',
   'Flash',
   'FlashOff',

@@ -1,11 +1,26 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { css, RuleSet } from 'styled-components';
+import { hookEffectPipe, setTimeoutPipe } from '../../../../../../../complect/hookEffectPipe';
 import { MyLib } from '../../../../../../../complect/my-lib/MyLib';
+import { useDebounceValue } from '../../../../../../../complect/useDebounceValue';
+import { Com } from '../../Com';
 import { Order } from '../../order/Order';
 import { ComBlockCommentMakerCleans } from './Cleans';
 
-export const useComBlockCommentCssStyles = (visibleOrders: Order[] | und, comComment: string | nil) => {
-  return useMemo(() => {
+export const useComBlockCommentCssStyles = (com: nil | Com, visibleOrders: Order[] | und, comment: string | nil) => {
+  const comComment = useDebounceValue(comment, 600);
+  const [fastStyles, setFastStyles] = useState<string | null>(null);
+
+  useEffect(() => {
+    setFastStyles('');
+    return hookEffectPipe()
+      .pipe(setTimeoutPipe(setFastStyles, 600, null))
+      .effect();
+  }, [com]);
+
+  const styles = useMemo(() => {
+    if (fastStyles !== null) return '';
+
     let cssContentList: RuleSet<object>[] = [];
 
     if (comComment) {
@@ -13,14 +28,14 @@ export const useComBlockCommentCssStyles = (visibleOrders: Order[] | und, comCom
       const commentsDict: Record<string, string[]> = {};
 
       for (const commentBlock of commentBlocks) {
-        const [, , , $hashes, $blockHashPosition, $modificators, , , , , $comment] = commentBlock;
+        const [, , , $hashes, $blockHashPosition, , , $modificators, , , , $comment] = commentBlock;
 
         if (!$comment) continue;
 
         if ($hashes.length > 1) {
           if (visibleOrders == null) continue;
 
-          const leadOrderStyleKey = visibleOrders[+$blockHashPosition - 1]?.top.style?.key.trim();
+          const leadOrderStyleKey = visibleOrders[+$blockHashPosition - 1]?.me.style?.key.trim();
 
           if (leadOrderStyleKey == null) continue;
           let orderPosition = 0;
@@ -28,7 +43,7 @@ export const useComBlockCommentCssStyles = (visibleOrders: Order[] | und, comCom
           for (const visibleOrder of visibleOrders) {
             orderPosition++;
 
-            if (visibleOrder.top.style?.key.trim() !== leadOrderStyleKey) continue;
+            if (visibleOrder.me.style?.key.trim() !== leadOrderStyleKey) continue;
             if (commentsDict[orderPosition] != null && $modificators !== '!') continue;
 
             commentsDict[orderPosition] = [$comment.trim()];
@@ -94,5 +109,7 @@ export const useComBlockCommentCssStyles = (visibleOrders: Order[] | und, comCom
       ${cssContentList}
       ${numeredOrderHeaders}
     `;
-  }, [comComment, visibleOrders]);
+  }, [comComment, fastStyles, visibleOrders]);
+
+  return fastStyles ?? styles;
 };

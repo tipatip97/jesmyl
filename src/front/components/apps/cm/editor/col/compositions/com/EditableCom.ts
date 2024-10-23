@@ -1,13 +1,14 @@
+import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
 import { IExportableCom } from '../../../../../../../models';
 import { chordDiezEquivalent, gSimpleBemoleChordReg } from '../../../../col/com/Com.complect';
-import { IExportableOrderTop } from '../../../../col/com/order/Order.model';
+import { IExportableOrderMe } from '../../../../col/com/order/Order.model';
 import { EditableOrder } from '../complect/orders/EditableOrder';
 import { EditableComCutBlock } from './complect/40-CutBlock';
 
 export class EditableCom extends EditableComCutBlock {
-  orderConstructor(top: IExportableOrderTop) {
-    return new EditableOrder(top, this);
+  orderConstructor(me: IExportableOrderMe) {
+    return new EditableOrder(me, this);
   }
 
   get name() {
@@ -100,7 +101,7 @@ export class EditableCom extends EditableComCutBlock {
 
   getRegionNextLetter() {
     const chars = this.orders
-      ?.map(ord => Object.keys(ord.repeats || {}).map(key => (key.match(/[a-z]/i) || [])[0]))
+      ?.map(ord => Object.keys(ord.repeats || {}).map(key => (key.match(makeRegExp('/[a-z]/i')) || [])[0]))
       .flat()
       .filter(s => s)
       .map(letter => letter?.charCodeAt(0));
@@ -134,7 +135,7 @@ export class EditableCom extends EditableComCutBlock {
       return false;
     }
     const prev = this.audio.trim();
-    const value = val.trim().replace(/\n{2,}/, '\n');
+    const value = val.trim().replace(makeRegExp('/\\n{2,}/'), '\n');
     this.exec({
       action: 'comSetAudio',
       method: 'set',

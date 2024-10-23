@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import { useDebounceValue } from '../../../../../complect/useDebounceValue';
 import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
-import { BibleTranslationSingleAddress } from '../../model';
+import { BibleBooki, BibleChapteri, BibleTranslationSingleAddress, BibleVersei } from '../../model';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
 import { useBibleShowTranslatesValue } from '../../translates/hooks';
 import BibleSearchResultVerse from './ResultVerse';
@@ -15,16 +16,13 @@ interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
   height?: string;
   innerZone: 'book' | 'chapter';
-  onClick?: (booki: number, chapteri: number, versei: number) => void;
+  onClick?: (booki: BibleBooki, chapteri: BibleChapteri, versei: BibleVersei) => void;
 }
 
-const spacePlusReg = / +/;
-const notRuLettersSpaceReg_gi = /[^а-яё ]/gi;
-const yoLetterReg_g = /[ёе]/g;
-const mapWordsReplaceYoLetter = (word: string) => word.replace(yoLetterReg_g, '[её]');
+const mapWordsReplaceYoLetter = (word: string) => word.replace(makeRegExp('/[ёе]/g'), '[её]');
 const mapRetArrFunc = (): BibleTranslationSingleAddress[] => [];
 const getSplitReg = (lowerWords: string[]) =>
-  RegExp('(' + lowerWords.map(mapWordsReplaceYoLetter).sort(sortStringsByLength).join('|') + ')', 'ig');
+  makeRegExp(`/(${lowerWords.map(mapWordsReplaceYoLetter).sort(sortStringsByLength).join('|')})/gi`);
 
 const maxItems = 49;
 
@@ -44,22 +42,22 @@ export default function BibleSearchResults({ inputRef, height = '100px', innerZo
   let currentBooki = useBibleAddressBooki();
   let currentChapteri = useBibleAddressChapteri();
   if (searchZone === 'global') {
-    currentBooki = -1;
-    currentChapteri = -1;
+    currentBooki = BibleBooki.none;
+    currentChapteri = BibleChapteri.none;
   }
 
   useEffect(() => {
     if (lowerChapters === undefined || searchTerm.trim().length < 3) return;
-    const freeTerm = searchTerm.trim().replace(notRuLettersSpaceReg_gi, '');
+    const freeTerm = searchTerm.trim().replace(makeRegExp('/[^а-яё ]/gi'), '');
     if (freeTerm.length < 3) return;
 
     const lowerTerm = freeTerm.trim().toLowerCase();
-    const lowerWords = lowerTerm.split(spacePlusReg);
+    const lowerWords = lowerTerm.split(makeRegExp('/ +/'));
     const founds = Array(lowerWords.length).fill(0).map(mapRetArrFunc);
     const splitReg = getSplitReg(lowerWords);
     const lastFounds = founds[founds.length - 1];
 
-    const searchInChapter = (booki: number, chapteri: number, chapter: string[]) => {
+    const searchInChapter = (booki: BibleBooki, chapteri: BibleChapteri, chapter: string[]) => {
       for (let versei = 0; versei < chapter.length; versei++) {
         const verse = chapter[versei];
         let foundWordsCount = -1;

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
 import { useToggleIsScreenTranslationTextVisible } from '../../../atoms';
 import { TranslationWindow } from '../../../hooks/windows';
+import { useTranslationIsInitialSlideShowSet } from '../../../initial-slide-context';
 import { ScreenTranslationConfig } from '../../../model';
 
 const invokeEach = (cb: () => void) => cb();
@@ -16,6 +17,7 @@ export const useScreenTranslationFaceLineListeners = (
 ) => {
   const switchIsVisible = useToggleIsScreenTranslationTextVisible();
   const currentConfigiRef = useActualRef(currentConfigi);
+  const isInitialSlideShowSetRef = useActualRef(useTranslationIsInitialSlideShowSet());
 
   useEffect(() => {
     const listeners = windows
@@ -48,11 +50,14 @@ export const useScreenTranslationFaceLineListeners = (
 
             case 'Enter':
               parentWin.focus();
-
               break;
 
             case 'Escape':
               parentWin.blur();
+              break;
+
+            case 'Backspace':
+              isInitialSlideShowSetRef.current(it => !it);
               break;
           }
         });
@@ -70,5 +75,5 @@ export const useScreenTranslationFaceLineListeners = (
       .filter(itNNull);
 
     return () => listeners.forEach(invokeEach);
-  }, [configs, currentConfigiRef, setCurrentConfigi, switchIsVisible, updateConfig, windows]);
+  }, [configs, currentConfigiRef, isInitialSlideShowSetRef, setCurrentConfigi, switchIsVisible, updateConfig, windows]);
 };

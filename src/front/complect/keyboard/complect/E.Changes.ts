@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { KeyboardInputPropsType, KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageNavigate } from './D.Navigate';
+import { makeRegExp } from '../../../../back/complect/makeRegExp';
 
 export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   type?: KeyboardInputPropsType;
@@ -167,7 +168,7 @@ export class KeyboardStorageChanges extends KeyboardStorageNavigate {
     if (this.isDisabled) return;
     try {
       const val = await navigator.clipboard.readText();
-      const value = this.type === 'number' ? val.replace(/\D+/g, '') : val;
+      const value = this.type === 'number' ? val.replace(makeRegExp('/\\D+/g'), '') : val;
       if (value && position) {
         this.isSelected = false;
         this.setCursorPosition(position === 'before' ? Math.min(...this.selected) : Math.max(...this.selected));

@@ -1,5 +1,5 @@
-import { createGlobalStyle, css } from 'styled-components';
-import { cursors } from './cursorsBase64';
+import { css } from 'styled-components';
+import { cursors } from '../../cursorsBase64';
 
 const lightColors = (selector: string) => css`
   ${selector && `${selector} {`}
@@ -55,32 +55,14 @@ const darkColors = (selector: string) => css`
   ${selector && '}'}
 `;
 
-const StyledGlobalStyles = createGlobalStyle`
-  body{
-    @media (prefers-color-scheme: light) {
-        ${lightColors('&:not(.reverse-theme)')}
-        ${darkColors('')}
-    }
-
-    @media (prefers-color-scheme: dark) {
-        ${darkColors('&:not(.reverse-theme)')}
-        ${lightColors('')}
-    }
+export const bodyThemeStyles = css`
+  @media (prefers-color-scheme: light) {
+    ${lightColors('&:not(.reverse-theme)')}
+    ${darkColors('')}
   }
 
-  a {
-    text-decoration: none;
-  }
-
-  body:has(.wedding-proposition-page) {
-    
-  &,
-  * {
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
+  @media (prefers-color-scheme: dark) {
+    ${darkColors('&:not(.reverse-theme)')}
+    ${lightColors('')}
   }
 `;
-
-export default StyledGlobalStyles;

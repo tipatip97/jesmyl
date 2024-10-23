@@ -1,8 +1,8 @@
 import { RefObject } from 'react';
-import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { Com } from './Com';
 import './Com.scss';
+import { ComNotFoundPage } from './ComNotFoundPage';
 import './block-styles/BlockStyles.scss';
 import ComOrders from './orders/ComOrders';
 import { useCcom } from './useCcom';
@@ -27,15 +27,7 @@ export default function TheCom({
   const ccom = useCcom();
   const com = topCom ?? ccom;
 
-  if (com == null) {
-    return (
-      <PhaseContainerConfigurer
-        className="com-container"
-        headTitle="Упс"
-        content="Песня не найдена("
-      />
-    );
-  }
+  if (com == null) return <ComNotFoundPage />;
 
   return (
     <ComOrders

@@ -1,3 +1,4 @@
+import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import { FreeExecDict } from '../../../../../../complect/exer/Exer.model';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { IExportableCat } from '../../../../../../models';
@@ -190,7 +191,7 @@ export class EditableCat extends Cat {
   setNativeNumber(com: Com, numberStr: string) {
     const value = parseInt(numberStr);
     const corrects = (this.corrects[`setCatNativeNum:${com.wid}`] = new CorrectsBox(
-      numberStr.match(/^0|\D|^$/)
+      numberStr.match(makeRegExp('/^0|\\D|^$/'))
         ? [
             {
               message: 'Некорректное значение номера',

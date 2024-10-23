@@ -1,7 +1,6 @@
+import { makeRegExp } from '../../complect/makeRegExp';
 import smylib from '../../shared/SMyLib';
 import { IScheduleWidgetUserMi, IScheduleWidgetWid } from './models/ScheduleWidget.model';
-
-const zeroEndTrimReg = /0+$/;
 
 export interface ScheduleWidgetRightTexts<Right> {
   id: Right;
@@ -112,7 +111,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
     const bin = this.texts
       .map((_, i) => (arr[i] === '1' ? '1' : '0'))
       .join('')
-      .replace(zeroEndTrimReg, '');
+      .replace(makeRegExp('/0+$/'), '');
     return parseInt(bin || '1', 2);
   };
 
@@ -125,7 +124,7 @@ export class ScheduleWidgetRightsCtrl<Right extends number = number> {
       .fill('')
       .map((_, i) => (arr[i] === '1' ? '1' : '0'))
       .join('')
-      .replace(zeroEndTrimReg, '');
+      .replace(makeRegExp('/0+$/'), '');
 
     return parseInt(bin || '1', 2);
   };

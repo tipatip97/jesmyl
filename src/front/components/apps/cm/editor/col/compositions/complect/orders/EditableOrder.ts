@@ -8,15 +8,15 @@ import {
 } from '../../../../../../../../models';
 import { cmExer } from '../../../../../CmExer';
 import { Order } from '../../../../../col/com/order/Order';
-import { EditableOrderRegion, IExportableOrderTop } from '../../../../../col/com/order/Order.model';
+import { EditableOrderRegion, IExportableOrderMe } from '../../../../../col/com/order/Order.model';
 import { EditableCom } from '../../com/EditableCom';
 
 export class EditableOrder extends Order {
   _regions?: EditableOrderRegion<EditableOrder>[];
   com: EditableCom;
 
-  constructor(top: IExportableOrderTop, com: EditableCom) {
-    super(top, com);
+  constructor(me: IExportableOrderMe, com: EditableCom) {
+    super(me, com);
     this.com = com;
   }
 
@@ -56,7 +56,7 @@ export class EditableOrder extends Order {
           } as never
         )[fieldn],
         value,
-        uniq: this.top.viewIndex,
+        uniq: this.me.viewIndex,
         method: 'set',
         action,
         onSet,
@@ -64,10 +64,10 @@ export class EditableOrder extends Order {
       });
     };
 
-    if (this.top.isAnchorInherit) {
-      const wid = this.top.leadOrd?.wid;
+    if (this.me.isAnchorInherit) {
+      const wid = this.me.leadOrd?.wid;
 
-      setExec('setAnchorInheritValue', { inhIndex: this.top.anchorInheritIndex, wid, value }, onSet);
+      setExec('setAnchorInheritValue', { inhIndex: this.me.anchorInheritIndex, wid, value }, onSet);
     } else {
       const action = (
         {
@@ -84,20 +84,20 @@ export class EditableOrder extends Order {
       setExec(action, { value: value ?? null }, onSet);
     }
 
-    if (this.top.source) {
+    if (this.me.source) {
       const inhFieldn = fieldn as keyof InheritancableOrder;
 
-      if (this.top.isAnchorInherit) {
-        const src = this.top.leadOrd?.top.source;
-        if (src && !src.inh) src.inh = {} as never;
-        const inh = src?.inh;
+      if (this.me.isAnchorInherit) {
+        const src = this.me.leadOrd?.me.source;
+        if (src && !src.top.inh) src.top.inh = {} as never;
+        const inh = src?.top.inh;
 
-        if (inh && this.top.anchorInheritIndex != null) {
+        if (inh && this.me.anchorInheritIndex != null) {
           if (!inh[inhFieldn]) inh[inhFieldn] = {};
           const inhScope = inh[inhFieldn];
-          if (inhScope) inhScope[this.top.anchorInheritIndex] = value as never;
+          if (inhScope) inhScope[this.me.anchorInheritIndex] = value as never;
         }
-      } else this.top.source[inhFieldn] = value as never;
+      } else this.me.source.top[inhFieldn] = value as never;
       this.setExportable(inhFieldn, value as never);
     }
 
@@ -145,8 +145,8 @@ export class EditableOrder extends Order {
 
   isWithHead() {
     return (
-      !this.top.isInherit &&
-      !this.top.isAnchorInheritPlus &&
+      !this.me.isInherit &&
+      !this.me.isAnchorInheritPlus &&
       (this.texti != null || this.chordsi != null) &&
       !this.isEmptyHeader
     );
@@ -162,7 +162,7 @@ export class EditableOrder extends Order {
         ordw: mylib.def(wid, this.wid),
         comw: this.com.wid,
         name: this.com.name,
-        blockn: this.top.header?.({}, true),
+        blockn: this.me.header(null, true),
         isAnchor: this.isAnchor,
         ...bag.args,
       },
@@ -172,17 +172,17 @@ export class EditableOrder extends Order {
   }
 
   isInheritValue<Key extends keyof InheritancableOrder>(key: Key) {
-    return this.top.isAnchorInherit
-      ? this.top.anchorInheritIndex != null &&
-          this.top.leadOrd?.top.source?.inh?.[key]?.[this.top.anchorInheritIndex] == null
-      : this.top.isAnchor && this.top.source?.[key] == null;
+    return this.me.isAnchorInherit
+      ? this.me.anchorInheritIndex != null &&
+          this.me.leadOrd?.me.source?.top.inh?.[key]?.[this.me.anchorInheritIndex] == null
+      : this.me.isAnchor && this.me.source?.top[key] == null;
   }
 
   get unique() {
-    return this.top.source?.u ?? this.top.u;
+    return this.me.source?.top.u ?? this.top.u;
   }
   set unique(val) {
-    this.top.source && (this.top.source.u = val);
+    this.me.source && (this.me.source.top.u = val);
   }
 
   async setChordPosition(linei: number, pos: number) {
@@ -262,17 +262,13 @@ export class EditableOrder extends Order {
 
   takeUniq() {
     if (this.unique != null) return this.unique;
-    const value =
-      this.com.ords.reduce((max: number, ord: IExportableOrder) => (ord.u != null && ord.u > max ? ord.u : max), -1) -
-      -1;
+    const value = this.com.ords.reduce((max, ord) => (ord.top.u != null && ord.top.u > max ? ord.top.u : max), -1) - -1;
 
     this.exec({
       method: 'set',
       action: 'addOrderUnitUniq',
       value,
-      args: {
-        value,
-      },
+      args: { value },
     });
 
     this.unique = value;

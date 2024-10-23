@@ -8,6 +8,7 @@ import { leaderExer } from '../../leaderExer';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
 import { HumanExportable, HumanImportable } from './People.model';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 
 const ufpLabels = '1'.repeat(10).split('');
 const isNNull = (it: unknown) => it !== null;
@@ -35,15 +36,15 @@ const heapItems = [
 ];
 
 const prepareSearchName = (name: string) => {
-  return name.replace(/ё/i, 'е').toUpperCase();
+  return name.replace(makeRegExp('/ё/i'), 'е').toUpperCase();
 };
 
 const lineAsHuman = (line: string, upperExistsNames: string[]): HumanExportable => {
-  const match = line.match(/^([А-ЯЁа-яё\s]+)([\d.]+)\s*([дмДМ])?$/);
+  const match = line.match(makeRegExp('/^([А-ЯЁа-яё\\s]+)([\\d.]+)\\s*([дмДМ])?$/'));
 
   if (match == null) return null!;
   const [, humanName, bDay, sex] = match;
-  const name = humanName.trim().replace(/\s+/g, ' ');
+  const name = humanName.trim().replace(makeRegExp('/\\s+/g'), ' ');
 
   if (
     upperExistsNames.includes(prepareSearchName(name)) ||
@@ -51,7 +52,7 @@ const lineAsHuman = (line: string, upperExistsNames: string[]): HumanExportable 
   )
     return null!;
 
-  const [day, month, year] = bDay?.split(/\./) || [];
+  const [day, month, year] = bDay?.split(makeRegExp('/\\./')) || [];
 
   if (isNaN(new Date(+year, +month - 1, +day).getTime())) return null!;
 
@@ -59,7 +60,7 @@ const lineAsHuman = (line: string, upperExistsNames: string[]): HumanExportable 
     notes: '',
     name,
     bDay: new Date(+year, +month - 1, +day).getTime(),
-    isMan: sex ? !!/м/i.exec(sex) : name.match(/[^аяь]$/i) !== null,
+    isMan: sex ? !!/м/i.exec(sex) : name.match(makeRegExp('/[^аяь]$/i')) !== null,
     ufp1: 0,
     ufp2: 0,
   };
@@ -86,7 +87,7 @@ export default function HumanMaster({
   const { humans, ccontext } = useLeaderContext();
 
   const takeName = (value: string) => {
-    if (value.match(/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/)) {
+    if (value.match(makeRegExp('/^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$/'))) {
       setName(value);
       return value;
     }
@@ -95,7 +96,7 @@ export default function HumanMaster({
   };
 
   const takeTime = (value: string) => {
-    const [day, month, year] = value?.split(/\./) || [];
+    const [day, month, year] = value?.split(makeRegExp('/\\./')) || [];
     let time: number | null = new Date(+year, +month - 1, +day).getTime();
 
     if (time < 0 || !time) time = null;
@@ -127,7 +128,7 @@ export default function HumanMaster({
 
                 updateViewHumanList(
                   value
-                    .split(/\n+/)
+                    .split(makeRegExp('/\\n+/'))
                     .map(line => lineAsHuman(line, existsNames))
                     .filter(isNNull),
                 );
@@ -174,7 +175,7 @@ export default function HumanMaster({
                   <KeyboardInput
                     value={(bDay.getTime() ? bDay : null)?.toLocaleDateString()}
                     onChange={value => {
-                      const [day, month, year] = value?.split(/\./) || [];
+                      const [day, month, year] = value?.split(makeRegExp('/\\./')) || [];
                       human.bDay = new Date(+year, +month - 1, +day).getTime();
                     }}
                   />

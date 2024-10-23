@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import mylib from '../my-lib/MyLib';
 
 export const TheIconWrapper = ({ ...attrs }: HTMLAttributes<HTMLOrSVGElement> & { name: string }) => {
@@ -31,19 +31,23 @@ export const StyledSvg = styled.svg`
   ${props => props.theme.isCanPlayAnimations() && iconWrapperAnimation}
 `;
 
-const AnimationName = ['sign'] as const;
+const fillIconAnimation = keyframes`${css`
+  to {
+    stroke-dashoffset: 0;
+  }
+`}`;
 
 const iconWrapperAnimation = css`
   path {
     --stroke-length: 80;
     stroke-dasharray: var(--stroke-length);
     stroke-dashoffset: var(--stroke-length);
-    animation: ${props => props.theme.id(AnimationName)} 1s ease forwards;
+    animation: ${fillIconAnimation} 1s ease forwards;
   }
 
   ${(() => {
     const parentArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    let result = '';
+    let result = [];
 
     for (let i = 0; i < parentArr.length; i++) {
       const arr = parentArr.slice(0, parentArr[i] + 1);
@@ -54,11 +58,11 @@ const iconWrapperAnimation = css`
         const delay = arr[index] - 1;
 
         if (delay)
-          result += `
-              &:has(:nth-child(${parentArr[i] + 1}):last-child) path:nth-child(${nthChild}) {
-                animation-delay: ${delay / 10}s;
-              }
-            `;
+          result.push(css`
+            &:has(:nth-child(${parentArr[i] + 1}):last-child) path:nth-child(${nthChild}) {
+              animation-delay: ${delay / 10}s;
+            }
+          `);
 
         arr.splice(index, 1);
         nthChild++;
@@ -67,10 +71,4 @@ const iconWrapperAnimation = css`
 
     return result;
   })()}
-
-  @keyframes ${props => props.theme.id(AnimationName)} {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
 `;

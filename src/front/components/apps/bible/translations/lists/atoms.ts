@@ -1,9 +1,11 @@
 import { useCallback } from 'react';
-import { atom, useAtom, useAtomSet } from '../../../../../complect/atoms';
+import { useAtom, useAtomSet } from '../../../../../complect/atoms';
+import { BibleBooki, BibleChapteri, BibleVersei } from '../../model';
+import { bibleMolecule } from '../../molecules';
 
-const bibleBookiAtom = atom(0, 'bible', 'booki');
-const bibleChapteriAtom = atom(0, 'bible', 'chapteri');
-export const bibleVerseiAtom = atom(0, 'bible', 'versei');
+const bibleBookiAtom = bibleMolecule.select(s => s.booki);
+const bibleChapteriAtom = bibleMolecule.select(s => s.chapteri);
+export const bibleVerseiAtom = bibleMolecule.select(s => s.versei);
 
 export const useBibleBooki = () => useAtom(bibleBookiAtom);
 export const useBibleChapteri = () => useAtom(bibleChapteriAtom);
@@ -15,7 +17,7 @@ export const useBibleSingleAddressSetter = () => {
   const setVersei = useAtomSet(bibleVerseiAtom);
 
   return useCallback(
-    (booki?: number, chapteri?: number, versei?: number) => {
+    (booki?: BibleBooki, chapteri?: BibleChapteri, versei?: BibleVersei) => {
       if (booki !== undefined) setBooki(booki);
       if (chapteri !== undefined) setChapteri(chapteri);
       if (versei !== undefined) setVersei(versei);

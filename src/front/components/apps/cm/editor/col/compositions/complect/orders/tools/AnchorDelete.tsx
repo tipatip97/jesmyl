@@ -1,26 +1,25 @@
-import IconButton from '../../../../../../../../../complect/the-icon/IconButton';
+import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import { useConfirm } from '../../../../../../../../../complect/modal/confirm/useConfirm';
-import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 import { IconDelete02StrokeRounded } from '../../../../../../../../../complect/the-icon/icons/delete-02';
+import { OrdersRedactorOrderToolsProps } from '../OrdersRedactorOrderTools';
 
 export const OrdersRedactorOrderToolsAnchorDelete = ({
-  props: { ccom, ord, blockHeader },
-  closePopup,
-}: {
-  props: OrdersRedactorOrderToolsProps;
-  closePopup: () => void;
-}) => {
+  ccom,
+  ord,
+  blockHeader,
+  onClose,
+}: OrdersRedactorOrderToolsProps) => {
   const exec = useExerExec();
   const [confirmNode, confirm] = useConfirm();
 
   return (
     <>
       {confirmNode}
-      <IconButton
+      <BottomPopupItem
         Icon={IconDelete02StrokeRounded}
         className="color--ko"
-        postfix={`Удалить ${ord.isAnchor ? 'ссылку на ' : ''} ${blockHeader}`}
+        title={`Удалить ${ord.isAnchor ? 'ссылку на ' : ''} ${blockHeader}`}
         onClick={async () => {
           if (
             await confirm(
@@ -32,7 +31,7 @@ export const OrdersRedactorOrderToolsAnchorDelete = ({
             )
           ) {
             exec(ccom.removeOrderBlock(ord));
-            closePopup();
+            onClose(false);
           }
         }}
       />

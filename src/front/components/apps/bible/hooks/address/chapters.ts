@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
+import { BibleChapteri } from '../../model';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
 import { useBibleShowTranslatesValue } from '../../translates/hooks';
 import { useBibleChapteri, useBibleSingleAddressSetter } from '../../translations/lists/atoms';
 import { useBibleAddressBooki } from './books';
 
-export const useBibleAddressChapteri = () => {
+export const useBibleAddressChapteri = (): BibleChapteri => {
   const [chapteri] = useBibleChapteri();
   const currentBooki = useBibleAddressBooki();
   const showTranslates = useBibleShowTranslatesValue();
@@ -16,5 +17,5 @@ export const useBibleAddressChapteri = () => {
 export const usePutBibleChapteriSetter = () => {
   const setAddress = useBibleSingleAddressSetter();
 
-  return useCallback((chapteri: number) => () => setAddress(undefined, chapteri, 0), [setAddress]);
+  return useCallback((chapteri: BibleChapteri) => () => setAddress(undefined, chapteri, 0), [setAddress]);
 };

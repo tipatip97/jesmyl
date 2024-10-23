@@ -11,13 +11,13 @@ import {
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
 import { useBibleTranslationSlideSyncContentSetter } from '../../hooks/slide-sync';
-import { BibleTranslationAddress, BibleTranslationJoinAddress } from '../../model';
+import { BibleTranslationAddress, BibleTranslationJoinAddress, BibleVersei } from '../../model';
 import { useBibleTranslatesContext } from '../../translates/TranslatesContext';
 import { useBibleShowTranslatesValue } from '../../translates/hooks';
 import { useBibleTranslationAddToPlan } from '../archive/plan/hooks/plan';
 import { bibleVerseiAtom } from '../lists/atoms';
 
-export const useBibleScreenTranslationKeyListener = (versei: number, win?: Window) => {
+export const useBibleScreenTranslationKeyListener = (versei: BibleVersei, win?: Window) => {
   const [numberCollection, setNumberCollection] = useState('');
   const wins = useScreenTranslationWindows();
 
@@ -86,7 +86,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         if (event.key === 'Shift' || event.key === 'Control') return;
 
         const limitStepJump = (dir: 1 | -1) => {
-          if (event.shiftKey || currentJoinAddress === null) {
+          if (event.shiftKey || currentJoinAddress == null) {
             const chapter = chapters?.[currentBooki]?.[currentChapteri];
 
             setVersei(versei =>
@@ -110,7 +110,8 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
             chapteri = Math[mathMethod](...mylib.keys(currentJoinAddress[booki]));
           }
 
-          const verses = currentJoinAddress[booki][chapteri];
+          const verses = currentJoinAddress[booki]?.[chapteri] as BibleVersei[] | nil;
+          if (verses == null) return;
           const versei = Math[mathMethod](...verses) + dir;
 
           setAddress(booki, chapteri, versei)();
@@ -150,7 +151,7 @@ export const useBibleScreenTranslationKeyListener = (versei: number, win?: Windo
         const newJoin: BibleTranslationJoinAddress = {
           ...currentJoinAddress,
           [currentBooki]: { ...currentJoinAddress?.[currentBooki], [currentChapteri]: Array.from(verses) },
-        };
+        } as never;
 
         if (verses.size === 0) delete newJoin[currentBooki]?.[currentChapteri];
         if (mylib.keys(newJoin[currentBooki]).length === 0) delete newJoin[currentBooki];

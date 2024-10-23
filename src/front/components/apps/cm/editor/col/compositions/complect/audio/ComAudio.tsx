@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { MyLib } from '../../../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../../../complect/the-icon/IconButton';
@@ -151,7 +152,7 @@ export default function ComAudio({
                     const text = ccom.texts?.find(text => text.length === max);
                     if (text) {
                       const url = new URL('https://google.com/search');
-                      url.searchParams.set('q', `${ccom.name} ${text.replace(/\n+/g, ' ')}`);
+                      url.searchParams.set('q', `${ccom.name} ${text.replace(makeRegExp('/\\n+/g'), ' ')}`);
                       window.open(url.toString());
                     }
                   }}

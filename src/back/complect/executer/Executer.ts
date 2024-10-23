@@ -340,7 +340,7 @@ export class Executer {
     } else if (smylib.isStr(value)) {
       if (value.includes('{') && value.includes('}')) {
         let val: any = this.stubEmpty;
-        const text = value.replace(/\{(([@*?])?([$\w]+(\(\))?))\}/g, (all, name, prefix, key) => {
+        const text = value.replace(makeRegExp('/\\{(([@*?])?([$\\w]+(\\(\\))?))\\}/g'), (all, name, prefix, key) => {
           val =
             prefix === '@'
               ? this.getIfGlob(name)
@@ -352,7 +352,9 @@ export class Executer {
           return val ?? all ?? '';
         });
         if (val === this.stubEmpty && defCb) return defCb() as never;
-        return value.match(/{|}/g)?.length === 2 && value.match(/^{|}$/g)?.length === 2 ? val : text;
+        return value.match(makeRegExp('/{|}/g'))?.length === 2 && value.match(makeRegExp('/^{|}$/g'))?.length === 2
+          ? val
+          : text;
       } else return (defCb ? defCb() : value) as never;
     } else if (smylib.isobj(value)) {
       const newValue = smylib.newInstance(value) as Record<string, any>;
@@ -697,7 +699,7 @@ export class Executer {
       try {
         const body = smylib
           .stringTemplater(accessFormula, templaterFixedArgs, onUnknownArg)
-          .replace(/[^()\w|&!?]/g, '');
+          .replace(makeRegExp('/[^()\\w|&!?]/g'), '');
         const data: { result?: boolean } = {};
         // eslint-disable-next-line no-new-func
         if (body) new Function('data', `data.result = ${body};`)(data);

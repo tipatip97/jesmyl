@@ -108,6 +108,8 @@ declare global {
   type EventPreventer<With = {}> = { preventDefault(): void } & With;
   type CallbackPreventer = (event: EventPreventer) => void;
 
+  type CallbackPreventerAndStopper = (event: EventPreventer & EventStopper) => void;
+
   type NonUndefined<T> = T extends undefined ? never : T;
   type NonNull<T> = T extends null ? never : T;
   type NonNil<T> = T extends nil ? never : T;

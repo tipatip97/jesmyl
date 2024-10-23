@@ -1,4 +1,5 @@
 import React, { ReactNode, memo, useEffect, useMemo, useRef, useState } from 'react';
+import { makeRegExp } from '../../../back/complect/makeRegExp';
 import { IconArrowDown01StrokeRounded } from '../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowTurnBackwardStrokeRounded } from '../../complect/the-icon/icons/arrow-turn-backward';
 import { IconArrowUp03StrokeRounded } from '../../complect/the-icon/icons/arrow-up-03';
@@ -45,7 +46,7 @@ export default function KeyboardInput(props: KeyboardInputProps) {
 
     if (props.type === 'number') {
       if (!value) setValue((newVal = '0'));
-      else if (value.match(/\D/)) setValue((newVal = '0'));
+      else if (value.match(makeRegExp('/\\D/'))) setValue((newVal = '0'));
     } else if (value === '0' && props.value !== '0') setValue((newVal = ''));
 
     if (newVal !== undefined) props.onChange?.(newVal, value);
@@ -90,8 +91,12 @@ export default function KeyboardInput(props: KeyboardInputProps) {
         if (text === '00') setIsForceZero(true);
         else if (!text) setIsForceZero(false);
 
-        const val = (value === '0' && !isForceZero ? text.replace(/^0/, '') : text).replace(/\D+/g, '') || '0';
-        callback(val, value?.replace(/\D+/g, '') || '0');
+        const val =
+          (value === '0' && !isForceZero ? text.replace(makeRegExp('/^0/'), '') : text).replace(
+            makeRegExp('/\\D+/g'),
+            '',
+          ) || '0';
+        callback(val, value?.replace(makeRegExp('/\\D+/g'), '') || '0');
         setValue(val);
       } else {
         callback(text, value);

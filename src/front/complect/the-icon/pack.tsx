@@ -82,6 +82,7 @@ import { iconPackOfFile01 } from './icons/file-01';
 import { iconPackOfFile02 } from './icons/file-02';
 import { iconPackOfFileImport } from './icons/file-import';
 import { iconPackOfFileMusic } from './icons/file-music';
+import { iconPackOfFileNotFound } from './icons/file-not-found';
 import { iconPackOfFlag03 } from './icons/flag-03';
 import { iconPackOfFlash } from './icons/flash';
 import { iconPackOfFlashOff } from './icons/flash-off';
@@ -278,6 +279,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   File02: iconPackOfFile02,
   FileImport: iconPackOfFileImport,
   FileMusic: iconPackOfFileMusic,
+  FileNotFound: iconPackOfFileNotFound,
   Flag03: iconPackOfFlag03,
   Flash: iconPackOfFlash,
   FlashOff: iconPackOfFlashOff,

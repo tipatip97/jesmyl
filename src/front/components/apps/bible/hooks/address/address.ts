@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
-import { atom, useAtomSet, useAtomValue } from '../../../../../complect/atoms';
-import { BibleTranslationJoinAddress } from '../../model';
+import { useAtomSet, useAtomValue } from '../../../../../complect/atoms';
+import mylib from '../../../../../complect/my-lib/MyLib';
+import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress, BibleVersei } from '../../model';
+import { bibleMolecule } from '../../molecules';
 import { useBibleSingleAddressSetter } from '../../translations/lists/atoms';
 import { useBibleTranslationSearchResultSelectedSet } from '../../translations/search/hooks/results';
 
@@ -10,11 +12,11 @@ export const useBibleTranslationAddressIndexesSetter = () => {
   const setResultSelected = useBibleTranslationSearchResultSelectedSet();
 
   return (
-    booki: number,
-    chapteri: number,
-    versei: number,
+    booki: BibleBooki,
+    chapteri: BibleChapteri,
+    versei: BibleVersei,
     resultSelectedi?: number,
-    onClick?: (booki: number, chapteri: number, versei: number) => void,
+    onClick?: (booki: BibleBooki, chapteri: BibleChapteri, versei: BibleVersei) => void,
   ) => {
     return () => {
       setAddress(booki, chapteri, versei);
@@ -34,7 +36,7 @@ export const useSetBibleAddressIndexes = () => {
   const setResultSelected = useBibleTranslationSearchResultSelectedSet();
 
   return useCallback(
-    (booki: number, chapteri: number, versei: number, resultSelectedi?: number) => {
+    (booki: BibleBooki, chapteri: BibleChapteri, versei: BibleVersei, resultSelectedi?: number) => {
       setAddress(booki, chapteri, versei);
 
       if (resultSelectedi !== undefined) {
@@ -46,12 +48,15 @@ export const useSetBibleAddressIndexes = () => {
   );
 };
 
-const joinAddressAtom = atom<BibleTranslationJoinAddress | null>(null);
+const joinAddressAtom = bibleMolecule.select(s => s.joinAddress);
 
 export const useBibleTranslationJoinAddress = () => useAtomValue(joinAddressAtom);
+export const useBibleTranslationJoinAddressSetter = () => useAtomSet(joinAddressAtom);
 
-export const useBibleTranslationJoinAddressSetter = () => {
-  const setAddress = useAtomSet(joinAddressAtom);
+export const useGetterJoinedAddressMaxValues = () =>
+  useCallback((joinAddress: BibleTranslationJoinAddress) => {
+    const booki = Math.max(...mylib.keys(joinAddress)) as BibleBooki;
+    const chapteri = Math.max(...mylib.keys(joinAddress[booki])) as BibleChapteri;
 
-  return useCallback((join: BibleTranslationJoinAddress | null) => setAddress(join), [setAddress]);
-};
+    return [booki, chapteri, Math.max(...joinAddress[booki][chapteri]) as BibleVersei] as const;
+  }, []);

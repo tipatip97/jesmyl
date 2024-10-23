@@ -5,11 +5,9 @@ import { useBibleAddressChapteri } from '../../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../../hooks/address/verses';
 import { useBibleTranslatesContext } from '../../../translates/TranslatesContext';
 import { useBibleShowTranslatesValue } from '../../../translates/hooks';
-import { useSetBibleCurrentItems } from '../hooks/set-current-items';
-import BibleVerseFace from './VerseFace';
 import { useVerseListListeners } from './useVerseListListeners';
 
-export const verseIdPrefix = 'bible-versei-';
+export const verseiIdPrefix = 'bible-versei-';
 
 export default function BibleVerseList(): JSX.Element {
   const verseListNodeRef = useRef<HTMLDivElement>(null);
@@ -22,23 +20,48 @@ export default function BibleVerseList(): JSX.Element {
 
   const verses = translates[showTranslates[0]]?.chapters?.[currentBooki]?.[currentChapteri];
 
-  useSetBibleCurrentItems(translates, currentBooki, currentChapteri, currentVersei);
   useVerseListListeners(verseListNodeRef, currentBooki, currentChapteri, currentVersei);
 
   return (
     <Container ref={verseListNodeRef}>
       {verses?.map((verse, versei) => {
         return (
-          <BibleVerseFace
+          <Face
             key={versei}
-            verse={verse}
-            versei={versei}
+            id={verseiIdPrefix + versei}
+            className="bible-list-face pointer"
+            dangerouslySetInnerHTML={{ __html: `${versei + 1}. ${verse}` }}
           />
         );
       })}
     </Container>
   );
 }
+
+const Face = styled.div`
+  max-width: 100%;
+  transition-property: background-color, color;
+  transition-duration: 0.5s;
+
+  &:nth-child(odd) {
+    background-color: var(--color--2);
+  }
+
+  &:nth-child(10n):not(:last-child) {
+    margin-bottom: 10px;
+    position: relative;
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      margin-top: 5px;
+      height: 1px;
+      width: 100%;
+      background: red;
+    }
+  }
+`;
 
 const Container = styled.div`
   overflow-y: auto;

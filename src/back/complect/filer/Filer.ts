@@ -1,12 +1,13 @@
 import fs from 'fs';
 import admin from '../../apps/admin/config';
-import cm from '../../apps/cm/config';
-import wed from '../../apps/wed/config';
 import bible from '../../apps/bible/config';
+import cm from '../../apps/cm/config';
 import gamer from '../../apps/gamer/config/gamer-config';
 import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
+import wed from '../../apps/wed/config';
 import smylib, { SMyLib } from '../../shared/SMyLib';
+import { makeRegExp } from '../makeRegExp';
 import { LocalSokiAuth, PullEventValue, rootDirective, SokiAppName, SokiClientUpdateCortage } from '../soki/soki.model';
 import {
   FilerAppConfig,
@@ -54,7 +55,7 @@ export class Filer {
   }
 
   rootFileName(path: string, ext: string | null = 'json') {
-    return `${path.replace(/^\//, '')}${ext === null ? '' : `.${ext}`}`;
+    return `${path.replace(makeRegExp('/^\\//'), '')}${ext === null ? '' : `.${ext}`}`;
   }
 
   rootPath(rootFileName: string) {

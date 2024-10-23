@@ -4,7 +4,13 @@ import { ThrowEvent } from '../../eventer/ThrowEvent';
 import Portal from '../../popups/[complect]/Portal';
 import useMountTransition from '../../popups/useMountTransition';
 
-export const BottomPopup = ({ children, onClose }: { children?: ReactNode; onClose: (is: false) => void }) => {
+interface Props {
+  children?: ReactNode;
+  onClose: (is: false) => void;
+  isPreventCloseOnClick?: boolean;
+}
+
+export const BottomPopup = ({ children, onClose, isPreventCloseOnClick }: Props) => {
   const popupContainer = useRef<HTMLDivElement>(null);
   const contentContainer = useRef<HTMLDivElement>(null);
   const overContentContainer = useRef<HTMLDivElement>(null);
@@ -36,7 +42,7 @@ export const BottomPopup = ({ children, onClose }: { children?: ReactNode; onClo
           <Popup
             ref={popupContainer}
             className={className}
-            onClick={() => setTimeout(onClose, 200, false)}
+            onClick={isPreventCloseOnClick ? undefined : () => setTimeout(onClose, 200, false)}
           >
             <div
               className="over-container"

@@ -1,15 +1,13 @@
 import React, { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { RuleSet, ThemeProvider } from 'styled-components';
+import { StyleSheetManager, ThemeProvider } from 'styled-components';
 import App from './app/App';
 import { logFrontErrors } from './complect/error-catcher';
 import { setPolyfills } from './complect/polyfills';
-import './index.scss';
-import './lib.scss';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import StyledGlobalStyles from './styledGlobalStyles';
+import { StyledGlobalStyles } from './styleds/styledGlobalStyles';
 import { styledDefaultTheme } from './styledTheme';
 
 export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {
@@ -36,36 +34,22 @@ export const renderComponentInNewWindow = (
   target?: string,
   features?: string,
   htmlNode?: HTMLElement,
-  addStyle?: RuleSet<object>,
 ) => {
-  const linkNode = document.querySelector("link[href][rel='stylesheet']") as HTMLLinkElement | null;
-
-  const style = document.createElement('style');
-  const link: HTMLLinkElement = document.createElement('link');
-
-  if (linkNode) {
-    link.href = linkNode.href;
-    link.rel = 'stylesheet';
-  } else {
-    let styles = '';
-    Array.from(document.querySelectorAll('style')).forEach(box => {
-      styles += box.innerText;
-    });
-    style.innerText = styles;
-  }
-
-  if (addStyle) style.innerText += Array.from(addStyle).join('');
-
   const win = window.open(url, target, features);
   if (win) {
-    win.document.head.appendChild(style);
-    win.document.head.appendChild(link);
     const div = document.createElement('div');
     div.classList.add('above-container');
     win.document.body.appendChild(div);
 
     if (htmlNode !== undefined) div.appendChild(htmlNode);
-    else renderApplication(typeof reactNode === 'function' ? reactNode(win as never) : reactNode, div);
+    else
+      renderApplication(
+        <StyleSheetManager target={win.document.head}>
+          <StyledGlobalStyles />
+          {typeof reactNode === 'function' ? reactNode(win as never) : reactNode}
+        </StyleSheetManager>,
+        div,
+      );
   }
 
   return win;
