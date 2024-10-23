@@ -20,6 +20,9 @@ import {
   SimpleKeyValue,
 } from './Filer.model';
 
+const itIt = (it: unknown) => it;
+const retNull = () => null;
+
 export class Filer {
   contents = {} as FilerContents;
   private watcher: FilerWatcher = () => {};
@@ -263,11 +266,14 @@ export class Filer {
         };
       };
 
-      const getRulesData = (config: FilerAppConfig, md5: string | nil) => {
-        return config && md5 !== config.actions.shortRulesMd5
-          ? { key: 'rules', value: config.actions.shortRules }
-          : null;
-      };
+      const getRulesData =
+        auth && auth.level > 49
+          ? (config: FilerAppConfig, md5: string | nil) => {
+              return config && md5 !== config.actions.shortRulesMd5
+                ? { key: 'rules', value: config.actions.shortRules }
+                : null;
+            }
+          : retNull;
 
       const indexMd5 = this.appConfigs.index.actions.shortRulesMd5;
       const appMd5 = this.appConfigs[appName]?.actions.shortRulesMd5;
@@ -277,16 +283,18 @@ export class Filer {
           SMyLib.entries(this.contents.index)
             .map(entries => getContents(entries, indexLastUpdates))
             .concat(getRulesData(this.appConfigs.index, pullIndexMd5))
-            .filter(data => data) as SimpleKeyValue<SokiAppName>[],
+            .filter(itIt) as SimpleKeyValue<SokiAppName>[],
+
           SMyLib.entries(this.contents[appName])
             .map(entries => getContents(entries, appLastUpdates))
             .concat(getRulesData(this.appConfigs[appName], pullAppMd5))
-            .filter(data => data) as SimpleKeyValue<SokiAppName>[],
+            .filter(itIt) as SimpleKeyValue<SokiAppName>[],
         ],
         appName,
         updates: [
           indexLastUpdates.cts === pullIndexLastUpdate ? 0 : indexLastUpdates.cts,
           indexMd5 === pullIndexMd5 ? '' : indexMd5,
+
           appLastUpdates.cts === pullAppLastUpdate ? 0 : appLastUpdates.cts,
           appMd5 === pullAppMd5 ? '' : appMd5,
         ],

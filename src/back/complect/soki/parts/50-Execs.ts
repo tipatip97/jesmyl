@@ -9,6 +9,8 @@ import { SokiAuther, sokiAuther } from '../SokiAuther';
 import { LocalSokiAuth, SokiAppName, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerFiles } from './40-Files';
 
+const retTrue = () => true;
+
 export class SokiServerExecs extends SokiServerFiles implements SokiServerDoAction<'Execs'> {
   async execExecs(
     appName: SokiAppName,
@@ -31,6 +33,8 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
 
       return await Executer.execute(appConfig, realParents, accessedExecs, auth).then(async props => {
         const lastUpdate = await filer.saveChanges(props.fixes, appName!);
+        const level = appConfig.requirements[props.fixes[0]]?.level;
+
         this.send(
           {
             requestId,
@@ -59,8 +63,12 @@ export class SokiServerExecs extends SokiServerFiles implements SokiServerDoActi
                 return res === whenRejButTs ? whenRejButTs : res === true || res == null;
               }
             : appName === 'index'
-              ? () => true
-              : capsule => capsule.appName === appName,
+              ? retTrue
+              : smylib.isNum(level) && level > 0
+                ? capsule => {
+                    return capsule.appName === appName && !!capsule.auth && capsule.auth.level >= level;
+                  }
+                : capsule => capsule.appName === appName,
           client,
           {
             requestId,
