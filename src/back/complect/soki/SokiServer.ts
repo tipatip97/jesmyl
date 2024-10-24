@@ -5,13 +5,13 @@ import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
 import { baseMessagesCatcher } from '../../sides/telegram-bot/message-catchers';
 import { ErrorCatcher } from '../ErrorCatcher';
 import { setServerPolyfills } from '../polyfills';
-import { SokiServerServerStore } from './parts/120-ServerStore';
+import { SokiServerOtherEvents } from './parts/130-OtherEvents';
 import { SokiClientEvent, SokiServerDoActionProps } from './soki.model';
 
 setServerPolyfills();
 ErrorCatcher.logAllErrors();
 
-export class SokiServer extends SokiServerServerStore {
+export class SokiServer extends SokiServerOtherEvents {
   start() {
     new WebSocketServer({ port: 4446 }).on('connection', (client: WebSocket) => {
       this.sendStatistic();
@@ -44,6 +44,7 @@ export class SokiServer extends SokiServerServerStore {
         if (await this.doOnGetShared(doProps)) return;
         if (await this.doOnDownloads(doProps)) return;
         if (await this.doOnServerStore(doProps)) return;
+        if (await this.doOnOtherEvents(doProps)) return;
       });
 
       client.on('close', () => this.onClientDisconnect(client));

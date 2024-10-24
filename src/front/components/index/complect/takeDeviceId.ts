@@ -1,13 +1,14 @@
+import { DeviceId } from '../../../../back/apps/index/Index.model';
 import { atom, useAtomValue } from '../../../complect/atoms';
 import { makeRandomTwiceName } from '../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 import mylib from '../../../complect/my-lib/MyLib';
 import { indexMolecule } from '../molecules';
 
-export const deviceIdAtom = atom('', 'index', 'deviceId');
+export const deviceIdAtom = atom(DeviceId.def, 'index', 'deviceId');
 
 export const useDeviceId = () => useAtomValue(deviceIdAtom);
 
-let deviceId: string | und;
+let deviceId: DeviceId | und;
 const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.repeat(3).split('');
 const symbols = "@#$%^&+=:;.,'~!?><|\\/-_*".repeat(3).split('').concat(letters);
 
@@ -25,16 +26,16 @@ export const takeDeviceId = async () => {
     deviceId = await deviceIdAtom.getStorageValue();
     const storage = await nounPronsWordsAtom.getStorageValue();
 
-    if (!storage) return '';
+    if (!storage) return '' as DeviceId;
 
     if (!deviceId || deviceId.startsWith('__')) {
-      deviceId = makeRandomTwiceName(storage).join('_') + '_' + takeRandomSymbols();
-      if (!deviceId.startsWith('__')) deviceIdAtom.set(deviceId);
+      deviceId = (makeRandomTwiceName(storage).join('_') + '_' + takeRandomSymbols()) as DeviceId;
+      if (!deviceId.startsWith('__')) deviceIdAtom.set(deviceId as never);
     }
 
     return deviceId;
   } catch (error) {
     console.error(error);
-    return '';
+    return '' as DeviceId;
   }
 };

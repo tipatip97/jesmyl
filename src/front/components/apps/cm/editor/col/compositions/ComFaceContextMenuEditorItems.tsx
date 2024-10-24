@@ -17,6 +17,7 @@ export default function ComFaceContextMenuEditorItems() {
     <>
       {isShowFull && meetings && (
         <FullContent
+          onClose={setIsShowFull}
           asRootAnchor={close => (
             <MeetingsInner
               meetings={meetings}

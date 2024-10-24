@@ -16,6 +16,7 @@ export const LocalListToolsPopup = ({ coms }: { coms: Com[] | und }) => {
       <>
         {isOpenList && (
           <FullContent
+            onClose={setIsOpenList}
             containerClassName=""
             asRootAnchor={() => <FullscreenExpandComList coms={coms} />}
           />

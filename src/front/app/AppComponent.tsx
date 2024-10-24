@@ -12,6 +12,7 @@ import { useCurrentApp } from '../components/index/molecules';
 import { IndexAdvertisingReminder } from '../components/index/parts/advertising/Reminder';
 import { useIsReadyRouter } from '../components/router/atoms';
 import './App.scss';
+import { useSecretChatsListen } from '../components/index/parts/main/secret-chat/useSecretChatsListen';
 
 const emptyArr: [] = [];
 const emptyDict = {};
@@ -31,6 +32,7 @@ export default function AppComponent() {
 
   useFingersActions();
   useGlobalFontFamilySetter();
+  useSecretChatsListen();
 
   const [isFullscreen, fullscreenIcon] = useGlobalFullscreenChanger();
 

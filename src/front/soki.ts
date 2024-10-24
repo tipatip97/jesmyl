@@ -1,5 +1,5 @@
 import * as versionNum from '../back/+version.json';
-import Eventer, { EventerListeners } from '../back/complect/Eventer';
+import Eventer, { EventerListeners, EventerValueCallback, EventerValueListeners } from '../back/complect/Eventer';
 import { Executer } from '../back/complect/executer/Executer';
 import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
 import { makeRegExp } from '../back/complect/makeRegExp';
@@ -51,10 +51,14 @@ interface ResponseWaiter {
 
 let pingTimeout: TimeOut;
 
+type SokiEvent<Key extends keyof SokiServerEvent> = { key: Key; value: SokiServerEvent[Key] };
+
 export class SokiTrip {
   ws?: WebSocket;
   isConnected = false;
   authListeners: EventerListeners<boolean> = [];
+  eventListeners: EventerValueListeners<SokiEvent<any>> = [];
+
   private responseWaiters: ResponseWaiter[] = [];
   private subscriptions: Partial<Record<SokiSubscribtionName, SokiClientEventBody>> = {};
   private onGetSharedData: SokiSharedDataValuesBox = {
@@ -172,6 +176,10 @@ export class SokiTrip {
 
           if (event.freshUserContents && molecule) {
             molecule.saveFreshContents(event.freshUserContents);
+          }
+
+          if (event.secretMessage) {
+            Eventer.invokeValue(this.eventListeners, { key: 'secretMessage', value: event.secretMessage });
           }
         }
       } catch (e) {}
@@ -326,6 +334,10 @@ export class SokiTrip {
     clearTimeout(pingTimeout);
     pingTimeout = setTimeout(() => this.send({ ping: true }, 'index').on(ok, ko, final), 0);
   };
+
+  listenEvent<Key extends keyof SokiServerEvent>(key: Key, cb: EventerValueCallback<SokiServerEvent[Key]>) {
+    return Eventer.listenValue(this.eventListeners, event => key === event.key && cb(event.value));
+  }
 }
 
 export const soki = new SokiTrip().start();

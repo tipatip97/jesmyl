@@ -38,6 +38,8 @@ export const knownIconNames = [
   'Bookmark01',
   'Bookmark03',
   'Browser',
+  'BubbleChatAdd',
+  'BubbleChatEdit',
   'Calendar01',
   'Calendar02',
   'Calendar03',
@@ -193,4 +195,5 @@ export const knownIconNames = [
   'ViewOff',
   'ViewOffSlash',
   'VoiceId',
+  'Wechat',
 ] as const;

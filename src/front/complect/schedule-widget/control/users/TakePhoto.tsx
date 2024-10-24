@@ -63,7 +63,7 @@ function Camera({ close, user }: Props & { close: () => void }) {
       try {
         stream = await navigator.mediaDevices?.getUserMedia({
           video: {
-            facingMode: 'environment' || 'user',
+            facingMode: 'environment', // || 'user'
             width: size(Math.floor(height * (widthProportion / heightProportion))),
             height: size(Math.floor(height)),
             autoGainControl: false,

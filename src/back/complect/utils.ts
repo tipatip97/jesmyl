@@ -17,6 +17,15 @@ export const convertMd2HTMLMaker = (isForTg: boolean) => {
   };
 };
 
+export const escapeText = (text: string) =>
+  text.replace(/(%[0-9a-f]{2})+/gi, a => {
+    try {
+      return decodeURIComponent(a);
+    } catch (e) {
+      return a;
+    }
+  });
+
 /////////////////////////////////////
 /////////////////////////////////////
 /////////////////////////////////////

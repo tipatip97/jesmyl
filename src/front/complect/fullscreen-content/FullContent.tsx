@@ -19,7 +19,7 @@ export type FullContentOpenMode = null | 'open' | 'closable';
 export type FullContentValue<PassValue = unknown> = (close: () => void, passValue?: PassValue) => ReactNode;
 
 interface Props {
-  onClose?: (isOpen: false) => void;
+  onClose: ((isOpen: false) => void) | true;
   closable?: boolean;
   children?: React.ReactNode;
   className?: string;
@@ -40,7 +40,7 @@ export function FullContent({ onClose, closable, children, className, asRootAnch
       return;
     }
 
-    onClose?.(false);
+    if (onClose !== true) onClose(false);
   }, [asRootAnchor, onClose, subClose]);
 
   const node = useCallback(

@@ -2,11 +2,14 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { LocalSokiAuth } from '../../../../models';
 
-export const IndexProfileInfo = ({ auth }: { auth: LocalSokiAuth }) => {
+export const IndexProfileInfo = ({ auth, onClick }: { auth: LocalSokiAuth; onClick: (event: unknown) => void }) => {
   const [isShowAva, setIsShowAva] = useState(true);
 
   return (
-    <div className="flex center flex-gap">
+    <div
+      className="flex center flex-gap"
+      onClick={onClick}
+    >
       <Name className="ellipsis">{auth.fio}</Name>
       {isShowAva && auth.tgAva && (
         <Ava

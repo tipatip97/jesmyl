@@ -1,5 +1,6 @@
 import { User } from 'node-telegram-bot-api';
 import WebSocket from 'ws';
+import { DeviceId, SecretChatSecretMessage } from '../../apps/index/Index.model';
 import { ExecutionDict, ExecutionReal } from '../executer/Executer.model';
 import { SimpleKeyValue } from '../filer/Filer.model';
 import { ServerStoreContent } from './parts/120-ServerStore';
@@ -15,10 +16,11 @@ export const rootDirective = dir.join('/');
 export interface SokiCapsule {
   auth: LocalSokiAuth | null;
   appName?: SokiAppName;
-  deviceId: string;
+  deviceId: DeviceId;
   urls: string[];
   version: number;
   subscribeData?: SokiClientSubData;
+  client: WebSocket;
 }
 
 export interface SokiServerEvent {
@@ -53,6 +55,7 @@ export interface SokiServerEvent {
   };
   sharedData?: SokiSharedData;
   freshUserContents?: ServerStoreContent[];
+  secretMessage?: SecretChatSecretMessage;
 }
 
 export type SokiSharedData = {
@@ -101,6 +104,7 @@ export interface SokiClientEventBody {
     key: SokiSharedKey;
   };
   userContents?: ServerStoreContent[];
+  secretMessage?: { deviceId: DeviceId; message: string };
 }
 
 export type SokiClientSubData<
@@ -137,7 +141,7 @@ export interface SokiClientEvent {
   body: SokiClientEventBody;
   auth?: LocalSokiAuth;
   appName: SokiAppName;
-  deviceId: string;
+  deviceId: DeviceId;
   urls: string[];
   version: number;
   browser?: string;

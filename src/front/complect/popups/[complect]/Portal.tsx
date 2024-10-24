@@ -1,7 +1,12 @@
 import { ReactNode, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
-const containerInitState = () => document.createElement('div');
+const containerInitState = () => {
+  const div = document.createElement('div');
+
+  div.classList.add('full-size', 'absolute');
+  return div;
+};
 
 export default function Portal({ children }: { children: ReactNode }) {
   const [container] = useState(containerInitState);

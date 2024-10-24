@@ -1,11 +1,11 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
-import { useBottomPopup } from '../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { BottomPopup } from '../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
-import useFullContent from '../../../../complect/fullscreen-content/useFullContent';
+import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import ScheduleWidgetAlarm from '../../../../complect/schedule-widget/alarm/Alarm';
 import { scheduleWidgetListPageRoute } from '../../../../complect/schedule-widget/general/ListPageRoute';
@@ -13,6 +13,7 @@ import { IconCloudStrokeRounded } from '../../../../complect/the-icon/icons/clou
 import { IconInformationCircleStrokeRounded } from '../../../../complect/the-icon/icons/information-circle';
 import { IconRefreshStrokeRounded } from '../../../../complect/the-icon/icons/refresh';
 import { IconSettings02StrokeRounded } from '../../../../complect/the-icon/icons/settings-02';
+import { IconWechatStrokeRounded } from '../../../../complect/the-icon/icons/wechat';
 import { checkIsThereNewSW } from '../../../../serviceWorkerRegistration';
 import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
@@ -23,6 +24,7 @@ import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthB
 import IndexSettings from '../settings/Settings';
 import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
+import { IndexSecretChates } from './secret-chat/SecretChates';
 import { UserMore } from './UserMore';
 
 const IndexAuthorization = React.lazy(() => import('../login/IndexAuthorization'));
@@ -32,8 +34,8 @@ const isNNull = (it: unknown) => it !== null;
 export default function IndexMain() {
   const currentAppName = useCurrentApp();
 
-  const [aboutNode, openAbout] = useFullContent(() => <IndexAbout />);
-  const [popupNode, openPopup] = useBottomPopup(UserMore);
+  const [isUserMoreOpen, setIsUserMoreOpen] = useState<unknown>(false);
+  const [isAboutOpen, setIsAboutOpen] = useState<unknown>(false);
 
   const auth = useAuth();
   const connectionNode = useConnectionState();
@@ -66,21 +68,23 @@ export default function IndexMain() {
               head={
                 <div className="flex flex-gap">
                   {connectionNode}
-                  {auth.level > 0 && (
-                    <div
-                      className="margin-gap-h pointer"
-                      onClick={openPopup}
-                    >
-                      <IndexProfileInfo auth={auth} />
-                    </div>
-                  )}
+
+                  <div className="margin-gap-h pointer flex flex-gap">
+                    {auth.level > 0 && (
+                      <IndexProfileInfo
+                        auth={auth}
+                        onClick={setIsUserMoreOpen}
+                      />
+                    )}
+                    <Link to="secrets">
+                      <IconWechatStrokeRounded />
+                    </Link>
+                  </div>
                 </div>
               }
               contentClass="flex column"
               content={
                 <>
-                  {popupNode}
-                  {aboutNode}
                   <ScheduleWidgetAlarm isForceShow={auth.level >= 50} />
                   {!auth.nick && <IndexTelegramInlineAuthButton />}
                   <Link
@@ -104,7 +108,7 @@ export default function IndexMain() {
                   <BrutalItem
                     icon={<IconInformationCircleStrokeRounded />}
                     title="О приложении"
-                    onClick={() => openAbout(true)}
+                    onClick={setIsAboutOpen}
                   />
                   {checkIsThereNewSW(reg => (
                     <BrutalItem
@@ -124,6 +128,21 @@ export default function IndexMain() {
                       <div className="title">Другие программы</div>
                       {appList}
                     </BrutalScreen>
+                  )}
+
+                  {isUserMoreOpen && (
+                    <BottomPopup onClose={setIsUserMoreOpen}>
+                      <UserMore />
+                    </BottomPopup>
+                  )}
+
+                  {isAboutOpen && (
+                    <FullContent
+                      onClose={setIsAboutOpen}
+                      closable
+                    >
+                      <IndexAbout />
+                    </FullContent>
                   )}
                 </>
               }
@@ -151,6 +170,11 @@ export default function IndexMain() {
       <Route
         path="settings/*"
         element={<IndexSettings />}
+      />
+
+      <Route
+        path="secrets/*"
+        element={<IndexSecretChates />}
       />
 
       <Route

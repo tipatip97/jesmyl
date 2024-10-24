@@ -37,6 +37,8 @@ import { iconPackOfBookOpen02 } from './icons/book-open-02';
 import { iconPackOfBookmark01 } from './icons/bookmark-01';
 import { iconPackOfBookmark03 } from './icons/bookmark-03';
 import { iconPackOfBrowser } from './icons/browser';
+import { iconPackOfBubbleChatAdd } from './icons/bubble-chat-add';
+import { iconPackOfBubbleChatEdit } from './icons/bubble-chat-edit';
 import { iconPackOfCalendar01 } from './icons/calendar-01';
 import { iconPackOfCalendar02 } from './icons/calendar-02';
 import { iconPackOfCalendar03 } from './icons/calendar-03';
@@ -192,6 +194,7 @@ import { iconPackOfView } from './icons/view';
 import { iconPackOfViewOff } from './icons/view-off';
 import { iconPackOfViewOffSlash } from './icons/view-off-slash';
 import { iconPackOfVoiceId } from './icons/voice-id';
+import { iconPackOfWechat } from './icons/wechat';
 import { TheIconSelfPack } from './model';
 
 export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
@@ -234,6 +237,8 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   Bookmark01: iconPackOfBookmark01,
   Bookmark03: iconPackOfBookmark03,
   Browser: iconPackOfBrowser,
+  BubbleChatAdd: iconPackOfBubbleChatAdd,
+  BubbleChatEdit: iconPackOfBubbleChatEdit,
   Calendar01: iconPackOfCalendar01,
   Calendar02: iconPackOfCalendar02,
   Calendar03: iconPackOfCalendar03,
@@ -389,4 +394,5 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   ViewOff: iconPackOfViewOff,
   ViewOffSlash: iconPackOfViewOffSlash,
   VoiceId: iconPackOfVoiceId,
+  Wechat: iconPackOfWechat,
 };

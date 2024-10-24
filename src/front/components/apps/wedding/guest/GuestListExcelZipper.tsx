@@ -19,7 +19,7 @@ export const GuestListExcelZipper = ({ setIsOpen, guests }: Props) => {
   const [settings, setSettings] = useState<ISettings>({ fileName: 'Список гостей' });
 
   return (
-    <FullContent>
+    <FullContent onClose>
       <KeyboardInput
         value={settings.fileName}
         onChange={fileName => setSettings(prev => ({ ...prev, fileName }))}

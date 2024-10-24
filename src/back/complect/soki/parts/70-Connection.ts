@@ -1,7 +1,7 @@
 import { WebSocket } from 'ws';
 import smylib from '../../../shared/SMyLib';
 import { SokiAuther, sokiAuther } from '../SokiAuther';
-import { LocalSokiAuth, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
+import { LocalSokiAuth, SokiCapsule, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerVisits } from './60-Visits';
 
 export class SokiServerConnection extends SokiServerVisits implements SokiServerDoAction<'Connect'> {
@@ -16,6 +16,7 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
     this.sendStatistic();
 
     if (isDeleted && disconnecter) {
+      this.capsulesByDeviceId.delete(disconnecter.deviceId);
       console.info(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
     } else {
       console.info('Disconnected Unknown client');
@@ -27,12 +28,16 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
 
     let auth: LocalSokiAuth | null;
     const setCapsule = () => {
-      this.capsules.set(client, {
+      const capsule: SokiCapsule = {
         auth,
         deviceId: eventData.deviceId,
         version: eventData.version,
         urls: eventData.urls,
-      });
+        client,
+      };
+      this.capsules.set(client, capsule);
+
+      this.capsulesByDeviceId.set(capsule.deviceId, capsule);
     };
 
     if (eventData.auth === undefined) {

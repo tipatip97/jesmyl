@@ -2,6 +2,7 @@ import { MoleculeOptions } from '.';
 import { ServerStoreContent } from '../../../back/complect/soki/parts/120-ServerStore';
 import { AppName, getAppNameFromString } from '../../app/App.model';
 import { SMyLib } from '../../models';
+import { JStorage } from '../JStorage';
 import { Atom } from './AnAtom';
 
 const retUnd = () => undefined;
@@ -27,6 +28,8 @@ export class Molecule<
     storageName: StorageName,
     options?: MoleculeOptions<T>,
   ) {
+    new JStorage(storageName);
+
     this.getLastWtiteLocalStorageItemName = key => `lastWrite:${storageName}/${key as string}`;
 
     const serverStored = options?.serverStored;

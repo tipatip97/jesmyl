@@ -15,7 +15,7 @@ export default function BrutalItem({
   box?: ReactNode;
   description?: ReactNode;
   to?: To;
-  onClick?: () => void;
+  onClick?: (event: unknown) => void;
 }) {
   const inner = (
     <Item className="pointer flex between relative">
