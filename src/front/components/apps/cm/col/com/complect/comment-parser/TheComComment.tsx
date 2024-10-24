@@ -32,8 +32,15 @@ export default function TheComComment({ comw, isRedact, setIsRedact }: Props) {
   const [isShowInfoModal, setIsShowInfoModal] = useState(false);
   const [comment, setComment] = useState(comments[comw]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setComments(prev => ({ ...prev, [comw]: comment })), [comment, setComments]);
+  useEffect(
+    () =>
+      setComments(prev => {
+        if (prev[comw] === comment || (!prev[comw] && !comment)) return prev;
+        return { ...prev, [comw]: comment || undefined };
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [comment],
+  );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => setComment(comments[comw]), [isRedact, comw]);
 

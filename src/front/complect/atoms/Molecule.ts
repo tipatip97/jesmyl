@@ -51,7 +51,7 @@ export class Molecule<
               clearTimeout(sendTimeout);
               sendTimeout = setTimeout(() => {
                 this.onServerStorageValueSend([{ key: key as string, ts, value }], appName);
-              }, 200);
+              }, 1000);
             };
           }
         }

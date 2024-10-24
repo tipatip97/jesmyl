@@ -209,11 +209,12 @@ export class SokiTrip {
       index: [indexLastUpdate = 0, indexRulesMd5 = ''] = [],
       [appName]: [appLastUpdate = 0, appRulesMd5 = ''] = [],
     } = (await getUpdateRequisitesValue()) || {};
+    const auth = await getAuthValue();
 
     this.send(
       {
         pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5],
-        userContents: this.molecules[appName]?.makeServerStoreSequest(),
+        userContents: auth.login ? this.molecules[appName]?.makeServerStoreSequest() : undefined,
       },
       appName,
     ).on(event => event.pull && this.updatedPulledData(event.pull));
