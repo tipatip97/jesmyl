@@ -25,6 +25,7 @@ export const cmMolecule = new Molecule<CmState & CmEditorStoraged>(
     isShowComHashComments: false,
 
     speedRollKf: 10,
+    favoriteMeetings: { contexts: [], events: [] },
 
     // editor
     mp3Rules: [],
@@ -33,7 +34,7 @@ export const cmMolecule = new Molecule<CmState & CmEditorStoraged>(
   },
   'cm',
   {
-    serverStored: ['marks', 'comComments'],
+    serverStored: ['marks', 'comComments', 'favoriteMeetings'],
   },
 );
 

@@ -2,15 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { bibleTitles } from '../hooks/texts';
 import { bibleMolecule } from '../molecules';
 import { BibleTranslateName } from './complect';
-import { useBibleShowTranslatesValue } from './hooks';
-
-interface Props {
-  children?: React.ReactNode;
-}
+import { useBibleMyTranslates, useBibleShowTranslatesValue } from './hooks';
 
 interface ChapterCombine {
   chapters?: (string[][] | null)[];
-  lowerBooks?: string[][];
   lowerChapters?: string[][][];
   htmlChapters?: ({ __html: string }[][] | und)[];
 }
@@ -29,28 +24,34 @@ const mapChapters = (tName: BibleTranslateName, { chapters }: { chapters: (strin
     }
   }
 
-  const lowerBooks = bibleTitles.titles.map(book => book.map(title => title.toLowerCase()));
   const htmlChapters = chapters.map(book => book?.map(chapter => chapter.map(__html => ({ __html }))));
 
   localTranslates[tName] = {
-    lowerBooks,
     chapters,
     lowerChapters,
     htmlChapters,
   };
 };
 
-type Translates = Partial<Record<BibleTranslateName, ChapterCombine>>;
-const loadings: Partial<Record<BibleTranslateName, boolean>> = {};
-let localTranslates: Translates = {};
+export const bibleLowerBooks = bibleTitles.titles.map(book => book.map(title => title.toLowerCase()));
 
-const Context = React.createContext<Translates>({});
+export type BibleBookTranslates = Partial<Record<BibleTranslateName, ChapterCombine>>;
+const loadings: Partial<Record<BibleTranslateName, boolean>> = {};
+let localTranslates: BibleBookTranslates = {};
+
+const Context = React.createContext<BibleBookTranslates>({});
 
 export const useBibleTranslatesContext = () => useContext(Context);
 
-export default function BibleTranslatesContextProvider({ children }: Props): JSX.Element {
+interface Props {
+  children?: React.ReactNode;
+  isSetAllTranslates?: boolean;
+}
+export default function BibleTranslatesContextProvider({ children, isSetAllTranslates }: Props): JSX.Element {
   const showTranslates = useBibleShowTranslatesValue();
-  const [translates, setTranslates] = useState<Translates>(localTranslates);
+  const [myTranslates] = useBibleMyTranslates();
+  const [translates, setTranslates] = useState<BibleBookTranslates>(localTranslates);
+  const watchTranslates = isSetAllTranslates ? myTranslates : showTranslates;
 
   useEffect(() => {
     const subscribes: (() => void)[] = [];
@@ -61,9 +62,9 @@ export default function BibleTranslatesContextProvider({ children }: Props): JSX
         let updateTimeout: TimeOut;
 
         const tryLoad = () => {
-          showTranslates.forEach(tName => {
+          watchTranslates.forEach(tName => {
             if (localTranslates[tName] !== undefined) {
-              if (!showTranslates.some(tName => localTranslates[tName] === undefined)) {
+              if (!watchTranslates.some(tName => localTranslates[tName] === undefined)) {
                 clearTimeout(updateTimeout);
                 updateTimeout = setTimeout(() => setTranslates({ ...localTranslates }), 200);
               }
@@ -93,7 +94,7 @@ export default function BibleTranslatesContextProvider({ children }: Props): JSX
                 content && mapChapters(tName, content);
                 loadings[tName] = false;
 
-                if (!showTranslates.some(tName => localTranslates[tName] === undefined)) {
+                if (!watchTranslates.some(tName => localTranslates[tName] === undefined)) {
                   setTranslates({ ...localTranslates });
                 }
               } catch (error) {
@@ -106,7 +107,7 @@ export default function BibleTranslatesContextProvider({ children }: Props): JSX
         tryLoad();
       }, 500)
       .effect(...subscribes);
-  }, [showTranslates]);
+  }, [watchTranslates]);
 
   return <Context.Provider value={translates}>{children}</Context.Provider>;
 }

@@ -3,6 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { BottomPopup } from '../../../../complect/absolute-popup/bottom-popup/BottomPopup';
+import { useAtomValue } from '../../../../complect/atoms';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
 import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
@@ -13,7 +14,6 @@ import { IconCloudStrokeRounded } from '../../../../complect/the-icon/icons/clou
 import { IconInformationCircleStrokeRounded } from '../../../../complect/the-icon/icons/information-circle';
 import { IconRefreshStrokeRounded } from '../../../../complect/the-icon/icons/refresh';
 import { IconSettings02StrokeRounded } from '../../../../complect/the-icon/icons/settings-02';
-import { IconWechatStrokeRounded } from '../../../../complect/the-icon/icons/wechat';
 import { checkIsThereNewSW } from '../../../../serviceWorkerRegistration';
 import { useAuth, useCurrentApp } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
@@ -24,7 +24,8 @@ import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthB
 import IndexSettings from '../settings/Settings';
 import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
-import { IndexSecretChates } from './secret-chat/SecretChates';
+import { isSecretChatsShowInBottomMenuAtom, SecretChatsIcon } from './secret-chat/complect';
+import { IndexSecretChats } from './secret-chat/SecretChats';
 import { UserMore } from './UserMore';
 
 const IndexAuthorization = React.lazy(() => import('../login/IndexAuthorization'));
@@ -36,6 +37,7 @@ export default function IndexMain() {
 
   const [isUserMoreOpen, setIsUserMoreOpen] = useState<unknown>(false);
   const [isAboutOpen, setIsAboutOpen] = useState<unknown>(false);
+  const isShowSecretChatsInBottom = useAtomValue(isSecretChatsShowInBottomMenuAtom);
 
   const auth = useAuth();
   const connectionNode = useConnectionState();
@@ -76,9 +78,11 @@ export default function IndexMain() {
                         onClick={setIsUserMoreOpen}
                       />
                     )}
-                    <Link to="secrets">
-                      <IconWechatStrokeRounded />
-                    </Link>
+                    {!isShowSecretChatsInBottom && (
+                      <Link to="chats">
+                        <SecretChatsIcon />
+                      </Link>
+                    )}
                   </div>
                 </div>
               }
@@ -131,8 +135,8 @@ export default function IndexMain() {
                   )}
 
                   {isUserMoreOpen && (
-                    <BottomPopup onClose={setIsUserMoreOpen}>
-                      <UserMore />
+                    <BottomPopup onClose={() => {}}>
+                      <UserMore onClose={setIsUserMoreOpen} />
                     </BottomPopup>
                   )}
 
@@ -173,8 +177,8 @@ export default function IndexMain() {
       />
 
       <Route
-        path="secrets/*"
-        element={<IndexSecretChates />}
+        path="chats/*"
+        element={<IndexSecretChats />}
       />
 
       <Route
@@ -186,14 +190,3 @@ export default function IndexMain() {
     </Routes>
   );
 }
-
-// (function clicker() {
-//   document.querySelector('[data-testid="campaign-card-add-adunit"]')?.click();
-//   setTimeout(() => {
-//     document.querySelector('[data-testid="ContextRtbFooter.Create"]')?.click();
-//     setTimeout(() => {
-//       document.querySelector('[data-testid="ContextRtbFooter.Done"]')?.click();
-//       setTimeout(clicker, 2000);
-//     }, 3000);
-//   }, 3000);
-// })();

@@ -1,39 +1,58 @@
 import { useEffect } from 'react';
+import { SecretChat } from '../../../../../../back/apps/index/SecretChat.complect';
 import { useAtomSet } from '../../../../../complect/atoms';
 import { soki } from '../../../../../soki';
-import { takeDeviceId } from '../../../complect/takeDeviceId';
-import { secretMessagesAtom } from './complect';
+import { useDeviceId } from '../../../complect/takeDeviceId';
+import { secretChatsAtom } from './complect';
 
 export const useSecretChatsListen = () => {
-  const setMessages = useAtomSet(secretMessagesAtom);
+  const setMessages = useAtomSet(secretChatsAtom);
+  const myDeviceId = useDeviceId();
 
   useEffect(() => {
-    return soki.listenEvent('secretMessage', async secretMessage => {
-      if (secretMessage?.messageOrOffline == null) return;
-      const myDeviceId = await takeDeviceId();
-      const message = secretMessage.messageOrOffline;
+    return soki.listenEvent('secretMessages', async secretMessages => {
+      if (secretMessages == null) return;
 
-      setMessages(prev => {
-        const chatId =
-          myDeviceId === secretMessage.targetDeviceId ? message.senderDeviceId : secretMessage.targetDeviceId;
+      secretMessages?.forEach(secretMessage => {
+        const message = secretMessage.body;
 
-        const chat = (prev[chatId] ??= { messages: [], name: chatId });
-        const messages = [...chat.messages];
+        setMessages((prev): SecretChat.Messages => {
+          const chatId = secretMessage.chat.id;
 
-        let insertIndex = messages.findIndex(msg => msg.ts < message.ts);
+          const prevChat = (prev[chatId] ??= {
+            messages: [],
+            lastReadTs: 0,
+            info: secretMessage.chat,
+          });
 
-        if (insertIndex < 0) insertIndex = 0;
+          const messages = [...prevChat.messages];
 
-        messages.splice(insertIndex, 0, message);
+          let insertIndex = messages.findIndex(msg => msg.ts < message.ts);
 
-        return {
-          ...prev,
-          [chatId]: {
-            ...chat,
-            messages: [message, ...chat.messages],
-          },
-        };
+          if (insertIndex < 0) insertIndex = 0;
+
+          messages.splice(insertIndex, 0, message);
+          let info = secretMessage.chat.team[0] === myDeviceId ? prevChat.info : secretMessage.chat;
+
+          const myFioi = info.team.indexOf(myDeviceId);
+
+          if (myFioi > -1) {
+            const fios = [...secretMessage.chat.fios];
+            info = { ...info, fios };
+
+            fios[myFioi] = prevChat.info.fios[myFioi];
+          }
+
+          return {
+            ...prev,
+            [chatId]: {
+              ...prevChat,
+              info,
+              messages: [message, ...prevChat.messages],
+            },
+          };
+        });
       });
     });
-  }, [setMessages]);
+  }, [myDeviceId, setMessages]);
 };

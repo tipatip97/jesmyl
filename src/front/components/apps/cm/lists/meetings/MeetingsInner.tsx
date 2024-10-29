@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { atom, useAtom } from '../../../../../complect/atoms';
+import { useAtom } from '../../../../../complect/atoms';
 import BrutalItem from '../../../../../complect/brutal-item/BrutalItem';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCalendar01SolidSharp } from '../../../../../complect/the-icon/icons/calendar-01';
@@ -8,12 +8,11 @@ import { IconCalendar02StrokeRounded } from '../../../../../complect/the-icon/ic
 import { IconFolder01StrokeRounded } from '../../../../../complect/the-icon/icons/folder-01';
 import { IconStarSolidRounded, IconStarStrokeRounded } from '../../../../../complect/the-icon/icons/star';
 import { useActualRef } from '../../../../../complect/useActualRef';
-import { FavoriteMeetings } from '../../Cm.model';
-import { cmEventContextAtom } from '../../molecules';
+import { cmEventContextAtom, cmMolecule } from '../../molecules';
 import { Meetings } from './Meetings';
 import { MeetingsEvent } from './MeetingsEvent';
 
-const favoriteMeetingsAtom = atom<FavoriteMeetings>({ contexts: [], events: [] }, 'cm', 'favoriteMeetings');
+const favoriteMeetingsAtom = cmMolecule.select(s => s.favoriteMeetings);
 
 export default function MeetingsInner<Meets extends Meetings>({
   meetings,

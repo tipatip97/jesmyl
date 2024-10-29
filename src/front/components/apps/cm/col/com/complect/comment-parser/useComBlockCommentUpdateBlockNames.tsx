@@ -22,81 +22,68 @@ export const useComBlockCommentUpdateBlockNames = (
 
           if (initialOrders == null) return;
 
-          const newComment = comComment?.replace(
-            ComBlockCommentMakerCleans.commentsParseReg,
-            (
-              $all,
-              $before,
-              $beforeSpaces,
-              $hashes,
-              $blockHashPosition,
-              _$associations,
-              $secretWidStr,
-              $modificators,
-              _$info,
-              _$blockHeader,
-              $beforeCommentSpaces,
-              $comment,
-            ) => {
-              let secretWidStr = '';
-              let blockHeader = '';
-              let blockHashPosition = +$blockHashPosition;
+          const newComment = comComment?.replace(ComBlockCommentMakerCleans.commentsParseReg, (...args) => {
+            const cmt = ComBlockCommentMakerCleans.makePropsFromCommentsArgs(args);
+            if (cmt.$blockHashPosition === undefined) return cmt.$all;
 
-              if ($secretWidStr) {
-                const unsecredWid = ComBlockCommentMakerCleans.makeSecretToWid($secretWidStr);
-                const unsecredVisibleOrderi = visibleOrders.findIndex(ord => ord.wid === unsecredWid);
-                const unsecredVisibleOrder = visibleOrders[unsecredVisibleOrderi];
+            let secretWidStr = '';
+            let blockHeader = '';
+            let blockHashPosition = +cmt.$blockHashPosition;
 
-                if (unsecredVisibleOrder == null) {
-                  const unsecretInvisibleOrderi = initialOrders.findIndex(ord => ord.wid === unsecredWid);
-                  const unsecretInvisibleOrder = initialOrders[unsecretInvisibleOrderi];
+            if (cmt.$secretWidStr) {
+              const unsecredWid = ComBlockCommentMakerCleans.makeSecretToWid(cmt.$secretWidStr);
+              const unsecredVisibleOrderi = visibleOrders.findIndex(ord => ord.wid === unsecredWid);
+              const unsecredVisibleOrder = visibleOrders[unsecredVisibleOrderi];
 
-                  if (unsecretInvisibleOrder) {
-                    secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(unsecretInvisibleOrder.wid);
-                    blockHeader = unsecretInvisibleOrder.me.header() || '';
+              if (unsecredVisibleOrder == null) {
+                const unsecretInvisibleOrderi = initialOrders.findIndex(ord => ord.wid === unsecredWid);
+                const unsecretInvisibleOrder = initialOrders[unsecretInvisibleOrderi];
 
+                if (unsecretInvisibleOrder) {
+                  secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(unsecretInvisibleOrder.wid);
+                  blockHeader = unsecretInvisibleOrder.me.header() || '';
+
+                  blockHashPosition = 0;
+                } else {
+                  const fromBlockHashPositionOrder = visibleOrders[+cmt.$blockHashPosition - 1] as Order | nil;
+
+                  if (fromBlockHashPositionOrder == null) {
+                    secretWidStr = '';
+                    blockHeader = '';
                     blockHashPosition = 0;
                   } else {
-                    const fromBlockHashPositionOrder = visibleOrders[+$blockHashPosition - 1] as Order | nil;
+                    const fromHashOrderi = visibleOrders.findIndex(ord => ord.wid === fromBlockHashPositionOrder.wid);
 
-                    if (fromBlockHashPositionOrder == null) {
-                      secretWidStr = '';
-                      blockHeader = '';
-                      blockHashPosition = 0;
-                    } else {
-                      const fromHashOrderi = visibleOrders.findIndex(ord => ord.wid === fromBlockHashPositionOrder.wid);
+                    secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(fromBlockHashPositionOrder.wid);
+                    blockHeader = fromBlockHashPositionOrder.me.header() || '';
 
-                      secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(fromBlockHashPositionOrder.wid);
-                      blockHeader = fromBlockHashPositionOrder.me.header() || '';
-
-                      blockHashPosition = fromHashOrderi + 1;
-                    }
+                    blockHashPosition = fromHashOrderi + 1;
                   }
-                } else {
-                  secretWidStr = $secretWidStr;
-                  blockHeader = unsecredVisibleOrder.me.header() || '';
-
-                  blockHashPosition = unsecredVisibleOrderi + 1;
                 }
               } else {
-                const fromBlockHashPositionOrder = visibleOrders[+$blockHashPosition - 1] as Order | nil;
+                secretWidStr = cmt.$secretWidStr;
+                blockHeader = unsecredVisibleOrder.me.header() || '';
 
-                if (fromBlockHashPositionOrder == null) return $all;
-
-                secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(fromBlockHashPositionOrder.wid);
-                blockHeader = fromBlockHashPositionOrder.me.header() || '';
+                blockHashPosition = unsecredVisibleOrderi + 1;
               }
+            } else {
+              const fromBlockHashPositionOrder = visibleOrders[+cmt.$blockHashPosition - 1] as Order | nil;
 
-              return (
-                `${$before}${$beforeSpaces}${$hashes}${blockHashPosition || ''}${
-                  secretWidStr ? `_${secretWidStr}` : ''
-                }${$modificators || ''}` +
-                (blockHeader ? ` [${blockHeader}]` : ' ') +
-                (`${$beforeCommentSpaces || (isRedact ? '' : ' ')}` || ' ') +
-                `${$comment || ''}`
-              );
-            },
-          );
+              if (fromBlockHashPositionOrder == null) return cmt.$all;
+
+              secretWidStr = ComBlockCommentMakerCleans.makeWidToSecret(fromBlockHashPositionOrder.wid);
+              blockHeader = fromBlockHashPositionOrder.me.header() || '';
+            }
+
+            return (
+              `${cmt.$before}${cmt.$beforeSpaces}${cmt.$hashes}${blockHashPosition || ''}${
+                secretWidStr ? `_${secretWidStr}` : ''
+              }${cmt.$modificators || ''}` +
+              (blockHeader ? ` [${blockHeader}]` : ' ') +
+              (`${cmt.$beforeCommentSpaces || (isRedact ? '' : ' ')}` || ' ') +
+              `${cmt.$comment || ''}`
+            );
+          });
 
           if (
             ComBlockCommentMakerCleans.spaceFreeText(comComment) ===

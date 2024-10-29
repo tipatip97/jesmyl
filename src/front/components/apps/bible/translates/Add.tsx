@@ -12,7 +12,8 @@ import { useBibleMyTranslates } from './hooks';
 
 export default function BibleModulesTranslationsRedactButton(): JSX.Element {
   const [myTranslates, setMyTranslates] = useBibleMyTranslates();
-  const [translateOnLoad, setTranslateOOnLoad] = useState<BibleTranslateName | null>(null);
+
+  const [translateOnLoad, setTranslateOnLoad] = useState<BibleTranslateName | null>(null);
 
   const [modalNode, openModal] = useModal(({ body, header }) => {
     return (
@@ -54,10 +55,10 @@ export default function BibleModulesTranslationsRedactButton(): JSX.Element {
                   prefix={title}
                   disabled={translateOnLoad !== null}
                   onClick={() => {
-                    setTranslateOOnLoad(tName);
+                    setTranslateOnLoad(tName);
                     soki.send({ download: tName }, 'bible').on(() => {
                       setMyTranslates(prev => [...prev, tName]);
-                      setTranslateOOnLoad(null);
+                      setTranslateOnLoad(null);
                     });
                   }}
                 />

@@ -36,6 +36,7 @@ export interface CmState {
   metronomeMainSound: `${number}`;
   metronomeSecondarySound: `${number}`;
   eventContext: number[];
+  favoriteMeetings: FavoriteMeetings;
 
   speedRollKf: number;
 }

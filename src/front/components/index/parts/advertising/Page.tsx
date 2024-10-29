@@ -6,7 +6,7 @@ import PhaseContainerConfigurer from '../../../../complect/phase-container/Phase
 import IconCheckbox from '../../../../complect/the-icon/IconCheckbox';
 import { useAuth } from '../../molecules';
 
-const bannersCountItems = [10, 20, 30, 40, 50, 80, 100, 120, 150, 170, 200].map(num => {
+const bannersCountItems = [0, 10, 20, 30, 40, 50, 80, 100, 120, 150, 170, 200].map(num => {
   return {
     id: num,
     title: `Показывать ${num} банеров`,

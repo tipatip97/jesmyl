@@ -1,4 +1,5 @@
 import { WebSocket } from 'ws';
+import { EventerValueListeners } from '../../Eventer';
 import {
   SokiCapsule,
   SokiClientSubData,
@@ -30,6 +31,8 @@ export class SokiServerSubscribes extends SokiServerTransfers implements SokiSer
       onClientUnsubscribe: () => this.sendStatistic(),
     },
   };
+
+  onCapsuleSetListeners: EventerValueListeners<SokiCapsule> = [];
 
   statistic: SokiStatistic = {
     online: 0,

@@ -6,6 +6,7 @@ import { FullContent } from '../../../../../complect/fullscreen-content/FullCont
 import { Metronome } from '../../../../../complect/metronome/Metronome';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { DocTitle } from '../../../../../complect/tags/DocTitle';
+import BibleTranslatesContextProvider from '../../../bible/translates/TranslatesContext';
 import { useCmTranslationComListContext } from '../../base/translations/context';
 import { useChordVisibleVariant } from '../../base/useChordVisibleVariant';
 import useLaterComList from '../../base/useLaterComList';
@@ -14,6 +15,7 @@ import './Com.scss';
 import { ComNotFoundPage } from './ComNotFoundPage';
 import TheControlledCom from './TheControlledCom';
 import ChordImagesList from './chord-card/ChordImagesList';
+import { useCheckIsComCommentIncludesBibleAddress } from './complect/comment-parser/useCheckIsComCommentIncludesBibleAddress';
 import ComPlayer from './player/ComPlayer';
 import { ComTools } from './tools/ComTools';
 import { useMigratableTopComTools } from './tools/useMigratableComTools';
@@ -45,8 +47,22 @@ export default function TheComposition() {
   useEffect(() => {
     if (comListElem.current) comListElem.current.scrollTop = 0;
   }, [ccom?.wid]);
+  const isComCommentIncludesBibleAddress = useCheckIsComCommentIncludesBibleAddress(ccom);
 
   if (ccom == null) return <ComNotFoundPage />;
+
+  let controlledComNode = (
+    <TheControlledCom
+      com={ccom}
+      comList={list}
+      chordVisibleVariant={chordVisibleVariant}
+    />
+  );
+
+  if (isComCommentIncludesBibleAddress)
+    controlledComNode = (
+      <BibleTranslatesContextProvider isSetAllTranslates>{controlledComNode}</BibleTranslatesContextProvider>
+    );
 
   return (
     <ComContainer
@@ -85,11 +101,8 @@ export default function TheComposition() {
             meterSize={ccom.meterSize}
             bpm={ccom.beatsPerMinute}
           />
-          <TheControlledCom
-            com={ccom}
-            comList={list}
-            chordVisibleVariant={chordVisibleVariant}
-          />
+
+          {controlledComNode}
         </>
       }
     />

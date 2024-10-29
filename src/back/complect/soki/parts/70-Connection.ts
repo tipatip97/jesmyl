@@ -1,5 +1,6 @@
 import { WebSocket } from 'ws';
 import smylib from '../../../shared/SMyLib';
+import Eventer from '../../Eventer';
 import { SokiAuther, sokiAuther } from '../SokiAuther';
 import { LocalSokiAuth, SokiCapsule, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerVisits } from './60-Visits';
@@ -36,6 +37,7 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
         client,
       };
       this.capsules.set(client, capsule);
+      Eventer.invokeValue(this.onCapsuleSetListeners, capsule);
 
       this.capsulesByDeviceId.set(capsule.deviceId, capsule);
     };

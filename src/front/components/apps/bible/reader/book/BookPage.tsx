@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import mylib from '../../../../../complect/my-lib/MyLib';
 import { BibleBooki, BibleChapteri, BibleVersei } from '../../model';
 import { useBibleSingleAddressSetter } from '../../translations/lists/atoms';
 import BibleReaderChapter from './complect/Chapter';
@@ -19,7 +20,6 @@ export default function BibleReaderBook({
 }: Props): JSX.Element {
   const listRef = useRef<HTMLDivElement>(null);
   const isScrollingRef = useRef(false);
-  const isResizingRef = useRef(false);
   const [resizeNum, setResizeNum] = useState(0);
   const setAddress = useBibleSingleAddressSetter();
 
@@ -44,73 +44,19 @@ export default function BibleReaderBook({
 
   useEffect(() => {
     if (chapterList == null || listRef.current === null) return;
-    const listNode = listRef.current;
-    const topsMap = new Map<number, { chapteri: BibleChapteri; versei: BibleVersei }>();
-    let scrollTimeout: TimeOut;
-    let isScrollingTimeout: TimeOut;
-    let resizeDebounceTimeOut: TimeOut;
 
-    (Array.from(listNode.children) as HTMLElement[]).forEach(child => {
-      if (child.hasAttribute('attr-chapteri'))
-        topsMap.set(child.offsetTop, {
-          chapteri: +child.getAttribute('attr-chapteri')!,
-          versei: +child.getAttribute('attr-versei')!,
-        });
-    });
-    const tops = Array.from(topsMap.keys());
+    return mylib.onChildInViewPort(
+      listRef.current,
+      isScrollingRef,
+      setResizeNum,
+      elem => elem.hasAttribute('attr-chapteri'),
+      elem => {
+        const chapteri = +elem.getAttribute('attr-chapteri')!;
+        const versei = +elem.getAttribute('attr-versei')!;
 
-    return hookEffectLine()
-      .addEventListener(window, 'resize', () => {
-        isResizingRef.current = true;
-        clearTimeout(resizeDebounceTimeOut);
-        resizeDebounceTimeOut = setTimeout(() => {
-          isResizingRef.current = false;
-          setResizeNum(num => num + 1);
-        }, 100);
-      })
-      .addEventListener(listNode, 'scroll', () => {
-        if (isResizingRef.current) return;
-
-        isScrollingRef.current = true;
-        clearTimeout(isScrollingTimeout);
-        isScrollingTimeout = setTimeout(() => (isScrollingRef.current = false), 300);
-
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-          let end = tops.length - 1;
-          const scrollTop = listNode.scrollTop;
-
-          if (scrollTop < 0) {
-            setAddress(undefined, 0, 0);
-
-            return;
-          } else if (scrollTop >= tops[end] - 50) {
-            const top = topsMap.get(tops[end]);
-
-            if (top === undefined) return;
-            setAddress(undefined, top.chapteri, top.versei);
-
-            return;
-          }
-
-          let start = 0;
-
-          while (start <= end) {
-            let middle = Math.floor((start + end) / 2);
-
-            if (tops[middle] <= scrollTop && tops[middle + 1] >= scrollTop) {
-              const top = topsMap.get(tops[middle]);
-
-              if (top === undefined) return;
-
-              setAddress(undefined, top.chapteri, top.versei);
-              break;
-            } else if (tops[middle] < scrollTop) start = middle + 1;
-            else end = middle - 1;
-          }
-        }, 10);
-      })
-      .effect();
+        setAddress(undefined, chapteri, versei);
+      },
+    );
   }, [currentBooki, resizeNum, setAddress, chapterList]);
 
   return (

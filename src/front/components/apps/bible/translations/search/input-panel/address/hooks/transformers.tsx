@@ -1,13 +1,13 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
+import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../../complect/hookEffectPipe';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../../../../hooks/address/address';
 import { useBibleAddressBooki } from '../../../../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../../../../hooks/address/chapters';
 import { useBibleAddressVersei } from '../../../../../hooks/address/verses';
 import { useBibleBookList } from '../../../../../hooks/texts';
-import { useBibleTranslatesContext } from '../../../../../translates/TranslatesContext';
 import { BibleBooki, BibleChapteri, BibleVersei } from '../../../../../model';
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { bibleLowerBooks, useBibleTranslatesContext } from '../../../../../translates/TranslatesContext';
 
 const emptyFunc = () => {};
 
@@ -16,7 +16,7 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
   const currentChapteri = useBibleAddressChapteri();
   const currentVarsei = useBibleAddressVersei();
   const books = useBibleBookList();
-  const { chapters, lowerBooks } = useBibleTranslatesContext().rst ?? {};
+  const { chapters } = useBibleTranslatesContext().rst ?? {};
   const [address, setAddress] = useState<ReactNode>(null);
   const onEnterPressRef = useRef(emptyFunc);
   const setAddressIndexes = useSetBibleAddressIndexes();
@@ -37,7 +37,7 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
   }, [inputRef]);
 
   useEffect(() => {
-    if (lowerBooks === undefined || chapters === undefined || term.length < 1) return;
+    if (chapters === undefined || term.length < 1) return;
 
     const match = term
       .trim()
@@ -58,13 +58,14 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
     else {
       const bookNameWithoutSpace = bookn.replace(makeRegExp('/\\s+/'), '');
 
-      if (booki < 0) booki = lowerBooks.findIndex(book => book.includes(bookn) || book.includes(bookNameWithoutSpace));
       if (booki < 0)
-        booki = lowerBooks.findIndex(book =>
+        booki = bibleLowerBooks.findIndex(book => book.includes(bookn) || book.includes(bookNameWithoutSpace));
+      if (booki < 0)
+        booki = bibleLowerBooks.findIndex(book =>
           book.some(title => title.startsWith(bookn) || title.startsWith(bookNameWithoutSpace)),
         );
       if (booki < 0)
-        booki = lowerBooks.findIndex(book =>
+        booki = bibleLowerBooks.findIndex(book =>
           book.some(title => title.includes(bookn) || title.includes(bookNameWithoutSpace)),
         );
       if (booki < 0) booki = currentBooki;
@@ -133,17 +134,7 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
     );
 
     setAddress(address);
-  }, [
-    books,
-    chapters,
-    currentBooki,
-    currentChapteri,
-    currentVarsei,
-    lowerBooks,
-    setAddressIndexes,
-    setJoinAddress,
-    term,
-  ]);
+  }, [books, chapters, currentBooki, currentChapteri, currentVarsei, setAddressIndexes, setJoinAddress, term]);
 
   return address;
 };

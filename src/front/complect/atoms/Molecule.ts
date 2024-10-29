@@ -1,11 +1,17 @@
 import { MoleculeOptions } from '.';
 import { ServerStoreContent } from '../../../back/complect/soki/parts/120-ServerStore';
+import { retUnd } from '../../../back/complect/utils';
 import { AppName, getAppNameFromString } from '../../app/App.model';
-import { SMyLib } from '../../models';
 import { JStorage } from '../JStorage';
+import { MyLib } from '../my-lib/MyLib';
 import { Atom } from './AnAtom';
 
-const retUnd = () => undefined;
+const serverSavedKeyPrefix = 'lastWrite:';
+export const removeMoleculeServerSavedItemTimesFromLocalStorage = () => {
+  MyLib.keys(localStorage as Record<string, string>).forEach(key => {
+    if (key.startsWith(serverSavedKeyPrefix)) localStorage.removeItem(key);
+  });
+};
 
 export class Molecule<
   T,
@@ -16,10 +22,8 @@ export class Molecule<
   private newAtom: <Key extends keyof T>(key: Key) => Atom<T[Key]>;
   private keys: (keyof T)[] = [];
 
-  makeServerStoreSequest: () => ServerStoreContent[] | und;
-  getLastWtiteLocalStorageItemName: (key: keyof T) => string;
-
-  serverStoredSet: Set<keyof T>;
+  makeServerStoreRequest: () => ServerStoreContent[] | und;
+  private getLastWtiteLocalStorageItemName: (key: keyof T) => string;
 
   onServerStorageValueSend = (_contents: ServerStoreContent[], _appName: AppName) => {};
 
@@ -30,19 +34,18 @@ export class Molecule<
   ) {
     new JStorage(storageName);
 
-    this.getLastWtiteLocalStorageItemName = key => `lastWrite:${storageName}/${key as string}`;
+    this.getLastWtiteLocalStorageItemName = key => `${serverSavedKeyPrefix}${storageName}/${key as string}`;
 
-    const serverStored = options?.serverStored;
-    this.serverStoredSet = new Set(serverStored ?? []);
+    const serverStored = options?.serverStored || [];
 
     this.atoms = {
-      ...SMyLib.entries(values).reduce((atoms: Atoms, [key, value]) => {
+      ...MyLib.entries(values).reduce((atoms: Atoms, [key, value]) => {
         this.keys.push(key);
 
         const atom = ((atoms as any)[key] =
           value instanceof Atom ? value : new Atom(value, storageName, key as string));
 
-        if (this.serverStoredSet.has(key)) {
+        if (serverStored.includes(key)) {
           const appName = getAppNameFromString(storageName);
 
           if (appName !== null) {
@@ -65,7 +68,7 @@ export class Molecule<
 
     this.newAtom = key => (this.atoms[key] = new Atom(undefined as never, storageName, key as string) as never)!;
 
-    this.makeServerStoreSequest = serverStored
+    this.makeServerStoreRequest = serverStored
       ? () => {
           return serverStored.map((key): ServerStoreContent => {
             return {
@@ -105,14 +108,15 @@ export class Molecule<
   ) {
     contents.forEach(({ key, value, ts }) => {
       const incomingKey = key as keyof T;
-      if (ts > this.getServerStoreContentValueWritten(incomingKey))
+      if (ts > this.getServerStoreContentValueWritten(incomingKey)) {
         this.take(incomingKey).set(value as never, false, true);
+        localStorage[this.getLastWtiteLocalStorageItemName(key as never)] = ts;
+      }
     });
   }
 
   private getServerStoreContentValueWritten(key: keyof T) {
-    localStorage[this.getLastWtiteLocalStorageItemName(key)] ??= Date.now();
-    return +localStorage[this.getLastWtiteLocalStorageItemName(key)];
+    return +localStorage[this.getLastWtiteLocalStorageItemName(key)] || 0;
   }
 
   prepareFreshContents(keys: (keyof T)[]) {

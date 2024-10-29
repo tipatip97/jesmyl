@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { AppName, appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
-import { useAtomValue } from '../../../../complect/atoms';
+import { useAtom, useAtomValue } from '../../../../complect/atoms';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import mylib, { MyLib } from '../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
@@ -21,6 +21,7 @@ import { indexSimpleValIsPlayAnimations, indexSimpleValIsUseNativeKeyboard } fro
 import { indexMolecule, useAppFontFamilyAtom, useAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
+import { isSecretChatsShowInBottomMenuAtom, SecretChatsIcon } from '../main/secret-chat/complect';
 import { Visitor } from './Visitor';
 import { Visits } from './Visits';
 
@@ -50,6 +51,7 @@ export default function IndexSettings() {
   const [expands, setExpands] = useState<(AppName | '')[]>([]);
   const [appFontFamily, setAppFontFamily] = useAppFontFamilyAtom();
   const connectionNode = useConnectionState('margin-gap');
+  const [isShowSecretChatsInBottom, setIsShowSecretChatsInBottom] = useAtom(isSecretChatsShowInBottomMenuAtom);
 
   useEffect(() => {
     soki.send({ subscribe: 'statistic' }, 'index');
@@ -76,6 +78,16 @@ export default function IndexSettings() {
         title="Взаимодействие"
       />
     </Link>,
+    <BrutalItem
+      icon={<SecretChatsIcon />}
+      title="Секретные чаты в нижнем меню"
+      box={
+        <IconCheckbox
+          checked={isShowSecretChatsInBottom}
+          onChange={setIsShowSecretChatsInBottom}
+        />
+      }
+    />,
     <BrutalItem
       icon={<IconKeyboardStrokeRounded />}
       title="Фирменная клавиатура"

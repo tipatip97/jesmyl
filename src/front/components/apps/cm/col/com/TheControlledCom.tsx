@@ -3,14 +3,15 @@ import { useSearchParams } from 'react-router-dom';
 import styled, { css, RuleSet } from 'styled-components';
 import { useAtomValue } from '../../../../../complect/atoms';
 import { backSwipableContainerMaker } from '../../../../../complect/backSwipableContainerMaker';
+import { addEventListenerPipe, hookEffectPipe } from '../../../../../complect/hookEffectPipe';
 import { ChordVisibleVariant } from '../../Cm.model';
 import RollControled from '../../base/RolledContent';
 import { cmComFontSizeAtom, cmMolecule } from '../../molecules';
 import { Com } from './Com';
 import './Com.scss';
 import TheCom from './TheCom';
-import { useComCommentBlock as useComBlockComment } from './complect/comment-parser/useComCommentBlock';
-import { addEventListenerPipe, hookEffectPipe } from '../../../../../complect/hookEffectPipe';
+import TheComComment from './complect/comment-parser/TheComComment';
+import { useComCommentBlockCss } from './complect/comment-parser/useComCommentBlock';
 
 let onPrevCom: () => void;
 let onNextCom: () => void;
@@ -36,7 +37,7 @@ export default function TheControlledCom({
   const isMiniAnchor = useAtomValue(isMiniAnchorAtom);
   const listRef = useRef<HTMLDivElement>(null);
   const [, setSearchParams] = useSearchParams();
-  const { commentStyles, commentBlockNode } = useComBlockComment(com);
+  const commentCss = useComCommentBlockCss(com);
 
   onNextCom = () => {
     if (!comList?.length) return;
@@ -77,7 +78,7 @@ export default function TheControlledCom({
 
   return (
     <StyledRollControled
-      $commentStyles={commentStyles}
+      $commentStyles={commentCss}
       className="composition-content"
     >
       <WithScrollProgress
@@ -92,7 +93,7 @@ export default function TheControlledCom({
           isMiniAnchor={isMiniAnchor}
           listRef={listRef}
         />
-        {commentBlockNode}
+        <TheComComment comw={com.wid} />
       </WithScrollProgress>
     </StyledRollControled>
   );

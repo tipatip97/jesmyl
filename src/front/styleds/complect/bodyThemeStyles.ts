@@ -9,7 +9,7 @@ const lightColors = (selector: string) => css`
   --color--4: #414840;
   --color--5: #fbfdf8;
   --color--6: #f8fbf4;
-  --color--7: #336a4a;
+  --color--7: #2d995a;
   --color--8: #fbfdf8;
   --color--ok: #47bb00;
   --color--ko: #ec6969;

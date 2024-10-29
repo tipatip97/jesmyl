@@ -94,3 +94,19 @@ const ecransEncoderReplacer = (all: string) => {
 };
 
 const baseHeadersReplacer = (_all: string, $1: string, $2: string) => tags[$1][0] + $2 + tags[$1][1];
+
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+// #region mini funcs
+////////////////////////////////////////////////
+////////////////////////////////////////////////
+
+const itIt = (it: unknown) => it;
+const isNIs = (is: boolean) => is;
+const emptyFunc = () => {};
+const retUnd = () => undefined;
+const retNull = () => null;
+const itNNull = (it: unknown) => it !== null;
+const itNNil = (it: unknown) => it != null;
+
+export { emptyFunc, isNIs, itIt, itNNil, itNNull, retNull, retUnd };

@@ -58,6 +58,7 @@ export class SokiTrip {
   isConnected = false;
   authListeners: EventerListeners<boolean> = [];
   eventListeners: EventerValueListeners<SokiEvent<any>> = [];
+  eventValuesOnDelay: Record<string, unknown> = {};
 
   private responseWaiters: ResponseWaiter[] = [];
   private subscriptions: Partial<Record<SokiSubscribtionName, SokiClientEventBody>> = {};
@@ -178,8 +179,15 @@ export class SokiTrip {
             molecule.saveFreshContents(event.freshUserContents);
           }
 
-          if (event.secretMessage) {
-            Eventer.invokeValue(this.eventListeners, { key: 'secretMessage', value: event.secretMessage });
+          if (event.secretMessage || event.secretMessages) {
+            this.eventValuesOnDelay['secretMessages'] = event.secretMessage
+              ? [event.secretMessage]
+              : event.secretMessages;
+
+            Eventer.invokeValue(this.eventListeners, {
+              key: 'secretMessages',
+              value: this.eventValuesOnDelay['secretMessages'],
+            });
           }
         }
       } catch (e) {}
@@ -222,7 +230,7 @@ export class SokiTrip {
     this.send(
       {
         pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5],
-        userContents: auth.login ? this.molecules[appName]?.makeServerStoreSequest() : undefined,
+        userContents: auth.login ? this.molecules[appName]?.makeServerStoreRequest() : undefined,
       },
       appName,
     ).on(event => event.pull && this.updatedPulledData(event.pull));
@@ -336,6 +344,10 @@ export class SokiTrip {
   };
 
   listenEvent<Key extends keyof SokiServerEvent>(key: Key, cb: EventerValueCallback<SokiServerEvent[Key]>) {
+    if (this.eventValuesOnDelay[key] !== undefined) {
+      cb(this.eventValuesOnDelay[key] as never);
+      delete this.eventValuesOnDelay[key];
+    }
     return Eventer.listenValue(this.eventListeners, event => key === event.key && cb(event.value));
   }
 }

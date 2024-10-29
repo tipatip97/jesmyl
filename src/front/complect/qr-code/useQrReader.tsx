@@ -1,6 +1,7 @@
 import QrScanner from 'qr-scanner';
 import { useEffect, useRef } from 'react';
-import Portal from '../popups/[complect]/Portal';
+import styled from 'styled-components';
+import { FullContent } from '../fullscreen-content/FullContent';
 import { useActualRef } from '../useActualRef';
 
 interface Props {
@@ -21,17 +22,24 @@ export const QrReader = ({ facingMode = 'environment', onReadData, onClose }: Pr
     });
     qrScanner.start();
 
-    return () => qrScanner.stop();
+    return () => {
+      qrScanner.pause();
+    };
   }, [facingMode, onReadDataRef]);
 
   return (
-    <Portal>
-      <div
-        className="bgcolor--1 flex center full-size"
-        onClick={() => onClose(false)}
-      >
-        <video ref={videoRef} />
+    <FullContent
+      onClose={onClose}
+      className=" "
+      closable
+    >
+      <div className="bgcolor--1 flex center full-size">
+        <StyledVideo ref={videoRef} />
       </div>
-    </Portal>
+    </FullContent>
   );
 };
+
+const StyledVideo = styled.video`
+  height: 100vmax;
+`;

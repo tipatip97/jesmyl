@@ -94,7 +94,10 @@
     const prefixMiddle = 'R-A-12370450-';
     const prefix = `yandex_rtb_${prefixMiddle}`;
 
-    Array.from({ length: +localStorage.countOfAdvertisingBanners || 30 }, () => null).forEach((_null, numi) => {
+    Array.from(
+      { length: localStorage.countOfAdvertisingBanners == null ? 30 : +localStorage.countOfAdvertisingBanners },
+      () => null,
+    ).forEach((_null, numi) => {
       const renderTo = `${prefix}${numi + 1}`;
       const blockId = `${prefixMiddle}${numi + 1}`;
 

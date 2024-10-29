@@ -1,6 +1,6 @@
 import QRCodeGenerator from 'qrcode';
 import { HTMLAttributes } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export default function QRCode({ text, ...props }: HTMLAttributes<HTMLCanvasElement> & { text: string }) {
   return (
@@ -22,8 +22,24 @@ export default function QRCode({ text, ...props }: HTMLAttributes<HTMLCanvasElem
   );
 }
 
+const setMedia = (theme: 'dark' | 'light', invert: 0 | 1) => {
+  return css`
+    @media (prefers-color-scheme: ${theme}) {
+      filter: contrast(10) ${invert ? ` invert(${invert})` : ''};
+    }
+  `;
+};
+
 const StyledCanvas = styled.canvas`
-  &.qr-code {
-    filter: contrast(10);
+  filter: contrast(10);
+
+  :root body.reverse-theme & {
+    ${setMedia('dark', 0)}
+    ${setMedia('light', 1)}
+  }
+
+  & {
+    ${setMedia('dark', 1)}
+    ${setMedia('light', 0)}
   }
 `;

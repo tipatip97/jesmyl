@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { TheIconLoading } from './IconLoading';
 
 interface Props {
@@ -6,7 +5,7 @@ interface Props {
   isLoading: boolean;
 }
 
-export default memo(function ContentOnLoad({ children, isLoading }: Props) {
+export default function ContentOnLoad({ children, isLoading }: Props) {
   return (
     <div className="relative">
       <div className={isLoading ? ' fade-03' : undefined}>{children}</div>
@@ -17,4 +16,4 @@ export default memo(function ContentOnLoad({ children, isLoading }: Props) {
       )}
     </div>
   );
-});
+}

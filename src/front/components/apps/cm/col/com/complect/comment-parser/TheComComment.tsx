@@ -11,14 +11,13 @@ import { IconEdit01StrokeRounded } from '../../../../../../../complect/the-icon/
 import { IconMessageQuestionStrokeRounded } from '../../../../../../../complect/the-icon/icons/message-question';
 import { IconNote03StrokeRounded } from '../../../../../../../complect/the-icon/icons/note-03';
 import { cmMolecule } from '../../../../molecules';
-import TheComCommentInfo from './TheComCommentInfo';
+import { isComCommentRedactAtom } from './complect';
+import TheComCommentInfo from './infos/TheComCommentInfo';
 
 const callbackStopper: CallbackStopper = event => event.stopPropagation();
 
 interface Props {
   comw: CmComWid;
-  isRedact: boolean;
-  setIsRedact: (isRedact: boolean) => void;
 }
 
 const HashSwitcherIcon = IconNote03StrokeRounded;
@@ -26,11 +25,12 @@ const HashSwitcherIcon = IconNote03StrokeRounded;
 const comCommentsAtom = cmMolecule.select(s => s.comComments);
 const isShowConHashCommentsAtom = cmMolecule.select(s => s.isShowComHashComments);
 
-export default function TheComComment({ comw, isRedact, setIsRedact }: Props) {
+export default function TheComComment({ comw }: Props) {
   const [comments, setComments] = useAtom(comCommentsAtom);
   const [isShowConHashComments, setIsShowConHashComments] = useAtom(isShowConHashCommentsAtom);
   const [isShowInfoModal, setIsShowInfoModal] = useState(false);
   const [comment, setComment] = useState(comments[comw]);
+  const [isRedact, setIsRedact] = useAtom(isComCommentRedactAtom);
 
   useEffect(
     () =>
