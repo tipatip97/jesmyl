@@ -3,6 +3,42 @@ import styled from 'styled-components';
 import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
 import { IComLineProps } from '../order/Order.model';
 
+const insertDividedBits = (lettersText: string, chord: string | und) => {
+  if (chord == null || chord.length < 2) return <span dangerouslySetInnerHTML={{ __html: lettersText }} />;
+
+  const text = lettersText.split(makeRegExp('/([а-яё][?!,.)-:;]?)/'));
+  const nodes = [];
+
+  for (let txti = 0; txti < text.length; txti++) {
+    if (!text[txti]) continue;
+
+    nodes.push(
+      <span
+        key={0}
+        dangerouslySetInnerHTML={{ __html: text[txti] }}
+      />,
+      <span
+        key={1}
+        className="dash-divider"
+      >
+        {' - '}
+      </span>,
+    );
+
+    text[txti] = '';
+    break;
+  }
+
+  nodes.push(
+    <span
+      key={2}
+      dangerouslySetInnerHTML={{ __html: text.join('') }}
+    />,
+  );
+
+  return <span>{nodes}</span>;
+};
+
 export default function ComLine(props: IComLineProps) {
   const className = `composition-line line-num-${props.textLinei}`;
 
@@ -53,7 +89,7 @@ export default function ComLine(props: IComLineProps) {
     wordsNodes.push(
       <span
         key={index}
-        className="nowrap"
+        className="nowrap whole-word"
       >
         {wordBitNodes}
       </span>,
@@ -79,11 +115,7 @@ export default function ComLine(props: IComLineProps) {
     const pchord = isLast && isHasPost ? chordsLabels[chordsLabels.length - 1] : null;
 
     const baseTextBitOriginal = props.textLine.slice(index, indexa[indexi + 1]);
-    const origBits = baseTextBitOriginal
-      .split(makeRegExp('/ +/g'))
-      .map((txt, txti) => (
-        <React.Fragment key={txti}>{txt && <span dangerouslySetInnerHTML={{ __html: txt }} />}</React.Fragment>
-      ));
+    // const origWords = baseTextBitOriginal.split(makeRegExp('/ +/g')); // /([а-яё])/
 
     let firstBitNode: ReactNode = firstTextBit !== '' && (
       <span
@@ -124,10 +156,14 @@ export default function ComLine(props: IComLineProps) {
               attr-chord={chord}
               attr-pchord={pchord}
             >
-              {origBits}
+              {insertDividedBits(baseTextBitOriginal, chord)}
             </span>
           ) : (
-            origBits
+            baseTextBitOriginal.split(makeRegExp('/ +/g')).map((txt, txti) => {
+              return (
+                <React.Fragment key={txti}>{txt && <span dangerouslySetInnerHTML={{ __html: txt }} />}</React.Fragment>
+              );
+            })
           )}
         </span>
       </React.Fragment>
@@ -212,6 +248,7 @@ const Line = styled.div`
           display: block;
           margin-top: -1em;
           color: transparent;
+          margin-right: 0.2em;
         }
       }
     }
@@ -261,6 +298,36 @@ const Line = styled.div`
         position: relative;
         top: -1em;
         margin-left: 0.2em;
+      }
+    }
+  }
+
+  .whole-word {
+    .dash-divider {
+      display: none;
+    }
+
+    [attr-chord] {
+      &:has(+ [attr-chord]) {
+        .fragment {
+          position: relative;
+          z-index: 20;
+
+          > span:has(span) {
+            display: inline-flex;
+            justify-content: space-between;
+            width: 100%;
+
+            .dash-divider {
+              display: inline-block;
+              color: var(--color--7);
+            }
+          }
+        }
+      }
+
+      + [attr-chord]:before {
+        color: var(--color--7);
       }
     }
   }
