@@ -8,7 +8,7 @@ import { setPolyfills } from './complect/polyfills';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { StyledGlobalStyles } from './styleds/styledGlobalStyles';
-import { styledDefaultTheme } from './styledTheme';
+import { styledDefaultTheme } from './styleds/styledTheme';
 
 export const renderApplication = (reactNode: ReactNode, node: HTMLElement | null) => {
   createRoot(node).render(

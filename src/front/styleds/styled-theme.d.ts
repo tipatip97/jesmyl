@@ -1,5 +1,5 @@
 import 'styled-components';
-import { StyledDefaultTheme } from './styleds/styledGlobalStyles';
+import { StyledDefaultTheme } from './styledGlobalStyles';
 
 declare module 'styled-components' {
   export interface DefaultTheme extends StyledDefaultTheme {}
