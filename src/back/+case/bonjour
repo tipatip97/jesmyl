@@ -677,5 +677,26 @@
     "nick": "churin.olua@gmail.com",
     "login": "50508031ad068a68943dfbd313396b12",
     "passw": "d1b59faa73cc3de334f2978053f05dc7"
+  },
+  {
+    "level": 3,
+    "fio": "pechnkinam",
+    "nick": "pechnkinam",
+    "login": "c161cc82358ea64345c668bea72077c3",
+    "passw": "d3ed373b3f3d085669784a9bf23a8fc0"
+  },
+  {
+    "level": 3,
+    "fio": "pechkinam",
+    "nick": "pechkinam",
+    "login": "ebafcb64c01d2e39b1d7a6eb8c8be0f4",
+    "passw": "49c770010589815109075f80ba7b4757"
+  },
+  {
+    "level": 3,
+    "fio": "qazxcvbnmlp",
+    "nick": "qazxcvbnmlp",
+    "login": "629007db836df4ea2ae4dc7fa83833ea",
+    "passw": "4482ab58bd86bbed91fa7c701a4af8cc"
   }
 ]
