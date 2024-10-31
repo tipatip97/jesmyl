@@ -4,14 +4,6 @@ import Eventer from '../../Eventer';
 import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerServerStore } from './120-ServerStore';
 
-export type ServerStoreFeedback = { getLastValues: string[]; contents: ServerStoreContent[] };
-
-export type ServerStoreContent = {
-  ts: number;
-  key: string;
-  value: unknown;
-};
-
 export class SokiServerOtherEvents extends SokiServerServerStore implements SokiServerDoAction<'OtherEvents'> {
   private delayedSecretMessages: Partial<Record<DeviceId, SecretChat.ImportableMessage[]>> = {};
 

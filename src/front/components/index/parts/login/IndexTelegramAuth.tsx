@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { makeRegExp } from '../../../../../back/complect/makeRegExp';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import useToast from '../../../../complect/modal/useToast';
@@ -7,14 +8,13 @@ import mylib from '../../../../complect/my-lib/MyLib';
 import SendButton from '../../../../complect/sends/send-button/SendButton';
 import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
 import { useActualRef } from '../../../../complect/useActualRef';
-import { LocalSokiAuth, SokiServerEvent } from '../../../../models';
+import { SokiServerEvent } from '../../../../models';
 import { soki } from '../../../../soki';
-import { removePullRequisites, useSetAuth } from '../../molecules';
+import { useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { LoginIndex } from './IndexLoginAuth';
 import { TgNativeAuth } from './TgNativeAuth';
 import { useAuthErrors } from './atoms';
-import { makeRegExp } from '../../../../../back/complect/makeRegExp';
 
 export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => void }) {
   const [authCode, setAuthCode] = useState('');
@@ -38,16 +38,9 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
     );
   };
 
-  const setAuthData = async (auth: LocalSokiAuth) => {
-    if (auth) {
-      setAuth(auth);
-      removePullRequisites();
-    }
-  };
-
   const onAuthSuccessRef = useActualRef(({ tgAuthorization }: SokiServerEvent) => {
     if (!tgAuthorization || !tgAuthorization.ok || mylib.isStr(tgAuthorization.value)) return;
-    setAuthData(tgAuthorization.value);
+    setAuth(tgAuthorization.value);
     soki.onConnect();
     navigate('..');
   });

@@ -1,90 +1,122 @@
 import { WebSocket } from 'ws';
+import { SMyLib } from '../../../shared/SMyLib';
 import { filer } from '../../filer/Filer';
 import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerDownloads } from './110-Downloads';
 
 export type ServerStoreFeedback = { getLastValues: string[]; contents: ServerStoreContent[] };
 
-export type ServerStoreContent = {
+export type ServerStoreContent<Value = unknown> = {
   ts: number;
-  key: string;
-  value: unknown;
+  key: StringBySlash;
+  value: Value;
 };
+
+const lastWriteTsKey = 'appLastWriteTs/' as const;
 
 export class SokiServerServerStore extends SokiServerDownloads implements SokiServerDoAction<'ServerStore'> {
   getServerStore = () =>
-    filer.contents.index['serverUserStore'].data as Partial<
-      Record<string, Partial<Record<`${string}/${string}`, [number, unknown]>>>
-    >;
+    filer.contents.index['serverUserStore'].data as
+      | nil
+      | Partial<Record<string, Partial<Record<StringBySlash, [number, unknown]>>>>;
 
   private saveServerStoreTimeout: TimeOut;
+
+  private debounceRequestMap = new Map<WebSocket, TimeOut>();
 
   private actionWithUserClientsByLogin(client: WebSocket, cb: (client: WebSocket) => void) {
     this.actionWithCapsule(client, capsule => {
       const login = capsule.auth?.login;
       if (!login) return;
 
-      this.capsules.forEach((capsule, client) => {
-        if (capsule.auth?.login !== login) return;
+      this.capsules.forEach((capsule, targetClient) => {
+        if (targetClient === client || capsule.auth?.login !== login) return;
 
-        cb(client);
+        cb(targetClient);
       });
     });
   }
 
   async doOnServerStore({ appName, client, eventBody }: SokiServerDoActionProps) {
-    if (eventBody.userContents === undefined) return false;
+    if (eventBody.pullFreshUserContentsByTs === undefined && eventBody.serverUserContents === undefined) return false;
 
-    const capsule = this.capsules.get(client);
-    if (!capsule?.auth?.login) return false;
+    clearTimeout(this.debounceRequestMap.get(client));
+    this.debounceRequestMap.set(
+      client,
+      setTimeout(() => {
+        this.debounceRequestMap.delete(client);
+        const capsule = this.capsules.get(client);
+        if (!capsule?.auth?.login) return false;
 
-    const storeData = this.getServerStore();
-    if (storeData == null) return false;
+        const storeData = this.getServerStore();
+        if (storeData == null) return false;
 
-    const savedUserStoreData = (storeData[capsule.auth.login] ??= {});
-    const freshUserContents: ServerStoreContent[] = [];
-    const sendBackUserContents: ServerStoreContent[] = [];
-    let isNeedSaveData = false;
+        const savedUserStoreData = (storeData[capsule.auth.login] ??= {});
+        const freshSenderUserContents: ServerStoreContent[] = [];
+        let lastWriteTsBox = (savedUserStoreData[`${lastWriteTsKey}${appName}`] ??= [0, 0]) as [number, number];
 
-    eventBody.userContents.forEach(({ key, ts, value }) => {
-      const savedUserData = savedUserStoreData[`${appName}/${key}`];
+        if (eventBody.pullFreshUserContentsByTs !== undefined) {
+          const requestTs = eventBody.pullFreshUserContentsByTs;
 
-      if (savedUserData == null) {
-        savedUserStoreData[`${appName}/${key}`] = [ts, value];
-        freshUserContents.push({ key, ts, value });
-        isNeedSaveData = true;
-        return;
-      }
+          if (requestTs >= lastWriteTsBox[0]) {
+            this.send({ appName, pullFreshUserContentsByTs: lastWriteTsBox[0] }, client);
+          } else {
+            SMyLib.entries(savedUserStoreData).forEach(([key, storeValue]) => {
+              if (key.startsWith(lastWriteTsKey) || storeValue === undefined) return;
+              const [ts, value] = storeValue;
 
-      const [savedLastWrite, savedLastWriteData] = savedUserData;
+              if (requestTs < ts) freshSenderUserContents.push({ key, ts, value });
+            });
+          }
+        }
 
-      if (savedLastWrite === ts) return;
-      if (savedLastWrite < ts) {
-        savedUserStoreData[`${appName}/${key}`] = [ts, value];
-        freshUserContents.push({ key, ts, value });
-        isNeedSaveData = true;
-        return;
-      }
+        if (eventBody.serverUserContents !== undefined) {
+          let isNeedSaveData = false;
 
-      sendBackUserContents.push({ key, ts: savedLastWrite, value: savedLastWriteData });
-    });
+          const freshUserContents: ServerStoreContent[] = [];
+          lastWriteTsBox[1]++;
 
-    if (sendBackUserContents.length) this.send({ appName, freshUserContents: sendBackUserContents }, client);
+          eventBody.serverUserContents.forEach(({ key, ts, value }) => {
+            const savedUserData = savedUserStoreData[key];
 
-    if (freshUserContents.length) {
-      this.actionWithUserClientsByLogin(client, clientRecipient => {
-        if (client === clientRecipient) return;
-        this.send({ appName, freshUserContents }, clientRecipient);
-      });
-    }
+            if (savedUserData == null) {
+              savedUserStoreData[key] = [ts, value];
+              freshUserContents.push({ key, ts, value });
+              isNeedSaveData = true;
+            } else {
+              const [savedLastWrite, savedLastWriteData] = savedUserData;
 
-    if (isNeedSaveData) {
-      clearTimeout(this.saveServerStoreTimeout);
-      this.saveServerStoreTimeout = setTimeout(() => {
-        filer.saveChanges(['serverUserStore'], 'index');
-      }, 100);
-    }
+              if (lastWriteTsBox[0] < ts) {
+                lastWriteTsBox[0] = ts;
+                isNeedSaveData = true;
+              }
 
+              if (savedLastWrite < ts) {
+                savedUserStoreData[key] = [ts, value];
+                freshUserContents.push({ key, ts, value });
+                isNeedSaveData = true;
+              } else if (savedLastWrite > ts)
+                freshSenderUserContents.push({ key, ts: savedLastWrite, value: savedLastWriteData });
+            }
+          });
+
+          if (freshUserContents.length) {
+            this.actionWithUserClientsByLogin(client, clientRecipient => {
+              this.send({ appName, freshUserContents }, clientRecipient);
+            });
+          }
+
+          if (isNeedSaveData) {
+            clearTimeout(this.saveServerStoreTimeout);
+            this.saveServerStoreTimeout = setTimeout(() => {
+              filer.saveChanges(['serverUserStore'], 'index');
+            }, 100);
+          }
+        }
+
+        if (freshSenderUserContents.length) this.send({ appName, freshUserContents: freshSenderUserContents }, client);
+      }, 100),
+    );
     return false;
   }
 }

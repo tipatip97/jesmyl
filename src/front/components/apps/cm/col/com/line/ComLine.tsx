@@ -311,7 +311,6 @@ const Line = styled.div`
       &:has(+ [attr-chord]) {
         .fragment {
           position: relative;
-          z-index: 20;
 
           > span:has(span) {
             display: inline-flex;

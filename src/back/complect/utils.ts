@@ -101,7 +101,7 @@ const baseHeadersReplacer = (_all: string, $1: string, $2: string) => tags[$1][0
 ////////////////////////////////////////////////
 ////////////////////////////////////////////////
 
-const itIt = (it: unknown) => it;
+const itIt = <It = unknown>(it: It) => it;
 const isNIs = (is: boolean) => is;
 const emptyFunc = () => {};
 const retUnd = () => undefined;

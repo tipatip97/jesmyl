@@ -3,7 +3,7 @@ import mylib from '../my-lib/MyLib';
 
 const storages: Record<string, JStorage<any>> = {};
 const emptyFunc = () => {};
-const registered = new Set<`${string}/${string}`>();
+const registered = new Set<StringBySlash>();
 
 export class Atom<
   Value,
@@ -77,8 +77,7 @@ export class Atom<
     isRejectValueSetForServerUserStoreCallbackInvoke?: boolean,
   ) => {
     const val = mylib.isFunc(value) ? value(this.value) : value;
-
-    if (val === undefined || (mylib.isNum(val) && isNaN(val))) return;
+    if (val === this.value || val === undefined || (typeof val === 'number' && isNaN(val))) return;
 
     this.onValueChange?.(val);
     this.justSet(val);

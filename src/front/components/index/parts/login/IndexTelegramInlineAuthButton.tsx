@@ -6,7 +6,7 @@ import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconAuthorizedStrokeRounded } from '../../../../complect/the-icon/icons/authorized';
 import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
 import { soki } from '../../../../soki';
-import { removePullRequisites, useSetAuth } from '../../molecules';
+import { useSetAuth } from '../../molecules';
 
 export const IndexTelegramInlineAuthButton = () => {
   const setAuth = useSetAuth();
@@ -36,7 +36,6 @@ export const IndexTelegramInlineAuthButton = () => {
                           if (!tgAuthorization || !tgAuthorization.ok || mylib.isStr(tgAuthorization.value)) return;
 
                           setAuth(tgAuthorization.value);
-                          removePullRequisites();
                           soki.onConnect();
                         });
                     }}

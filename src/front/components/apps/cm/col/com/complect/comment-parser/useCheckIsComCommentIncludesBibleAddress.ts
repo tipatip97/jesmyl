@@ -1,18 +1,17 @@
-import { useAtomValue } from '../../../../../../../complect/atoms';
-import { cmMolecule } from '../../../../molecules';
+import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
+import { useComComment } from '../../../../molecules';
 import { Com } from '../../Com';
 import { ComBlockCommentMakerCleans } from './Cleans';
 
-const comCommentsAtom = cmMolecule.select(s => s.comComments);
 let isWasOpenComWithBibleAddressInComment = false;
 
 export const useCheckIsComCommentIncludesBibleAddress = (com: Com | und) => {
-  const comments = useAtomValue(comCommentsAtom);
+  const [comment] = useComComment(com?.wid ?? CmComWid.def);
 
   if (isWasOpenComWithBibleAddressInComment) return true;
 
   isWasOpenComWithBibleAddressInComment = !!(
-    com && comments[com.wid]?.match(ComBlockCommentMakerCleans.firstCommentBibleAddressRegExp)
+    com && comment?.match(ComBlockCommentMakerCleans.firstCommentBibleAddressRegExp)
   );
 
   return isWasOpenComWithBibleAddressInComment;

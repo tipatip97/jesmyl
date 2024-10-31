@@ -29,9 +29,6 @@ const config: FilerAppConfig = {
     eeStorage: {
       level: 50,
     },
-    execs: {
-      level: 100,
-    },
   },
   actions: Executer.prepareActionList({
     '/chordTracks': {

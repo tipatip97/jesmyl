@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useAtom, useAtomValue } from '../../../../../../../complect/atoms';
-import { cmMolecule } from '../../../../molecules';
+import { cmMolecule, useComComment } from '../../../../molecules';
 import { Com } from '../../Com';
 import { ComBlockCommentMakerCleans } from './Cleans';
 import { isComCommentRedactAtom } from './complect';
@@ -8,20 +8,18 @@ import { useComBlockCommentCssStyles } from './useComBlockCommentCssStyles';
 import { useComBlockCommentUpdateBlockNames } from './useComBlockCommentUpdateBlockNames';
 
 const isShowConHashCommentsAtom = cmMolecule.select(s => s.isShowComHashComments);
-const comCommentsAtom = cmMolecule.select(s => s.comComments);
 
 export const useComCommentBlockCss = (com: Com) => {
   const [isRedact, setIsRedact] = useAtom(isComCommentRedactAtom);
-  const [comments, setComments] = useAtom(comCommentsAtom);
-  const comComment = com && comments[com.wid];
+  const [comment, setComment] = useComComment(com.wid);
 
   const visibleOrders = useMemo(() => {
-    return com?.orders?.filter(ComBlockCommentMakerCleans.withHeaderTextOrderFilter);
-  }, [com?.orders]);
+    return com.orders?.filter(ComBlockCommentMakerCleans.withHeaderTextOrderFilter);
+  }, [com.orders]);
 
-  const styles = useComBlockCommentCssStyles(com, visibleOrders, comComment);
+  const styles = useComBlockCommentCssStyles(com, visibleOrders, comment);
 
-  useComBlockCommentUpdateBlockNames(com, visibleOrders, isRedact, comComment, setComments);
+  useComBlockCommentUpdateBlockNames(com, visibleOrders, isRedact, comment, setComment);
 
   useEffect(() => setIsRedact(false), [com, setIsRedact]);
 

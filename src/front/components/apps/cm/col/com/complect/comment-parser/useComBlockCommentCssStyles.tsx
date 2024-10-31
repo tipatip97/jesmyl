@@ -10,7 +10,7 @@ import { Order } from '../../order/Order';
 import { ComBlockCommentMakerCleans } from './Cleans';
 
 export const useComBlockCommentCssStyles = (com: nil | Com, visibleOrders: Order[] | und, comment: string | nil) => {
-  const comComment = useDebounceValue(comment, 600);
+  const comComment = useDebounceValue(comment, 400);
   const [fastStyles, setFastStyles] = useState<string | null>(null);
   const [styles, setStyles] = useState<RuleSet<object> | ''>('');
   const translates = useBibleTranslatesContext();

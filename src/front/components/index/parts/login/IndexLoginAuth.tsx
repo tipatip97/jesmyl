@@ -53,8 +53,6 @@ export default function IndexLoginAuth() {
 
   const setAuthData = async (auth: LocalSokiAuth) => {
     setAuth(auth);
-    // setCurrentApp('cm');
-    removePullRequisites();
     soki.onConnect();
   };
 

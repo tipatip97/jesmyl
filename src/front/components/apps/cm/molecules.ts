@@ -1,17 +1,29 @@
+import { CmComWid } from '../../../../back/apps/cm/Cm.enums';
 import { atom, Molecule } from '../../../complect/atoms';
+import { FractionalServerStore } from '../../../complect/atoms/FractionalServerStore';
 import { CmState } from './Cm.model';
 import { CmEditorStoraged } from './editor/CmEditor.model';
 import { defaultCmConfig } from './translation/complect/controlled/hooks/configs';
 
+export const comCommentFractionalStore = new FractionalServerStore<CmComWid, string | und>(
+  'cm/comComment::',
+  'cm/comCommentLastTs:',
+  '',
+);
+export const useComComment = comCommentFractionalStore.useValue;
+
 export const cmMolecule = new Molecule<CmState & CmEditorStoraged>(
   {
+    chordTracks: {},
+    cols: null,
+    meetings: { contexts: [] },
+
     chordVisibleVariant: 0,
     laterComwList: [],
     isMiniAnchor: false,
     playerHideMode: 'min',
     marks: [],
     comFontSize: 15,
-    chordTracks: {},
     comTopTools: ['mark-com', 'fullscreen-mode', 'chords-variant'],
     translationScreenConfigs: [defaultCmConfig],
     comComments: {},
@@ -19,11 +31,8 @@ export const cmMolecule = new Molecule<CmState & CmEditorStoraged>(
     metronomeAccentes: '1000',
     metronomeMainSound: '380',
     metronomeSecondarySound: '200',
-    cols: null,
-    meetings: { contexts: [] },
     eventContext: [],
     isShowComHashComments: false,
-
     speedRollKf: 10,
     favoriteMeetings: { contexts: [], events: [] },
 
@@ -34,7 +43,8 @@ export const cmMolecule = new Molecule<CmState & CmEditorStoraged>(
   },
   'cm',
   {
-    serverStored: ['marks', 'comComments', 'favoriteMeetings'],
+    serverStored: ['marks', 'favoriteMeetings', 'comComments', 'comTopTools'],
+    dynamicStores: { ...comCommentFractionalStore.self },
   },
 );
 

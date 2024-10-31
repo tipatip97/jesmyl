@@ -10,7 +10,7 @@ import { IconCheckmarkCircle02StrokeRounded } from '../../../../../../../complec
 import { IconEdit01StrokeRounded } from '../../../../../../../complect/the-icon/icons/edit-01';
 import { IconMessageQuestionStrokeRounded } from '../../../../../../../complect/the-icon/icons/message-question';
 import { IconNote03StrokeRounded } from '../../../../../../../complect/the-icon/icons/note-03';
-import { cmMolecule } from '../../../../molecules';
+import { cmMolecule, useComComment } from '../../../../molecules';
 import { isComCommentRedactAtom } from './complect';
 import TheComCommentInfo from './infos/TheComCommentInfo';
 
@@ -22,27 +22,26 @@ interface Props {
 
 const HashSwitcherIcon = IconNote03StrokeRounded;
 
-const comCommentsAtom = cmMolecule.select(s => s.comComments);
 const isShowConHashCommentsAtom = cmMolecule.select(s => s.isShowComHashComments);
 
 export default function TheComComment({ comw }: Props) {
-  const [comments, setComments] = useAtom(comCommentsAtom);
+  const [comment, setComment] = useComComment(comw);
   const [isShowConHashComments, setIsShowConHashComments] = useAtom(isShowConHashCommentsAtom);
   const [isShowInfoModal, setIsShowInfoModal] = useState(false);
-  const [comment, setComment] = useState(comments[comw]);
+  const [editedComment, setEditedComment] = useState(comment);
   const [isRedact, setIsRedact] = useAtom(isComCommentRedactAtom);
 
   useEffect(
     () =>
-      setComments(prev => {
-        if (prev[comw] === comment || (!prev[comw] && !comment)) return prev;
-        return { ...prev, [comw]: comment || undefined };
+      setComment(prev => {
+        if (prev === editedComment || (!prev && !editedComment)) return prev;
+        return editedComment || undefined;
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [comment],
+    [editedComment],
   );
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setComment(comments[comw]), [isRedact, comw]);
+  useEffect(() => setEditedComment(comment), [isRedact]);
 
   return (
     <>
@@ -79,12 +78,12 @@ export default function TheComComment({ comw }: Props) {
           multiline
           withoutCloseButton
           className="full-width bgcolor--2"
-          value={comment}
-          onChange={setComment}
+          value={editedComment}
+          onChange={setEditedComment}
           onKeyDown={callbackStopper}
         />
       ) : (
-        <div className="white-pre-line padding-big-gap-b">{comments[comw]}</div>
+        <div className="white-pre-line padding-big-gap-b">{comment}</div>
       )}
     </>
   );

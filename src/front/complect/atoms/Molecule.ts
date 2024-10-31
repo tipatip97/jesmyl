@@ -1,15 +1,24 @@
 import { MoleculeOptions } from '.';
 import { ServerStoreContent } from '../../../back/complect/soki/parts/120-ServerStore';
-import { retUnd } from '../../../back/complect/utils';
+import { emptyFunc, retUnd } from '../../../back/complect/utils';
 import { AppName, getAppNameFromString } from '../../app/App.model';
 import { JStorage } from '../JStorage';
 import { MyLib } from '../my-lib/MyLib';
 import { Atom } from './AnAtom';
 
-const serverSavedKeyPrefix = 'lastWrite:';
+const serverStoreValueLastWriteTsKeyPrefix = 'lastWrite:';
+const appLastWriteTsLsPrefix = 'lastAppWriteTs/';
+const dynamicStorePrefixes = new Set<string>();
+const dynamicStoreSeparator = '::';
+
 export const removeMoleculeServerSavedItemTimesFromLocalStorage = () => {
   MyLib.keys(localStorage as Record<string, string>).forEach(key => {
-    if (key.startsWith(serverSavedKeyPrefix)) localStorage.removeItem(key);
+    if (key.startsWith(serverStoreValueLastWriteTsKeyPrefix)) localStorage.removeItem(key);
+    if (key.startsWith(appLastWriteTsLsPrefix)) localStorage.removeItem(key);
+
+    dynamicStorePrefixes.forEach(prefix => {
+      if (key.startsWith(prefix)) localStorage.removeItem(key);
+    });
   });
 };
 
@@ -22,10 +31,11 @@ export class Molecule<
   private newAtom: <Key extends keyof T>(key: Key) => Atom<T[Key]>;
   private keys: (keyof T)[] = [];
 
-  makeServerStoreRequest: () => ServerStoreContent[] | und;
-  private getLastWtiteLocalStorageItemName: (key: keyof T) => string;
+  getLastAppWriteTs: () => number | und = retUnd;
 
   onServerStorageValueSend = (_contents: ServerStoreContent[], _appName: AppName) => {};
+  saveFreshContents: (contents: ServerStoreContent[]) => void = retUnd;
+  collectFreshServerStoreContents: (ts: number) => ServerStoreContent[] | und = retUnd;
 
   constructor(
     values: Required<{ [Key in keyof T]: T[Key] | Atom<T[Key]> }>,
@@ -34,9 +44,126 @@ export class Molecule<
   ) {
     new JStorage(storageName);
 
-    this.getLastWtiteLocalStorageItemName = key => `${serverSavedKeyPrefix}${storageName}/${key as string}`;
+    const appName = getAppNameFromString(storageName);
+    let onAtomValueSetForServerUserStore: (key: keyof T) => ((value: unknown) => void) | und = retUnd;
 
-    const serverStored = options?.serverStored || [];
+    this.newAtom = key => (this.atoms[key] = new Atom(undefined as never, storageName, key as string) as never)!;
+    const serverStoredSet = new Set(options?.serverStored);
+
+    if (appName && (serverStoredSet.size || options?.dynamicStores)) {
+      const dynamicStores = options?.dynamicStores;
+
+      const makeStringBySlashFromKey = (key: keyof T) => `${storageName}/${key as string}` as const;
+      const takeKeyFromStringBySlash = (str: StringBySlash) => str.slice(storageName.length + 1) as keyof T;
+
+      const appLastTsKey = `${appLastWriteTsLsPrefix}${appName}` as const;
+      const appLastWriteTs = (setTs?: number) => {
+        if (setTs !== undefined) localStorage[appLastTsKey] = setTs;
+
+        return +localStorage[appLastTsKey] || 0;
+      };
+
+      const serverStoreValueLastWriteTs = (key: StringBySlash, ts?: number) => {
+        if (ts !== undefined) localStorage[`${serverStoreValueLastWriteTsKeyPrefix}${key}`] = ts;
+
+        return +localStorage[`${serverStoreValueLastWriteTsKeyPrefix}${key}`] || 0;
+      };
+
+      this.getLastAppWriteTs = appLastWriteTs;
+
+      MyLib.values(dynamicStores).forEach(store => {
+        let sendTimeout: TimeOut;
+
+        if (store.contentValuePrefix) dynamicStorePrefixes.add(store.contentValuePrefix);
+        if (store.lastWriteTsPrefix) dynamicStorePrefixes.add(store.lastWriteTsPrefix);
+
+        store.updateServerStoreContent = content => {
+          appLastWriteTs(content.ts);
+
+          clearTimeout(sendTimeout);
+          sendTimeout = setTimeout(() => {
+            this.onServerStorageValueSend([content], appName);
+          }, 1000);
+        };
+      });
+
+      const saveServerStoreContentValue = (content: ServerStoreContent) => {
+        if (content.ts > serverStoreValueLastWriteTs(content.key)) {
+          this.take(takeKeyFromStringBySlash(content.key)).set(content.value as never, false, true);
+          serverStoreValueLastWriteTs(content.key, content.ts);
+        }
+      };
+
+      const updateLastAppWriteTs = (contents: ServerStoreContent[]) => {
+        let maxAppLastTs = 0;
+
+        for (const content of contents) if (maxAppLastTs < content.ts) maxAppLastTs = content.ts;
+
+        if (maxAppLastTs) appLastWriteTs(maxAppLastTs);
+      };
+
+      if (dynamicStores) {
+        const saveFractionalOrServerStoreContentValue = (content: ServerStoreContent) => {
+          const parts = content.key.split(dynamicStoreSeparator);
+
+          if (parts.length > 1) {
+            dynamicStores[`${parts[0]}${dynamicStoreSeparator}`]?.onFreshServerStoreContentChange(content);
+            return;
+          }
+
+          saveServerStoreContentValue(content);
+        };
+
+        this.saveFreshContents = contents => {
+          contents.forEach(saveFractionalOrServerStoreContentValue);
+          updateLastAppWriteTs(contents);
+        };
+      } else {
+        this.saveFreshContents = contents => {
+          contents.forEach(saveServerStoreContentValue);
+          updateLastAppWriteTs(contents);
+        };
+      }
+
+      const insertServerStored = serverStoredSet.size
+        ? (ts: number, contents: ServerStoreContent[]) => {
+            serverStoredSet.forEach(key => {
+              const localTs = serverStoreValueLastWriteTs(makeStringBySlashFromKey(key));
+
+              if (!localTs || localTs <= ts) return;
+
+              contents.push({ ts, key: makeStringBySlashFromKey(key), value: this.get(key) });
+            });
+          }
+        : emptyFunc;
+
+      const insertFractionalStores = dynamicStores
+        ? (ts: number, contents: ServerStoreContent[]) => {
+            MyLib.values(dynamicStores).forEach(store => store.insertContents(ts, contents));
+          }
+        : emptyFunc;
+
+      this.collectFreshServerStoreContents = ts => {
+        const contents: ServerStoreContent[] = [];
+
+        insertServerStored(ts, contents);
+        insertFractionalStores(ts, contents);
+
+        return contents;
+      };
+
+      let sendTimeout: TimeOut;
+      onAtomValueSetForServerUserStore = key => value => {
+        const ts = serverStoreValueLastWriteTs(makeStringBySlashFromKey(key), Date.now());
+
+        appLastWriteTs(ts);
+
+        clearTimeout(sendTimeout);
+        sendTimeout = setTimeout(() => {
+          this.onServerStorageValueSend([{ key: `${appName}/${key as string}`, ts, value }], appName);
+        }, 1000);
+      };
+    }
 
     this.atoms = {
       ...MyLib.entries(values).reduce((atoms: Atoms, [key, value]) => {
@@ -45,40 +172,13 @@ export class Molecule<
         const atom = ((atoms as any)[key] =
           value instanceof Atom ? value : new Atom(value, storageName, key as string));
 
-        if (serverStored.includes(key)) {
-          const appName = getAppNameFromString(storageName);
-
-          if (appName !== null) {
-            let sendTimeout: TimeOut;
-
-            atom.onValueSetForServerUserStore = (value: unknown) => {
-              const ts = (localStorage[this.getLastWtiteLocalStorageItemName(key)] = Date.now());
-
-              clearTimeout(sendTimeout);
-              sendTimeout = setTimeout(() => {
-                this.onServerStorageValueSend([{ key: key as string, ts, value }], appName);
-              }, 1000);
-            };
-          }
+        if (serverStoredSet.has(key)) {
+          atom.onValueSetForServerUserStore = onAtomValueSetForServerUserStore(key);
         }
 
         return atoms;
       }, {} as Atoms),
     };
-
-    this.newAtom = key => (this.atoms[key] = new Atom(undefined as never, storageName, key as string) as never)!;
-
-    this.makeServerStoreRequest = serverStored
-      ? () => {
-          return serverStored.map((key): ServerStoreContent => {
-            return {
-              key: key as string,
-              ts: this.getServerStoreContentValueWritten(key),
-              value: this.get(key),
-            };
-          }, {});
-        }
-      : retUnd;
   }
 
   set = <Key extends keyof T>(key: Key, value: T[Key]) =>
@@ -98,34 +198,4 @@ export class Molecule<
   };
 
   getValues = () => this.keys.reduce(this.reduceKeyValues, {} as T);
-
-  saveFreshContents(
-    contents: {
-      key: string;
-      ts: number;
-      value: unknown;
-    }[],
-  ) {
-    contents.forEach(({ key, value, ts }) => {
-      const incomingKey = key as keyof T;
-      if (ts > this.getServerStoreContentValueWritten(incomingKey)) {
-        this.take(incomingKey).set(value as never, false, true);
-        localStorage[this.getLastWtiteLocalStorageItemName(key as never)] = ts;
-      }
-    });
-  }
-
-  private getServerStoreContentValueWritten(key: keyof T) {
-    return +localStorage[this.getLastWtiteLocalStorageItemName(key)] || 0;
-  }
-
-  prepareFreshContents(keys: (keyof T)[]) {
-    return keys.map((key): { key: string; ts: number; value: unknown } => {
-      return {
-        ts: this.getServerStoreContentValueWritten(key),
-        key: key as string,
-        value: this.get(key),
-      };
-    });
-  }
 }

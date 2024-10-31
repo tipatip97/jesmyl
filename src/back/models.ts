@@ -98,6 +98,7 @@ declare global {
   type intStr = `${'-' | ''}${number}`;
   type doubleStr = `${intStr}.${number}`;
   type numberStr = `${intStr}${`.${number}` | ''}`;
+  type StringBySlash = `${string}/${string}`;
 
   type NaN = NotANumber;
   type NaNumber = number | NotANumber;

@@ -74,9 +74,15 @@ export class SokiTrip {
   };
 
   constructor() {
-    MyLib.values(this.molecules).forEach(
-      molecule => (molecule.onServerStorageValueSend = (userContents, appName) => soki.send({ userContents }, appName)),
-    );
+    (async () => {
+      if (!(await getAuthValue()).level) return;
+
+      MyLib.values(this.molecules).forEach(
+        molecule =>
+          (molecule.onServerStorageValueSend = (serverUserContents, appName) =>
+            soki.send({ serverUserContents }, appName)),
+      );
+    })();
   }
 
   appName() {
@@ -167,16 +173,23 @@ export class SokiTrip {
           if (event.sharedData !== undefined)
             this.onGetSharedData[event.sharedData.key]?.(event.sharedData.value as never);
 
-          if (event.download && molecule) {
-            try {
-              molecule.set(event.download.key, JSON.parse(event.download.value));
-            } catch (error) {
-              molecule.set(event.download.key, event.download.value);
+          if (molecule) {
+            if (event.download) {
+              try {
+                molecule.set(event.download.key, JSON.parse(event.download.value));
+              } catch (error) {
+                molecule.set(event.download.key, event.download.value);
+              }
             }
-          }
 
-          if (event.freshUserContents && molecule) {
-            molecule.saveFreshContents(event.freshUserContents);
+            if (event.freshUserContents) {
+              molecule.saveFreshContents(event.freshUserContents);
+            }
+
+            if (event.pullFreshUserContentsByTs !== undefined) {
+              const serverUserContents = molecule.collectFreshServerStoreContents(event.pullFreshUserContentsByTs);
+              if (serverUserContents?.length) this.send({ serverUserContents }, event.appName);
+            }
           }
 
           if (event.secretMessage || event.secretMessages) {
@@ -230,7 +243,7 @@ export class SokiTrip {
     this.send(
       {
         pullData: [indexLastUpdate, indexRulesMd5, appLastUpdate, appRulesMd5],
-        userContents: auth.login ? this.molecules[appName]?.makeServerStoreRequest() : undefined,
+        pullFreshUserContentsByTs: auth.login ? this.molecules[appName]?.getLastAppWriteTs() : undefined,
       },
       appName,
     ).on(event => event.pull && this.updatedPulledData(event.pull));

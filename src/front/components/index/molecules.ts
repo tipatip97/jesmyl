@@ -1,6 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { AppName } from '../../app/App.model';
-import { atom, atomValueSetter, getAtomValue, Molecule, useAtom, useAtomSet, useAtomValue } from '../../complect/atoms';
+import {
+  atom,
+  atomValueSetter,
+  getAtomValue,
+  Molecule,
+  removeMoleculeServerSavedItemTimesFromLocalStorage,
+  useAtom,
+  useAtomSet,
+  useAtomValue,
+} from '../../complect/atoms';
 import { LocalSokiAuth, SokiClientSubData, SokiStatistic } from '../../models';
 import { IndexState } from './Index.model';
 
@@ -34,7 +43,14 @@ const authAtom = indexMolecule.select(s => s.auth);
 
 export const useAuth = () => useAtomValue(authAtom);
 export const useAuthState = () => useAtom(authAtom);
-export const useSetAuth = () => useAtomSet(authAtom);
+export const useSetAuth = () => {
+  const setAuth = useAtomSet(authAtom);
+  return (auth: LocalSokiAuth) => {
+    setAuth(auth);
+    removeMoleculeServerSavedItemTimesFromLocalStorage();
+    removePullRequisites();
+  };
+};
 
 export const useAppFontFamilyAtom = () => useAtom(indexMolecule.take('appFontFamily'));
 

@@ -1,11 +1,11 @@
 import { User } from 'node-telegram-bot-api';
 import WebSocket from 'ws';
 import { DeviceId } from '../../apps/index/Index.model';
+import { SecretChat } from '../../apps/index/SecretChat.complect';
 import { ExecutionDict, ExecutionReal } from '../executer/Executer.model';
 import { SimpleKeyValue } from '../filer/Filer.model';
 import { ServerStoreContent } from './parts/120-ServerStore';
 import { SokiSharedKey, SokiSharedValueType } from './values';
-import { SecretChat } from '../../apps/index/SecretChat.complect';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible', 'wed'] as const;
 export const sokiAppNamesSet = new Set(sokiAppNames);
@@ -56,6 +56,7 @@ export interface SokiServerEvent {
   };
   sharedData?: SokiSharedData;
   freshUserContents?: ServerStoreContent[];
+  pullFreshUserContentsByTs?: number;
   secretMessage?: SecretChat.ImportableMessage;
   secretMessages?: SecretChat.ImportableMessage[];
 }
@@ -105,7 +106,8 @@ export interface SokiClientEventBody {
     prefix?: string;
     key: SokiSharedKey;
   };
-  userContents?: ServerStoreContent[];
+  serverUserContents?: ServerStoreContent[];
+  pullFreshUserContentsByTs?: number;
   secretMessage?: SecretChat.ExportableMessage;
 }
 

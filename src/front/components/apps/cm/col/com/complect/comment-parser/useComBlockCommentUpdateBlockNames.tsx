@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { hookEffectPipe, setTimeoutPipe } from '../../../../../../../complect/hookEffectPipe';
-import { cmMolecule } from '../../../../molecules';
 import { Com } from '../../Com';
 import { Order } from '../../order/Order';
 import { ComBlockCommentMakerCleans } from './Cleans';
@@ -10,7 +9,7 @@ export const useComBlockCommentUpdateBlockNames = (
   visibleOrders: Order[] | undefined,
   isRedact: boolean,
   comComment: string | nil,
-  setComments: ReturnType<typeof cmMolecule.take<'comComments'>>['set'],
+  setComment: (set: string | und | ((comment: string | und) => string)) => void,
 ) => {
   useEffect(() => {
     return hookEffectPipe()
@@ -91,9 +90,9 @@ export const useComBlockCommentUpdateBlockNames = (
           )
             return;
 
-          setComments(prev => ({ ...prev, [com.wid]: isRedact ? newComment : newComment.trim() }));
+          setComment(isRedact ? newComment : newComment.trim());
         }, 500),
       )
       .effect();
-  }, [visibleOrders, com, comComment, isRedact, setComments]);
+  }, [visibleOrders, com, comComment, isRedact, setComment]);
 };
