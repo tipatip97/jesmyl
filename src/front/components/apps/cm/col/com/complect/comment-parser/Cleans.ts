@@ -49,7 +49,7 @@ export class ComBlockCommentMakerCleans {
     };
   };
 
-  static withHeaderTextOrderFilter = (ord: Order) => ord.isVisible && !ord.me.isInherit;
+  static withHeaderTextOrderFilter = (ord: Order) => ord.isVisible;
 
   static makeSecretToWid = (infoWidStr: string) =>
     infoWidStr

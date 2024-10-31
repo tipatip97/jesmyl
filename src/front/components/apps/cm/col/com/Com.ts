@@ -1,4 +1,5 @@
 import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { itIt } from '../../../../../../back/complect/utils';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { IExportableCom, IExportableOrder } from '../../../../../models';
 import { BaseNamed } from '../../base/BaseNamed';
@@ -198,7 +199,7 @@ export class Com extends BaseNamed<IExportableCom> {
 
     const texts = this.translationMap(kind)
       .map(peaceSize => textBeats?.splice(0, peaceSize)!)
-      .filter(txt => txt);
+      .filter(itIt);
 
     return texts;
   }

@@ -30,11 +30,20 @@ export const ScheduleWidgetLiveCmTranslations = function LiveCmTr({
     return setTimeoutEffect(() => {
       if (!ccom?.texts) return;
 
+      const line = ccom.translationMap(undefined);
+      let toLinei = 0;
+
+      for (let blocki = 0; blocki < currTexti + 1; blocki++) toLinei += line[blocki];
+
+      const fromLinei = toLinei - line[currTexti];
+
       const liveData: IndexSchWTranslationLiveDataValue = {
         fio,
         cm: {
           comw: ccom.wid,
           texti: currTexti,
+          fromLinei,
+          toLinei,
           text: ccom.texts[currTexti],
           nextText: ccom.texts[currTexti + 1] || '',
           config,

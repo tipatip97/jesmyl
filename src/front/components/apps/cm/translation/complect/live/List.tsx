@@ -6,14 +6,10 @@ import { useChordVisibleVariant } from '../../../base/useChordVisibleVariant';
 import { Com } from '../../../col/com/Com';
 import ComLine from '../../../col/com/line/ComLine';
 import ComOrders from '../../../col/com/orders/ComOrders';
-import { CmTranslationScreenConfig } from '../controlled/model';
+import { CmSchWTranslationLiveDataValue } from './model';
 
-interface Props {
-  texti?: number;
+interface Props extends CmSchWTranslationLiveDataValue {
   com?: Com;
-  text: string;
-  nextText: string;
-  config: CmTranslationScreenConfig;
 }
 
 const _lineNamePrefix = 'live-translation-line';
@@ -26,7 +22,7 @@ export const CmLiveTranslationList = (props: Props) => {
     let lastSum = 0;
 
     props.com?.orders?.forEach(unit => {
-      if (unit.texti === null) {
+      if (unit.texti === null || !unit.isVisible) {
         sum.push(lastSum);
         return;
       }
@@ -38,36 +34,15 @@ export const CmLiveTranslationList = (props: Props) => {
     return { sum, counts };
   }, [props.com]);
 
-  const querySelector = useMemo(() => {
-    let count = 0;
-    const mapLine = props.com?.translationMap(props.config.pushKind);
-    if (!mapLine || props.texti == null) return '';
-
-    for (let i = 0; i < mapLine.length; i++) {
-      if (i >= props.texti) {
-        let queries = [];
-        for (let j = 0; j < mapLine[i]; j++) {
-          queries.push(`#${_lineNamePrefix}${count + j}`);
-        }
-
-        return queries.join(', ');
-      }
-      count += mapLine[i];
-    }
-
-    return `#${_lineNamePrefix}0`;
-  }, [props.com, props.config.pushKind, props.texti]);
+  const queries = [];
+  for (let linei = props.fromLinei; linei < props.toLinei; linei++) {
+    queries.push(`#${_lineNamePrefix}${linei}`);
+  }
+  const querySelector = queries.join(', ');
 
   useEffect(() => {
     try {
-      const element = document.querySelector(querySelector);
-
-      if (element === null) return;
-
-      element.scrollIntoView({ block: 'center' });
-
-      element.classList.add('current');
-      return () => element.classList.remove('current');
+      document.querySelector(querySelector)?.scrollIntoView({ block: 'center' });
     } catch (error) {}
   }, [querySelector]);
 
@@ -101,6 +76,9 @@ export const CmLiveTranslationList = (props: Props) => {
 const List = styled.div<{ $querySelector: string }>`
   .com-ord-list {
     margin: auto;
+    max-width: 100vw;
+    padding-right: var(--main-gap);
+    white-space: normal;
   }
 
   ${props => props.$querySelector} {
@@ -109,13 +87,5 @@ const List = styled.div<{ $querySelector: string }>`
 
   .${_lineNamePrefix} {
     transition: background-color 0.3s;
-  }
-
-  .composition-block {
-    &.current {
-      background-color: var(--color--2);
-      padding: 16px;
-      border-radius: 7px;
-    }
   }
 `;

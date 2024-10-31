@@ -1,27 +1,20 @@
 import { useEffect, useState } from 'react';
+import { addEventListenerPipe, hookEffectPipe } from '../../../../../../complect/hookEffectPipe';
 import { useCcom } from '../../../col/com/useCcom';
-import { CmTranslationScreenConfig } from '../controlled/model';
 import { CmLiveTranslationList } from './List';
 import { CmLiveTranslationSlide } from './Slide';
+import { CmSchWTranslationLiveDataValue } from './model';
 
-interface Props {
-  texti?: number;
-  comw?: number;
-  text: string;
-  nextText: string;
-  config: CmTranslationScreenConfig;
-}
-
-export const CmLiveTranslationScreen = (props: Props) => {
+export const CmLiveTranslationScreen = (props: CmSchWTranslationLiveDataValue) => {
   const com = useCcom(props.comw);
   const [subUpdates, setSubUpdates] = useState(0);
 
   useEffect(() => {
     let i = 0;
 
-    const onResize = () => setSubUpdates(++i);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    return hookEffectPipe()
+      .pipe(addEventListenerPipe(window, 'resize', () => setSubUpdates(++i)))
+      .effect();
   }, []);
 
   const texts = com?.getOrderedTexts(true, props.config.pushKind);
@@ -37,11 +30,10 @@ export const CmLiveTranslationScreen = (props: Props) => {
     />
   ) : (
     <CmLiveTranslationList
+      {...props}
       com={com}
       text={text}
       nextText={nextText}
-      texti={props.texti}
-      config={props.config}
     />
   );
 };

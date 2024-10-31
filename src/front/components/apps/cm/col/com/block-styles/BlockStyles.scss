@@ -6,6 +6,10 @@
   text-wrap: balance;
   word-wrap: normal;
 
+  &:has(.styled-header.empty) {
+    margin-top: 0.5em;
+  }
+
   > .header {
     margin-right: 1em;
   }

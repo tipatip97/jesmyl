@@ -1,10 +1,10 @@
 import React from 'react';
 import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
-import ComLine from '../line/ComLine';
-import { IComLineProps, IComOrdHeaderProps } from './Order.model';
-import { Order } from './Order';
-import { Com } from '../Com';
 import { ChordVisibleVariant } from '../../../Cm.model';
+import { Com } from '../Com';
+import ComLine from '../line/ComLine';
+import { Order } from './Order';
+import { IComLineProps, IComOrdHeaderProps } from './Order.model';
 
 interface Props {
   asLineComponent?: (props: IComLineProps) => React.ReactNode;
@@ -62,7 +62,11 @@ export default function TheOrder(props: Props) {
     (props.chordVisibleVariant === 2 || (props.chordVisibleVariant === 1 && orderUnit.isMin))
   );
 
-  const headerNode = blockHeader && <div className={`styled-header ${className}`}>{blockHeader}</div>;
+  const headerNode = blockHeader ? (
+    <div className={`styled-header ${className}`}>{blockHeader}</div>
+  ) : (
+    <div className="styled-header empty" />
+  );
 
   const header =
     typeof props.asHeaderComponent === 'function'
