@@ -1,16 +1,15 @@
 import { useState } from 'react';
+import { isNIs } from '../../../../../back/complect/utils';
 import { SokiVisitor } from '../../../../models';
-import { TgLinkOrFio } from './TgLinkOrFio';
 import { useDeviceId } from '../../complect/takeDeviceId';
-
-const itNIt = (it: unknown) => !it;
+import { TgLinkOrFio } from './TgLinkOrFio';
 
 export const Visitor = ({ visitor }: { visitor: SokiVisitor }) => {
   const [isOpen, setIsOpen] = useState(false);
   const deviceId = useDeviceId();
 
   return (
-    <div onClick={() => setIsOpen(itNIt)}>
+    <div onClick={() => setIsOpen(isNIs)}>
       <span className={'color--3' + (deviceId === visitor.deviceId ? ' text-underline' : '')}>
         <TgLinkOrFio profile={visitor} /> v{visitor.version || '?'} {visitor.deviceId}
       </span>

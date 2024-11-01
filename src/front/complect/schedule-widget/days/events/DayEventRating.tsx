@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
+import { itNNull } from '../../../../../back/complect/utils';
 import { IconFavouriteStrokeRounded } from '../../../../complect/the-icon/icons/favourite';
 import { IconHeartbreakStrokeRounded } from '../../../../complect/the-icon/icons/heartbreak';
 import { IconHelpCircleStrokeRounded } from '../../../../complect/the-icon/icons/help-circle';
@@ -14,7 +15,6 @@ import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useS
 
 const ratePoints = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
 const defRate: [number, string] = [0, ''];
-const isNNull = (is: unknown) => is !== null;
 
 export default function ScheduleWidgetDayEventRating(
   props: StrongComponentProps & {
@@ -80,7 +80,7 @@ export default function ScheduleWidgetDayEventRating(
               </div>
             );
           })
-          .filter(isNNull);
+          .filter(itNNull);
       }
 
       ratingNode = (

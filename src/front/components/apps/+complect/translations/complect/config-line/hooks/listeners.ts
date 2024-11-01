@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { itNNull } from '../../../../../../../../back/complect/utils';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
 import { useToggleIsScreenTranslationTextVisible } from '../../../atoms';
 import { TranslationWindow } from '../../../hooks/windows';
@@ -6,7 +7,6 @@ import { useTranslationIsInitialSlideShowSet } from '../../../initial-slide-cont
 import { ScreenTranslationConfig } from '../../../model';
 
 const invokeEach = (cb: () => void) => cb();
-const itNNull = (it: unknown) => it !== null;
 
 export const useScreenTranslationFaceLineListeners = (
   configs: ScreenTranslationConfig[],

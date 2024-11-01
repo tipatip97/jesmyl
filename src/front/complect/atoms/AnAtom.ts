@@ -1,8 +1,8 @@
+import { emptyFunc } from '../../../back/complect/utils';
 import { JStorage } from '../JStorage';
 import mylib from '../my-lib/MyLib';
 
 const storages: Record<string, JStorage<any>> = {};
-const emptyFunc = () => {};
 const registered = new Set<StringBySlash>();
 
 export class Atom<

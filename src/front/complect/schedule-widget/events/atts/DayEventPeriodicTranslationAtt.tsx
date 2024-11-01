@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { emptyFunc } from '../../../../../back/complect/utils';
 import mylib, { MyLib } from '../../../my-lib/MyLib';
 import {
   IScheduleWidget,
@@ -9,8 +10,6 @@ import {
 } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import { AttTranslatorType, attTranslatorTypes } from '../../complect/attTranslatorType';
-
-const emptyFunc = () => {};
 
 export default function ScheduleWidgetDayEventPeriodicTranslation(props: {
   day: IScheduleWidgetDay;

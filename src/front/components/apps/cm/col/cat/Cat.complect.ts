@@ -1,4 +1,5 @@
 import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { itIt } from '../../../../../../back/complect/utils';
 import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
 import { Com } from '../com/Com';
 import { Cat } from './Cat';
@@ -36,8 +37,6 @@ export type CatSpecialSearches = {
   title: string;
   map: (coms: Com[], term: string) => Com[];
 };
-
-const itIt = (it: unknown) => it;
 
 export const catSpecialSearches: Record<`@${string}`, CatSpecialSearches> = {
   '@audioLess': {

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { isNIs } from '../../../../back/complect/utils';
 import { IconBookmark03StrokeRounded } from '../../../complect/the-icon/icons/bookmark-03';
 import { IconFavouriteStrokeRounded } from '../../../complect/the-icon/icons/favourite';
 import { IconFile02StrokeRounded } from '../../../complect/the-icon/icons/file-02';
@@ -26,8 +27,6 @@ export interface ScheduleWidgetDayProps {
   isCanOpenFull?: boolean;
   isForceOpen?: boolean;
 }
-
-const isNIs = (is: unknown) => !is;
 
 const defaultPrint = {
   title: true,

@@ -1,4 +1,5 @@
 import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
+import { itIt } from '../../../../../../../back/complect/utils';
 import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
 import SourceBased from '../../../../../../complect/SourceBased';
 import {
@@ -12,7 +13,6 @@ import { Com } from '../Com';
 import { EditableOrderRegion, IExportableOrderMe } from './Order.model';
 
 const emptyArr: [] = [];
-const itIt = (it: unknown) => it;
 
 export class Order extends SourceBased<IExportableOrder> {
   _regions?: EditableOrderRegion<Order>[];

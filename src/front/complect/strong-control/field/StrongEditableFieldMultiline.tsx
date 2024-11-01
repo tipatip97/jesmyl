@@ -1,9 +1,9 @@
 import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import { useState } from 'react';
 import { makeRegExp } from '../../../../back/complect/makeRegExp';
+import { isNIs } from '../../../../back/complect/utils';
 import style from './Multiline.module.scss';
 
-const isNIs = (is: boolean) => !is;
 const onImageClick: React.MouseEventHandler<HTMLImageElement> = event => {
   event.stopPropagation();
   const src = event.currentTarget.getAttribute('prop-src');

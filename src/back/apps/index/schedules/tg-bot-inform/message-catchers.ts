@@ -9,6 +9,7 @@ import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
 import { IScheduleWidget, IScheduleWidgetDay, ScheduleStorage } from '../../models/ScheduleWidget.model';
 import ScheduleWidgetCleans from '../utils/Cleans';
 import { ScheduleWidgetTgInformCleans } from './cleans';
+import { itNNull } from '../../../../complect/utils';
 
 export const makeScheduleWidgetJoinTitle = (
   schedule: IScheduleWidget,
@@ -44,7 +45,6 @@ export const makeScheduleWidgetJoinTitle = (
   return titles.join(' / ');
 };
 
-const itNNull = (it: unknown) => it !== null;
 const findAdminThis = {} as { from: TelegramBot.User };
 
 function findAdmin(this: typeof findAdminThis, member: TelegramBot.ChatMember) {

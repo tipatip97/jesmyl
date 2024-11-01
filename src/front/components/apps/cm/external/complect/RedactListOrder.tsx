@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { emptyFunc } from '../../../../../../back/complect/utils';
 import StrongEvaButton from '../../../../../complect/strong-control/StrongEvaButton';
 import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
 import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
@@ -13,8 +14,6 @@ interface Props {
   scope: string;
   setCcom: (com: Com) => void;
 }
-
-const emptyFunc = () => {};
 
 export default function CmExternalComListAttRedactListOrder({ value, scope, setCcom }: Props) {
   const [removedComws, setRemovedComws] = useState<number[]>([]);

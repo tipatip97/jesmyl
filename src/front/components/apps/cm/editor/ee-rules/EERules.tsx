@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { itIt } from '../../../../../../back/complect/utils';
 import TheButton from '../../../../../complect/Button';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
@@ -22,8 +23,6 @@ const textAlignStyle = {
 } as const;
 
 let listBox = { list: [] } as { list: string[] };
-
-const itIt = (it: unknown) => it;
 
 export default function EERules() {
   const [pageSize, setPageSize] = useState(50);

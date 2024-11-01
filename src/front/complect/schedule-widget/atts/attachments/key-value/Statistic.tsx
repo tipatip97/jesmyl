@@ -1,10 +1,10 @@
 import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
+import { itNNil } from '../../../../../../back/complect/utils';
 import { CustomAttUseTaleId, ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
 import CopyTextButton from '../../../../CopyTextButton';
 import mylib from '../../../../my-lib/MyLib';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
 
-const itNNil = (it: unknown) => it != null;
 const mapSetItemNumber = (l: string | nil, li: number) => li + 1 + '. ' + l!;
 
 export default function ScheduleKeyValueListAttStatistic(props: {

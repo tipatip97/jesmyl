@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import ScheduleWidgetCleans from '../../../../../../../back/apps/index/schedules/utils/Cleans';
+import { itNUnd } from '../../../../../../../back/complect/utils';
 import {
   IScheduleWidget,
   IScheduleWidgetDayEvent,
@@ -17,7 +18,6 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const itNUnd = (it: unknown) => it !== undefined;
 const findEventWithComs = (event: IScheduleWidgetDayEvent) => event.atts?.['[cm]:coms'] != null;
 const findDayWithComs = (day: IScheduleWidgetDay) => day.list.some(findEventWithComs);
 
@@ -57,7 +57,7 @@ const Component = ({
         }
 
         if (comws !== undefined) {
-          coms = coms.concat(comws.map(comw => cols.coms.find(com => com.wid === comw)!).filter(itNUnd));
+          coms = coms.concat(comws.map(comw => cols.coms.find(com => com.wid === comw)).filter(itNUnd));
         }
 
         return coms;

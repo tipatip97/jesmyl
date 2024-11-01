@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { emptyFunc } from '../../../../../../../../../back/complect/utils';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../../complect/hookEffectPipe';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../../../../hooks/address/address';
 import { useBibleAddressBooki } from '../../../../../hooks/address/books';
@@ -8,8 +9,6 @@ import { useBibleAddressVersei } from '../../../../../hooks/address/verses';
 import { useBibleBookList } from '../../../../../hooks/texts';
 import { BibleBooki, BibleChapteri, BibleVersei } from '../../../../../model';
 import { bibleLowerBooks, useBibleTranslatesContext } from '../../../../../translates/TranslatesContext';
-
-const emptyFunc = () => {};
 
 export const useBibleTransformAddressTermToAddress = (term: string, inputRef: React.RefObject<HTMLInputElement>) => {
   const currentBooki = useBibleAddressBooki();

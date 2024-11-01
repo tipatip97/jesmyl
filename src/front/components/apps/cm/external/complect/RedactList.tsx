@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { emptyFunc } from '../../../../../../back/complect/utils';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import StrongEvaButton from '../../../../../complect/strong-control/StrongEvaButton';
@@ -16,8 +17,6 @@ import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import MeetingsInner from '../../lists/meetings/MeetingsInner';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 import CmExternalComListAttRedactListOrder from './RedactListOrder';
-
-const emptyFunc = () => {};
 
 interface Props {
   value: CmComBindAttach;

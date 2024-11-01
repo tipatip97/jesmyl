@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
+import { itNNull } from '../../../../back/complect/utils';
 import { IconCopy02StrokeRounded } from '../../../complect/the-icon/icons/copy-02';
-import { useAuth } from '../../../components/index/molecules';
-import { useIndexSchedules } from '../../../components/index/molecules';
+import { useAuth, useIndexSchedules } from '../../../components/index/molecules';
 import { CustomAttUseTaleId } from '../../../models';
 import useModal from '../../modal/useModal';
 import mylib, { MyLib } from '../../my-lib/MyLib';
@@ -11,8 +11,6 @@ import IconButton from '../../the-icon/IconButton';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from '../ScheduleWidget.model';
 import { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
-
-const itNNull = (it: unknown) => it !== null;
 
 export function ScheduleWidgetCopy(props: { schw: number }) {
   const [schw, setSchw] = useState(0);

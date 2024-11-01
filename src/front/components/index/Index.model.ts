@@ -11,7 +11,7 @@ import {
   SokiStatistic,
 } from '../../models';
 import { BibleTranslationScreenConfig } from '../apps/bible/translations/model';
-import { CmTranslationScreenConfig } from '../apps/cm/translation/complect/controlled/model';
+import { CmSchWTranslationLiveDataValue } from '../apps/cm/translation/complect/live/model';
 import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox';
 
 export interface IndexState {
@@ -41,13 +41,7 @@ export type IndexErrorScope = keyof ClientRegisterData;
 
 export type IndexSchWTranslationLiveDataValue = {
   fio: string;
-  cm?: {
-    texti?: number;
-    comw?: number;
-    text: string;
-    nextText: string;
-    config: CmTranslationScreenConfig;
-  };
+  cm?: CmSchWTranslationLiveDataValue;
   bible?: {
     text: string;
     addressText: string;

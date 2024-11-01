@@ -1,5 +1,6 @@
 import { ExecutionArgs, ExecutionDict, ExecutionReal } from '../../../complect/executer/Executer.model';
 import { FilerAppRequirement } from '../../../complect/filer/Filer.model';
+import { itNNull } from '../../../complect/utils';
 import smylib from '../../../shared/SMyLib';
 import {
   IScheduleWidget,
@@ -24,7 +25,6 @@ interface SchedulesBag {
 
 const emptyArray: [] = [];
 const emptyLists = { cats: [], units: [] };
-const itNNull = (it: unknown) => it !== null;
 
 const mapCantReadTitlesDayEvent = (event: IScheduleWidgetDayEvent) => ({
   ...event,
@@ -144,7 +144,7 @@ export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage> = {
   prepareContent: (schedules: ScheduleStorage, auth): ScheduleStorage => {
     if (!auth) {
       const list = schedules.list
-        .map((schedule): IScheduleWidget => {
+        .map((schedule): IScheduleWidget | null => {
           if (
             scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.Public) &&
             !scheduleWidgetRegTypeRights.checkIsHasRights(schedule.ctrl.type, ScheduleWidgetRegType.BeforeRegistration)
@@ -163,7 +163,7 @@ export const indexSchedulesConfig: FilerAppRequirement<ScheduleStorage> = {
               },
             };
 
-          return null!;
+          return null;
         })
         .filter(itNNull);
 

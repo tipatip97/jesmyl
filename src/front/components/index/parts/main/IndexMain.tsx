@@ -1,5 +1,6 @@
 import React, { Suspense, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
+import { itNNull } from '../../../../../back/complect/utils';
 import { appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { BottomPopup } from '../../../../complect/absolute-popup/bottom-popup/BottomPopup';
@@ -30,8 +31,6 @@ import { UserMore } from './UserMore';
 
 const IndexAuthorization = React.lazy(() => import('../login/IndexAuthorization'));
 
-const isNNull = (it: unknown) => it !== null;
-
 export default function IndexMain() {
   const currentAppName = useCurrentApp();
 
@@ -46,7 +45,7 @@ export default function IndexMain() {
       const config = routingApps[appName];
       if (currentAppName === appName || appName === 'index') return null;
 
-      if (config == null || auth == null) return null!;
+      if (config == null || auth == null) return null;
 
       return (
         <AppFace
@@ -55,7 +54,7 @@ export default function IndexMain() {
         />
       );
     })
-    .filter(isNNull);
+    .filter(itNNull);
 
   return (
     <Routes>

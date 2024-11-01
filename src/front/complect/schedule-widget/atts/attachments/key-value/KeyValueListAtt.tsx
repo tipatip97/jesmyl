@@ -2,6 +2,8 @@ import Markdown from 'markdown-to-jsx';
 import { ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { itIt } from '../../../../../../back/complect/utils';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-square-02';
 import { IconDelete02StrokeRounded } from '../../../../../complect/the-icon/icons/delete-02';
 import { IconLeftToRightListDashStrokeRounded } from '../../../../../complect/the-icon/icons/left-to-right-list-dash';
@@ -17,7 +19,6 @@ import {
   customAttUseRights,
 } from '../../../../../models';
 import { MoveListItemArrowIcon } from '../../../../MoveListItemArrowIcon';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../my-lib/MyLib';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
@@ -41,8 +42,6 @@ import ScheduleKeyValueListAttArrayItemKeyChange from './ArrayItemSignChange';
 import KeyValueListAttNumberMember from './KeyValueListAttNumberMember';
 import ScheduleKeyValueListAttLiItemDropdown from './LiItemDropdown';
 import ScheduleKeyValueListAttStatistic from './Statistic';
-
-const itIt = (it: unknown) => it;
 
 export default function ScheduleKeyValueListAtt({
   value: attValue,

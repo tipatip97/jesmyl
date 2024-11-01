@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
+import { itIt } from '../../../../../back/complect/utils';
 import { AppName, appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { useAtom, useAtomValue } from '../../../../complect/atoms';
@@ -42,8 +43,6 @@ const styles = {
 
 const visitorsDeclension = (num: number) => `${num} ${mylib.declension(num, 'челикс', 'челикса', 'челиксов')}`;
 const statisticAtom = indexMolecule.select(s => s.statistic);
-
-const itIt = (it: unknown) => it;
 
 export default function IndexSettings() {
   const auth = useAuth();

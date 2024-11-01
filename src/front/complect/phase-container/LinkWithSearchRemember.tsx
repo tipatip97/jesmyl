@@ -1,4 +1,5 @@
 import { Link, LinkProps, NavLinkProps, SetURLSearchParams, useParams, useSearchParams } from 'react-router-dom';
+import { itNNull } from '../../../back/complect/utils';
 
 const mapParamsSelf = {} as {
   params: Record<string, string | und>;
@@ -10,8 +11,6 @@ function mapParams(this: typeof mapParamsSelf, param: string) {
 
   return `${param}=${this.searchParams[0].get(param) ?? this.params[param]}`;
 }
-
-const itNNull = (it: unknown) => it !== null;
 
 const LinkWith = ({
   rememberProps,

@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
+import { itNNull } from '../../../../back/complect/utils';
 import { IconCalendar01StrokeRounded } from '../../../complect/the-icon/icons/calendar-01';
 import { IconLeftToRightListDashStrokeRounded } from '../../../complect/the-icon/icons/left-to-right-list-dash';
 import { IconSmileStrokeRounded } from '../../../complect/the-icon/icons/smile';
@@ -21,7 +22,6 @@ import { ScheduleWidgetAlarmInfoContent } from './InfoContent';
 const msInDay = mylib.howMs.inDay;
 const msInHour = mylib.howMs.inHour;
 const msInMin = mylib.howMs.inMin;
-const itNNull = (it: unknown) => it !== null;
 
 const makeNextDayFirstEventNode = (
   scheduleTitle: string | und,

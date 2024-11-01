@@ -3,6 +3,7 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { makeCmScheduleWidgetComListUrl } from '../../../../../../back/apps/cm/attInformCm';
 import { CmComWid, CmMeetingEventWid } from '../../../../../../back/apps/cm/Cm.enums';
+import { itIt } from '../../../../../../back/complect/utils';
 import { useInitSoki } from '../../../../../app/useInitSoki';
 import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import { BottomPopupItem } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
@@ -32,7 +33,6 @@ import CmExternalComListAttRedactList from './RedactList';
 import TheComForFullScreen from './TheComForFullScreen';
 
 const attName = '[cm]:coms';
-const itIt = (it: unknown) => it;
 
 const error = (children: React.ReactNode) => <div className="color--ko full-size flex center">{children}</div>;
 

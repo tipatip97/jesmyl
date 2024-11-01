@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { itIt } from '../../../../../../back/complect/utils';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
 import { MyLib } from '../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../complect/the-icon/IconButton';
@@ -11,8 +12,6 @@ import { GameTeamImportable } from './teams/GameTeams.model';
 import LeaderGameTimerMaster from './timers/GameTimerMaster';
 import TimerRatingBoard from './timers/complect/TimerRatingBoard';
 import TimerSortRatingVariantSelector from './timers/complect/TimerSortRatingVariantSelector';
-
-const itIt = (it: unknown) => it;
 
 export default function LeaderGameTotalScoreTable({ game }: { game: TeamGameImportable }) {
   const [expandedTimers, setExpandedTimers] = useState<number[]>([]);

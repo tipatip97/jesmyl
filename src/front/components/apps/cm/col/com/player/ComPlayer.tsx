@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { emptyFunc } from '../../../../../../../back/complect/utils';
 import JesmylLogo from '../../../../../../complect/jesmyl-logo/JesmylLogo';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import { IconPauseStrokeRounded } from '../../../../../../complect/the-icon/icons/pause';
 import { IconPlayStrokeRounded } from '../../../../../../complect/the-icon/icons/play';
 import './ComPlayer.scss';
 import ComPlayerTrack from './ComPlayerTrack';
-import styled from 'styled-components';
 
 let currentAudioNode: HTMLAudioElement | und;
-const emptyFunc = () => {};
 const emptyArr: [] = [];
 const movesMemoCallback = () => ({ prevX: 0, onEnd: emptyFunc });
 

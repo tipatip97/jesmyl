@@ -1,3 +1,4 @@
+import { emptyFunc } from '../../../../../../back/complect/utils';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useMyPossibilitiesCurrentRoom } from '../../complect/rooms/room/hooks/possibilities';
 import GamerAliasTimer from './AliasTimer';
@@ -7,8 +8,6 @@ import { useAliasIsMyTeam } from './hooks/is-my-speech';
 import { useAliasMemberList } from './hooks/member-list';
 import { useAliasSpeaker } from './hooks/speaker';
 import { useAliasRoomState } from './hooks/state';
-
-const emptyFunc = () => {};
 
 export default function AliasObserverContent() {
   const state = useAliasRoomState();

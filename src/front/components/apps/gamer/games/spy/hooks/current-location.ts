@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
+import { itIt } from '../../../../../../../back/complect/utils';
 import { GamerRoomMember } from '../../../Gamer.model';
 import { useGamerRoomPlayers } from '../../../complect/rooms/room/hooks/players';
 import { SpyRoomState } from '../Spy.model';
 import { SPY_ROLE, unsecretSpyRole } from './locations';
 import { useSpyRoomStateNaked } from './state';
-
-const itIt = (it: unknown) => it;
 
 export const useSpyCurrentLocationNaked = () => useSpyCurrentLocation(useSpyRoomStateNaked(), useGamerRoomPlayers());
 

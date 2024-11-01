@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
+import { itNNull } from '../../../../../../../../back/complect/utils';
 import { useCols } from '../../../../cols/useCols';
 import { Com } from '../../Com';
 import { ListComFaceForSelectionsProps } from '../ComFace.model';
@@ -10,8 +11,6 @@ interface Props extends IComFaceList, ListComFaceForSelectionsProps {
   list: CmComWid[];
   titles?: Record<number, string>;
 }
-
-const itIt = (it: unknown) => it != null;
 
 export const ComFaceListWidList = ({ list, ...comProps }: Props) => {
   const cols = useCols();
@@ -26,7 +25,7 @@ export const ComFaceListWidList = ({ list, ...comProps }: Props) => {
   return (
     cols && (
       <ComFaceListComList
-        list={list.map(comw => comsHashMap[comw]).filter(itIt)}
+        list={list.map(comw => comsHashMap[comw]).filter(itNNull)}
         {...comProps}
       />
     )

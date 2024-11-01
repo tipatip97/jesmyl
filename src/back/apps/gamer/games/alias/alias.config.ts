@@ -1,6 +1,7 @@
 import Eventer, { EventerValueListeners } from '../../../../complect/Eventer';
 import { ExecutionArgs } from '../../../../complect/executer/Executer.model';
 import { filer } from '../../../../complect/filer/Filer';
+import { itIt, itNNull } from '../../../../complect/utils';
 import { ActionBox, ActionBoxOnFinalCallback } from '../../../../models';
 import { NounPronsType } from '../../../index/models/nounProns.model';
 import { GamerRoom } from '../../gamer.model';
@@ -13,8 +14,6 @@ import {
   GamerAliasRoomStatePhase,
   StartAliasRoundProps,
 } from './alias.model';
-
-const isIs = (is: unknown) => is;
 
 const extractState = <Ret>(props: ExecutionArgs | nil): Ret => props?.$$vars?.$$currentValue;
 const speechTimerId = (state: GamerAliasRoomState) => 'alias-timeout:' + state.teams[0].title;
@@ -156,8 +155,6 @@ export const aliasGameConfig: ActionBox = {
         invert: {},
       },
       side: (() => {
-        const itNNull = (it: unknown) => it !== null;
-
         return props => {
           const state = extractState<GamerAliasRoomState | nil>(props);
           if (state == null || props == null) return;
@@ -170,8 +167,8 @@ export const aliasGameConfig: ActionBox = {
             state.teams[currTeami].score +
             (winfos
               ? AliasHelp.computeGameScore(
-                  state.cor.map(mapper).filter(isIs),
-                  state.inc.map(mapper).filter(isIs),
+                  state.cor.map(mapper).filter(itIt),
+                  state.inc.map(mapper).filter(itIt),
                   props.isTgCompute ? state.invert : state.fix,
                 )
               : -1000000);
@@ -192,7 +189,7 @@ export const aliasGameConfig: ActionBox = {
           ) {
             const scores = state.teams.map((team, teami) => (currTeami === teami ? score : team.score));
             const maxScore = Math.max(...scores);
-            value.wins = scores.map((score, scorei) => (score === maxScore ? scorei : null!)).filter(itNNull);
+            value.wins = scores.map((score, scorei) => (score === maxScore ? scorei : null)).filter(itNNull);
           } else {
             value.wordsi = state.wordsi + 1;
             value.winfo = winfos[state.wordsi + 1];

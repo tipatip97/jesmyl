@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ScheduleWidgetTgInformCleans } from '../../../../back/apps/index/schedules/tg-bot-inform/cleans';
 import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
+import { emptyFunc, itNNull, retNull } from '../../../../back/complect/utils';
 import KeyboardInput from '../../keyboard/KeyboardInput';
 import StrongButton from '../../strong-control/StrongButton';
 import { IScheduleWidget, IScheduleWidgetDay } from '../ScheduleWidget.model';
@@ -16,9 +17,6 @@ interface Props {
   scope: string;
   onClose: (isOpen: false) => void;
 }
-
-const itNNull = (it: unknown) => it !== null;
-const func = () => null;
 
 export const ScheduleWidgetEventListUpdater = ({ day, dayScope, dayi, schedule, scope, onClose }: Props) => {
   const [value, setValue] = useState('');
@@ -101,7 +99,7 @@ export const ScheduleWidgetEventListUpdater = ({ day, dayScope, dayi, schedule, 
                 <StyledEvent
                   key={eventi}
                   schedule={theSchedule}
-                  bottomContent={func}
+                  bottomContent={retNull}
                   day={theDay}
                   dayi={dayi}
                   scope=""
@@ -112,7 +110,7 @@ export const ScheduleWidgetEventListUpdater = ({ day, dayScope, dayi, schedule, 
                   eventi={eventi}
                   isLastEvent
                   isShowPeriodsNotTs={isShowPeriodsNotTs}
-                  onClickOnTs={func}
+                  onClickOnTs={emptyFunc}
                   redact={false}
                   isForceCanRedact={false}
                   secretTime={0}

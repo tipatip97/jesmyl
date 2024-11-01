@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { itIt } from '../../../../../../back/complect/utils';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import { CmComBindAttach } from '../../../../../models';
 import { ChordVisibleVariant } from '../../Cm.model';
@@ -8,8 +9,6 @@ import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import { useMeetings } from '../../lists/meetings/useMeetings';
 import CmExternalComListAttRedactList from './RedactList';
 import TheComForFullScreen from './TheComForFullScreen';
-
-const itIt = (it: unknown) => it;
 
 interface Props {
   value: CmComBindAttach;

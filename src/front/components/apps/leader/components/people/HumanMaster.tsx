@@ -1,17 +1,17 @@
 import { useState } from 'react';
+import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { itNNull } from '../../../../../../back/complect/utils';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
-import { IconCheckmarkCircle01StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-01';
-import { IconRecordStrokeRounded } from '../../../../../complect/the-icon/icons/record';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
+import { IconCheckmarkCircle01StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-01';
+import { IconRecordStrokeRounded } from '../../../../../complect/the-icon/icons/record';
 import { leaderExer } from '../../leaderExer';
 import { LeaderCleans } from '../LeaderCleans';
 import useLeaderContext from '../contexts/useContexts';
 import { HumanExportable, HumanImportable } from './People.model';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
 
 const ufpLabels = '1'.repeat(10).split('');
-const isNNull = (it: unknown) => it !== null;
 
 const sexItems = [
   {
@@ -130,7 +130,7 @@ export default function HumanMaster({
                   value
                     .split(makeRegExp('/\\n+/'))
                     .map(line => lineAsHuman(line, existsNames))
-                    .filter(isNNull),
+                    .filter(itNNull),
                 );
               }}
             />

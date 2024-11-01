@@ -1,6 +1,7 @@
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import Eventer, { EventerListeners } from '../../../back/complect/Eventer';
+import { emptyFunc } from '../../../back/complect/utils';
 import { useSetAppRootAnchorNodesContext } from '../../app/AppComponent';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import { ThrowEvent } from '../eventer/ThrowEvent';
@@ -26,8 +27,6 @@ interface Props {
   containerClassName?: string;
   asRootAnchor?: (close: () => void) => React.ReactNode;
 }
-
-const emptyFunc = () => {};
 
 export function FullContent({ onClose, closable, children, className, asRootAnchor, containerClassName }: Props) {
   const actualChildrenRef = useActualRef(children);

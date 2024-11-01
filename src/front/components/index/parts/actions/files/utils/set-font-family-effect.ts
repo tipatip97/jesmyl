@@ -1,6 +1,5 @@
+import { emptyFunc } from '../../../../../../../back/complect/utils';
 import { filesStorage } from './storage';
-
-const emptyFunc = () => {};
 
 export const applyFontFamilyFromMyFiles = async (fileName?: string, win: Window = window) => {
   if (fileName === undefined) return;

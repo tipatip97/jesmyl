@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { emptyFunc } from '../../../../../back/complect/utils';
 import { ScheduleWidgetLiveTranslation } from '../../../../complect/schedule-widget/live-translations/Live';
 import { useIndexSchedules } from '../../../index/molecules';
 import { useIsCanShowTextTranslation } from './atoms';
@@ -7,8 +8,6 @@ interface Props {
   children: React.ReactNode;
   className?: string;
 }
-
-const emptyFunc = () => {};
 
 export const TranslationTextScreen = ({ children }: Props) => {
   if (!useIsCanShowTextTranslation()[0]) return <>{children}</>;

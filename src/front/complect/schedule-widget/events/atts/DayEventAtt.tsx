@@ -1,4 +1,5 @@
 import { makeRegExp } from '../../../../../back/complect/makeRegExp';
+import { isNIs } from '../../../../../back/complect/utils';
 import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import { IconViewStrokeRounded } from '../../../../complect/the-icon/icons/view';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
@@ -23,7 +24,6 @@ import {
 } from '../../useScheduleWidget';
 import ScheduleWidgetDayEventPeriodicTranslation from './DayEventPeriodicTranslationAtt';
 
-const isNIs = (is: unknown) => !is;
 const makeReg = (phase: ScheduleWidgetScopePhase) => {
   return makeRegExp(`/(${phase}${strongScopeKeyValueSeparator})\\d+/`);
 };

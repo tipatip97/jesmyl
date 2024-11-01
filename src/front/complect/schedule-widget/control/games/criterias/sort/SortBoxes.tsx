@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { emptyFunc } from '../../../../../../../back/complect/utils';
 import { IScheduleWidgetUserMi } from '../../../../../../models';
 import IconButton from '../../../../../the-icon/IconButton';
 import { IconCheckmarkBadge01StrokeRounded } from '../../../../../the-icon/icons/checkmark-badge-01';
@@ -24,8 +25,6 @@ interface Props {
   start: number;
   end: number;
 }
-
-const func = () => {};
 
 export const ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes = function SortBoxes({
   uncriteriedUsers,
@@ -60,7 +59,7 @@ export const ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes = function SortBox
   const middle = Math.floor((start + end) / 2);
   const currUser: IScheduleWidgetUser | und = sortedUsers[middle];
 
-  const addInHistoryRef = useRef<HistoryAdder>(func);
+  const addInHistoryRef = useRef<HistoryAdder>(emptyFunc);
 
   if (insertUser == null || currUser == null) return <>Участники распределены</>;
 

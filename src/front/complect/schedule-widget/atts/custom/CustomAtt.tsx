@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+import { itIt, itNIt } from '../../../../../back/complect/utils';
 import { IconBookmark01StrokeRounded } from '../../../../complect/the-icon/icons/bookmark-01';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-square-02';
 import { IconEdit01StrokeRounded } from '../../../../complect/the-icon/icons/edit-01';
@@ -30,9 +31,6 @@ import ScheduleWidgetRightControlList from '../../control/RightControlList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetCustomAttTitles from './CustomAttTitles';
 import { ScheduleWidgetCustomAttLocalImagineSelector } from './LocalImagine';
-
-const itIt = (it: unknown) => it;
-const itNIt = (it: unknown) => !it;
 
 enum WhoCan {
   Read,

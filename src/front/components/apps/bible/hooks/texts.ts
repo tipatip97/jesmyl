@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import * as bibleTitlesJSON from '../../../../../back/apps/bible/bibleBookTitles.json';
+import { itIt } from '../../../../../back/complect/utils';
 import { MyLib } from '../../../../complect/my-lib/MyLib';
 import { soki } from '../../../../soki';
 import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress, BibleVersei } from '../model';
@@ -26,8 +27,6 @@ export const useLoadBibleChaptersCombine = () => {
 
   return combine;
 };
-
-const itIt = (it: unknown) => it;
 
 export const useBibleCurrentChapterList = () => {
   const currentBooki = useBibleAddressBooki();
