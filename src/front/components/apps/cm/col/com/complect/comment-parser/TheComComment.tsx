@@ -83,7 +83,7 @@ export default function TheComComment({ comw }: Props) {
           onKeyDown={callbackStopper}
         />
       ) : (
-        <div className="white-pre-line padding-big-gap-b">{comment}</div>
+        <div className="white-pre-line break-wrap padding-big-gap-b">{comment}</div>
       )}
     </>
   );

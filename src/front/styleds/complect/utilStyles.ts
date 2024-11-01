@@ -47,6 +47,10 @@ export const utilStyles = css`
     }
   }
 
+  .break-wrap {
+    word-wrap: break-word;
+  }
+
   .nowrap {
     white-space: nowrap;
   }
