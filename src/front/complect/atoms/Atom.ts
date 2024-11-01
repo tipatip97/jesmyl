@@ -1,15 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { Atom } from './AnAtom';
 
-const emptyArr = [] as [];
-
 export const useAtomValue = <Value, Key extends string>(atom: Atom<Value, Key>) => {
-  const state = useState(atom.get());
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => atom.subscribe(state[1]), emptyArr);
-
-  return atom.get();
+  return useSyncExternalStore(atom.subscribe, atom.get);
 };
 
 export const useAtomSet = <Value, Key extends string>(atom: Atom<Value, Key>) => atom.set;

@@ -10,11 +10,15 @@ export class FractionalServerStore<Key extends string | number, Value> implement
   self = { [this.contentValuePrefix]: this };
   listeners: EventerValueListeners<{ key: Key; value: Value }> = [];
 
+  private values = {} as Record<Key, Value>;
+  private setters: Partial<Record<Key, (value: Value | ((value: Value) => Value)) => void>> = {};
+  private setTimeouts = {} as Record<Key, TimeOut>;
+
   constructor(
     public contentValuePrefix: `${string}/${string}::`,
     public lastWriteTsPrefix: string,
     private defaultValue: Value,
-    private valueParser: (strValue: string) => Value = itIt as never,
+    private valueParser: (strValue: string | und) => Value = itIt as never,
     private valueStringifier: (value: Value) => string = itIt as never,
   ) {}
 
@@ -60,31 +64,38 @@ export class FractionalServerStore<Key extends string | number, Value> implement
     this.set(key, content.value, content.ts);
   };
 
-  get = (comw: Key): Value => {
-    return this.valueParser(localStorage[`${this.contentValuePrefix}${comw}`]);
+  get = (key: Key): Value => {
+    if (this.values[key] === undefined)
+      this.values[key] = this.valueParser(localStorage[`${this.contentValuePrefix}${key}`]) ?? this.defaultValue;
+
+    return this.values[key];
   };
 
-  setters: Partial<Record<Key, (value: Value | ((value: Value) => Value)) => void>> = {};
-
-  set = (key: Key, value: Value, forceTs?: number) => {
+  set = (key: Key, valueScalar: Value | ((value: Value) => Value), forceTs?: number) => {
     const lsKey = `${this.contentValuePrefix}${key}` as const;
+    const value = mylib.isFunc(valueScalar) ? valueScalar(this.get(key)) : valueScalar;
     const stringifiedValue = this.valueStringifier(value);
+
+    this.values[key] = value;
 
     if (localStorage[lsKey] === stringifiedValue || (!localStorage[lsKey] && !stringifiedValue)) return;
 
-    if (value == null) localStorage.removeItem(lsKey);
-    else localStorage[lsKey] = stringifiedValue;
+    clearTimeout(this.setTimeouts[key]);
+    this.setTimeouts[key] = setTimeout(() => {
+      if (value == null) localStorage.removeItem(lsKey);
+      else localStorage[lsKey] = stringifiedValue;
 
-    this.knownKeys.add(key);
+      this.knownKeys.add(key);
 
-    const ts = this.lastWriteTs(key, forceTs ?? Date.now());
+      const ts = this.lastWriteTs(key, forceTs ?? Date.now());
 
-    Eventer.invokeValue(this.listeners, { value, key });
-    this.updateServerStoreContent({ ts, key: lsKey, value });
+      Eventer.invokeValue(this.listeners, { value, key });
+      this.updateServerStoreContent({ ts, key: lsKey, value });
+    });
   };
 
   useValue = (key: Key) => {
-    const [value, setValue] = useState(this.defaultValue);
+    const [value, setValue] = useState(this.get(key));
 
     useEffect(() => {
       setValue(this.get(key));
@@ -94,10 +105,6 @@ export class FractionalServerStore<Key extends string | number, Value> implement
       });
     }, [key]);
 
-    return [
-      value,
-      (this.setters[key] ??= valueScalar =>
-        this.set(key, mylib.isFunc(valueScalar) ? valueScalar(this.get(key)) : valueScalar)),
-    ] as const;
+    return [value, (this.setters[key] ??= valueScalar => this.set(key, valueScalar))] as const;
   };
 }
