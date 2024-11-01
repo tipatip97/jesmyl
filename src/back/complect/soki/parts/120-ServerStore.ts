@@ -115,7 +115,7 @@ export class SokiServerServerStore extends SokiServerDownloads implements SokiSe
         }
 
         if (freshSenderUserContents.length) this.send({ appName, freshUserContents: freshSenderUserContents }, client);
-      }, 100),
+      }, 300),
     );
     return false;
   }
