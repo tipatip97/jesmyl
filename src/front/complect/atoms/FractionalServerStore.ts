@@ -5,7 +5,9 @@ import { ServerStoreContent } from '../../../back/complect/soki/parts/120-Server
 import { itIt, retUnd } from '../../../back/complect/utils';
 import mylib from '../my-lib/MyLib';
 
-export class FractionalServerStore<Key extends string | number, Value> implements IMoleculeFractionalStore<Value> {
+export class FractionalServerStore<Key extends string | number, Value extends NonUndefined<any>>
+  implements IMoleculeFractionalStore<Value>
+{
   updateServerStoreContent: (content: ServerStoreContent<Value>) => void = retUnd;
   self = { [this.contentValuePrefix]: this };
   listeners: EventerValueListeners<{ key: Key; value: Value }> = [];
@@ -55,13 +57,13 @@ export class FractionalServerStore<Key extends string | number, Value> implement
   };
 
   onFreshServerStoreContentChange = (content: ServerStoreContent<Value>) => {
-    if (!mylib.isStr(content.value) || !content.key.startsWith(this.contentValuePrefix)) return;
+    if (!content.key.startsWith(this.contentValuePrefix)) return;
     const [, comwStr] = content.key.split('::');
     const key = (isNaN(+comwStr) ? comwStr : +comwStr) as Key;
 
     if (this.lastWriteTs(key) >= content.ts) return;
 
-    this.set(key, content.value, content.ts);
+    this.set(key, content.value, content.ts, true);
   };
 
   get = (key: Key): Value => {
@@ -71,7 +73,7 @@ export class FractionalServerStore<Key extends string | number, Value> implement
     return this.values[key];
   };
 
-  set = (key: Key, valueScalar: Value | ((value: Value) => Value), forceTs?: number) => {
+  set = (key: Key, valueScalar: Value | ((value: Value) => Value), forceTs?: number, isRejectServerSave?: boolean) => {
     const lsKey = `${this.contentValuePrefix}${key}` as const;
     const value = mylib.isFunc(valueScalar) ? valueScalar(this.get(key)) : valueScalar;
     const stringifiedValue = this.valueStringifier(value);
@@ -90,6 +92,8 @@ export class FractionalServerStore<Key extends string | number, Value> implement
       const ts = this.lastWriteTs(key, forceTs ?? Date.now());
 
       Eventer.invokeValue(this.listeners, { value, key });
+
+      if (isRejectServerSave) return;
       this.updateServerStoreContent({ ts, key: lsKey, value });
     });
   };

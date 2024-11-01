@@ -76,27 +76,27 @@ export class SokiServerServerStore extends SokiServerDownloads implements SokiSe
           const freshUserContents: ServerStoreContent[] = [];
           lastWriteTsBox[1]++;
 
-          eventBody.serverUserContents.forEach(({ key, ts, value }) => {
-            const savedUserData = savedUserStoreData[key];
+          eventBody.serverUserContents.forEach(content => {
+            const savedUserData = savedUserStoreData[content.key];
 
             if (savedUserData == null) {
-              savedUserStoreData[key] = [ts, value];
-              freshUserContents.push({ key, ts, value });
+              savedUserStoreData[content.key] = [content.ts, content.value];
+              freshUserContents.push(content);
               isNeedSaveData = true;
             } else {
               const [savedLastWrite, savedLastWriteData] = savedUserData;
 
-              if (lastWriteTsBox[0] < ts) {
-                lastWriteTsBox[0] = ts;
+              if (lastWriteTsBox[0] < content.ts) {
+                lastWriteTsBox[0] = content.ts;
                 isNeedSaveData = true;
               }
 
-              if (savedLastWrite < ts) {
-                savedUserStoreData[key] = [ts, value];
-                freshUserContents.push({ key, ts, value });
+              if (savedLastWrite < content.ts) {
+                savedUserStoreData[content.key] = [content.ts, content.value];
+                freshUserContents.push(content);
                 isNeedSaveData = true;
-              } else if (savedLastWrite > ts)
-                freshSenderUserContents.push({ key, ts: savedLastWrite, value: savedLastWriteData });
+              } else if (savedLastWrite > content.ts)
+                freshSenderUserContents.push({ key: content.key, ts: savedLastWrite, value: savedLastWriteData });
             }
           });
 
