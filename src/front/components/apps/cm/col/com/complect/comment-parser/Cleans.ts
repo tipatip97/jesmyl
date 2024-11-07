@@ -2,6 +2,7 @@ import { css } from 'styled-components';
 import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
 import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { makePseudoElementCorrectContentText } from '../../../../../../../complect/utils';
 import { bibleTitles } from '../../../../../bible/hooks/texts';
 import { bibleAllTranslates, translateDescriptions } from '../../../../../bible/translates/complect';
 import { BibleBookTranslates, bibleLowerBooks } from '../../../../../bible/translates/TranslatesContext';
@@ -62,8 +63,7 @@ export class ComBlockCommentMakerCleans {
   static makeWidToSecret = (wid: CmComWid) =>
     ('' + wid).replace(makeRegExp('/./g'), all => this.numberAssociationLine[+all]);
 
-  static makePseudoComment = (text: string) =>
-    text.trim().replace(makeRegExp('/\\n/g'), '\\A ').replace(makeRegExp("/'/g"), "\\'");
+  static makePseudoComment = (text: string) => makePseudoElementCorrectContentText(text.trim());
 
   static makePseudoCommentContentCss = (text: string) => css`
     content: '${this.makePseudoComment(text)}';

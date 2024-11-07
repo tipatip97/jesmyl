@@ -74,8 +74,10 @@ export class SMyLib {
     return (obj == null ? [] : Object.entries(obj ?? {})) as never;
   }
 
-  static keys<T>(obj: T): T extends Record<infer Key, any> ? Key[] : string[] {
-    return Object.keys(obj ?? {}) as never;
+  static keys<T, Key extends T extends Record<infer Key, any> | Partial<Record<infer Key, any>> ? Key : string>(
+    obj: T,
+  ): Key[] {
+    return Object.keys(obj as never) as never;
   }
 
   func(...funcs: any[]) {
@@ -100,6 +102,10 @@ export class SMyLib {
 
     return funcScalar(...args);
   }
+
+  private static sortReverse = <Item>(a: Item, b: Item) => (a > b ? -1 : a < b ? 1 : 0);
+
+  static reverseSort = <Item>(items: Item[]) => items.sort(this.sortReverse);
 
   mapFilter = <Item, Val>(
     items: Item[],

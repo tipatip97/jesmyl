@@ -19,4 +19,5 @@ export interface PhaseContainerProps {
   onMoreClick?: (is: true) => void;
   withoutBackSwipe?: boolean;
   rememberProps?: string[];
+  hideFooterMenu?: boolean;
 }

@@ -32,14 +32,16 @@ export class SokiServerOtherEvents extends SokiServerServerStore implements Soki
     const senderId = sentMessage.body.senderId;
 
     const secretMessage: SecretChat.ImportableMessage = {
-      chat: sentMessage.chat,
-      body: {
+      chat:
+        sentMessage.body.type === 'newMember' || sentMessage.body.type === 'chatCreate' ? sentMessage.chat : undefined,
+      chatId: sentMessage.chatId,
+      message: {
         ...sentMessage.body,
-        ts: `${Date.now()}${Math.random()}`,
+        ts: `${Date.now()}${Math.random()}` as never,
       },
     };
 
-    sentMessage.chat.team.forEach(targetId => {
+    sentMessage.targetIds.forEach(targetId => {
       if (targetId === senderId) return;
       const targetCapsule = this.capsulesByDeviceId.get(targetId);
 

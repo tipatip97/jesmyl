@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { IconLoading03SolidRounded } from './icons/loading-03';
 import { TheIconType } from './model';
 
@@ -10,23 +10,21 @@ interface Props extends HTMLAttributes<HTMLOrSVGElement> {
 
 export const TheIconLoading = (props: Props) => {
   const { isLoading, Icon, ...attrs } = props;
-  if (!('isLoading' in props)) return <Loading {...attrs} />;
+  if (!('isLoading' in props)) return <StyledLoadingSpinner {...attrs} />;
 
-  return isLoading ? <Loading {...attrs} /> : <>{Icon ? <Icon {...attrs} /> : props.children}</>;
+  return isLoading ? <StyledLoadingSpinner {...attrs} /> : <>{Icon ? <Icon {...attrs} /> : props.children}</>;
 };
 
-const name = `rotate-${(Math.random() * 1000).toFixed(0)}`;
-
-const Loading = styled(IconLoading03SolidRounded)`
-  animation: ${name} 1s linear infinite;
-
-  @keyframes ${name} {
-    from {
-      transform: rotate(0);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
+const rotate = keyframes`
+  from {
+    transform: rotate(0);
   }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const StyledLoadingSpinner = styled(IconLoading03SolidRounded)`
+  animation: ${rotate} 1s linear infinite;
 `;

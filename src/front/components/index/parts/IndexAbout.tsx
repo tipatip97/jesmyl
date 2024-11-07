@@ -1,6 +1,8 @@
 import * as versionNum from '../../../../back/+version.json';
+import { itIt } from '../../../../back/complect/utils';
 import { useAtomValue } from '../../../complect/atoms';
 import QRCode from '../../../complect/qr-code/QRCode';
+import { IconDelete01StrokeRounded } from '../../../complect/the-icon/icons/delete-01';
 import { IconTelegramStrokeRounded } from '../../../complect/the-icon/icons/telegram';
 import { indexMolecule } from '../molecules';
 
@@ -37,6 +39,22 @@ export default function IndexAbout() {
         }`}
       >
         v{version.num} {appVersion ? (version.num === appVersion ? '- Актуальная' : `(Новая - v${appVersion})`) : ''}
+        <IconDelete01StrokeRounded
+          className="margin-gap pointer color--ko vertical-middle"
+          onClick={event => {
+            event.stopPropagation();
+            const knownSourcesSet = new Set(
+              Array.from(document.querySelectorAll('[href^="/static/"],[src^="/static/"]'))
+                .map(elem => elem.getAttribute('href')!)
+                .filter(itIt),
+            );
+
+            if (knownSourcesSet.size)
+              navigator.serviceWorker.ready.then(registration => {
+                registration.active?.postMessage({ knownSourcesSet });
+              });
+          }}
+        />
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ export const useAtomValue = <Value, Key extends string>(atom: Atom<Value, Key>) 
 };
 
 export const useAtomSet = <Value, Key extends string>(atom: Atom<Value, Key>) => atom.set;
+export const useAtomGet = <Value, Key extends string>(atom: Atom<Value, Key>) => atom.get;
 export const useAtomToggle = <Key extends string>(atom: Atom<boolean, Key>) => atom.toggle;
 export const useAtomInkrement = <Key extends string>(atom: Atom<number, Key>) => atom.inkrement;
 

@@ -1,6 +1,10 @@
+import { makeRegExp } from '../../back/complect/makeRegExp';
+
 export const isAndroid = navigator.userAgent && /android/i.test(navigator.userAgent);
 export const isIPhone =
-  ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
+  ['iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
   (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
+
+export const isMobileDevice = makeRegExp('/android|iphone|kindle|ipad/i').test(navigator.userAgent);
 
 export const isTouchDevice = isAndroid || isIPhone;

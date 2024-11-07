@@ -22,7 +22,8 @@ import { indexSimpleValIsPlayAnimations, indexSimpleValIsUseNativeKeyboard } fro
 import { indexMolecule, useAppFontFamilyAtom, useAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { FontFamilySelector } from '../actions/files/complect/FontFamilySelector';
-import { isSecretChatsShowInBottomMenuAtom, SecretChatsIcon } from '../main/secret-chat/complect';
+import { SecretChatsIcon } from '../main/secret-chat/complect';
+import { isSecretChatsShowInBottomMenuAtom } from '../main/secret-chat/molecule';
 import { Visitor } from './Visitor';
 import { Visits } from './Visits';
 

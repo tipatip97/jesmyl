@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
 import { isIPhone } from '../../../../../../../complect/device-differences';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../complect/hookEffectPipe';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
@@ -15,22 +14,15 @@ const isRejectScrollDivision = isIPhone;
 export const useComListShownLimitsController = (listRef: React.RefObject<HTMLDivElement>, props: ComFaceListProps) => {
   const [, forceUpdate] = useState(0);
 
-  const indexsHashMap = useMemo(() => {
-    const indexs = {} as Record<CmComWid, number>;
-
-    props.list.forEach((com, comi) => (indexs[com.wid] = comi));
-
-    return indexs;
-  }, [props.list]);
-
   const limits = useMemo(() => {
-    const ccomi = mylib.isNum(props.ccomw) ? indexsHashMap[props.ccomw] || 0 : 0;
-
     let initialLimits;
 
     if (props.titles) {
       initialLimits = { start: 0, finish: props.list.length, initStart: 0, initFinish: props.list.length };
     } else {
+      let ccomi = mylib.isNum(props.ccomw) ? props.list.findIndex(com => com.wid === props.ccomw) || 0 : 0;
+      ccomi = ccomi < 0 ? 0 : 0;
+
       const startLimitPlus = initComsAfter - (props.list.length - ccomi);
       const finishLimitPlus = initComsBefore - ccomi;
 
@@ -49,7 +41,7 @@ export const useComListShownLimitsController = (listRef: React.RefObject<HTMLDiv
     }
 
     return initialLimits;
-  }, [indexsHashMap, props.ccomw, props.list.length, props.titles]);
+  }, [props.ccomw, props.list, props.titles]);
 
   useEffect(() => {
     if (props.titles) return;

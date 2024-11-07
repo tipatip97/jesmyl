@@ -11,9 +11,18 @@ interface Props {
   className?: string;
   message?: ReactNode;
   withoutIcon?: boolean;
+  onClose?: () => void;
 }
 
-export default function CopyTextButton({ text, disabled, description, className, message, withoutIcon }: Props) {
+export default function CopyTextButton({
+  text,
+  disabled,
+  description,
+  className,
+  message,
+  withoutIcon,
+  onClose,
+}: Props) {
   const [toastNode, toast] = useToast();
   const [modalNode, modal] = useModal();
 
@@ -31,6 +40,7 @@ export default function CopyTextButton({ text, disabled, description, className,
             if (textToWrite == null) return;
             navigator.clipboard.writeText(textToWrite);
             toast(message ?? 'Текст скопирован');
+            onClose?.();
           } catch (e) {
             modal(event, ({ header, body }) => {
               return (

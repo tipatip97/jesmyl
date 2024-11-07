@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 import { FaceItem } from '../../../../../../../complect/FaceItem';
 import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { useListShownLimitsController } from '../../../../../../../complect/useListShownLimitsController';
 import { Com } from '../../Com';
 import { ListComFaceForSelectionsProps } from '../ComFace.model';
 import { ComListControlledContainer } from './ComListControlledContainer';
 import { IComFaceList } from './model';
-import { useComListShownLimitsController } from './useComListShownLimitsController';
 
 export interface ComFaceListProps extends IComFaceList, ListComFaceForSelectionsProps {
   list: Com[];
@@ -18,8 +18,7 @@ export const faceItemDescriptionClassName = 'face-item-description';
 
 export const ComFaceListComList = (props: ComFaceListProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-
-  const limits = useComListShownLimitsController(listRef, props);
+  const { limits } = useListShownLimitsController(listRef, props.list, com => com.wid === props.ccomw, !!props.titles);
 
   const isSetWids = !(props.titles && mylib.keys(props.titles).length);
   const setComDescription = props.comDescription

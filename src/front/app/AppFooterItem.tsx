@@ -9,6 +9,8 @@ interface Props {
   iconPack: TheIconSelfPack;
   title: string;
   search?: `?${string}`;
+  className?: string;
+  children?: React.ReactNode;
 }
 
 const [CurrentAppFooterItemPlaceContext, useCurrentAppFooterItemPlaceContext] = contextCreator<string | und>(undefined);
@@ -19,7 +21,7 @@ const footerItemPlaceLsPrefix = 'nav-link:';
 
 export { CurrentAppFooterItemAppNameContext, CurrentAppFooterItemPlaceContext, footerItemPlaceLsPrefix };
 
-export default function AppFooterItem({ to, iconPack, title, search }: Props) {
+export default function AppFooterItem({ to, iconPack, title, search, className, children }: Props) {
   const appName = useCurrentAppFooterItemAppNameContext();
   const place = useCurrentAppFooterItemPlaceContext();
   const isActive = to === place;
@@ -33,19 +35,27 @@ export default function AppFooterItem({ to, iconPack, title, search }: Props) {
   return (
     <StyledLink
       to={to}
-      className={'pointer ' + (isActive ? 'active' : '')}
+      className={'pointer' + (isActive ? ' active' : '') + (className ? ' ' + className : '')}
     >
       <div className="icon-container">{isActive ? <iconPack.TwotoneRounded /> : <iconPack.BulkRounded />}</div>
       <div className="title">{title}</div>
+      {children}
     </StyledLink>
   );
 }
 
 const StyledLink = styled(Link)`
+  @starting-style {
+    scale: 0;
+  }
+
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 25%;
+  scale: 1;
+
+  transition: scale 0.5s;
 
   > .icon-container {
     display: flex;

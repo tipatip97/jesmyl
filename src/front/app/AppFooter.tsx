@@ -4,10 +4,9 @@ import styled from 'styled-components';
 import { useAtomValue } from '../complect/atoms';
 import { isTouchDevice } from '../complect/device-differences';
 import { iconPackOfCircleArrowRight02 } from '../complect/the-icon/icons/circle-arrow-right-02';
-import {
-  isSecretChatsShowInBottomMenuAtom,
-  secretChatIconPack,
-} from '../components/index/parts/main/secret-chat/complect';
+import { secretChatIconPack } from '../components/index/parts/main/secret-chat/complect';
+import { MarkUnreadSecretChatsPath } from '../components/index/parts/main/secret-chat/MarkUnreadSecretChatsPath';
+import { isSecretChatsShowInBottomMenuAtom } from '../components/index/parts/main/secret-chat/molecule';
 import { AppName } from './App.model';
 import AppFooterItem, {
   CurrentAppFooterItemAppNameContext,
@@ -35,6 +34,14 @@ export default function AppFooter({ children }: { children: React.ReactNode }) {
     localStorage.setItem(lastVisitedRouteLsName, url);
   }, [appName, loc.hash, loc.pathname, loc.search, place]);
 
+  const otherItem = (
+    <AppFooterItem
+      iconPack={iconPackOfCircleArrowRight02}
+      title="Другое"
+      to="!other"
+    />
+  );
+
   return (
     <CurrentAppFooterItemAppNameContext.Provider value={appName}>
       <CurrentAppFooterItemPlaceContext.Provider value={place}>
@@ -42,25 +49,27 @@ export default function AppFooter({ children }: { children: React.ReactNode }) {
           {children}
 
           {isShowSecretChatsInBottom && (
-            <AppFooterItem
-              iconPack={secretChatIconPack}
-              title="Чаты"
-              to="!chats"
-            />
+            <MarkUnreadSecretChatsPath containerSelector=".icon-container">
+              <AppFooterItem
+                iconPack={secretChatIconPack}
+                title="Чаты"
+                to="!chats"
+              />
+            </MarkUnreadSecretChatsPath>
           )}
 
-          <AppFooterItem
-            iconPack={iconPackOfCircleArrowRight02}
-            title="Другое"
-            to="!other"
-          />
+          {isShowSecretChatsInBottom ? (
+            otherItem
+          ) : (
+            <MarkUnreadSecretChatsPath containerSelector=".icon-container">{otherItem}</MarkUnreadSecretChatsPath>
+          )}
         </StyledFooter>
       </CurrentAppFooterItemPlaceContext.Provider>
     </CurrentAppFooterItemAppNameContext.Provider>
   );
 }
 
-const StyledFooter = styled.div`
+const StyledFooter = styled.div.attrs({ className: 'footer-menu' })`
   display: flex;
   position: absolute;
   bottom: var(--footer-bottom);

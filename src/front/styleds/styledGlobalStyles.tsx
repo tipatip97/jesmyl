@@ -1,12 +1,13 @@
 import { createGlobalStyle, css } from 'styled-components';
 import { bodyThemeStyles } from './complect/bodyThemeStyles';
 import { colorStyles } from './complect/colorStyles';
+import { computedStyles } from './complect/computedStyles';
 import { fontStyles } from './complect/fontStyles';
 import { initialStyles } from './complect/initialStyles';
-import { resetStyles } from './complect/resetStyles';
-import { utilStyles } from './complect/utilStyles';
-import { computedStyles } from './complect/computedStyles';
 import { otherStyles } from './complect/otherStyles';
+import { resetStyles } from './complect/resetStyles';
+import { svgUrlsVariables } from './complect/svgUrlsVariables';
+import { utilStyles } from './complect/utilStyles';
 
 const styles = css`
   ${initialStyles}
@@ -21,6 +22,7 @@ const styles = css`
   ${resetStyles}
   ${fontStyles}
   ${otherStyles}
+  ${svgUrlsVariables}
 `;
 
 export const StyledGlobalStyles = createGlobalStyle`${styles}`;

@@ -1,18 +1,21 @@
 import { css } from 'styled-components';
 import { cursors } from '../../cursorsBase64';
 
-const lightColors = (selector: string) => css`
+const lightTheme = (selector: string) => css`
   ${selector && `${selector} {`}
-  --color--1: #eaf1e9;
-  --color--2: #d5e8d5;
-  --color--3: #122217;
-  --color--4: #414840;
-  --color--5: #fbfdf8;
-  --color--6: #f8fbf4;
-  --color--7: #2d995a;
-  --color--8: #fbfdf8;
-  --color--ok: #47bb00;
-  --color--ko: #ec6969;
+  --color--1-rgb: 234, 241, 233;
+  --color--2-rgb: 213, 232, 213;
+  --color--3-rgb: 18, 34, 23;
+  --color--4-rgb: 65, 72, 64;
+  --color--5-rgb: 251, 253, 248;
+  --color--6-rgb: 248, 251, 244;
+  --color--7-rgb: 45, 153, 90;
+  --color--8-rgb: 251, 253, 248;
+  --color--ok-rgb: 71, 187, 0;
+  --color--ko-rgb: 236, 105, 105;
+
+  --url-icon-edit-02-stroke-rounded: var(--url-icon-for-light-edit-02-stroke-rounded);
+  --url-icon-link-backward-stroke-rounded: var(--url-icon-for-light-link-backward-stroke-rounded);
 
   &,
   * {
@@ -28,18 +31,21 @@ const lightColors = (selector: string) => css`
   ${selector && '}'}
 `;
 
-const darkColors = (selector: string) => css`
+const darkTheme = (selector: string) => css`
   ${selector && `${selector} {`}
-  --color--1: #242a26;
-  --color--2: #3b4b40;
-  --color--3: #d5e6d6;
-  --color--4: #b2b9b1;
-  --color--5: #1a1c19;
-  --color--6: #d3e5d7;
-  --color--7: #b5f2c8;
-  --color--8: #fbfdf8;
-  --color--ok: #9bec69;
-  --color--ko: #ec6969;
+  --color--1-rgb: 36, 42, 38;
+  --color--2-rgb: 59, 75, 64;
+  --color--3-rgb: 213, 230, 214;
+  --color--4-rgb: 178, 185, 177;
+  --color--5-rgb: 26, 28, 25;
+  --color--6-rgb: 211, 229, 215;
+  --color--7-rgb: 181, 242, 200;
+  --color--8-rgb: 251, 253, 248;
+  --color--ok-rgb: 155, 236, 105;
+  --color--ko-rgb: 236, 105, 105;
+
+  --url-icon-edit-02-stroke-rounded: var(--url-icon-for-dark-edit-02-stroke-rounded);
+  --url-icon-link-backward-stroke-rounded: var(--url-icon-for-dark-link-backward-stroke-rounded);
 
   &,
   * {
@@ -57,12 +63,23 @@ const darkColors = (selector: string) => css`
 
 export const bodyThemeStyles = css`
   @media (prefers-color-scheme: light) {
-    ${lightColors('&:not(.reverse-theme)')}
-    ${darkColors('')}
+    ${lightTheme('&:not(.reverse-theme)')}
+    ${darkTheme('')}
   }
 
   @media (prefers-color-scheme: dark) {
-    ${darkColors('&:not(.reverse-theme)')}
-    ${lightColors('')}
+    ${darkTheme('&:not(.reverse-theme)')}
+    ${lightTheme('')}
   }
+
+  --color--1: rgb(var(--color--1-rgb));
+  --color--2: rgb(var(--color--2-rgb));
+  --color--3: rgb(var(--color--3-rgb));
+  --color--4: rgb(var(--color--4-rgb));
+  --color--5: rgb(var(--color--5-rgb));
+  --color--6: rgb(var(--color--6-rgb));
+  --color--7: rgb(var(--color--7-rgb));
+  --color--8: rgb(var(--color--8-rgb));
+  --color--ok: rgb(var(--color--ok-rgb));
+  --color--ko: rgb(var(--color--ko-rgb));
 `;

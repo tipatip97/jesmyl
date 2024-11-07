@@ -25,7 +25,9 @@ import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthB
 import IndexSettings from '../settings/Settings';
 import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
-import { isSecretChatsShowInBottomMenuAtom, SecretChatsIcon } from './secret-chat/complect';
+import { SecretChatsIcon } from './secret-chat/complect';
+import { MarkUnreadSecretChatsPath } from './secret-chat/MarkUnreadSecretChatsPath';
+import { isSecretChatsShowInBottomMenuAtom } from './secret-chat/molecule';
 import { IndexSecretChats } from './secret-chat/SecretChats';
 import { UserMore } from './UserMore';
 
@@ -78,9 +80,11 @@ export default function IndexMain() {
                       />
                     )}
                     {!isShowSecretChatsInBottom && (
-                      <Link to="chats">
-                        <SecretChatsIcon />
-                      </Link>
+                      <MarkUnreadSecretChatsPath containerSelector="a">
+                        <Link to="chats">
+                          <SecretChatsIcon />
+                        </Link>
+                      </MarkUnreadSecretChatsPath>
                     )}
                   </div>
                 </div>

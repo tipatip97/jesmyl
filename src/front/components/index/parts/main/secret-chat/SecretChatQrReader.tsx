@@ -2,9 +2,13 @@ import { useState } from 'react';
 import { DeviceId } from '../../../../../../back/apps/index/Index.model';
 import { QrReader } from '../../../../../complect/qr-code/useQrReader';
 import { IconBubbleChatAddStrokeRounded } from '../../../../../complect/the-icon/icons/bubble-chat-add';
-import { secretChatingWithQrCodeKey } from './complect';
+import { secretChatingJoinerParse } from './complect';
 
-export const SecretChatQrReader = ({ onDeviceIdDetected }: { onDeviceIdDetected: (deviceId: DeviceId) => void }) => {
+export const SecretChatQrReader = ({
+  onDeviceIdDetected,
+}: {
+  onDeviceIdDetected: (deviceId: DeviceId, joinerFio: string) => void;
+}) => {
   const [isScannerOpen, setIsScannerOpen] = useState<unknown>(false);
   let isDetected = false;
 
@@ -18,8 +22,9 @@ export const SecretChatQrReader = ({ onDeviceIdDetected }: { onDeviceIdDetected:
             if (isDetected) return;
 
             try {
-              const deviceId = JSON.parse(result.data)[secretChatingWithQrCodeKey].deviceId as DeviceId;
-              onDeviceIdDetected(deviceId);
+              const joiner = secretChatingJoinerParse(result.data);
+
+              onDeviceIdDetected(joiner.deviceId, joiner.fio);
 
               isDetected = true;
               setTimeout(() => (isDetected = false), 1000);

@@ -1,43 +1,71 @@
 import { DeviceId } from './Index.model';
 
 export namespace SecretChat {
-  export type ChatId = `${number}${number}`;
+  export enum ChatId {
+    def = '00',
+  }
+
+  export enum MessageTs {
+    def = '00',
+  }
+
+  export interface UserData {
+    id: DeviceId;
+    fio: string;
+    role: 'admin' | 'creator' | 'user';
+  }
 
   export type ChatInfo = {
     title: string;
     id: ChatId;
-    team: DeviceId[];
-    fios: string[];
+    users: Partial<Record<DeviceId, UserData>>;
   };
 
-  export type LocalChat = {
-    info: ChatInfo;
-    lastReadTs: number;
-    messages: MessageBody[];
+  export type MessageDraftType = 'text' | 'reply' | 'edit';
+
+  export type MessagesHashMap = Partial<Record<SecretChat.MessageTs, SecretChat.Message>>;
+
+  export type MessageDraft = {
+    text: string;
+    type: MessageDraftType;
+    targetTs?: MessageTs;
   };
 
-  export type Messages = Record<ChatId, LocalChat>;
-  export type MessageTs = `${number}${number}`;
-
-  export interface MessageBody extends ExportableMessageBody {
+  export interface Message extends ExportableMessageBody {
     ts: MessageTs;
   }
 
   export interface ImportableMessage {
-    body: MessageBody;
-    chat: ChatInfo;
+    message: Message;
+    chatId: ChatId;
+    chat?: ChatInfo;
   }
 
-  export type MessageType = 'text' | 'bigText';
+  export type MessageType =
+    | 'text'
+    | 'bigText'
+    | 'senderRename'
+    | 'newMember'
+    | 'chatRename'
+    | 'chatCreate'
+    | 'delete'
+    | 'reply'
+    | 'edit';
 
   export interface ExportableMessageBody {
     text: string;
+    prevText?: string;
     type: MessageType;
     senderId: DeviceId;
+    targetTs?: MessageTs;
   }
 
   export interface ExportableMessage {
-    chat: ChatInfo;
+    chat?: ChatInfo;
+    chatId: ChatId;
+    targetIds: DeviceId[];
     body: ExportableMessageBody;
   }
+
+  export const editableMessageTypesSet = new Set<MessageType>(['text', 'bigText', 'reply']);
 }

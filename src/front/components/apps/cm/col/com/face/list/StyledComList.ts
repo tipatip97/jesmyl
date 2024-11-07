@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
-import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
 import { MyLib } from '../../../../../../../complect/my-lib/MyLib';
+import { makePseudoElementCorrectContentText } from '../../../../../../../complect/utils';
 import { currentComwIdPrefix } from './_ComList';
 
 export const StyledComList = styled.div<{
@@ -24,7 +24,7 @@ export const StyledComList = styled.div<{
           margin-top: 2em;
 
           &:before {
-            content: '${title.replace(makeRegExp("/'/g"), "\\'")}';
+            content: '${makePseudoElementCorrectContentText(title)}';
             position: absolute;
             display: block;
             top: -1.5em;

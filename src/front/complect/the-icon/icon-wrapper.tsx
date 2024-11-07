@@ -2,7 +2,10 @@ import { HTMLAttributes } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import mylib from '../my-lib/MyLib';
 
-export const TheIconWrapper = ({ ...attrs }: HTMLAttributes<HTMLOrSVGElement> & { name: string }) => {
+export const TheIconWrapper = ({
+  withoutAnimation,
+  ...attrs
+}: HTMLAttributes<HTMLOrSVGElement> & { name: string; withoutAnimation?: boolean }) => {
   return (
     <StyledSvg
       {...attrs}
@@ -10,11 +13,12 @@ export const TheIconWrapper = ({ ...attrs }: HTMLAttributes<HTMLOrSVGElement> & 
       height="24"
       viewBox="0 0 24 24"
       fill="none"
+      $withoutAnimation={withoutAnimation}
     />
   );
 };
 
-export const StyledSvg = styled.svg`
+export const StyledSvg = styled.svg<{ $withoutAnimation?: boolean }>`
   --icon-size: 24px;
   --icon-scale: 1;
   --icon-fill: var(--icon-color);
@@ -28,7 +32,7 @@ export const StyledSvg = styled.svg`
   min-height: var(--icon-size);
   max-height: var(--icon-size);
 
-  ${props => props.theme.isCanPlayAnimations() && iconWrapperAnimation}
+  ${props => !props.$withoutAnimation && props.theme.isCanPlayAnimations() && iconWrapperAnimation}
 `;
 
 const fillIconAnimation = keyframes`${css`

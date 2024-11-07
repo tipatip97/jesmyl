@@ -14,4 +14,4 @@ export const theIconNamePostfixList = [
 
 export type TheIconSelfPack = Record<(typeof theIconNamePostfixList)[number], TheIconType> & { name: string };
 
-export type TheIconProps = HTMLAttributes<HTMLOrSVGElement>;
+export type TheIconProps = HTMLAttributes<HTMLOrSVGElement> & { withoutAnimation?: boolean };

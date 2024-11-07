@@ -104,6 +104,15 @@ body {
   @include numeric-1-9-builder('rem');
   @include numeric-1-9-builder('em');
 
+  &:has(.hideFooterMenu) {
+    --footer-height: 0px;
+    --footer-opacity: 0;
+
+    .footer-menu {
+      padding: 0;
+    }
+  }
+
   .above-container.keyboard-open {
     --keyboard-flash-height: 30vh;
     --footer-height: 0px;

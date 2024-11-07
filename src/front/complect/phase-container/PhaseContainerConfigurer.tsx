@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 import { IconArrowLeft02StrokeRounded } from '../../complect/the-icon/icons/arrow-left-02';
 import { IconMoreVerticalCircle01StrokeRounded } from '../../complect/the-icon/icons/more-vertical-circle-01';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
+import { contextCreator } from '../contextCreator';
 import { LinkWithSearchRemember } from './LinkWithSearchRemember';
 import { PhaseContainerConfigurerProps } from './PhaseContainerConfigurer.model';
-import { contextCreator } from '../contextCreator';
 
 let navigate: NavigateFunction = () => {};
 const swiper = backSwipableContainerMaker(() => navigate('..'));
@@ -20,7 +20,7 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
 
   const content = (
     <>
-      <div className="header flex between full-width">
+      <div className={'header flex between full-width' + (props.hideFooterMenu ? ' hideFooterMenu' : '')}>
         {props.withoutBackButton ? (
           props.headTitle && <span className="margin-big-gap-l">{props.headTitle}</span>
         ) : (
@@ -44,7 +44,7 @@ export default function PhaseContainerConfigurer(props: PhaseContainerConfigurer
         </div>
       </div>
       <div
-        className={`content ${props.contentClass || ''}`}
+        className={`content ${props.contentClass || ' padding-gap'}`}
         ref={props.contentRef}
       >
         {props.content}
@@ -94,7 +94,6 @@ const ContainerPhase = styled.div<{ $withoutFooter: boolean | und }>`
     position: static;
     transition: var(--fullscreen-transition);
     background-color: var(--color--5);
-    padding: var(--main-gap);
     width: 100vw;
     height: var(--content-height);
     overflow-x: hidden;

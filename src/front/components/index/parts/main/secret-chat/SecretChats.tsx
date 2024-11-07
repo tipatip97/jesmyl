@@ -1,25 +1,31 @@
 import { useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { SecretChat } from '../../../../../../back/apps/index/SecretChat.complect';
-import { FaceItem } from '../../../../../complect/FaceItem';
+import { itIt } from '../../../../../../back/complect/utils';
 import { useAtomSet, useAtomValue } from '../../../../../complect/atoms';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import { MyLib } from '../../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import QRCode from '../../../../../complect/qr-code/QRCode';
-import { IconBubbleChatEditStrokeRounded } from '../../../../../complect/the-icon/icons/bubble-chat-edit';
 import { IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/qr-code';
+import { soki } from '../../../../../soki';
 import { useDeviceId } from '../../../complect/takeDeviceId';
 import { useAuth } from '../../../molecules';
-import { SecretChatPage } from './SecretChat';
+import { SecretChatFace } from './SecretChatFace';
 import { SecretChatQrReader } from './SecretChatQrReader';
-import { secretChatingWithQrCodeKey, secretChatsAtom } from './complect';
+import { SecretChatPage } from './chat/SecretChat';
+import { secretChatingJoinerStringify } from './complect';
+import { secretChatMessagesHashMapAtom, secretChatsAtom, secretChatsLastReadTsAtom } from './molecule';
 
 export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: boolean }) => {
   const [isQrCodeOpen, setIsQrCodeOpen] = useState<unknown>(false);
   const myDeviceId = useDeviceId();
-  const secretMessages = useAtomValue(secretChatsAtom);
-  const setSecretChats = useAtomSet(secretChatsAtom);
+  const chats = useAtomValue(secretChatsAtom);
+  const chatsLastReadTs = useAtomValue(secretChatsLastReadTsAtom);
+  const chatMessagesHashMaps = useAtomValue(secretChatMessagesHashMapAtom);
+  const setChats = useAtomSet(secretChatsAtom);
+  const setChatMessages = useAtomSet(secretChatMessagesHashMapAtom);
+  const setChatsLastReadTs = useAtomSet(secretChatsLastReadTsAtom);
   const auth = useAuth();
 
   return (
@@ -34,23 +40,51 @@ export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: bo
             head={
               <span className="flex flex-gap">
                 <SecretChatQrReader
-                  onDeviceIdDetected={deviceId => {
-                    setSecretChats((prev: SecretChat.Messages): SecretChat.Messages => {
-                      const chatId = `${Date.now()}${Math.random()}` as const;
+                  onDeviceIdDetected={(deviceId, joinerFio) => {
+                    const chatId = `${Date.now()}${Math.random()}` as SecretChat.ChatId;
+                    const title = [auth.fio || myDeviceId, joinerFio || deviceId].filter(itIt).join(', ');
 
-                      const localChat: SecretChat.LocalChat = {
-                        info: {
-                          id: chatId,
-                          team: [myDeviceId, deviceId],
-                          fios: [auth.fio || myDeviceId, deviceId],
-                          title: deviceId,
+                    const chat: SecretChat.ChatInfo = {
+                      id: chatId,
+                      title,
+                      users: {
+                        [myDeviceId]: {
+                          fio: auth.fio || myDeviceId,
+                          id: myDeviceId,
+                          role: 'creator',
                         },
-                        lastReadTs: 0,
-                        messages: [],
-                      };
+                        [deviceId]: {
+                          fio: joinerFio || deviceId,
+                          id: deviceId,
+                          role: 'user',
+                        },
+                      },
+                    };
 
-                      return { ...prev, [chatId]: localChat };
-                    });
+                    setChats(prev => ({ ...prev, [chatId]: chat }));
+                    setChatMessages(prev => ({ ...prev, [chatId]: {} }));
+
+                    soki
+                      .send(
+                        {
+                          secretMessage: {
+                            chat,
+                            chatId: chat.id,
+                            targetIds: MyLib.keys(chat.users),
+                            body: {
+                              senderId: myDeviceId,
+                              text: title,
+                              type: 'chatCreate',
+                            },
+                          },
+                        },
+                        'index',
+                      )
+                      .on(({ secretMessage }) => {
+                        if (secretMessage == null) return;
+
+                        setChatsLastReadTs(prev => ({ ...prev, [chatId]: secretMessage.message.ts }));
+                      });
                   }}
                 />
                 {myDeviceId && <IconQrCodeStrokeRounded onClick={setIsQrCodeOpen} />}
@@ -58,21 +92,14 @@ export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: bo
             }
             content={
               <>
-                {MyLib.keys(secretMessages).map(chatId => {
-                  const chat = secretMessages[chatId];
-
+                {MyLib.keys(chats).map(chatId => {
                   return (
-                    <Link
+                    <SecretChatFace
                       key={chatId}
-                      to={'' + chatId}
-                    >
-                      <FaceItem>
-                        <div className="face-logo">
-                          <IconBubbleChatEditStrokeRounded />
-                        </div>
-                        <div className="face-title ellipsis">{chat.info.title}</div>
-                      </FaceItem>
-                    </Link>
+                      chat={chats[chatId]!}
+                      messagesHash={chatMessagesHashMaps[chatId]}
+                      lastReadTs={chatsLastReadTs[chatId]}
+                    />
                   );
                 })}
                 {isQrCodeOpen && (
@@ -83,7 +110,7 @@ export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: bo
                     closable
                   >
                     <QRCode
-                      text={JSON.stringify({ [secretChatingWithQrCodeKey]: { deviceId: myDeviceId } })}
+                      text={secretChatingJoinerStringify(myDeviceId, auth.fio)}
                       className="full-width"
                     />
                   </FullContent>
