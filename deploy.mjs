@@ -3,6 +3,7 @@ import { exec } from 'child_process';
 import FormData from 'form-data';
 import file_system from 'fs';
 import fetch from 'node-fetch';
+import { build } from 'esbuild';
 
 const isBuildFront = true;
 
@@ -55,7 +56,15 @@ const archive = (isFront, onError, versionNum) => {
   });
 
   archive.pipe(file_system.createWriteStream(filename));
-  archive.directory(isFront ? 'build' : 'src/back', false);
+  if (isFront) archive.directory('build', false);
+  else
+    archive.directory('src/back', false, file => {
+      if (!file.name.includes('/+') && (file.name.endsWith('.json') || file.name.endsWith('.js'))) {
+        return file;
+      }
+
+      return false;
+    });
   archive.finalize();
 };
 
@@ -92,4 +101,16 @@ if (~process.argv.indexOf('--push-front')) {
   });
 }
 
-if (~process.argv.indexOf('--push-back')) archive(false);
+if (~process.argv.indexOf('--push-back')) {
+  (async () => {
+    await build({
+      entryPoints: ['src/back/back.index.ts'],
+      bundle: true,
+      minify: false,
+      platform: 'node',
+      format: 'cjs',
+      outfile: 'src/back/back.index.js',
+    });
+    archive(false);
+  })();
+}
