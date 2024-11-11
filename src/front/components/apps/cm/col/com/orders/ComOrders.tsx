@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import { IconViewStrokeRounded } from '../../../../../../complect/the-icon/icons/view';
@@ -11,7 +11,6 @@ import { IComOrdersProps } from './ComOrders.model';
 export default function ComOrders(props: IComOrdersProps) {
   const { com, fontSize, asLineComponent } = props;
   const [exMods, updateExMods] = useState<number[]>(com.excludedModulations);
-  const style = useMemo(() => ({ fontSize: `${fontSize}px` }), [fontSize]);
 
   let specChordedi = 0;
   let specTextedi = 0;
@@ -19,8 +18,8 @@ export default function ComOrders(props: IComOrdersProps) {
   const content = (
     <OrdList
       className="com-ord-list"
-      style={style}
       ref={props.listRef}
+      $fontSize={fontSize}
     >
       {com.orders?.map((orderUnit, orderUniti) => {
         const isExcludedModulation = exMods.includes(orderUnit.wid);
@@ -88,11 +87,12 @@ const FlexFontSizeContent = styled.div`
   width: max-content;
 `;
 
-const OrdList = styled.div`
+const OrdList = styled.div<{ $fontSize: number | und }>`
   display: inline-block;
   transition: padding 0.2s;
   padding-top: 0.06em;
   padding-bottom: 100px;
   min-height: 100%;
   color: var(--color-far);
+  font-size: ${props => props.$fontSize}px;
 `;

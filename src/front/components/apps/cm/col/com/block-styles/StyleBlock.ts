@@ -29,6 +29,10 @@ export class StyleBlock extends SourceBased<IExportableStyleProp> {
     return this.getBasic('isInherit');
   }
 
+  get isHeaderNoneForce() {
+    return this.getBasic('isHeaderNoneForce');
+  }
+
   get group() {
     return this.getBasic('group');
   }

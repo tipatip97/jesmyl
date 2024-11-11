@@ -50,7 +50,7 @@ export class ComBlockCommentMakerCleans {
     };
   };
 
-  static withHeaderTextOrderFilter = (ord: Order) => ord.isVisible;
+  static withHeaderTextOrderFilter = (ord: Order) => !ord.isHeaderNoneForce && ord.isVisible;
 
   static makeSecretToWid = (infoWidStr: string) =>
     infoWidStr

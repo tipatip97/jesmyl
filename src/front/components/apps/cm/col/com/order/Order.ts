@@ -134,6 +134,10 @@ export class Order extends SourceBased<IExportableOrder> {
     this.setExportable('v', val ? 1 : 0);
   }
 
+  get isHeaderNoneForce() {
+    return this.me.style?.isHeaderNoneForce;
+  }
+
   get fieldValues(): IExportableOrderFieldValues | und {
     return this.getBasicOr('f', {});
   }

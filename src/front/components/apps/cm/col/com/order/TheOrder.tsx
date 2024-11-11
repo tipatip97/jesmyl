@@ -26,6 +26,7 @@ export default function TheOrder(props: Props) {
     (!props.showInvisibles && !orderUnit.isVisible)
   )
     return null;
+
   const { orderUniti, com } = props;
 
   const className = orderUnit.me.style?.getStyleName(orderUnit);
@@ -65,7 +66,7 @@ export default function TheOrder(props: Props) {
   const headerNode = blockHeader ? (
     <div className={`styled-header ${className}`}>{blockHeader}</div>
   ) : (
-    <div className="styled-header empty" />
+    !orderUnit.me.style?.isHeaderNoneForce && <div className="styled-header empty" />
   );
 
   const header =

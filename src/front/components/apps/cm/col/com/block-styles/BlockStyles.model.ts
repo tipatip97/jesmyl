@@ -6,6 +6,7 @@ export interface IExportableStyleProp {
   tags?: string[];
   isModulation?: boolean;
   forChordedBlock?: number;
+  isHeaderNoneForce?: boolean;
 }
 
 export interface IExportableSetts {
