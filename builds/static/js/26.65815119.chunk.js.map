@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/26.65815119.chunk.js","mappings":"8HAQA,UARA,WACE,OACE","sources":["pages/About.tsx"],"sourcesContent":["function AboutPage() {\r\n  return (\r\n    <div>\r\n      this is About page\r\n    </div>\r\n  );\r\n}\r\n\r\nexport default AboutPage;\r\n"],"names":[],"sourceRoot":""}

@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkjesmyl_pwa=self.webpackChunkjesmyl_pwa||[]).push([[26],{26:function(e,s,u){u.r(s);var n=u(184);s.default=function(){return(0,n.jsx)("div",{children:"this is About page"})}}}]);
-//# sourceMappingURL=26.65815119.chunk.js.map
