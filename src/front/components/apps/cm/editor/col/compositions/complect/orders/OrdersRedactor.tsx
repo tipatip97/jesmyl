@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { BottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
-import { useBottomPopup } from '../../../../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
 import { IconEdit02StrokeRounded } from '../../../../../../../../complect/the-icon/icons/edit-02';
@@ -16,7 +15,7 @@ import { OrdersRedactorAdditions } from './additions/Additions';
 
 export default function OrdersRedactor() {
   const ccom = useEditableCcom();
-  const [popupAddsNode, , openAddsPopup] = useBottomPopup<EditableCom | und>(OrdersRedactorAdditions, ccom);
+  const [newBlockAdderPopupCom, setNewBlockAdderPopupCom] = useState<EditableCom | false>(false);
   const exec = useExerExec();
   const [toolProps, setToolProps] = useState<OrdersRedactorOrderToolsProps | false>(false);
 
@@ -24,7 +23,19 @@ export default function OrdersRedactor() {
 
   return (
     <div className="orders-redactor">
-      {popupAddsNode}
+      <>
+        {newBlockAdderPopupCom && (
+          <BottomPopup
+            isPreventCloseOnClick
+            onClose={setNewBlockAdderPopupCom}
+          >
+            <OrdersRedactorAdditions
+              com={newBlockAdderPopupCom}
+              onClose={setNewBlockAdderPopupCom}
+            />
+          </BottomPopup>
+        )}
+      </>
       {ccom.orders?.map((ord, ordi, orda) => {
         const leadHeader = ord.me.header(
           {
@@ -92,7 +103,7 @@ export default function OrdersRedactor() {
       <div className="flex">
         <IconPlusSignCircleStrokeRounded
           className="pointer margin-gap-h"
-          onClick={() => openAddsPopup(ccom)}
+          onClick={() => setNewBlockAdderPopupCom(ccom)}
         />
       </div>
       {toolProps && (

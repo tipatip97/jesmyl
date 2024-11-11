@@ -61,7 +61,7 @@ export const OrdersRedactorOrderToolsChordBind = ({ ccom, ord, ordi, onClose }: 
                     <pre>
                       <b>{chordsBlocki + 1}</b>
                       <br />
-                      {chordsBlock}
+                      {ccom.transBlock(chordsBlock)}
                     </pre>
                   }
                 />

@@ -1,7 +1,7 @@
 import { makeRegExp } from '../../back/complect/makeRegExp';
 
 export const makePseudoElementCorrectContentText = (text: string) =>
-  text?.replace(makeRegExp("/'/g"), "\\'").replace(makeRegExp('/\\n/g'), '\\A');
+  text?.replace(makeRegExp("/'/g"), "\\'").replace(makeRegExp('/\\n/g'), "''\\A''");
 
 export const getParentNodeWithClassName = <ClassName extends string>(
   event: { target: unknown },

@@ -33,17 +33,17 @@ export function FullContent({ onClose, closable, children, className, asRootAnch
   const actualAsRootAnchorRef = useActualRef(asRootAnchor);
   const subClose = useMemo(() => ({ current: emptyFunc }), []);
 
-  const close = useCallback(() => {
-    if (asRootAnchor) {
-      subClose.current();
-      return;
-    }
-
-    if (onClose !== true) onClose(false);
-  }, [asRootAnchor, onClose, subClose]);
-
   const node = useCallback(
     (wid?: string) => {
+      const close = () => {
+        if (actualAsRootAnchorRef.current) {
+          subClose.current();
+          return;
+        }
+
+        if (onClose !== true) onClose(false);
+      };
+
       return (
         <Swiped
           key={wid}
@@ -66,10 +66,10 @@ export function FullContent({ onClose, closable, children, className, asRootAnch
         </Swiped>
       );
     },
-    [actualAsRootAnchorRef, actualChildrenRef, className, closable, close, containerClassName, subClose],
+    [actualAsRootAnchorRef, actualChildrenRef, className, closable, containerClassName, onClose, subClose],
   );
 
-  if (asRootAnchor)
+  if (actualAsRootAnchorRef.current)
     return (
       <RootAnchor
         node={node}

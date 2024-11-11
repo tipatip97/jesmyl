@@ -85,7 +85,6 @@ export class ComBlockCommentMakerCleans {
             `
           : css`
               opacity: var(--comment-opacity);
-              color: var(--color-far);
             `}
     `;
   };

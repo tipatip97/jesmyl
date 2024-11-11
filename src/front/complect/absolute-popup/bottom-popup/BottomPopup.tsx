@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { propagationStopper } from '../../../../back/complect/utils';
 import { ThrowEvent } from '../../eventer/ThrowEvent';
 import Portal from '../../popups/[complect]/Portal';
 import useMountTransition from '../../popups/useMountTransition';
@@ -42,7 +43,7 @@ export const BottomPopup = ({ children, onClose, isPreventCloseOnClick }: Props)
           <Popup
             ref={popupContainer}
             className={className}
-            onClick={isPreventCloseOnClick ? undefined : () => setTimeout(onClose, 200, false)}
+            onClick={() => setTimeout(onClose, 200, false)}
           >
             <div
               className="over-container"
@@ -54,8 +55,9 @@ export const BottomPopup = ({ children, onClose, isPreventCloseOnClick }: Props)
                 <div className="badge" />
               </div>
               <Content
-                className="content flex column"
                 ref={contentContainer}
+                className="content flex column"
+                onClick={isPreventCloseOnClick ? propagationStopper : undefined}
               >
                 {children}
               </Content>
