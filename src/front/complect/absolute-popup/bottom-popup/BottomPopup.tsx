@@ -1,6 +1,6 @@
+import { propagationStopper } from 'front/complect/utils/utils';
 import { ReactNode, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { propagationStopper } from '../../../../back/complect/utils';
 import { ThrowEvent } from '../../eventer/ThrowEvent';
 import Portal from '../../popups/[complect]/Portal';
 import useMountTransition from '../../popups/useMountTransition';

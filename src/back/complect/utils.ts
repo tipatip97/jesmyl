@@ -101,14 +101,12 @@ const baseHeadersReplacer = (_all: string, $1: string, $2: string) => tags[$1][0
 ////////////////////////////////////////////////
 ////////////////////////////////////////////////
 
-const itIt = <It>(it: It) => it;
-const itNIt = <It>(it: It) => !it;
-const isNIs = (is: boolean) => !is;
-const emptyFunc = () => {};
-const retUnd = () => undefined;
-const itNUnd = <It>(it: It) => it !== undefined;
-const retNull = () => null;
-const itNNull = <It>(it: It) => it !== null;
-const itNNil = <It>(it: It) => it != null;
-
-export { emptyFunc, isNIs, itIt, itNNil, itNNull, retNull, retUnd, itNUnd, itNIt };
+export const itIt = <It>(it: It) => it;
+export const itNIt = <It>(it: It) => !it;
+export const isNIs = (is: boolean) => !is;
+export const emptyFunc = () => {};
+export const retUnd = () => undefined;
+export const itNUnd = <It>(it: It) => it !== undefined;
+export const retNull = () => null;
+export const itNNull = <It>(it: It) => it !== null;
+export const itNNil = <It>(it: It) => it != null;
