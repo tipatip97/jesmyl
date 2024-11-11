@@ -36,7 +36,7 @@ export const useSetBibleAddressIndexes = () => {
   const setResultSelected = useBibleTranslationSearchResultSelectedSet();
 
   return useCallback(
-    (booki: BibleBooki, chapteri: BibleChapteri, versei: BibleVersei, resultSelectedi?: number) => {
+    (booki?: BibleBooki, chapteri?: BibleChapteri, versei?: BibleVersei, resultSelectedi?: number) => {
       setAddress(booki, chapteri, versei);
 
       if (resultSelectedi !== undefined) {
@@ -45,6 +45,19 @@ export const useSetBibleAddressIndexes = () => {
       }
     },
     [setAddress, setJoin, setResultSelected],
+  );
+};
+
+export const useSetBibleAddressWithForceJoinReset = () => {
+  const setJoin = useBibleTranslationJoinAddressSetter();
+  const setAddress = useBibleSingleAddressSetter();
+
+  return useCallback(
+    (booki?: BibleBooki, chapteri?: BibleChapteri, versei?: BibleVersei) => {
+      setJoin(null);
+      setAddress(booki, chapteri, versei);
+    },
+    [setAddress, setJoin],
   );
 };
 

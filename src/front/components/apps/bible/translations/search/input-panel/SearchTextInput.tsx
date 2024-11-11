@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react';
+import { addEventListenerPipe, hookEffectPipe } from '../../../../../../complect/hookEffectPipe';
 import { useSetBibleAddressIndexes } from '../../../hooks/address/address';
+import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
 import {
   useBibleTranslationSearchResultList,
   useBibleTranslationSearchResultSelectedSet,
@@ -7,9 +9,6 @@ import {
 } from '../hooks/results';
 import { useBibleSearchTerm } from '../selectors';
 import BibleSearchPanelInput from './Input';
-import { addEventListenerPipe, hookEffectPipe } from '../../../../../../complect/hookEffectPipe';
-import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
-import { useScreenTranslationWindows } from '../../../../+complect/translations/hooks/windows';
 
 interface Props {
   inputRef: React.RefObject<HTMLInputElement>;
@@ -20,7 +19,6 @@ export default function BibleSearchPanelSearchTextInput({ inputRef }: Props) {
   const resultSelected = useBibleTranslationSearchResultSelectedValue();
   const setResultSelected = useBibleTranslationSearchResultSelectedSet();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
-  const windows = useScreenTranslationWindows();
 
   const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setTerm(event.target.value), [setTerm]);
   const setAddress = useSetBibleAddressIndexes();
@@ -44,7 +42,6 @@ export default function BibleSearchPanelSearchTextInput({ inputRef }: Props) {
               inputNode.blur();
               syncSlide();
               setResultSelected(null);
-              windows.forEach(win => win?.focus());
 
               return;
             case 'ArrowUp':
@@ -63,7 +60,7 @@ export default function BibleSearchPanelSearchTextInput({ inputRef }: Props) {
         }),
       )
       .effect();
-  }, [inputRef, resultList.length, resultSelected, setResultSelected, syncSlide, windows]);
+  }, [inputRef, resultList.length, resultSelected, setResultSelected, syncSlide]);
 
   return (
     <BibleSearchPanelInput

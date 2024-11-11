@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useScreenTranslationWindows } from '../../../+complect/translations/hooks/windows';
 import { useAtomSet } from '../../../../../complect/atoms';
 import mylib from '../../../../../complect/my-lib/MyLib';
 import { useActualRef } from '../../../../../complect/useActualRef';
@@ -19,7 +18,6 @@ import { bibleVerseiAtom } from '../lists/atoms';
 
 export const useBibleScreenTranslationKeyListener = (versei: BibleVersei, win?: Window) => {
   const [numberCollection, setNumberCollection] = useState('');
-  const wins = useScreenTranslationWindows();
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
@@ -63,7 +61,7 @@ export const useBibleScreenTranslationKeyListener = (versei: BibleVersei, win?: 
         }
       })
       .effect();
-  }, [actualAddressRef, addToPlan, syncSlide, win, wins]);
+  }, [actualAddressRef, addToPlan, syncSlide, win]);
 
   useEffect(() => {
     return hookEffectLine()

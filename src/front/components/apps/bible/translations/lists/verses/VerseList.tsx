@@ -1,30 +1,36 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { JStorageSetOrArrayVal } from '../../../../../../complect/JSimpleStorage/exports/SetOrArray';
 import { useBibleAddressBooki } from '../../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../../hooks/address/chapters';
-import { useBibleAddressVersei } from '../../../hooks/address/verses';
 import { useBibleTranslatesContext } from '../../../translates/TranslatesContext';
 import { useBibleShowTranslatesValue } from '../../../translates/hooks';
 import { useVerseListListeners } from './useVerseListListeners';
 
 export const verseiIdPrefix = 'bible-versei-';
 
+const fastVerses = new JStorageSetOrArrayVal<string[]>('bible', 'fastVerses', []);
+
 export default function BibleVerseList(): JSX.Element {
-  const verseListNodeRef = useRef<HTMLDivElement>(null);
+  const verseListRef = useRef<HTMLDivElement>(null);
 
   const currentBooki = useBibleAddressBooki();
   const currentChapteri = useBibleAddressChapteri();
-  const currentVersei = useBibleAddressVersei();
   const showTranslates = useBibleShowTranslatesValue();
   const translates = useBibleTranslatesContext();
 
   const verses = translates[showTranslates[0]]?.chapters?.[currentBooki]?.[currentChapteri];
 
-  useVerseListListeners(verseListNodeRef, currentBooki, currentChapteri, currentVersei);
+  useEffect(() => {
+    if (verses === undefined || !verses.length) return;
+    fastVerses.set(verses);
+  }, [verses]);
+
+  useVerseListListeners(verseListRef, currentBooki, currentChapteri);
 
   return (
-    <Container ref={verseListNodeRef}>
-      {verses?.map((verse, versei) => {
+    <Container ref={verseListRef}>
+      {(verses ?? fastVerses.get())?.map((verse, versei) => {
         return (
           <Face
             key={versei}

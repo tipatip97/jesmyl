@@ -58,7 +58,7 @@ export const useWatchScreenTranslations = () => {
         },
         undefined,
         undefined,
-        `top=10000,left=30000,width=30000,height=30000,directories=0,titlebar=0,toolbar=0,location=0,status=0,menubar=0,scrollbars=no`,
+        `top=10000,left=30000,width=30000,height=30000,directories=no,titlebar=no,menubar=no,toolbar=no,location=no,status=no,scrollbars=no`,
       );
 
     const len = configs.length - windows.length;

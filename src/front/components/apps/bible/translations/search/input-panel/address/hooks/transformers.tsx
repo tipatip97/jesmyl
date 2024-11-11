@@ -3,17 +3,18 @@ import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp'
 import { emptyFunc } from '../../../../../../../../../back/complect/utils';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../../complect/hookEffectPipe';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../../../../hooks/address/address';
-import { useBibleAddressBooki } from '../../../../../hooks/address/books';
-import { useBibleAddressChapteri } from '../../../../../hooks/address/chapters';
-import { useBibleAddressVersei } from '../../../../../hooks/address/verses';
 import { useBibleBookList } from '../../../../../hooks/texts';
 import { BibleBooki, BibleChapteri, BibleVersei } from '../../../../../model';
 import { bibleLowerBooks, useBibleTranslatesContext } from '../../../../../translates/TranslatesContext';
 
+const addressReg = makeRegExp('/(\\d?\\s*[а-яё]+)\\s*((\\d{1,3})((:|\\s+)(\\d{1,3})(\\s*([-,]?)\\s*)(\\d{1,3})?)?)?/i');
+const makePropsFromAddressArgs = (args: [string, ...(string | und)[]] | RegExpMatchArray) => {
+  const [$all, bookn, , chapterStr, , , verseStr, , verseSeparator, finishVerseStr] = args;
+
+  return { $all, bookn, chapterStr, verseStr, verseSeparator, finishVerseStr };
+};
+
 export const useBibleTransformAddressTermToAddress = (term: string, inputRef: React.RefObject<HTMLInputElement>) => {
-  const currentBooki = useBibleAddressBooki();
-  const currentChapteri = useBibleAddressChapteri();
-  const currentVarsei = useBibleAddressVersei();
   const books = useBibleBookList();
   const { chapters } = useBibleTranslatesContext().rst ?? {};
   const [address, setAddress] = useState<ReactNode>(null);
@@ -38,22 +39,19 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
   useEffect(() => {
     if (chapters === undefined || term.length < 1) return;
 
-    const match = term
-      .trim()
-      .toLowerCase()
-      .match(makeRegExp('/^(\\d?\\s*[а-яё]+)?\\s?(\\d{1,3})[\\s:]?(\\d{1,3})([-,\\s]{0,2})(\\d{1,3})?$/'));
+    const match = term.match(addressReg);
 
     if (match === null) return;
 
-    const [, bookn, chapterStr, verseStr, verseSeparator, plusVerseStr] = match;
+    const { bookn, chapterStr, verseStr, verseSeparator, finishVerseStr } = makePropsFromAddressArgs(match);
 
-    const chapterNumber = chapterStr === undefined ? currentChapteri + 1 : (+chapterStr as BibleChapteri);
-    const verseNumber = verseStr === undefined ? currentVarsei + 1 : (+verseStr as BibleVersei);
-    const plusVerseNumber = plusVerseStr === undefined ? undefined : +plusVerseStr;
+    const chapterNumberi = chapterStr === undefined ? 0 : ((+chapterStr - 1) as BibleChapteri);
+    const verseNumber = (verseStr === undefined ? 1 : (+verseStr as BibleVersei)) || 1;
+    const finishVerseNumber = finishVerseStr === undefined ? undefined : +finishVerseStr;
 
     let booki = BibleBooki.none;
 
-    if (bookn === undefined) booki = currentBooki;
+    if (bookn === undefined) booki = 0;
     else {
       const bookNameWithoutSpace = bookn.replace(makeRegExp('/\\s+/'), '');
 
@@ -67,73 +65,88 @@ export const useBibleTransformAddressTermToAddress = (term: string, inputRef: Re
         booki = bibleLowerBooks.findIndex(book =>
           book.some(title => title.includes(bookn) || title.includes(bookNameWithoutSpace)),
         );
-      if (booki < 0) booki = currentBooki;
+      if (booki < 0) booki = 0;
     }
 
-    const bookNameNode = booki === currentBooki ? <span className="color--7">{books[booki][0]}</span> : books[booki][0];
+    const bookNameNode = booki === 0 ? <span className="color--7">{books[booki][0]}</span> : books[booki][0];
 
-    let chapterNode: ReactNode = chapterNumber;
+    let chapterNode: ReactNode = chapterNumberi + 1;
     let verseNode: ReactNode = verseNumber;
-    let plusVerseNode: ReactNode = plusVerseNumber;
+    let finishVerseNode: ReactNode = finishVerseNumber;
 
     if (chapters[booki] == null) return;
     const book = chapters[booki]!;
 
-    if (chapterNumber > book.length) {
-      chapterNode = <span className="color--ko">{chapterNumber}</span>;
-      verseNode = <span className="color--ko">{verseNumber}</span>;
-      if (plusVerseNumber !== undefined) plusVerseNode = <span className="color--ko">{plusVerseNumber}</span>;
+    do {
+      const isChapterOverOfBookLength = chapterNumberi >= book.length;
 
-      onEnterPressRef.current = emptyFunc;
-    } else if (
-      book[chapterNumber - 1] !== undefined &&
-      (verseNumber > book[chapterNumber - 1].length ||
-        (plusVerseNumber !== undefined && plusVerseNumber <= verseNumber))
-    ) {
-      verseNode = <span className="color--ko">{verseNumber}</span>;
-      if (plusVerseNumber !== undefined) plusVerseNode = <span className="color--ko">{plusVerseNumber}</span>;
+      if (isChapterOverOfBookLength) {
+        chapterNode = <span className="color--ko">{chapterNumberi + 1}</span>;
+        verseNode = <span className="color--ko">{verseNumber}</span>;
+        if (finishVerseNumber !== undefined) finishVerseNode = <span className="color--ko">{finishVerseNumber}</span>;
 
-      onEnterPressRef.current = emptyFunc;
-    } else if (
-      plusVerseNumber !== undefined &&
-      book[chapterNumber - 1] !== undefined &&
-      plusVerseNumber > book[chapterNumber - 1].length
-    ) {
-      plusVerseNode = <span className="color--ko">{plusVerseNumber}</span>;
+        onEnterPressRef.current = emptyFunc;
 
-      onEnterPressRef.current = emptyFunc;
-    } else {
+        break;
+      }
+
+      const chapterLength = book[chapterNumberi]?.length ?? 0;
+      const isFinishVerseOverOfCurrentChapter = finishVerseNumber !== undefined && finishVerseNumber > chapterLength;
+
+      if (isFinishVerseOverOfCurrentChapter) {
+        finishVerseNode = <span className="color--ko">{finishVerseNumber}</span>;
+
+        onEnterPressRef.current = emptyFunc;
+
+        break;
+      }
+
+      const isVerseOverOfChapter = verseNumber > chapterLength;
+      const isFinishVerseLessThenStartVerse = finishVerseNumber !== undefined && finishVerseNumber <= verseNumber;
+      const isVerseDiapasonIncorrect = isVerseOverOfChapter || isFinishVerseLessThenStartVerse;
+
+      if (isVerseDiapasonIncorrect) {
+        verseNode = <span className="color--ko">{verseNumber}</span>;
+        if (finishVerseNumber !== undefined) finishVerseNode = <span className="color--ko">{finishVerseNumber}</span>;
+
+        onEnterPressRef.current = emptyFunc;
+
+        break;
+      }
+
       onEnterPressRef.current = () => {
-        if (plusVerseNumber === undefined) setAddressIndexes(booki, chapterNumber - 1, verseNumber - 1);
+        if (finishVerseNumber === undefined) setAddressIndexes(booki, chapterNumberi, verseNumber - 1);
         else {
+          setAddressIndexes(booki, chapterNumberi, finishVerseNumber - 1);
+
           setJoinAddress({
             [booki]: {
-              [chapterNumber - 1]:
-                verseSeparator.trim() === ','
-                  ? [verseNumber - 1, plusVerseNumber - 1]
-                  : Array(plusVerseNumber - verseNumber + 1)
+              [chapterNumberi]:
+                verseSeparator?.trim() === ','
+                  ? [verseNumber - 1, finishVerseNumber - 1]
+                  : Array(finishVerseNumber - verseNumber + 1)
                       .fill(0)
-                      .map((_, i): BibleVersei => i + verseNumber - 1),
+                      .map((_, i) => i + verseNumber - 1),
             },
           } as never);
         }
       };
-    }
+    } while (false);
 
     const address = (
       <>
         {bookNameNode} {chapterNode}:{verseNode}
-        {plusVerseNode === undefined ? null : (
+        {finishVerseNode === undefined ? null : (
           <>
-            {verseSeparator.trim() === ',' ? ',' : '-'}
-            {plusVerseNode}
+            {verseSeparator?.trim() === ',' ? ',' : '-'}
+            {finishVerseNode}
           </>
         )}
       </>
     );
 
     setAddress(address);
-  }, [books, chapters, currentBooki, currentChapteri, currentVarsei, setAddressIndexes, setJoinAddress, term]);
+  }, [books, chapters, setAddressIndexes, setJoinAddress, term]);
 
   return address;
 };

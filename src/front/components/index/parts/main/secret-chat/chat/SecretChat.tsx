@@ -6,7 +6,7 @@ import { MyLib } from '../../../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import { useListShownLimitsController } from '../../../../../../complect/useListShownLimitsController';
-import { getNodePathOnEvent } from '../../../../../../complect/utils';
+import { getParentNodeWithClassName } from '../../../../../../complect/utils';
 import {
   makeChatId,
   secretChatClassNamesDict,
@@ -85,7 +85,7 @@ const PageChatInContexts = () => {
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       setContextOfMessageTs(null);
 
-      const { foundClassNames, node } = getNodePathOnEvent(event, 'message-place', ['message-head']);
+      const { foundClassNames, node } = getParentNodeWithClassName(event, 'message-place', ['message-head']);
 
       if (node === null || foundClassNames['message-head'] !== true) return;
 

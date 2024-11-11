@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { useAtomSet } from '../../../../../../complect/atoms';
 import mylib from '../../../../../../complect/my-lib/MyLib';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from '../../../hooks/address/address';
+import { useBibleAddressVersei } from '../../../hooks/address/verses';
 import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';
-import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress, BibleVersei } from '../../../model';
+import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress } from '../../../model';
 import { bibleVerseiAtom } from '../atoms';
 import { verseiIdPrefix } from './VerseList';
 
@@ -11,12 +12,13 @@ export const useVerseListListeners = (
   verseListNodeRef: { current: HTMLDivElement | null },
   currentBooki: BibleBooki,
   currentChapteri: BibleChapteri,
-  currentVersei: BibleVersei,
 ) => {
   const currentJoinAddress = useBibleTranslationJoinAddress();
   const syncSlide = useBibleTranslationSlideSyncContentSetter();
   const setJoin = useBibleTranslationJoinAddressSetter();
   const setVersei = useAtomSet(bibleVerseiAtom);
+  const currentVersei = useBibleAddressVersei();
+  const currentJoin = currentJoinAddress?.[currentBooki]?.[currentChapteri];
 
   useEffect(() => {
     if (verseListNodeRef.current === null) return;
@@ -34,9 +36,11 @@ export const useVerseListListeners = (
         const shiftKey = event.shiftKey;
         const versei = +verseNode.id.slice(verseiIdPrefix.length);
 
+        if (mylib.isNaN(versei)) return;
+
         clearTimeout(clickTimeout);
         if (isDblClick) {
-          if (!verseNode.classList.contains('selected')) {
+          if (!currentJoin?.includes(versei)) {
             setJoin(null);
             setVersei(versei);
           }
@@ -55,7 +59,7 @@ export const useVerseListListeners = (
             return;
           }
 
-          let newJoin = { ...currentJoinAddress } as BibleTranslationJoinAddress; // | null;
+          let newJoin = { ...currentJoinAddress } as BibleTranslationJoinAddress;
           setVersei(versei);
 
           if (currentJoinAddress == null) {
@@ -113,6 +117,7 @@ export const useVerseListListeners = (
   }, [
     currentBooki,
     currentChapteri,
+    currentJoin,
     currentJoinAddress,
     currentVersei,
     setJoin,
