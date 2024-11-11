@@ -1,31 +1,27 @@
 import { makeRegExp } from '../../back/complect/makeRegExp';
-import { itNNull } from '../../back/complect/utils';
 
 export const makePseudoElementCorrectContentText = (text: string) =>
   text?.replace(makeRegExp("/'/g"), "\\'").replace(makeRegExp('/\\n/g'), '\\A');
 
-export const getNodePathOnEvent = <ClassName extends string>(
+export const getParentNodeWithClassName = <ClassName extends string>(
   event: { target: unknown },
   stopClassName: string,
-  classesOnWay?: ClassName[],
+  classNamesOnWay?: ClassName[],
 ) => {
   let node = event.target as HTMLElement | null;
-  let classesOnWayClone = classesOnWay ? [...classesOnWay] : [];
+  let classNamesOnWaySet = new Set(classNamesOnWay);
   const foundClassNames = {} as Record<ClassName, true | und>;
 
   while (node) {
-    if (classesOnWayClone.length) {
-      const currNode = node;
+    if (classNamesOnWaySet.size) {
+      const nodeClassList = node.classList;
 
-      classesOnWayClone = classesOnWayClone
-        .map(className => {
-          if (currNode.classList.contains(className)) {
-            foundClassNames[className] = true;
-            return null;
-          }
-          return className;
-        })
-        .filter(itNNull);
+      classNamesOnWaySet.forEach(className => {
+        if (nodeClassList.contains(className)) {
+          foundClassNames[className] = true;
+          classNamesOnWaySet.delete(className);
+        }
+      });
     }
 
     if (node.classList.contains(stopClassName)) break;
