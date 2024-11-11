@@ -17,7 +17,7 @@ export default function IndexActions() {
           <PhaseContainerConfigurer
             className=""
             headTitle="Взаимодействие"
-            contentClass="flex column"
+            contentClass="flex column padding-gap"
             content={
               <>
                 {qrNode}

@@ -96,7 +96,7 @@ export default function GamerRoomContent({
           />
         )
       }
-      contentClass="flex column custom-align-items"
+      contentClass="flex column custom-align-items padding-gap"
       onMoreClick={isManager ? openPopup : undefined}
       content={
         <>

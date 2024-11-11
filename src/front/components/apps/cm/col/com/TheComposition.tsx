@@ -73,7 +73,7 @@ export default function TheComposition() {
       }
       headTitle={ccom.number}
       onMoreClick={setIsOpenTools}
-      contentClass="composition-content"
+      contentClass="composition-content padding-gap"
       contentRef={comListElem}
       withoutBackSwipe
       rememberProps={['comw']}

@@ -28,7 +28,7 @@ export default function Lists() {
             className="lists-container"
             withoutBackButton
             headTitle="Списки"
-            contentClass="flex between column"
+            contentClass="flex between column padding-gap"
             content={
               <>
                 <Link

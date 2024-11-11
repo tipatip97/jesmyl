@@ -50,7 +50,7 @@ export default function EditMeetingsEvent() {
           <PhaseCmEditorContainer
             className="edit-meeitngs"
             headTitle={`Событие - ${currentEvent.name}`}
-            contentClass="no-padding-top"
+            contentClass="no-padding-top padding-gap"
             onMoreClick={setIsMoreOpen}
             content={
               <>

@@ -16,7 +16,7 @@ export default function GroupList() {
       className=""
       headTitle={`Группы - ${ccontext.name}`}
       onMoreClick={openGroupsMore}
-      contentClass="padding-big-gap"
+      contentClass="padding-big-gap padding-gap"
       content={
         <>
           {groupsMoreNode}

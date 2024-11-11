@@ -89,7 +89,7 @@ export default function IndexMain() {
                   </div>
                 </div>
               }
-              contentClass="flex column"
+              contentClass="flex column padding-gap"
               content={
                 <>
                   <ScheduleWidgetAlarm isForceShow={auth.level >= 50} />

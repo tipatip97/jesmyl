@@ -5,7 +5,7 @@ export const ComNotFoundPage = () => {
   return (
     <PhaseContainerConfigurer
       className="com-container"
-      contentClass="color--ko flex full-size center"
+      contentClass="padding-gap color--ko flex full-size center"
       headTitle="К списку песен"
       content={
         <span className="flex flex-gap">
