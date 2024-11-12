@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
 import { useAtomValue } from '../../../../../../../../complect/atoms';
 import { isMobileDevice } from '../../../../../../../../complect/device-differences';
 import { StyledLoadingSpinner } from '../../../../../../../../complect/the-icon/IconLoading';
@@ -13,6 +12,7 @@ import {
   StyledSecretChatMessageSendIconButton,
   StyledSecretChatMessageTextArea,
 } from '../InputPanel.styled';
+import { makeRegExp } from 'shared/utils';
 
 const SendIcon = isMobileDevice ? IconArrowUp02StrokeRounded : IconSentStrokeRounded;
 

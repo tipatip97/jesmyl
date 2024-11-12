@@ -1,6 +1,5 @@
-import { WedGuest } from '../../../../back/apps/wed/model';
-import { makeRegExp } from '../../../../back/complect/makeRegExp';
-import smylib from '../../../../back/shared/SMyLib';
+import { makeRegExp, smylib } from 'shared/utils';
+import { WedGuest } from '../../../../shared/api/complect/apps/wed/complect/model';
 
 const miLine = 'afirjesmyl';
 

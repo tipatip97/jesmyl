@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import TheIcon from '../../the-icon/TheIcon';
-import { IScheduleWidgetListUnit } from '../ScheduleWidget.model';
+import { IScheduleWidgetListUnit } from 'shared/api';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 
 export default function ScheduleWidgetListUnitFace({

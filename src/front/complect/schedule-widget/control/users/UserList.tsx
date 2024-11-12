@@ -1,10 +1,9 @@
 import { ReactNode } from 'react';
-import { scheduleWidgetUserRights } from '../../../../models';
 import useIsExpand from '../../../expand/useIsExpand';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetUser from './User';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
+import { IScheduleWidgetUser, scheduleWidgetUserRights } from 'shared/api';
 
 export default function ScheduleWidgetUserList({
   scope,

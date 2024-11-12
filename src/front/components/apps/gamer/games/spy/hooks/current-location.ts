@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { itIt } from '../../../../../../../back/complect/utils';
+import { itIt } from 'shared/utils';
 import { GamerRoomMember } from '../../../Gamer.model';
 import { useGamerRoomPlayers } from '../../../complect/rooms/room/hooks/players';
 import { SpyRoomState } from '../Spy.model';

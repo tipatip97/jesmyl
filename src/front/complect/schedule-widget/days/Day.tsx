@@ -1,20 +1,24 @@
+import { mylib, MyLib } from 'front/utils';
 import { useMemo, useState } from 'react';
+import {
+  indexScheduleCheckIsDayIsPast,
+  indexScheduleGetDayStartMs,
+  IScheduleWidget,
+  IScheduleWidgetDay,
+} from 'shared/api';
+import { isNIs } from 'shared/utils';
 import styled from 'styled-components';
-import { isNIs } from '../../../../back/complect/utils';
 import { IconBookmark03StrokeRounded } from '../../../complect/the-icon/icons/bookmark-03';
 import { IconFavouriteStrokeRounded } from '../../../complect/the-icon/icons/favourite';
 import { IconFile02StrokeRounded } from '../../../complect/the-icon/icons/file-02';
 import { IconViewStrokeRounded } from '../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../complect/the-icon/icons/view-off-slash';
 import useFullContent from '../../fullscreen-content/useFullContent';
-import mylib, { MyLib } from '../../my-lib/MyLib';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import IconButton from '../../the-icon/IconButton';
 import useIsRedactArea from '../../useIsRedactArea';
-import { IScheduleWidget, IScheduleWidgetDay } from '../ScheduleWidget.model';
 import ScheduleAlarmDay from '../alarm/AlarmDay';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
-import { indexScheduleCheckIsDayIsPast, indexScheduleGetDayStartMs } from '../utils';
 import ScheduleWidgetDayEditPanel from './DayEditPanel';
 import ScheduleWidgetDayEventList from './events/DayEventList';
 

@@ -1,6 +1,6 @@
 import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Eventer, { EventerListeners } from '../../../back/complect/Eventer';
+import { Eventer, EventerListeners } from 'shared/utils';
 import { IconCancel01StrokeRounded } from '../../complect/the-icon/icons/cancel-01';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import { ThrowEvent } from '../eventer/ThrowEvent';

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { renderComponentInNewWindow } from '../../..';
-import { makeRegExp } from '../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { FullContent } from '../../fullscreen-content/FullContent';
 import StrongControlDateTimeExtracter from '../../strong-control/StrongDateTimeExtracter';
 import IconButton from '../../the-icon/IconButton';
 import { IconCalendarUpload02StrokeRounded } from '../../the-icon/icons/calendar-upload-02';
 import { IconClock01StrokeRounded } from '../../the-icon/icons/clock-01';
 import { IconPrinterStrokeRounded } from '../../the-icon/icons/printer';
-import { IScheduleWidget, IScheduleWidgetDay } from '../ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetDay } from 'shared/api';
 import { ScheduleWidgetEventListUpdater } from './EventListUpdater';
 import ScheduleWidgetPrintableDay from './PrintableDay';
 

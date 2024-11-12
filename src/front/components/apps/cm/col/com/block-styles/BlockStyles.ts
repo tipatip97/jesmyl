@@ -1,4 +1,4 @@
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import SourceBased from '../../../../../../complect/SourceBased';
 import * as styles from '../../../resources/block-styles.json';
 import { IExportableSetts } from './BlockStyles.model';

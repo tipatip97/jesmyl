@@ -1,6 +1,13 @@
+import { MyLib, mylib } from 'front/utils';
 import { ReactNode } from 'react';
+import {
+  indexScheduleGetEventFinishMs,
+  IScheduleWidget,
+  IScheduleWidgetDay,
+  IScheduleWidgetDayEvent,
+  ScheduleWidgetCleans,
+} from 'shared/api';
 import styled from 'styled-components';
-import ScheduleWidgetCleans from '../../../../../back/apps/index/schedules/utils/Cleans';
 import { IconArrowDown01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-up-01';
 import { IconBookmark03StrokeRounded } from '../../../../complect/the-icon/icons/bookmark-03';
@@ -12,17 +19,14 @@ import { IconNotificationOff01StrokeRounded } from '../../../../complect/the-ico
 import { IconSquareStrokeRounded } from '../../../../complect/the-icon/icons/square';
 import { IconViewOffSlashStrokeRounded } from '../../../../complect/the-icon/icons/view-off-slash';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
-import mylib, { MyLib } from '../../../my-lib/MyLib';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
 import IconButton from '../../../the-icon/IconButton';
 import useIsRedactArea from '../../../useIsRedactArea';
-import { IScheduleWidget, IScheduleWidgetDay, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
 import ScheduleWidgetBindAtts from '../../atts/BindAtts';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetDayEventAtts from '../../events/atts/DayEventAtts';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
-import { indexScheduleGetEventFinishMs } from '../../utils';
 import ScheduleWidgetDayEventRating from './DayEventRating';
 
 const msInMin = mylib.howMs.inMin;

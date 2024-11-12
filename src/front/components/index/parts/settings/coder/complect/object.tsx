@@ -1,5 +1,5 @@
-import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { makeRegExp } from 'shared/utils';
+import { MyLib, mylib } from 'front/utils';
 import { CoderResultComponent } from './model';
 import { CoderResultValue } from './value';
 import { CoderValueExpandable } from './value-expandable';

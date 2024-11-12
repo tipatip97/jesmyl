@@ -4,7 +4,7 @@ import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import { IconCancel02StrokeRounded } from '../../../the-icon/icons/cancel-02';
 import { IconImage02StrokeRounded } from '../../../the-icon/icons/image-02';
 import { IconLinkBackwardStrokeRounded } from '../../../the-icon/icons/link-backward';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
+import { IScheduleWidgetUser } from 'shared/api';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetUserTakePhoto from '../users/TakePhoto';
 import ScheduleWidgetUserPhoto from '../users/UserPhoto';

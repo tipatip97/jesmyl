@@ -1,4 +1,4 @@
-import { ActionBox } from '../../../../models';
+import { ActionBox } from 'shared/api';
 
 export const spyGameConfig: ActionBox = {
   access: '$amIManager',

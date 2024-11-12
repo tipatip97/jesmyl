@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
+import { IScheduleWidgetUser } from 'shared/api';
 import ScheduleWidgetUserTakePhoto from '../../../users/TakePhoto';
 import ScheduleWidgetUserPhoto from '../../../users/UserPhoto';
 

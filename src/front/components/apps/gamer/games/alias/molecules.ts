@@ -1,5 +1,5 @@
+import { AliasWordsPack } from 'shared/api';
 import { Molecule, useAtomValue } from '../../../../../complect/atoms';
-import { AliasWordsPack } from './Alias.model';
 
 interface State {
   aliasWordPacks: AliasWordsPack[];

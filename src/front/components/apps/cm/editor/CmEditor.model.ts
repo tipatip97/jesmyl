@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { CmMp3Rule, ShortRealRule } from '../../../../models';
+import { CmMp3Rule, ShortRealRule } from 'shared/api';
 
 export interface CmEditorStoraged {
   rules: ShortRealRule[];

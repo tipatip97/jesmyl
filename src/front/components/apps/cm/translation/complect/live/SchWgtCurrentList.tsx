@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
-import ScheduleWidgetCleans from '../../../../../../../back/apps/index/schedules/utils/Cleans';
-import { itNUnd } from '../../../../../../../back/complect/utils';
 import {
+  CmComBindAttach,
   IScheduleWidget,
+  IScheduleWidgetDay,
   IScheduleWidgetDayEvent,
-} from '../../../../../../complect/schedule-widget/ScheduleWidget.model';
-import { CmComBindAttach, IScheduleWidgetDay } from '../../../../../../models';
+  ScheduleWidgetCleans,
+} from 'shared/api';
+import { itNUnd } from 'shared/utils';
 import { CmTranslationComListContext, CmTranslationComListContextValue } from '../../../base/translations/context';
 import { Com } from '../../../col/com/Com';
 import { Cols } from '../../../cols/Cols';

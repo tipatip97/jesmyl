@@ -1,4 +1,4 @@
-import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useAliasRoomState } from '../../hooks/state';
 
 export const AliasRoomLessWordsCompute = () => {

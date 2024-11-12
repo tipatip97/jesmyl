@@ -1,4 +1,4 @@
-import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import EditContainerCorrectsInformer from '../../../edit-container-corrects-informer/EditContainerCorrectsInformer';

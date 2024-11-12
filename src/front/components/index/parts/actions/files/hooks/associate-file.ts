@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
 import { useMemo } from 'react';
-import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { MyFileType } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { useIndexFileAssociations } from '../../../../molecules';
-import { MyFileType } from '../model';
 
 export const useAssociateTheFileType = () => {
   const associates = useIndexFileAssociations();

@@ -1,12 +1,12 @@
-import { scheduleWidgetUserRights } from '../../../../models';
-import { MyLib } from '../../../my-lib/MyLib';
-import { StrongComponentProps } from '../../../strong-control/Strong.model';
+import { MyLib } from 'front/utils';
 import {
   IScheduleWidget,
   IScheduleWidgetDay,
   IScheduleWidgetDayEvent,
   ScheduleWidgetDayListItemTypeBox,
-} from '../../ScheduleWidget.model';
+  scheduleWidgetUserRights,
+} from 'shared/api';
+import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import {
   takeStrongScopeMaker,
   useScheduleWidgetAppAttsContext,

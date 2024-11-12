@@ -1,3 +1,4 @@
+import { IScheduleWidgetRole, scheduleWidgetUserRights } from 'shared/api';
 import { IconArrowReloadHorizontalStrokeRounded } from '../../../../complect/the-icon/icons/arrow-reload-horizontal';
 import { IconEdit01StrokeRounded } from '../../../../complect/the-icon/icons/edit-01';
 import { IconFolder01StrokeRounded } from '../../../../complect/the-icon/icons/folder-01';
@@ -8,14 +9,12 @@ import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user'
 import { IconUserAdd01StrokeRounded } from '../../../../complect/the-icon/icons/user-add-01';
 import { IconUserRemove01StrokeRounded } from '../../../../complect/the-icon/icons/user-remove-01';
 import { useAuth } from '../../../../components/index/molecules';
-import { scheduleWidgetUserRights } from '../../../../models';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
 import IconButton from '../../../the-icon/IconButton';
 import useIsRedactArea from '../../../useIsRedactArea';
-import { IScheduleWidgetRole } from '../../ScheduleWidget.model';
 import ScheduleWidgetIconChange from '../../complect/IconChange';
 import {
   extractScheduleWidgetRoleUser,

@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
 import { FunctionComponent, HTMLAttributes, ReactNode, useState } from 'react';
 import { IconArrowDown01StrokeRounded } from '../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../complect/the-icon/icons/arrow-up-01';
-import mylib from '../my-lib/MyLib';
 import { TheIconType } from '../the-icon/model';
 
 interface Props<Element extends HTMLElement> {

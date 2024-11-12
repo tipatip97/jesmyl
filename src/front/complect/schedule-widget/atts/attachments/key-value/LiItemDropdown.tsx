@@ -1,11 +1,16 @@
+import { mylib } from 'front/utils';
 import { useState } from 'react';
-import { CustomAttUseTaleId, ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
-import IconButton from '../../../../the-icon/IconButton';
+import {
+  CustomAttUseTaleId,
+  IScheduleWidgetListUnit,
+  IScheduleWidgetRole,
+  IScheduleWidgetUser,
+  ScheduleWidgetAppAttCustomizableValueItem,
+} from 'shared/api';
 import { IconViewStrokeRounded } from '../../../../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../../../../complect/the-icon/icons/view-off-slash';
-import mylib from '../../../../my-lib/MyLib';
 import StrongDropdown from '../../../../strong-control/StrongDropdown';
-import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser } from '../../../ScheduleWidget.model';
+import IconButton from '../../../../the-icon/IconButton';
 import KeyValueListAttNumberMember from './KeyValueListAttNumberMember';
 
 const zeroFunc = () => 0;

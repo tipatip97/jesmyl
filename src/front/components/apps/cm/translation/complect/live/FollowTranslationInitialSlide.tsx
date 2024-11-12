@@ -1,7 +1,6 @@
+import { environment, IScheduleWidgetWid } from 'shared/api';
 import styled from 'styled-components';
-import environment from '../../../../../../../back/environments/environment';
 import QRCode from '../../../../../../complect/qr-code/QRCode';
-import { IScheduleWidgetWid } from '../../../../../../models';
 
 export const FollowTranslationInitialSlide = ({ schw }: { schw: IScheduleWidgetWid }) => {
   return (

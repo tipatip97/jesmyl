@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
+import { indexScheduleGetDayEventTimes, IScheduleWidget, IScheduleWidgetDay, ScheduleWidgetCleans } from 'shared/api';
+import { emptyFunc, itNNull, retNull } from 'shared/utils';
 import styled from 'styled-components';
-import { ScheduleWidgetTgInformCleans } from '../../../../back/apps/index/schedules/tg-bot-inform/cleans';
-import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
-import { emptyFunc, itNNull, retNull } from '../../../../back/complect/utils';
 import KeyboardInput from '../../keyboard/KeyboardInput';
 import StrongButton from '../../strong-control/StrongButton';
-import { IScheduleWidget, IScheduleWidgetDay } from '../ScheduleWidget.model';
-import { indexScheduleGetDayEventTimes } from '../utils';
 import ScheduleWidgetDayEvent from './events/DayEvent';
 
 interface Props {
@@ -31,13 +28,13 @@ export const ScheduleWidgetEventListUpdater = ({ day, dayScope, dayi, schedule, 
         let text;
 
         try {
-          text = ScheduleWidgetTgInformCleans.text2PreparedText(value).text;
+          text = ScheduleWidgetCleans.text2PreparedText(value).text;
         } catch (errorText) {
           setErrorText('' + errorText);
           return;
         }
 
-        const { dayWup, list, newTatts } = ScheduleWidgetTgInformCleans.preparedText2DayList(text, schedule);
+        const { dayWup, list, newTatts } = ScheduleWidgetCleans.preparedText2DayList(text, schedule);
 
         const theDay = {
           ...day,

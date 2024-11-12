@@ -1,12 +1,16 @@
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../models';
+import {
+  ScheduleWidgetAppAttCustomizable,
+  ScheduleWidgetAppAttCustomized,
+  scheduleWidgetUserRights,
+  ScheduleWidgetUserRoleRight,
+} from 'shared/api';
+import { IconArrowRight01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-right-01';
+import { IconAttachment02StrokeRounded } from '../../../../complect/the-icon/icons/attachment-02';
+import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
 import useModal from '../../../modal/useModal';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import IconButton from '../../../the-icon/IconButton';
-import { IconArrowRight01StrokeRounded } from '../../../../complect/the-icon/icons/arrow-right-01';
-import { IconAttachment02StrokeRounded } from '../../../../complect/the-icon/icons/attachment-02';
-import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
-import { ScheduleWidgetAppAttCustomizable, ScheduleWidgetAppAttCustomized } from '../../ScheduleWidget.model';
 import ScheduleWidgetCustomAtt from './CustomAtt';
 
 const newTatt: ScheduleWidgetAppAttCustomizable = {

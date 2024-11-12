@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
-import { IScheduleWidgetExportableTeam, IScheduleWidgetUserMi } from '../../../../../../models';
+import { IScheduleWidgetExportableTeam, IScheduleWidgetUserMi } from 'shared/api';
 import Dropdown from '../../../../../dropdown/Dropdown';
 import KeyboardInput from '../../../../../keyboard/KeyboardInput';
-import mylib from '../../../../../my-lib/MyLib';
 import StrongButton from '../../../../../strong-control/StrongButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../the-icon/icons/checkmark-circle-02';
 import { IconCircleStrokeRounded } from '../../../../../the-icon/icons/circle';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { JStorage } from './JStorage';
-import mylib from './my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { NavigationStorage } from './nav-configurer/Navigation.model';
 
 export const scopeStorage = <

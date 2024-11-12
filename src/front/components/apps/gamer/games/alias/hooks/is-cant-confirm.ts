@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { GamerAliasRoomState } from '../Alias.model';
+import { GamerAliasRoomState } from 'shared/api';
 
 export const useAliasIsCantConfirmResults = (state: GamerAliasRoomState | und) => {
   return useMemo(() => {

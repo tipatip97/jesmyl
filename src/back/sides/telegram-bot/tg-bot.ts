@@ -5,12 +5,11 @@ import TgBot, {
   SendMessageOptions,
   User,
 } from 'node-telegram-bot-api';
+import { makeRegExp, smylib } from 'shared/utils';
 import { Stream } from 'stream';
-import smylib from '../../shared/SMyLib';
 import { TgLogger } from './log/log-bot';
 import { JTgBotCallbackQuery, JTgBotChatMessageCallback } from './model';
 import { JesmylTelegramBotWrapper } from './tg-bot-wrapper';
-import { makeRegExp } from '../../complect/makeRegExp';
 
 const botName = 'jesmylbot';
 

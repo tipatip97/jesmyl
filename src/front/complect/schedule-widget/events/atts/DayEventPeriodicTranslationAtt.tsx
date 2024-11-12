@@ -1,13 +1,8 @@
+import { mylib, MyLib } from 'front/utils';
 import React, { ReactNode } from 'react';
-import { emptyFunc } from '../../../../../back/complect/utils';
-import mylib, { MyLib } from '../../../my-lib/MyLib';
-import {
-  IScheduleWidget,
-  IScheduleWidgetDay,
-  ScheduleWidgetAppAtt,
-  ScheduleWidgetAttKey,
-  ScheduleWidgetAttRef,
-} from '../../ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetDay, ScheduleWidgetAttKey, ScheduleWidgetAttRef } from 'shared/api';
+import { emptyFunc } from 'shared/utils';
+import { ScheduleWidgetAppAtt } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import { AttTranslatorType, attTranslatorTypes } from '../../complect/attTranslatorType';
 

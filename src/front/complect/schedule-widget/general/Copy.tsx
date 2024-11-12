@@ -1,15 +1,13 @@
+import { mylib, MyLib } from 'front/utils';
 import { useState } from 'react';
-import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
-import { itNNull } from '../../../../back/complect/utils';
+import { CustomAttUseTaleId, IScheduleWidget, ScheduleWidgetCleans, ScheduleWidgetDayEventAttValues } from 'shared/api';
+import { itNNull } from 'shared/utils';
 import { IconCopy02StrokeRounded } from '../../../complect/the-icon/icons/copy-02';
 import { useAuth, useIndexSchedules } from '../../../components/index/molecules';
-import { CustomAttUseTaleId } from '../../../models';
 import useModal from '../../modal/useModal';
-import mylib, { MyLib } from '../../my-lib/MyLib';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import IconButton from '../../the-icon/IconButton';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
-import { IScheduleWidget, ScheduleWidgetDayEventAttValues } from '../ScheduleWidget.model';
 import { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
 
 export function ScheduleWidgetCopy(props: { schw: number }) {

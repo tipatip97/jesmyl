@@ -1,4 +1,4 @@
-import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 import { useAliasPacks } from '../../molecules';
 

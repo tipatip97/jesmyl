@@ -1,5 +1,4 @@
-import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../../models';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
+import { IScheduleWidgetUser, scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from 'shared/api';
 
 export const checkIsUserPhotoable = (user: IScheduleWidgetUser) =>
   scheduleWidgetUserRights.checkIsHasRights(user.R, ScheduleWidgetUserRoleRight.Read) &&

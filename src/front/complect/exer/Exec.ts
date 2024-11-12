@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
+import { ExecutionMethod, ShortRealRule, SokiServerEvent } from 'shared/api';
 import { CorrectsBox } from '../../components/apps/cm/editor/corrects-box/CorrectsBox';
-import { ExecutionMethod, ShortRealRule, SokiServerEvent } from '../../models';
 import SourceBased from '../SourceBased';
-import mylib from '../my-lib/MyLib';
 import { ClientExecutionDict, ExecRule, FreeExecDict } from './Exer.model';
 
 const execKeys: (keyof Exec<any>)[] = ['scope', 'onLoad', 'value', 'args', 'generalId', 'createByPath', 'muted'];

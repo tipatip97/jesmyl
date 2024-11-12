@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { MyLib } from '../../../my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import StrongDropdown from '../../../strong-control/StrongDropdown';
 import { makeAttStorage } from '../../useScheduleWidget';
 

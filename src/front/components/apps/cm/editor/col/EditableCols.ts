@@ -1,4 +1,4 @@
-import { IExportableCols } from '../../../../../models';
+import { IExportableCols } from 'shared/api';
 import { Cols } from '../../cols/Cols';
 import { EditableCat } from './categories/EditableCat';
 import { EditableCom } from './compositions/com/EditableCom';

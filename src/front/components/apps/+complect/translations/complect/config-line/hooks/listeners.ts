@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { itNNull } from '../../../../../../../../back/complect/utils';
+import { itNNull } from 'shared/utils';
 import { useActualRef } from '../../../../../../../complect/useActualRef';
 import { useToggleIsScreenTranslationTextVisible } from '../../../atoms';
 import { TranslationWindow } from '../../../hooks/windows';

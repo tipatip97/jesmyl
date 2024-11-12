@@ -1,7 +1,7 @@
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { mylib } from 'front/utils';
+import { IExportableCom } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { FreeExecDict } from '../../../../../../../../complect/exer/Exer.model';
-import mylib from '../../../../../../../../complect/my-lib/MyLib';
-import { IExportableCom } from '../../../../../../../../models';
 import { blockStyles } from '../../../../../col/com/block-styles/BlockStyles';
 import { Com } from '../../../../../col/com/Com';
 import { EditableCol } from '../../../EditableCol';

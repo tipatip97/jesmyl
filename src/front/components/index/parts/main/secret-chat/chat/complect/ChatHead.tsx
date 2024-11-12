@@ -5,7 +5,7 @@ import Modal from '../../../../../../../complect/modal/Modal/Modal';
 import { ModalBody } from '../../../../../../../complect/modal/Modal/ModalBody';
 import { ModalFooter } from '../../../../../../../complect/modal/Modal/ModalFooter';
 import { ModalHeader } from '../../../../../../../complect/modal/Modal/ModalHeader';
-import { MyLib } from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 import { IconCheckmarkBadge01StrokeRounded } from '../../../../../../../complect/the-icon/icons/checkmark-badge-01';
 import { IconDelete01StrokeRounded } from '../../../../../../../complect/the-icon/icons/delete-01';

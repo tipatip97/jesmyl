@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
+import { CmComWid } from '../../../../../../../../shared/api/complect/apps/cm/complect/enums';
 import { useAtom } from '../../../../../../../complect/atoms';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import Modal from '../../../../../../../complect/modal/Modal/Modal';

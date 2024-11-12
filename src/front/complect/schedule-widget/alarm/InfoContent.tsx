@@ -1,4 +1,4 @@
-import { IScheduleWidget } from '../ScheduleWidget.model';
+import { IScheduleWidget } from 'shared/api';
 import { ScheduleWidgetRights, useScheduleWidgetRights } from '../useScheduleWidget';
 
 export function ScheduleWidgetAlarmInfoContent({

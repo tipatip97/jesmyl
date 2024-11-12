@@ -1,4 +1,4 @@
-import mylib from '../my-lib/MyLib';
+import { mylib } from './MyLib';
 
 describe('MyLib', () => {
   it('isEq', () => {

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { CmComWid } from '../../../../../../back/apps/cm/Cm.enums';
+import { CmComWid } from '../../../../../../shared/api/complect/apps/cm/complect/enums';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';
 import { useEditableMeetings } from './useEditableMeetings';
 

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import EvaSendButton from '../../../../../complect/sends/eva-send-button/EvaSendButton';
 import { IconMinusSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-square';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';

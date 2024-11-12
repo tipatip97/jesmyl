@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { makeRegExp } from '../../../back/complect/makeRegExp';
-import { itIt } from '../../../back/complect/utils';
-import mylib from '../my-lib/MyLib';
+import { makeRegExp } from 'shared/utils';
+import { itIt } from 'shared/utils';
+import { MyLib, mylib } from 'front/utils';
 import { TheIconType } from '../the-icon/model';
 import { StrongControlProps } from './Strong.model';
 import StrongEditableField from './field/StrongEditableField';

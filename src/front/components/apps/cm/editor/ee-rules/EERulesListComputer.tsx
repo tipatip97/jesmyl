@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
-import { itIt } from '../../../../../../back/complect/utils';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { makeRegExp } from 'shared/utils';
+import { itIt } from 'shared/utils';
+import { MyLib, mylib } from 'front/utils';
 import { bibleMolecule } from '../../../bible/molecules';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
 import { useEditableCols } from '../col/useEditableCols';

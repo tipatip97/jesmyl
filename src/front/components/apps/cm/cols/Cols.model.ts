@@ -1,4 +1,4 @@
-import { IExportableCat, IExportableCom } from '../../../../models';
+import { IExportableCat, IExportableCom } from 'shared/api';
 import { Cat } from '../col/cat/Cat';
 import { Com } from '../col/com/Com';
 import { EditableCat } from '../editor/col/categories/EditableCat';

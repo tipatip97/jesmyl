@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { KeyboardInputPropsType, KeyboardStorageEvent } from '../Keyboard.model';
 import { KeyboardStorageNavigate } from './D.Navigate';
-import { makeRegExp } from '../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 
 export class KeyboardStorageChanges extends KeyboardStorageNavigate {
   type?: KeyboardInputPropsType;

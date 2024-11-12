@@ -5,7 +5,7 @@ import IconButton from '../../../the-icon/IconButton';
 import { IconCropStrokeRounded } from '../../../../complect/the-icon/icons/crop';
 import { IconDelete01StrokeRounded } from '../../../../complect/the-icon/icons/delete-01';
 import { IconShapesStrokeRounded } from '../../../../complect/the-icon/icons/shapes';
-import { IScheduleWidget, IScheduleWidgetDayEvent } from '../../ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetDayEvent } from 'shared/api';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetEventType from '../../events/EventType';
 

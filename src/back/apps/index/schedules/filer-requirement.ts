@@ -1,20 +1,17 @@
-import { ExecutionArgs, ExecutionDict, ExecutionReal } from '../../../complect/executer/Executer.model';
-import { FilerAppRequirement } from '../../../complect/filer/Filer.model';
-import { itNNull } from '../../../complect/utils';
-import smylib from '../../../shared/SMyLib';
 import {
   IScheduleWidget,
   IScheduleWidgetDay,
   IScheduleWidgetDayEvent,
   IScheduleWidgetUser,
   ScheduleStorage,
-} from '../models/ScheduleWidget.model';
-import {
   ScheduleWidgetRegType,
-  ScheduleWidgetUserRoleRight,
   scheduleWidgetRegTypeRights,
   scheduleWidgetUserRights,
-} from '../rights';
+  ScheduleWidgetUserRoleRight,
+} from 'shared/api';
+import { itNNull, smylib } from 'shared/utils';
+import { ExecutionArgs, ExecutionDict, ExecutionReal } from '../../../../shared/api/complect/executer/model';
+import { FilerAppRequirement } from '../../../complect/filer/Filer.model';
 import { indexSchedulesConfigOnInit } from './filer-req-on-init';
 
 interface SchedulesBag {

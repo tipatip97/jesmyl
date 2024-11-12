@@ -1,6 +1,5 @@
 import TgBot, { BotCommand, InlineKeyboardButton, User } from 'node-telegram-bot-api';
-import Eventer, { EventerCallback, EventerListeners } from '../../complect/Eventer';
-import smylib from '../../shared/SMyLib';
+import { Eventer, EventerCallback, EventerListeners, smylib } from 'shared/utils';
 import { TgLogger } from './log/log-bot';
 import {
   JTgBotCallbackQuery,

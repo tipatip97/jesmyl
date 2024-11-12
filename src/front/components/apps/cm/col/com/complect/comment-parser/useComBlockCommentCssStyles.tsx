@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { css, RuleSet } from 'styled-components';
-import { emptyFunc } from '../../../../../../../../back/complect/utils';
+import { emptyFunc } from 'shared/utils';
 import { hookEffectPipe, setTimeoutPipe } from '../../../../../../../complect/hookEffectPipe';
-import { MyLib } from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useDebounceValue } from '../../../../../../../complect/useDebounceValue';
 import { useBibleTranslatesContext } from '../../../../../bible/translates/TranslatesContext';
 import { Com } from '../../Com';

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { useAtomSet } from '../../../../../../../complect/atoms';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../complect/hookEffectPipe';
 import { ActualRef } from '../../../../../../../complect/useActualRef';

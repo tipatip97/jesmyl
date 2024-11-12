@@ -1,4 +1,4 @@
-import { scheduleWidgetRegTypeRights } from '../../../models';
+import { scheduleWidgetRegTypeRights } from 'shared/api';
 import useIsExpand from '../../expand/useIsExpand';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';

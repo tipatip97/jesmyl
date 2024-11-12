@@ -1,7 +1,5 @@
+import { DeviceId, SokiCapsule, SokiServerEvent, sokiWhenRejButTs } from 'shared/api';
 import { WebSocket } from 'ws';
-import { sokiWhenRejButTs } from '../../../values';
-import { SokiCapsule, SokiServerEvent } from '../soki.model';
-import { DeviceId } from '../../../apps/index/Index.model';
 
 export class SokiServerTransfers {
   capsules = new Map<WebSocket, SokiCapsule>();

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { FaceItem } from '../../../../../../../complect/FaceItem';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useListShownLimitsController } from '../../../../../../../complect/useListShownLimitsController';
 import { Com } from '../../Com';
 import { ListComFaceForSelectionsProps } from '../ComFace.model';

@@ -1,4 +1,4 @@
-import Eventer, { EventerValueListeners } from '../../back/complect/Eventer';
+import { Eventer, EventerValueListeners } from 'shared/utils';
 
 export type JStorageListener<Val> = (val: Val) => void;
 const onUpdates: EventerValueListeners<0> = new Set();

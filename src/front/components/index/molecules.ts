@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { LocalSokiAuth, SokiClientSubData, SokiStatistic } from 'shared/api';
 import { AppName } from '../../app/App.model';
 import {
   atom,
@@ -10,7 +11,6 @@ import {
   useAtomSet,
   useAtomValue,
 } from '../../complect/atoms';
-import { LocalSokiAuth, SokiClientSubData, SokiStatistic } from '../../models';
 import { IndexState } from './Index.model';
 
 const liveDataAtom = atom<Record<SokiClientSubData, unknown>>({});

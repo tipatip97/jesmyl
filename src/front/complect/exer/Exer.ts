@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
+import { ExecutionDict, LocalSokiAuth, SokiAppName, SokiServerEvent } from 'shared/api';
 import { Auth } from '../../components/index/Index.model';
-import { ExecutionDict, LocalSokiAuth, SokiAppName, SokiServerEvent } from '../../models';
 import { soki } from '../../soki';
 import { Atom } from '../atoms';
-import mylib from '../my-lib/MyLib';
 import { Exec } from './Exec';
 import {
   ClientExecutionDict,
@@ -45,8 +45,6 @@ export class Exer<Storage extends ExerStorage> {
 
     const prevExeci = this.execs.findIndex(ex => ex.scope === scope && ex.method === method);
     const prevExec: Exec<Value> = this.execs[prevExeci];
-    const lasti = this.execs.length - 1;
-    const lastExec: Exec<Value> = this.execs[lasti];
 
     let isPrevented = false;
     const removeNabors = (nabors: FreeExecDictAntiCallback<Value>[], onFind: () => void) => {

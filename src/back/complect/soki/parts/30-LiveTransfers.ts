@@ -1,4 +1,4 @@
-import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
+import { SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
 import { SokiServerSubscribes } from './20-Subscribes';
 
 export class SokiServerLiveTransfers extends SokiServerSubscribes implements SokiServerDoAction<'LiveData'> {

@@ -1,5 +1,5 @@
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
-import mylib from '../../../../../../../../complect/my-lib/MyLib';
+import { makeRegExp } from 'shared/utils';
+import { MyLib, mylib } from 'front/utils';
 import { CorrectsBox } from '../../../../corrects-box/CorrectsBox';
 import { correctNotSlavicNameReg_i, textedChordReg } from '../../../../Editor.complect';
 import { EditableComBase } from './0-Base';

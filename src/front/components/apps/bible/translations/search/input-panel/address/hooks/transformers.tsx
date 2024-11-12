@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
-import { emptyFunc } from '../../../../../../../../../back/complect/utils';
+import { makeRegExp } from 'shared/utils';
+import { emptyFunc } from 'shared/utils';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../../complect/hookEffectPipe';
 import { useBibleTranslationJoinAddressSetter, useSetBibleAddressIndexes } from '../../../../../hooks/address/address';
 import { useBibleBookList } from '../../../../../hooks/texts';

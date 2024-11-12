@@ -1,8 +1,7 @@
-import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
+import { CustomAttUseTaleId, ScheduleWidgetCleans } from 'shared/api';
 import { IconBasketball01StrokeRounded } from '../../../../../complect/the-icon/icons/basketball-01';
 import { IconHelpSquareStrokeRounded } from '../../../../../complect/the-icon/icons/help-square';
 import { IconUserStrokeRounded } from '../../../../../complect/the-icon/icons/user';
-import { CustomAttUseTaleId } from '../../../../../models';
 import IconButton from '../../../../the-icon/IconButton';
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';

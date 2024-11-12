@@ -1,4 +1,4 @@
-import { emptyFunc } from '../../../../../../back/complect/utils';
+import { emptyFunc } from 'shared/utils';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useMyPossibilitiesCurrentRoom } from '../../complect/rooms/room/hooks/possibilities';
 import GamerAliasTimer from './AliasTimer';

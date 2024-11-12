@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import DebouncedSearchInput from '../../../complect/DebouncedSearchInput';
-import mylib from '../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import './Admin.scss';
 import { useAdminContext } from './adminStorage';
 import { User } from './complect/users/User';

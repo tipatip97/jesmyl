@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAtomValue } from '../../../../../complect/atoms';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';

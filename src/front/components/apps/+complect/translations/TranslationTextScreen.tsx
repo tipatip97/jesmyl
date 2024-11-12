@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { emptyFunc } from '../../../../../back/complect/utils';
+import { emptyFunc } from 'shared/utils';
 import { ScheduleWidgetLiveTranslation } from '../../../../complect/schedule-widget/live-translations/Live';
 import { useIndexSchedules } from '../../../index/molecules';
 import { useIsCanShowTextTranslation } from './atoms';

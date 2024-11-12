@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { CmComWid } from '../../../../../../back/apps/cm/Cm.enums';
+import { CmComWid } from '../../../../../../shared/api/complect/apps/cm/complect/enums';
 import { atom, useAtomSet, useAtomValue } from '../../../../../complect/atoms';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useNumComUpdates } from '../../atoms';
 import { useCols } from '../../cols/useCols';
 import { Com } from './Com';

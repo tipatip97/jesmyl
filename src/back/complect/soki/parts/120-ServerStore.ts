@@ -1,16 +1,10 @@
+import { ServerStoreContent, SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
+import { SMyLib } from 'shared/utils';
 import { WebSocket } from 'ws';
-import { SMyLib } from '../../../shared/SMyLib';
 import { filer } from '../../filer/Filer';
-import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
 import { SokiServerDownloads } from './110-Downloads';
 
 export type ServerStoreFeedback = { getLastValues: string[]; contents: ServerStoreContent[] };
-
-export type ServerStoreContent<Value = unknown> = {
-  ts: number;
-  key: StringBySlash;
-  value: Value;
-};
 
 const lastWriteTsKey = 'appLastWriteTs/' as const;
 

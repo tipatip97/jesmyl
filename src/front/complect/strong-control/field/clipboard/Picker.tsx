@@ -3,7 +3,7 @@ import { IconTask01StrokeRounded } from '../../../../complect/the-icon/icons/tas
 import { KeyboardInputEvent } from '../../../keyboard/Keyboard.model';
 import { useConfirm } from '../../../modal/confirm/useConfirm';
 import useModal from '../../../modal/useModal';
-import { MyLib } from '../../../my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../the-icon/IconButton';
 import { useStrongClipboard } from '../../atoms';
 import './Clipboard.scss';

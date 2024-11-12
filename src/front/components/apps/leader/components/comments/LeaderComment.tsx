@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { TheIconLoading } from '../../../../../complect/the-icon/IconLoading';
 import { IconAlert02StrokeRounded } from '../../../../../complect/the-icon/icons/alert-02';
 import { IconPauseStrokeRounded } from '../../../../../complect/the-icon/icons/pause';
 import { LeaderCommentImportable } from './LeaderComment.model';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 
 const templaterBag = {
   commentTime: (wid: number) => {

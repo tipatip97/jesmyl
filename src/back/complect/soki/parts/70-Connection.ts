@@ -1,8 +1,8 @@
 import { WebSocket } from 'ws';
-import smylib from '../../../shared/SMyLib';
-import Eventer from '../../Eventer';
+import { SMyLib, smylib, makeRegExp } from 'shared/utils';
+import { Eventer } from 'shared/utils';
 import { SokiAuther, sokiAuther } from '../SokiAuther';
-import { LocalSokiAuth, SokiCapsule, SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
+import { LocalSokiAuth, SokiCapsule, SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
 import { SokiServerVisits } from './60-Visits';
 
 export class SokiServerConnection extends SokiServerVisits implements SokiServerDoAction<'Connect'> {

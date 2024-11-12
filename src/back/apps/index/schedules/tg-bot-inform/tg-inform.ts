@@ -1,31 +1,29 @@
 import nodeSchedule from 'node-schedule';
 import { SendMessageOptions } from 'node-telegram-bot-api';
-import { filer } from '../../../../complect/filer/Filer';
-import { SokiAuther } from '../../../../complect/soki/SokiAuther';
-import sokiServer from '../../../../complect/soki/SokiServer';
-import { LocalSokiAuth } from '../../../../complect/soki/soki.model';
-import { convertMd2HTMLMaker } from '../../../../complect/utils';
-import smylib, { SMyLib } from '../../../../shared/SMyLib';
-import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
-import { tglogger } from '../../../../sides/telegram-bot/log/log-bot';
-import {
-  IScheduleWidget,
-  IScheduleWidgetDayEvent,
-  IScheduleWidgetUser,
-  IScheduleWidgetWid,
-  ScheduleWidgetAttKey,
-  ScheduleWidgetDayEventAttValue,
-} from '../../models/ScheduleWidget.model';
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../rights';
-import ScheduleWidgetCleans from '../utils/Cleans';
 import {
   indexScheduleCheckIsDayIsPast,
   indexScheduleGetDayEventTimes,
   indexScheduleGetDayStartMs,
   indexScheduleGetEventFinishMs,
-} from '../utils/utils';
-import { attInformStorage } from './attInformStorage';
-import { ScheduleWidgetTgInformCleans } from './cleans';
+  IScheduleWidget,
+  IScheduleWidgetDayEvent,
+  IScheduleWidgetUser,
+  IScheduleWidgetWid,
+  LocalSokiAuth,
+  ScheduleWidgetAttKey,
+  ScheduleWidgetCleans,
+  ScheduleWidgetDayEventAttValue,
+  scheduleWidgetUserRights,
+  ScheduleWidgetUserRoleRight,
+} from 'shared/api';
+import { convertMd2HTMLMaker, SMyLib, smylib } from 'shared/utils';
+import { filer } from '../../../../complect/filer/Filer';
+import { SokiAuther } from '../../../../complect/soki/SokiAuther';
+import sokiServer from '../../../../complect/soki/SokiServer';
+import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
+import { tglogger } from '../../../../sides/telegram-bot/log/log-bot';
+import { attInformStorage } from '../../../../../shared/api/complect/schedule-widget/complect/attInformStorage';
+
 import { makeScheduleWidgetJoinTitle } from './message-catchers';
 
 let schedules: IScheduleWidget[];
@@ -219,7 +217,7 @@ export const indexScheduleSetMessageInform = (
               nextEventTitle =
                 nextEventJoinedTitle &&
                 newPointLineMarker +
-                  ScheduleWidgetTgInformCleans.putInTgTag('i', `${nextEventJoinedTitle} - ${labelTimeTo}`) +
+                  ScheduleWidgetCleans.putInTgTag('i', `${nextEventJoinedTitle} - ${labelTimeTo}`) +
                   doubleNl;
             }
           }
@@ -230,16 +228,13 @@ export const indexScheduleSetMessageInform = (
                 doubleNl +
                 (event.tgInform === 0 && event.dsc
                   ? newPointLineMarker +
-                    ScheduleWidgetTgInformCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc)) +
+                    ScheduleWidgetCleans.putInTgTag(event.secret ? 'i' : 'code', convertMd2HTML(event.dsc)) +
                     doubleNl
                   : '') +
                 attsText +
                 nextEventTitle +
                 newPointLineMarker +
-                ScheduleWidgetTgInformCleans.putInTgTag(
-                  'u',
-                  ScheduleWidgetTgInformCleans.putInTgTag('i', schedule.title),
-                )
+                ScheduleWidgetCleans.putInTgTag('u', ScheduleWidgetCleans.putInTgTag('i', schedule.title))
             : null;
         };
 

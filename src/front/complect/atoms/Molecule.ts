@@ -1,9 +1,9 @@
+import { MyLib } from 'front/utils';
+import { ServerStoreContent } from 'shared/api';
+import { emptyFunc, retUnd } from 'shared/utils';
 import { MoleculeOptions } from '.';
-import { ServerStoreContent } from '../../../back/complect/soki/parts/120-ServerStore';
-import { emptyFunc, retUnd } from '../../../back/complect/utils';
 import { AppName, getAppNameFromString } from '../../app/App.model';
 import { JStorage } from '../JStorage';
-import { MyLib } from '../my-lib/MyLib';
 import { Atom } from './AnAtom';
 
 const serverStoreValueLastWriteTsKeyPrefix = 'lastWrite:';

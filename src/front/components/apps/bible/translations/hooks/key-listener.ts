@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAtomSet } from '../../../../../complect/atoms';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useActualRef } from '../../../../../complect/useActualRef';
 import {
   useBibleTranslationAddressIndexesSetter,

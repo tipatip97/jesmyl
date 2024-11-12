@@ -1,17 +1,17 @@
+import { mylib } from 'front/utils';
 import { ReactNode } from 'react';
-import IconButton from '../../the-icon/IconButton';
-import useModal from '../../modal/useModal';
-import mylib from '../../my-lib/MyLib';
-import StrongDiv from '../../strong-control/StrongDiv';
 import {
   IScheduleWidget,
-  ScheduleWidgetDayEventAttValues,
-  ScheduleWidgetAppAtt,
   ScheduleWidgetAttKey,
   ScheduleWidgetAttRef,
-} from '../ScheduleWidget.model';
-import ScheduleWidgetAttFace from './AttFace';
+  ScheduleWidgetDayEventAttValues,
+} from 'shared/api';
 import { IconLink01StrokeRounded } from '../../../complect/the-icon/icons/link-01';
+import useModal from '../../modal/useModal';
+import StrongDiv from '../../strong-control/StrongDiv';
+import IconButton from '../../the-icon/IconButton';
+import { ScheduleWidgetAppAtt } from '../ScheduleWidget.model';
+import ScheduleWidgetAttFace from './AttFace';
 
 export default function ScheduleWidgetBindAttRefKeyButton({
   atts,

@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { DeviceId } from '../../../../../../../../back/apps/index/Index.model';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
-import { MyLib } from '../../../../../../../complect/my-lib/MyLib';
+import { DeviceId } from 'shared/api';
+import { SecretChat } from 'shared/api';
+import { MyLib, mylib } from 'front/utils';
 import { makePseudoElementCorrectContentText } from '../../../../../../../complect/utils';
 import { useDeviceId } from '../../../../../complect/takeDeviceId';
 import { secretChatClassNamesDict, useSecretChatContext } from '../../complect';

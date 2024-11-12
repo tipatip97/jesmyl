@@ -4,7 +4,7 @@ import useFullContent from '../../../fullscreen-content/useFullContent';
 import IconButton from '../../../the-icon/IconButton';
 import { IconCamera01StrokeRounded } from '../../../the-icon/icons/camera-01';
 import { IconCheckmarkBadge01StrokeRounded } from '../../../the-icon/icons/checkmark-badge-01';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
+import { IScheduleWidgetUser } from 'shared/api';
 import { getScheduleWidgetUserPhotoStorageKey, scheduleWidgetPhotosStorage } from '../../storage';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetUserPhoto from './UserPhoto';

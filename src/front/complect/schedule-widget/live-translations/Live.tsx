@@ -10,8 +10,8 @@ import { IndexStateSchLiveData, ScheduleWidgetTranslationLiveDataKey } from '../
 import { useIndexLiveData } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
 import BrutalItem from '../../brutal-item/BrutalItem';
-import mylib from '../../my-lib/MyLib';
-import { IScheduleWidget } from '../ScheduleWidget.model';
+import { mylib } from 'front/utils';
+import { IScheduleWidget } from 'shared/api';
 import { ScheduleWidgetMarkdownLiveTranslation } from './MarkdownLive';
 
 interface Props {

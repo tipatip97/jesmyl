@@ -1,4 +1,4 @@
-import { WedGuest, WedGuestSex } from '../../../../../../back/apps/wed/model';
+import { WedGuest, WedGuestSex } from '../../../../../../shared/api/complect/apps/wed/complect/model';
 
 export const GuestConversation = ({ guest }: { guest: WedGuest | null }) => {
   return (

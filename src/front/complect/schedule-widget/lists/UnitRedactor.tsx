@@ -1,4 +1,4 @@
-import { IScheduleWidgetUserCati } from '../../../models';
+import { IScheduleWidgetUserCati } from 'shared/api';
 import { ModalBody } from '../../modal/Modal/ModalBody';
 import { ModalHeader } from '../../modal/Modal/ModalHeader';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
@@ -10,7 +10,7 @@ import { IconCheckmarkSquare02StrokeRounded } from '../../the-icon/icons/checkma
 import { IconFile02StrokeRounded } from '../../the-icon/icons/file-02';
 import { IconSquareStrokeRounded } from '../../the-icon/icons/square';
 import { IconUserRemove02StrokeRounded } from '../../the-icon/icons/user-remove-02';
-import { IScheduleWidgetListCat, IScheduleWidgetListUnit } from '../ScheduleWidget.model';
+import { IScheduleWidgetListCat, IScheduleWidgetListUnit } from 'shared/api';
 import ScheduleWidgetUserList from '../control/users/UserList';
 import { takeStrongScopeMaker } from '../useScheduleWidget';
 

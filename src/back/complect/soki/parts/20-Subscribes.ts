@@ -1,5 +1,5 @@
 import { WebSocket } from 'ws';
-import { EventerValueListeners } from '../../Eventer';
+import { EventerValueListeners } from 'shared/utils';
 import {
   SokiCapsule,
   SokiClientSubData,
@@ -7,7 +7,7 @@ import {
   SokiServerDoActionProps,
   SokiStatistic,
   SokiSubscribtionName,
-} from '../soki.model';
+} from 'shared/api';
 import { SokiServerTransfers } from './10-Transfers';
 
 interface SubscribeCapsule {

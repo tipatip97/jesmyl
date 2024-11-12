@@ -1,16 +1,15 @@
+import { mylib } from 'front/utils';
 import React, { ReactNode, useMemo, useState } from 'react';
+import { IScheduleWidget, ScheduleWidgetCleans, ScheduleWidgetDayListItemTypeBox } from 'shared/api';
 import styled from 'styled-components';
-import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
 import DebouncedSearchInput from '../../DebouncedSearchInput';
 import Modal from '../../modal/Modal/Modal';
 import { ModalBody } from '../../modal/Modal/ModalBody';
 import { ModalHeader } from '../../modal/Modal/ModalHeader';
-import mylib from '../../my-lib/MyLib';
 import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import IconButton from '../../the-icon/IconButton';
 import { IconPlusSignStrokeRounded } from '../../the-icon/icons/plus-sign';
 import { TheIconType } from '../../the-icon/model';
-import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
 import ScheduleWidgetEventType from './EventType';
 import { useAttTypeTitleError } from './useAttTypeTitleError';
 

@@ -1,10 +1,8 @@
-import * as versionNum from '../back/+version.json';
-import Eventer, { EventerListeners, EventerValueCallback, EventerValueListeners } from '../back/complect/Eventer';
-import { Executer } from '../back/complect/executer/Executer';
-import { SimpleKeyValue } from '../back/complect/filer/Filer.model';
-import { makeRegExp } from '../back/complect/makeRegExp';
+import { mylib, MyLib } from 'front/utils';
 import {
+  environment,
   PullEventValue,
+  SimpleKeyValue,
   SokiAppName,
   sokiAppNamesSet,
   SokiClientEvent,
@@ -13,12 +11,13 @@ import {
   SokiServerEvent,
   SokiSharedDataValuesBox,
   SokiSubscribtionName,
-} from '../back/complect/soki/soki.model';
-import environment from '../back/environments/environment';
+} from 'shared/api';
+import { ExecuterBasics } from 'shared/executer';
+import { Eventer, EventerListeners, EventerValueCallback, EventerValueListeners, makeRegExp } from 'shared/utils';
+import { jversion } from 'shared/values';
 import { AppName } from './app/App.model';
 import { Molecule } from './complect/atoms';
 import { lsJStorageLSSwitcherName } from './complect/JStorage';
-import mylib, { MyLib } from './complect/my-lib/MyLib';
 import { onGetSharedScheduleWidgetData } from './complect/schedule-widget/on-shareds';
 import { bibleMolecule } from './components/apps/bible/molecules';
 import { cmMolecule } from './components/apps/cm/molecules';
@@ -31,8 +30,6 @@ import {
   setAuthValue,
   setUpdateRequisitesValue,
 } from './components/index/molecules';
-
-const version = { ...versionNum };
 
 export type ResponseWaiterCallback = (
   ok: ResponseWaiter['ok'],
@@ -79,6 +76,7 @@ export class SokiTrip {
 
       MyLib.values(this.molecules).forEach(
         molecule =>
+          molecule &&
           (molecule.onServerStorageValueSend = (serverUserContents, appName) =>
             soki.send({ serverUserContents }, appName)),
       );
@@ -159,7 +157,7 @@ export class SokiTrip {
             const execs = event.execs;
             const contents = mylib.clone({ ...molecule?.getValues() });
 
-            Executer.executeReals(contents, event.execs.list)
+            ExecuterBasics.executeReals(contents, event.execs.list)
               .then(fixes => {
                 if (molecule !== undefined) fixes.forEach(fix => molecule.set(fix, contents[fix]));
 
@@ -308,7 +306,7 @@ export class SokiTrip {
             auth: auth.level === 0 ? undefined : auth,
             appName,
             deviceId: await takeDeviceId(),
-            version: version.num,
+            version: jversion.num,
             browser,
             urls: this.urls.length ? this.urls : [this.getCurrentUrl()],
             isUseLS: localStorage[lsJStorageLSSwitcherName] ? true : undefined,

@@ -1,8 +1,8 @@
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { BaseNamed } from '../../base/BaseNamed';
 import { Com } from '../../col/com/Com';
 import { Cols } from '../../cols/Cols';
-import { IExportableMeetingsEvent } from '../../../../../../back/apps/cm/Meetings.model';
+import { IExportableMeetingsEvent } from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
 
 export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
   coms?: Com[];

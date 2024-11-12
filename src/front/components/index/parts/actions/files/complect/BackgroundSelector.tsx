@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
+import { MyFileType } from 'shared/api';
 import Dropdown from '../../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../../complect/dropdown/Dropdown.model';
-import mylib from '../../../../../../complect/my-lib/MyLib';
-import { MyFileType } from '../model';
 import { filesStorage } from '../utils/storage';
 
 interface Props {

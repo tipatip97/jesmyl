@@ -1,4 +1,4 @@
-import { SokiAppName } from '../soki/soki.model';
+import { SokiAppName } from 'shared/api';
 import LinkCoder from './LinkCoder';
 
 interface Attrs {

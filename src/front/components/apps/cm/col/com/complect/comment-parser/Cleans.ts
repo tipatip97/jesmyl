@@ -1,12 +1,12 @@
 import { css } from 'styled-components';
-import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
-import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { CmComWid } from '../../../../../../../../shared/api/complect/apps/cm/complect/enums';
+import { makeRegExp } from 'shared/utils';
 import { makePseudoElementCorrectContentText } from '../../../../../../../complect/utils';
 import { bibleTitles } from '../../../../../bible/hooks/texts';
 import { bibleAllTranslates, translateDescriptions } from '../../../../../bible/translates/complect';
 import { BibleBookTranslates, bibleLowerBooks } from '../../../../../bible/translates/TranslatesContext';
 import { Order } from '../../order/Order';
+import { mylib } from 'front/utils';
 
 let titlesMap: Map<string, number>;
 

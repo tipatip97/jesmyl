@@ -1,10 +1,17 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { GamerRoom, GamerRoomMember, GamerRoomMemberStatus } from '../../../apps/gamer/gamer.model';
-import { AliasHelp } from '../../../apps/gamer/games/alias/AliasHelp';
+import {
+  GamerRoom,
+  GamerRoomMember,
+  GamerRoomMemberStatus,
+} from '../../../../shared/api/complect/apps/gamer/gamer.model';
+import { AliasCleans } from '../../../../shared/api/complect/apps/gamer/alias/AliasCleans';
 import { AliasGameActions } from '../../../apps/gamer/games/alias/alias.config';
-import { GamerAliasRoomState, GamerAliasRoomStatePhase } from '../../../apps/gamer/games/alias/alias.model';
-import Eventer from '../../../complect/Eventer';
-import { LocalSokiAuth } from '../../../complect/soki/soki.model';
+import {
+  GamerAliasRoomState,
+  GamerAliasRoomStatePhase,
+} from '../../../../shared/api/complect/apps/gamer/alias/alias.model';
+import { Eventer } from 'shared/utils';
+import { LocalSokiAuth } from 'shared/api';
 import { editRoomTelegramMessage, gamerTgQueryParts, makeTgGamerTgQueryData } from './tg-gamer';
 
 export const aliasTgGameActions = {
@@ -132,7 +139,7 @@ const onAliasPahseChange = (room: GamerRoom) => {
 
         editRoomTelegramMessage(
           room.name,
-          `Результаты ${AliasHelp.computeGameScore(state.cor, state.inc, state.invert)}:\n${results}`,
+          `Результаты ${AliasCleans.computeGameScore(state.cor, state.inc, state.invert)}:\n${results}`,
           member.tgId,
           member.tgMsgId,
           [[{ text: 'Отправить результаты', callback_data: makeQuery(room.w, aliasTgGameActions.computeResults) }]],

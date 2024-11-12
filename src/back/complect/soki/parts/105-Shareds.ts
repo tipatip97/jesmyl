@@ -1,6 +1,5 @@
-import { SMyLib } from '../../../shared/SMyLib';
-import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
-import { SokiSharedKey } from '../values';
+import { SokiServerDoAction, SokiServerDoActionProps, SokiSharedKey } from 'shared/api';
+import { SMyLib } from 'shared/utils';
 import { SokiServerAuthorization } from './100-Authorization';
 
 export class SokiServerShareds

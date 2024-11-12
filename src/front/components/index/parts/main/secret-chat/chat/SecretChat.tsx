@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { SecretChat } from '../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { useAtom, useAtomValue } from '../../../../../../complect/atoms';
-import { MyLib } from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import PhaseContainerConfigurer from '../../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useActualRef } from '../../../../../../complect/useActualRef';
 import { useListShownLimitsController } from '../../../../../../complect/useListShownLimitsController';

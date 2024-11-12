@@ -1,8 +1,7 @@
+import { itIt, smylib } from 'shared/utils';
 import { Executer } from '../../complect/executer/Executer';
 import { filer } from '../../complect/filer/Filer';
 import { FilerAppConfig } from '../../complect/filer/Filer.model';
-import { itIt } from '../../complect/utils';
-import smylib from '../../shared/SMyLib';
 
 const makeComNames = (wids: number | number[]): string => {
   const coms: { n: string; w: number }[] = filer.contents.cm?.cols?.data.coms;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { useSecretChatContext, useSecretChatMessagesHashContext } from '../../complect';
 
 export const SecretChatReplyMessageHead = ({ message }: { message: SecretChat.Message }) => {

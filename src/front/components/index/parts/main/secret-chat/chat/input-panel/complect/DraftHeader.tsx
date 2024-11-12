@@ -1,4 +1,4 @@
-import { SecretChat } from '../../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { useAtom } from '../../../../../../../../complect/atoms';
 import { IconCancel01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/cancel-01';
 import { IconLinkBackwardStrokeRounded } from '../../../../../../../../complect/the-icon/icons/link-backward';

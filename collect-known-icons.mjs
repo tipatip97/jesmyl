@@ -57,7 +57,7 @@ ${iconNames.map(iconName => `  ${iconName}: iconPackOf${iconName},`).join('\n')}
 `;
 });
 
-replaceFileContent('src/back/knownIconNames.ts', content =>
+replaceFileContent('src/shared/values/knownIconNames.ts', content =>
   content.replace(
     /(export const knownIconNames = \[)[\s\S]+?(\s+\] as const;)/,
     (_, $1, $2) => `${$1}\n${iconNames.map(name => `  '${name}',`).join('\n')}${$2}`,

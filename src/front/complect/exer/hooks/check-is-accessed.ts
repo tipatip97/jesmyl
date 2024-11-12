@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { LocalSokiAuth } from '../../../models';
-import mylib from '../../my-lib/MyLib';
+import { mylib } from 'front/utils';
+import { LocalSokiAuth } from 'shared/api';
 
 export const useCheckIsAccessed = (auth: LocalSokiAuth) => {
   return useCallback(

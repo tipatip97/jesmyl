@@ -1,8 +1,8 @@
+import * as bibleTitlesJSON from 'bibles/book-titles.json';
+import { soki } from 'front/soki';
+import { MyLib } from 'front/utils';
 import { useEffect } from 'react';
-import * as bibleTitlesJSON from '../../../../../back/apps/bible/bibleBookTitles.json';
-import { itIt } from '../../../../../back/complect/utils';
-import { MyLib } from '../../../../complect/my-lib/MyLib';
-import { soki } from '../../../../soki';
+import { itIt } from 'shared/utils';
 import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress, BibleVersei } from '../model';
 import { useBibleTranslatesContext } from '../translates/TranslatesContext';
 import { translateDescriptions } from '../translates/complect';

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { GamerAliasRoomStatePhase } from 'shared/api';
 import styled from 'styled-components';
 import { isTouchDevice } from '../../../../../complect/device-differences';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
@@ -6,7 +7,6 @@ import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import { useMyPossibilitiesCurrentRoom } from '../../complect/rooms/room/hooks/possibilities';
-import { GamerAliasRoomStatePhase } from './Alias.model';
 import GamerAliasTimer from './AliasTimer';
 import { useAliasComputeScore } from './hooks/compute-score';
 import { useAliasCurrentTeamNaked } from './hooks/current-team';

@@ -1,6 +1,7 @@
+import { mylib } from 'front/utils';
 import React, { ReactNode, Suspense } from 'react';
-import { LocalSokiAuth, SokiServerEvent } from '../../../../back/complect/soki/soki.model';
-import mylib from '../../../complect/my-lib/MyLib';
+import { LocalSokiAuth, SokiServerEvent } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import {
   INavigationRouteChildItem,
@@ -20,7 +21,6 @@ import { toStopAliasGame } from './games/alias/hooks/execs';
 import { SPY_ROLE, unsecretSpyRole } from './games/spy/hooks/locations';
 import { OfflineGameShare } from './games/spy/offline-room/SpyOfflineRoom.model';
 import { gamerMolecule } from './molecules';
-import { makeRegExp } from '../../../../back/complect/makeRegExp';
 
 const LazyGamerApp = React.lazy(() => import('./GamerApp'));
 const LazyTheGamerPassport = React.lazy(() => import('./complect/GamerPassport'));

@@ -1,4 +1,4 @@
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { mylib } from 'front/utils';
 import { CoderResultArray } from './array';
 import { CoderResultFunction } from './function';
 import { CoderResultComponent } from './model';

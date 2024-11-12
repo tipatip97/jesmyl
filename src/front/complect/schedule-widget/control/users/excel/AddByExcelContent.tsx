@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Dropdown from '../../../../dropdown/Dropdown';
 import useToast from '../../../../modal/useToast';
-import mylib from '../../../../my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { excel2jsonParserBox } from '../../../../parseExcel2Json';
 import { StrongComponentProps } from '../../../../strong-control/Strong.model';
 import StrongButton from '../../../../strong-control/StrongButton';

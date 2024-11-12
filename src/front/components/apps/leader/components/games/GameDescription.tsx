@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import StrongEditableField from '../../../../../complect/strong-control/field/StrongEditableField';
 import { IconFile02StrokeRounded } from '../../../../../complect/the-icon/icons/file-02';
 import { TeamGameImportable } from '../../Leader.model';

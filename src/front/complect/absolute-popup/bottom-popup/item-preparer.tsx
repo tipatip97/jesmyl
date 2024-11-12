@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import { ReactNode } from 'react';
-import mylib from '../../my-lib/MyLib';
 import { BottomPopupContentProps, BottomPopupSkeletIcon } from './model';
 
 export const bottomPopupContentPreparer = ({ items, footer }: BottomPopupContentProps) => {

@@ -8,7 +8,8 @@ export class ErrorCatcher {
   static logAllErrors() {
     process.on('uncaughtException', err => {
       console.error(err);
-      tglogger.systemError('' + err);
+      const stack = err.stack || err.cause;
+      tglogger.systemError('' + err + (stack ? `\n\n<i>${stack}</i>` : ''));
     });
   }
 }

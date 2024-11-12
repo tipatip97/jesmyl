@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { IScheduleWidgetWid } from '../../../../models';
+import { IScheduleWidgetWid } from 'shared/api';
 import { soki } from '../../../../soki';
 import { useCurrentTranslationTextAppValue } from '../../../apps/+complect/translations/hooks/current-app';
 import { useScreenTranslationWindows } from '../../../apps/+complect/translations/hooks/windows';

@@ -1,5 +1,5 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconClock01StrokeRounded } from '../../../../../complect/the-icon/icons/clock-01';

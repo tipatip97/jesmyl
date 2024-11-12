@@ -1,11 +1,11 @@
 import { User } from 'node-telegram-bot-api';
-import smylib from '../../shared/SMyLib';
+import { smylib } from 'shared/utils';
+import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from 'shared/api';
 import { controlTelegramBot } from '../../sides/telegram-bot/control/control-bot';
 import { prodTelegramBot } from '../../sides/telegram-bot/prod/prod-bot';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';
 import { JesmylTelegramBot } from '../../sides/telegram-bot/tg-bot';
 import { filer } from '../filer/Filer';
-import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from './soki.model';
 
 export class SokiAuther {
   mtime = 0;

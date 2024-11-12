@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Dropdown from '../../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../../complect/dropdown/Dropdown.model';
-import { MyLib } from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { filesStorage } from '../utils/storage';
 
 interface Props {

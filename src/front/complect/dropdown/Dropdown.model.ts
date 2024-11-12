@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { SokiServerEvent } from '../../models';
+import { SokiServerEvent } from 'shared/api';
 
 export interface DropdownProps<Id, Item extends DropdownItem<Id>> {
   items: (Item | null)[];

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IExportableMeetings } from '../../../../../../back/apps/cm/Meetings.model';
+import { IExportableMeetings } from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
 import { useAtomValue } from '../../../../../complect/atoms';
 import { cmMeetingsAtom } from '../../molecules';
 import { useEditableCols } from '../col/useEditableCols';

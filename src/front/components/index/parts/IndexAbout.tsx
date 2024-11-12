@@ -1,12 +1,11 @@
-import * as versionNum from '../../../../back/+version.json';
-import { itIt } from '../../../../back/complect/utils';
+import { itIt } from 'shared/utils';
+import { jversion } from 'shared/values';
 import { useAtomValue } from '../../../complect/atoms';
 import QRCode from '../../../complect/qr-code/QRCode';
 import { IconDelete01StrokeRounded } from '../../../complect/the-icon/icons/delete-01';
 import { IconTelegramStrokeRounded } from '../../../complect/the-icon/icons/telegram';
 import { indexMolecule } from '../molecules';
 
-const version = { ...versionNum };
 const appVersionAtom = indexMolecule.select(s => s.appVersion);
 
 export default function IndexAbout() {
@@ -35,10 +34,10 @@ export default function IndexAbout() {
       </div>
       <div
         className={`absolute pos-bottom padding-giant-gap ${
-          appVersion ? (version.num !== appVersion ? 'color--ko' : 'color--7') : ''
+          appVersion ? (jversion.num !== appVersion ? 'color--ko' : 'color--7') : ''
         }`}
       >
-        v{version.num} {appVersion ? (version.num === appVersion ? '- Актуальная' : `(Новая - v${appVersion})`) : ''}
+        v{jversion.num} {appVersion ? (jversion.num === appVersion ? '- Актуальная' : `(Новая - v${appVersion})`) : ''}
         <IconDelete01StrokeRounded
           className="margin-gap pointer color--ko vertical-middle"
           onClick={event => {

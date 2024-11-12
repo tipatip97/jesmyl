@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
 import { useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { IScheduleWidgetWid } from '../../models';
+import { IScheduleWidgetWid } from 'shared/api';
 import { atom, useAtomSet, useAtomValue } from '../atoms';
-import mylib from '../my-lib/MyLib';
 
 export const useCschw = (): IScheduleWidgetWid | NaN => {
   const paramSchw = +useParams().schw!;

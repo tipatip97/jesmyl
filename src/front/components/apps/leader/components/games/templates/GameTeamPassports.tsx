@@ -1,5 +1,5 @@
 import React from 'react';
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import FontSizeContain from '../../../../cm/base/font-size-contain/FontSizeContain';
 import PrintableTemplate from '../../templates/PrintableTemplate';
 import useGames from '../useGames';

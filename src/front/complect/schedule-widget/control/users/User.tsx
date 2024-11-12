@@ -6,11 +6,13 @@ import { IconNotification01StrokeRounded } from '../../../../complect/the-icon/i
 import { IconNotificationOff01StrokeRounded } from '../../../../complect/the-icon/icons/notification-off-01';
 import { IconQrCodeStrokeRounded } from '../../../../complect/the-icon/icons/qr-code';
 import { IconUserRemove02StrokeRounded } from '../../../../complect/the-icon/icons/user-remove-02';
+
 import {
-  ScheduleWidgetUserRoleRight,
+  IScheduleWidgetUser,
   packScheduleWidgetInviteLink,
   scheduleWidgetUserRights,
-} from '../../../../models';
+  ScheduleWidgetUserRoleRight,
+} from 'shared/api';
 import ShareEvaButton from '../../../ShareEvaButton';
 import Modal from '../../../modal/Modal/Modal';
 import { ModalBody } from '../../../modal/Modal/ModalBody';
@@ -20,7 +22,6 @@ import useQRMaster from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import IconButton from '../../../the-icon/IconButton';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetUserTakePhoto from './TakePhoto';
 import { ScheduleWidgetUserEdit } from './UserEdit';

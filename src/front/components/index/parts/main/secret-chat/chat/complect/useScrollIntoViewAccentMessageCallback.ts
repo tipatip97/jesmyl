@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { ActualRef } from '../../../../../../../complect/useActualRef';
 import { ListSlicerLimits } from '../../../../../../../complect/useListShownLimitsController';
 import { secretChatClassNamesDict } from '../../complect';

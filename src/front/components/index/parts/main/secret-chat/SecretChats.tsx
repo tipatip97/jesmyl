@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { SecretChat } from '../../../../../../back/apps/index/SecretChat.complect';
-import { itIt } from '../../../../../../back/complect/utils';
+import { SecretChat } from 'shared/api';
+import { itIt } from 'shared/utils';
 import { useAtomSet, useAtomValue } from '../../../../../complect/atoms';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
-import { MyLib } from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import QRCode from '../../../../../complect/qr-code/QRCode';
 import { IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/qr-code';

@@ -1,16 +1,20 @@
+import { mylib, MyLib } from 'front/utils';
 import { ReactNode, useState } from 'react';
+import {
+  IScheduleWidget,
+  ScheduleWidgetAttKey,
+  ScheduleWidgetDayEventAttValues,
+  scheduleWidgetUserRights,
+} from 'shared/api';
 import styled from 'styled-components';
 import { IconAttachment01StrokeRounded } from '../../../complect/the-icon/icons/attachment-01';
 import { IconPlusSignStrokeRounded } from '../../../complect/the-icon/icons/plus-sign';
-import { scheduleWidgetUserRights } from '../../../models';
 import Modal from '../../modal/Modal/Modal';
 import { ModalBody } from '../../modal/Modal/ModalBody';
 import { ModalFooter } from '../../modal/Modal/ModalFooter';
-import mylib, { MyLib } from '../../my-lib/MyLib';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongDiv from '../../strong-control/StrongDiv';
 import IconButton from '../../the-icon/IconButton';
-import { IScheduleWidget, ScheduleWidgetAttKey, ScheduleWidgetDayEventAttValues } from '../ScheduleWidget.model';
 import {
   takeStrongScopeMaker,
   useScheduleWidgetAppAttsContext,

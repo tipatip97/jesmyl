@@ -1,9 +1,9 @@
 import { Executer } from '../../../complect/executer/Executer';
 import { FilerAppConfig } from '../../../complect/filer/Filer.model';
-import { GamerRoom } from '../gamer.model';
-import { AliasHelp } from '../games/alias/AliasHelp';
+import { GamerRoom } from '../../../../shared/api/complect/apps/gamer/gamer.model';
+import { AliasCleans } from '../../../../shared/api/complect/apps/gamer/alias/AliasCleans';
 import { aliasGameConfig } from '../games/alias/alias.config';
-import { GamerAliasRoomState } from '../games/alias/alias.model';
+import { GamerAliasRoomState } from '../../../../shared/api/complect/apps/gamer/alias/alias.model';
 import { spyGameConfig } from '../games/spy/spy.config';
 import { gamerMemberConfig } from './member';
 
@@ -81,7 +81,7 @@ const config: FilerAppConfig = {
           if (!room?.games?.alias) return;
           const alias = room.games.alias as GamerAliasRoomState;
 
-          AliasHelp.removeRandomSortedInfos(alias.id);
+          AliasCleans.removeRandomSortedInfos(alias.id);
         },
       },
       '/[w === {roomw}]': {

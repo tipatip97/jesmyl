@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { isIPhone } from '../../../../../../../complect/device-differences';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 

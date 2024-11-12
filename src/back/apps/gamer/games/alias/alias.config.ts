@@ -1,19 +1,19 @@
-import Eventer, { EventerValueListeners } from '../../../../complect/Eventer';
-import { ExecutionArgs } from '../../../../complect/executer/Executer.model';
-import { filer } from '../../../../complect/filer/Filer';
-import { itIt, itNNull } from '../../../../complect/utils';
-import { ActionBox, ActionBoxOnFinalCallback } from '../../../../models';
-import { NounPronsType } from '../../../index/models/nounProns.model';
-import { GamerRoom } from '../../gamer.model';
-import { AliasHelp } from './AliasHelp';
 import {
+  ActionBox,
+  ActionBoxOnFinalCallback,
   AliasGameTeam,
   AliasWordInfo,
   AliasWordsPack,
+  ExecutionArgs,
   GamerAliasRoomState,
   GamerAliasRoomStatePhase,
   StartAliasRoundProps,
-} from './alias.model';
+} from 'shared/api';
+import { Eventer, EventerValueListeners, itIt, itNNull } from 'shared/utils';
+import { AliasCleans } from '../../../../../shared/api/complect/apps/gamer/alias/AliasCleans';
+import { GamerRoom } from '../../../../../shared/api/complect/apps/gamer/gamer.model';
+import { NounPronsType } from '../../../../../shared/api/complect/noun-pronoun/complect/model';
+import { filer } from '../../../../complect/filer/Filer';
 
 const extractState = <Ret>(props: ExecutionArgs | nil): Ret => props?.$$vars?.$$currentValue;
 const speechTimerId = (state: GamerAliasRoomState) => 'alias-timeout:' + state.teams[0].title;
@@ -32,7 +32,7 @@ export const AliasGameActions = {
 };
 
 const getTokenizedWinfoLine = (id: string, dicts: GamerAliasRoomState['dicts']) =>
-  AliasHelp.randomSortedInfos(id, dicts, getWordPacks(), getNounPronsWords());
+  AliasCleans.randomSortedInfos(id, dicts, getWordPacks(), getNounPronsWords());
 
 const getWordPacks = () => filer.contents.gamer['aliasWordPacks'].data as AliasWordsPack[];
 const getNounPronsWords = () => filer.contents.index['nounPronsWords'].data as NounPronsType;
@@ -59,7 +59,7 @@ export const aliasGameConfig: ActionBox = {
 
         return (props: StartAliasRoundProps): Partial<GamerAliasRoomState> => {
           const state = extractState<GamerAliasRoomState | nil>(props);
-          const [speakeri] = state ? AliasHelp.takeSpeakerDetails(state) : [0];
+          const [speakeri] = state ? AliasCleans.takeSpeakerDetails(state) : [0];
 
           const newState: Partial<GamerAliasRoomState> = {
             phase: GamerAliasRoomStatePhase.Wait,
@@ -81,7 +81,7 @@ export const aliasGameConfig: ActionBox = {
 
             newState.id = state?.id ?? '' + Date.now() + Math.random();
 
-            AliasHelp.removeRandomSortedInfos(newState.id);
+            AliasCleans.removeRandomSortedInfos(newState.id);
 
             const winfos = getTokenizedWinfoLine(newState.id, props.dicts);
             newState.arsenal = winfos.length;
@@ -158,7 +158,7 @@ export const aliasGameConfig: ActionBox = {
         return props => {
           const state = extractState<GamerAliasRoomState | nil>(props);
           if (state == null || props == null) return;
-          const [speakeri, currTeami] = AliasHelp.takeSpeakerDetails(state);
+          const [speakeri, currTeami] = AliasCleans.takeSpeakerDetails(state);
 
           const winfos = getTokenizedWinfoLine(state.id, state.dicts);
           const mapper = (winfo: AliasWordInfo) => winfos[winfo.wordi];
@@ -166,7 +166,7 @@ export const aliasGameConfig: ActionBox = {
           const score =
             state.teams[currTeami].score +
             (winfos
-              ? AliasHelp.computeGameScore(
+              ? AliasCleans.computeGameScore(
                   state.cor.map(mapper).filter(itIt),
                   state.inc.map(mapper).filter(itIt),
                   props.isTgCompute ? state.invert : state.fix,
@@ -228,7 +228,7 @@ export const aliasGameConfig: ActionBox = {
     method: 'set_all',
     value: props => {
       const state = extractState<GamerAliasRoomState | nil>(props);
-      const [speakeri] = state ? AliasHelp.takeSpeakerDetails(state, state.speakeri) : [0];
+      const [speakeri] = state ? AliasCleans.takeSpeakerDetails(state, state.speakeri) : [0];
       return { speakeri };
     },
   },

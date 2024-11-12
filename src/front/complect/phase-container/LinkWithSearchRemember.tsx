@@ -1,5 +1,5 @@
 import { Link, LinkProps, NavLinkProps, SetURLSearchParams, useParams, useSearchParams } from 'react-router-dom';
-import { itNNull } from '../../../back/complect/utils';
+import { itNNull } from 'shared/utils';
 
 const mapParamsSelf = {} as {
   params: Record<string, string | und>;

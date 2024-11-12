@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from 'react';
 import { indexExer } from '../../components/index/IndexExer';
-import { SokiServerEvent } from '../../models';
+import { SokiServerEvent } from 'shared/api';
 import { Exer } from '../exer/Exer';
 import { ExerStorage } from '../exer/Exer.model';
 import { CUD, StrongComponentProps } from './Strong.model';

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { useAtom, useAtomValue } from '../../../../../../complect/atoms';
 import propsOfClicker from '../../../../../../complect/clicker/propsOfClicker';
 import { contextCreator } from '../../../../../../complect/contextCreator';
-import { MyLib } from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { cmMolecule } from '../../../molecules';
 import { Com } from '../Com';
 import { MigratableComToolName } from '../Com.model';

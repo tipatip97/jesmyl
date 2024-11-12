@@ -1,6 +1,6 @@
+import { IScheduleWidget, ScheduleStorage } from 'shared/api';
+import { smylib } from 'shared/utils';
 import { filer } from '../../../../complect/filer/Filer';
-import smylib from '../../../../shared/SMyLib';
-import { IScheduleWidget, ScheduleStorage } from '../../models/ScheduleWidget.model';
 
 const getSchedules = () => filer.contents.index.schedules.data as ScheduleStorage;
 

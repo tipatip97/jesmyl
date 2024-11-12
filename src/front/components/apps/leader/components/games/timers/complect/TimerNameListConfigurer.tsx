@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../../../complect/the-icon/icons/plus-sign-circle';
 import useIsRedactArea from '../../../../../../../complect/useIsRedactArea';

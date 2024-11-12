@@ -1,9 +1,15 @@
 import { IconArrowReloadHorizontalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-reload-horizontal';
-import { CustomAttUseTaleId, IScheduleWidgetTeamGame } from '../../../../../models';
+
 import useModal from '../../../../modal/useModal';
 import StrongDiv from '../../../../strong-control/StrongDiv';
 import IconButton from '../../../../the-icon/IconButton';
-import { IScheduleWidgetListUnit, IScheduleWidgetRole, IScheduleWidgetUser } from '../../../ScheduleWidget.model';
+import {
+  CustomAttUseTaleId,
+  IScheduleWidgetListUnit,
+  IScheduleWidgetRole,
+  IScheduleWidgetTeamGame,
+  IScheduleWidgetUser,
+} from 'shared/api';
 import KeyValueListAttNumberMember from './KeyValueListAttNumberMember';
 
 export default function ScheduleKeyValueListAttArrayItemKeyChange(props: {

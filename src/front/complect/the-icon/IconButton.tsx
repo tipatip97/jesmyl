@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ConfirmContent } from '../modal/confirm/ConfirmContent';
 import useToast from '../modal/useToast';
 import { TheIconType } from './model';
-import mylib from '../my-lib/MyLib';
+import { mylib } from '../my-lib';
 
 interface Props {
   Icon: TheIconType;

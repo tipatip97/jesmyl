@@ -1,7 +1,6 @@
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
-import { itIt } from '../../../../../../back/complect/utils';
-import mylib from '../../../../../complect/my-lib/MyLib';
-import { IExportableCom, IExportableOrder } from '../../../../../models';
+import { mylib } from 'front/utils';
+import { IExportableCom, IExportableOrder } from 'shared/api/complect/apps/cm';
+import { itIt, makeRegExp } from 'shared/utils';
 import { BaseNamed } from '../../base/BaseNamed';
 import { blockStyles } from './block-styles/BlockStyles';
 import { StyleBlock } from './block-styles/StyleBlock';

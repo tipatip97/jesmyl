@@ -1,6 +1,6 @@
 import { tglogger } from '../../../sides/telegram-bot/log/log-bot';
 import { filer } from '../../filer/Filer';
-import { SokiVisitor } from '../soki.model';
+import { SokiVisitor } from 'shared/api';
 import { SokiServerExecs } from './50-Execs';
 
 const getVersion = (): number | und => filer.contents.index['appVersion']?.data;

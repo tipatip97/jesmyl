@@ -1,8 +1,7 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable eqeqeq */
 
-import { makeRegExp } from '../../../back/complect/makeRegExp';
-import { SMyLib } from '../../models';
+import { makeRegExp, SMyLib } from 'shared/utils';
 
 const constants = {
   REMOVE: ['REMOVE'],
@@ -592,7 +591,6 @@ export class MyLib extends SMyLib {
   }
 }
 
-const mylib = new MyLib();
-export default mylib;
+export const mylib = new MyLib();
 
 (window as any).mylib = mylib;

@@ -1,6 +1,6 @@
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../../models';
-import { ScheduleWidgetAppAtts } from '../../../ScheduleWidget.model';
+import { ScheduleWidgetAppAtts } from 'front/complect/schedule-widget/ScheduleWidget.model';
 import ScheduleCheckListAtt from './TheCheckListAtt';
+import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from 'shared/api';
 
 export interface ScheduleChListAtt {
   list: [num, string][];

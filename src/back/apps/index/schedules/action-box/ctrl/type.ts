@@ -1,8 +1,12 @@
-import { ActionBox } from '../../../../../models';
-import smylib from '../../../../../shared/SMyLib';
-import { IScheduleWidget } from '../../../models/ScheduleWidget.model';
-import { ScheduleWidgetRegType, scheduleWidgetRegTypeRights, scheduleWidgetRegTypeTitles } from '../../../rights';
-import { ScheduleWidgetTgInformCleans } from '../../tg-bot-inform/cleans';
+import {
+  ActionBox,
+  IScheduleWidget,
+  ScheduleWidgetCleans,
+  ScheduleWidgetRegType,
+  scheduleWidgetRegTypeRights,
+  scheduleWidgetRegTypeTitles,
+} from 'shared/api';
+import { smylib } from 'shared/utils';
 import { ScheduleWidgetActionBoxCleans } from '../cleans';
 
 const findTitleSelf = { id: ScheduleWidgetRegType.Public };
@@ -49,12 +53,12 @@ export const scheduleWidgetCtrlTypeActionBox: ActionBox<IScheduleWidget['ctrl'][
 
         return (
           `В расписании <b>${schedule.title}</b> изменение типа:` +
-          `\n\n${ScheduleWidgetTgInformCleans.putInTgTag(isSwPublic ? '' : 's', publicRule.title)}` +
-          `\n${ScheduleWidgetTgInformCleans.putInTgTag(
+          `\n\n${ScheduleWidgetCleans.putInTgTag(isSwPublic ? '' : 's', publicRule.title)}` +
+          `\n${ScheduleWidgetCleans.putInTgTag(
             isSwPublic && isSwBeforeRegistration ? '' : 's',
             beforeRegistrationRule.title,
           )}` +
-          `\n${ScheduleWidgetTgInformCleans.putInTgTag(
+          `\n${ScheduleWidgetCleans.putInTgTag(
             isSwPublic && isSwBeforeRegistration && isSwHideContent ? '' : 's',
             hideContentRule.title,
           )}`

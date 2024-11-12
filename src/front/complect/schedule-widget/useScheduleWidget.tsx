@@ -1,26 +1,23 @@
+import { mylib, MyLib } from 'front/utils';
 import React, { useContext, useMemo } from 'react';
-import { appAttsStore } from '../../components/complect/appScheduleAttrsStorage';
-import { useAuth, useIndexSchedules } from '../../components/index/molecules';
-import {
-  IScheduleWidgetWid,
-  LocalSokiAuth,
-  ScheduleWidgetRegType,
-  ScheduleWidgetUserRoleRight,
-  scheduleWidgetRegTypeRights,
-  scheduleWidgetUserRights,
-} from '../../models';
-import { contextCreator } from '../contextCreator';
-import mylib, { MyLib } from '../my-lib/MyLib';
-import { strongScopeMakerBuilder } from '../strong-control/useStrongControl';
 import {
   IScheduleWidget,
   IScheduleWidgetRole,
   IScheduleWidgetUser,
-  ScheduleWidgetAppAtts,
-  ScheduleWidgetAttRefs,
-} from './ScheduleWidget.model';
+  IScheduleWidgetWid,
+  LocalSokiAuth,
+  ScheduleWidgetRegType,
+  scheduleWidgetRegTypeRights,
+  scheduleWidgetUserRights,
+  ScheduleWidgetUserRoleRight,
+} from 'shared/api';
+import { appAttsStore } from '../../components/complect/appScheduleAttrsStorage';
+import { useAuth, useIndexSchedules } from '../../components/index/molecules';
+import { contextCreator } from '../contextCreator';
+import { strongScopeMakerBuilder } from '../strong-control/useStrongControl';
 import ScheduleKeyValueListAtt from './atts/attachments/key-value/KeyValueListAtt';
 import { scheduleOwnAtts } from './atts/attachments/ownAtts';
+import { ScheduleWidgetAppAtts, ScheduleWidgetAttRefs } from './ScheduleWidget.model';
 
 export default function useScheduleWidget(schedulew?: number, schedule?: IScheduleWidget) {
   const schedules = useIndexSchedules();

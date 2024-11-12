@@ -1,4 +1,4 @@
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { Order } from '../../../../../col/com/order/Order';
 import Correct from '../../../../corrects-box/Correct';
 import { CorrectsBox } from '../../../../corrects-box/CorrectsBox';

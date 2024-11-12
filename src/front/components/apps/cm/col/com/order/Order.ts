@@ -1,14 +1,13 @@
-import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
-import { itIt } from '../../../../../../../back/complect/utils';
-import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
-import SourceBased from '../../../../../../complect/SourceBased';
+import { MyLib, mylib } from 'front/utils';
 import {
   IExportableOrder,
   IExportableOrderFieldValues,
   InheritancableOrder,
   OrderRepeats,
   SpecialOrderRepeats,
-} from '../../../../../../models';
+} from 'shared/api';
+import { itIt, makeRegExp } from 'shared/utils';
+import SourceBased from '../../../../../../complect/SourceBased';
 import { Com } from '../Com';
 import { EditableOrderRegion, IExportableOrderMe } from './Order.model';
 

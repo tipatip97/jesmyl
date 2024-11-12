@@ -1,4 +1,4 @@
-import { makeRegExp } from '../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 
 export const chordLikeStr = '([ACDFG]#?|[EH])(\\+|11|((m|min|7?sus|maj|dim|add)?(\\d(/\\d)?)?))';
 export const textedChordReg = makeRegExp(

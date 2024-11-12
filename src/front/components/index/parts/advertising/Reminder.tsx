@@ -3,7 +3,7 @@ import { atom, useAtom } from '../../../../complect/atoms';
 import Modal from '../../../../complect/modal/Modal/Modal';
 import { useActualRef } from '../../../../complect/useActualRef';
 import { IndexAdvertisingReminderModalContent } from './ReminderModal';
-import mylib from '../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 
 const lastRemindTsAtom = atom(0, 'index', 'lastRemindTs');
 const remindIntervalTs = mylib.howMs.inDay * 12;

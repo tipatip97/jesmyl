@@ -1,4 +1,4 @@
-import environment from '../../environments/environment';
+import { environment } from 'shared/api';
 import { jesmylTgBot } from './bot';
 import { prodTelegramBot } from './prod/prod-bot';
 

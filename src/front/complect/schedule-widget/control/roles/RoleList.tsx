@@ -6,7 +6,7 @@ import IconButton from '../../../the-icon/IconButton';
 import { IconArrowDownDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-down-double';
 import { IconArrowUpDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-up-double';
 import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
-import { IScheduleWidgetRole } from '../../ScheduleWidget.model';
+import { IScheduleWidgetRole } from 'shared/api';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetRole from './Role';
 

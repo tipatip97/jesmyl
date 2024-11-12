@@ -1,4 +1,4 @@
-import Eventer from '../../../../back/complect/Eventer';
+import { Eventer } from 'shared/utils';
 import { JStorageSimpleVal } from '../JStorageSimple';
 
 export class JStorageBooleanVal extends JStorageSimpleVal<boolean> {

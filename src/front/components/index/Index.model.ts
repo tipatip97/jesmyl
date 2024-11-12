@@ -1,15 +1,15 @@
-import { AppName } from '../../app/App.model';
-import { ExecRule } from '../../complect/exer/Exer.model';
-import { ScheduleStorage } from '../../complect/schedule-widget/ScheduleWidget.model';
+import { NounPronsType } from 'shared/api/complect/noun-pronoun/complect/model';
 import {
   IScheduleWidgetWid,
   LocalSokiAuth,
-  NounPronsType,
+  ScheduleStorage,
   ServerAuthorizationData,
   ServerRegisterData,
   SokiClientSubData,
   SokiStatistic,
-} from '../../models';
+} from 'shared/api';
+import { AppName } from '../../app/App.model';
+import { ExecRule } from '../../complect/exer/Exer.model';
 import { BibleTranslationScreenConfig } from '../apps/bible/translations/model';
 import { CmSchWTranslationLiveDataValue } from '../apps/cm/translation/complect/live/model';
 import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox';

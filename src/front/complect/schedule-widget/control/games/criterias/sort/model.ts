@@ -1,4 +1,4 @@
-import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
+import { IScheduleWidgetUser } from 'shared/api';
 
 export type HistoryAdder = (
   start: number,

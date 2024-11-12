@@ -1,6 +1,5 @@
-import { sokiWhenRejButTs } from '../../values';
-import { ExecutionDict, ExecutionReal, ShortRealRule } from '../executer/Executer.model';
-import { LocalSokiAuth, SokiAppName } from '../soki/soki.model';
+import { LocalSokiAuth, SokiAppName, sokiWhenRejButTs } from 'shared/api';
+import { ExecutionDict, ExecutionReal, ShortRealRule } from '../../../shared/api/complect/executer/model';
 
 export type FilerAppStore = Record<SokiAppName, FilerAppConfig>;
 
@@ -24,12 +23,6 @@ export interface FilerAppRequirement<Data = any> {
   watch?: [string, (content: string) => any];
   refreshTrigger?: string;
 }
-
-export type SimpleKeyValue<Key = string, Value = unknown> = SimpleValueKey<Value, Key>;
-export type SimpleValueKey<Value = unknown, Key = string> = {
-  key: Key;
-  value: Value;
-};
 
 export interface FilerAppConfigActions {
   rules: ExecutionReal[];

@@ -1,7 +1,7 @@
-import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
+import { mylib } from 'front/utils';
+import { IExportableCat } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { FreeExecDict } from '../../../../../../complect/exer/Exer.model';
-import mylib from '../../../../../../complect/my-lib/MyLib';
-import { IExportableCat } from '../../../../../../models';
 import { Cat } from '../../../col/cat/Cat';
 import { catTrackers } from '../../../col/cat/Cat.complect';
 import { CatTracker, ComWrap } from '../../../col/cat/Cat.model';

@@ -1,8 +1,7 @@
-import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
-import { itNNil } from '../../../../../../back/complect/utils';
-import { CustomAttUseTaleId, ScheduleWidgetAppAttCustomizableValueItem } from '../../../../../models';
+import { mylib } from 'front/utils';
+import { CustomAttUseTaleId, ScheduleWidgetAppAttCustomizableValueItem, ScheduleWidgetCleans } from 'shared/api';
+import { itNNil } from 'shared/utils';
 import CopyTextButton from '../../../../CopyTextButton';
-import mylib from '../../../../my-lib/MyLib';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
 
 const mapSetItemNumber = (l: string | nil, li: number) => li + 1 + '. ' + l!;

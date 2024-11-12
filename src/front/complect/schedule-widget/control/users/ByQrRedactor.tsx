@@ -5,7 +5,7 @@ import useQRMaster from '../../../qr-code/useQRMaster';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongButton from '../../../strong-control/StrongButton';
 import IconButton from '../../../the-icon/IconButton';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
+import { IScheduleWidgetUser } from 'shared/api';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { ScheduleWidgetUserEdit } from './UserEdit';
 

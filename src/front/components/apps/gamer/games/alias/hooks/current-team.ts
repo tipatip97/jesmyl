@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { AliasGameTeam, GamerAliasRoomState } from '../Alias.model';
+import { AliasGameTeam, GamerAliasRoomState } from 'shared/api';
 import { useAliasMemberList } from './member-list';
 import { useAliasRoomState } from './state';
 

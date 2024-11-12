@@ -1,5 +1,5 @@
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
-import { MyLib } from '../../../../../complect/my-lib/MyLib';
+import { makeRegExp } from 'shared/utils';
+import { MyLib, mylib } from 'front/utils';
 
 export const ruUaSingLettersStr = 'уеыаоэяиёюіїє ' as const;
 export const iRuUaReg = makeRegExp(`/[${ruUaSingLettersStr}]/i`);

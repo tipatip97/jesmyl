@@ -1,5 +1,5 @@
+import { GamerAliasRoomStatePhase } from 'shared/api';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import { GamerAliasRoomStatePhase } from './Alias.model';
 import AliasGameRound from './AliasGameRound';
 import AliasGameRoundResults from './AliasGameRoundResults';
 import AliasScoreBoard from './AliasScoreBoard';

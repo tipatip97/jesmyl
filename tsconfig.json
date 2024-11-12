@@ -15,8 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "paths": {}
+    "paths": {},
+    "baseUrl": "src"
   },
-  "include": ["src", "src/back/complect/exert/exer"],
+  "include": ["src", "src/back/complect/exert/exer", "src/shared/utils/complect"],
   "exclude": ["./src/front/complect/the-icon/icons"]
 }

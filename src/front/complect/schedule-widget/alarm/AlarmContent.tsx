@@ -1,20 +1,20 @@
+import { mylib } from 'front/utils';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  IScheduleWidget,
+  IScheduleWidgetDay,
+  IScheduleWidgetDayEvent,
+  ScheduleWidgetCleans,
+  ScheduleWidgetDayListItemTypeBox,
+} from 'shared/api';
+import { itNNull } from 'shared/utils';
 import styled from 'styled-components';
-import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
-import { itNNull } from '../../../../back/complect/utils';
 import { IconCalendar01StrokeRounded } from '../../../complect/the-icon/icons/calendar-01';
 import { IconLeftToRightListDashStrokeRounded } from '../../../complect/the-icon/icons/left-to-right-list-dash';
 import { IconSmileStrokeRounded } from '../../../complect/the-icon/icons/smile';
 import { useIndexSchedules } from '../../../components/index/molecules';
 import useFullContent, { FullContentValue } from '../../fullscreen-content/useFullContent';
-import mylib from '../../my-lib/MyLib';
-import {
-  IScheduleWidget,
-  IScheduleWidgetDay,
-  IScheduleWidgetDayEvent,
-  ScheduleWidgetDayListItemTypeBox,
-} from '../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../complect/TopicTitle';
 import ScheduleAlarmDay from './AlarmDay';
 import { ScheduleWidgetAlarmInfoContent } from './InfoContent';

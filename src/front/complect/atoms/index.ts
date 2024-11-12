@@ -1,4 +1,4 @@
-import { ServerStoreContent } from '../../../back/complect/soki/parts/120-ServerStore';
+import { ServerStoreContent } from 'shared/api';
 
 export * from './AnAtom';
 export * from './Atom';

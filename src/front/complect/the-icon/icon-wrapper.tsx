@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import mylib from '../my-lib/MyLib';
+import { mylib } from '../my-lib';
 
 export const TheIconWrapper = ({
   withoutAnimation,

@@ -1,4 +1,4 @@
-import { SecretChat } from '../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { atom, Molecule } from '../../../../../complect/atoms';
 
 type ChatPackOf<Inner> = Record<SecretChat.ChatId, Inner>;

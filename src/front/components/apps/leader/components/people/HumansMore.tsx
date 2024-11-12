@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { BottomPopupContenter } from '../../../../../complect/absolute-popup/bottom-popup/model';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { IconSorting05StrokeRounded } from '../../../../../complect/the-icon/icons/sorting-05';
 import { IconUserAdd01StrokeRounded } from '../../../../../complect/the-icon/icons/user-add-01';
 import { useLeaderHumanListSortVariant } from '../../molecules';

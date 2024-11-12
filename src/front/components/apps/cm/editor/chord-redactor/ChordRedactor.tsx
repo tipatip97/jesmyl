@@ -3,7 +3,7 @@ import { useAtomValue } from '../../../../../complect/atoms';
 import TheButton from '../../../../../complect/Button';
 import { useExerExec } from '../../../../../complect/exer/hooks/useExer';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { cmExer } from '../../CmExer';
 import ChordCard from '../../col/com/chord-card/ChordCard';

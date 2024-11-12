@@ -1,7 +1,7 @@
 import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import { useState } from 'react';
-import { makeRegExp } from '../../../../back/complect/makeRegExp';
-import { isNIs } from '../../../../back/complect/utils';
+import { makeRegExp } from 'shared/utils';
+import { isNIs } from 'shared/utils';
 import style from './Multiline.module.scss';
 
 const onImageClick: React.MouseEventHandler<HTMLImageElement> = event => {

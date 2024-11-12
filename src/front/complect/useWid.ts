@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { makeRegExp } from '../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 
 const deps: [] = [];
 

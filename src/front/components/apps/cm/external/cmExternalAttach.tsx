@@ -1,10 +1,10 @@
+import { ScheduleWidgetAppAtts } from 'front/complect/schedule-widget/ScheduleWidget.model';
 import React, { Suspense } from 'react';
 import { Link, Route } from 'react-router-dom';
-import { ScheduleWidgetAppAtts } from '../../../../complect/schedule-widget/ScheduleWidget.model';
+import { CmComBindAttach, scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from 'shared/api';
 import { getObjectFromScope } from '../../../../complect/strong-control/useStrongControl';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconLinkSquare01SolidRounded } from '../../../../complect/the-icon/icons/link-square-01';
-import { CmComBindAttach, scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../../models';
 import CmExternalComListAtt from './complect/CmExternalComListAtt';
 
 const TgDayEventComList = React.lazy(() => import('./complect/TgDayEventComList'));

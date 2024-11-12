@@ -1,6 +1,6 @@
 import AppFooter from '../../../../app/AppFooter';
 import AppFooterItem from '../../../../app/AppFooterItem';
-import mylib from '../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { iconPackOfEdit02 } from '../../../../complect/the-icon/icons/edit-02';
 import { iconPackOfLeftToRightListBullet } from '../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import { iconPackOfPlaylist01 } from '../../../../complect/the-icon/icons/playlist-01';

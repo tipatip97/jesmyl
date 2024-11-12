@@ -1,11 +1,10 @@
+import { mylib } from 'front/utils';
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { emptyFunc, Eventer, EventerListeners } from 'shared/utils';
 import styled from 'styled-components';
-import Eventer, { EventerListeners } from '../../../back/complect/Eventer';
-import { emptyFunc } from '../../../back/complect/utils';
 import { useSetAppRootAnchorNodesContext } from '../../app/AppComponent';
 import { backSwipableContainerMaker } from '../backSwipableContainerMaker';
 import { ThrowEvent } from '../eventer/ThrowEvent';
-import mylib from '../my-lib/MyLib';
 import Portal from '../popups/[complect]/Portal';
 import IconButton from '../the-icon/IconButton';
 import { IconCancel01StrokeRounded } from '../the-icon/icons/cancel-01';

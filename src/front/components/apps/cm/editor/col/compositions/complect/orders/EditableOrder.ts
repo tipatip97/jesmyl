@@ -1,11 +1,6 @@
+import { mylib } from 'front/utils';
+import { IExportableOrder, IExportableOrderFieldValues, InheritancableOrder, OrderRepeats } from 'shared/api';
 import { FreeExecDict, FreeExecDictUniq } from '../../../../../../../../complect/exer/Exer.model';
-import mylib from '../../../../../../../../complect/my-lib/MyLib';
-import {
-  IExportableOrder,
-  IExportableOrderFieldValues,
-  InheritancableOrder,
-  OrderRepeats,
-} from '../../../../../../../../models';
 import { cmExer } from '../../../../../CmExer';
 import { Order } from '../../../../../col/com/order/Order';
 import { EditableOrderRegion, IExportableOrderMe } from '../../../../../col/com/order/Order.model';

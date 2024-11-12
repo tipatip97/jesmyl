@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import useToast from '../../../../../../../complect/modal/useToast';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { QRCodeReaderData } from '../../../../../../../complect/qr-code/QRCodeMaster.model';
 import { gamerOfflineRoomGames } from '../../../../useGamerNav';
 import { useGamerOfflineRoomsContext } from './context';

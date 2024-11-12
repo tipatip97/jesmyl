@@ -1,10 +1,10 @@
 import React, { Suspense } from 'react';
+import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from 'shared/api';
 import { NavigationConfig } from '../../../complect/nav-configurer/Navigation';
 import { UseNavAction } from '../../../complect/nav-configurer/Navigation.model';
 import useNavConfigurer from '../../../complect/nav-configurer/useNavConfigurer';
 import { iconPackOfCalendar03 } from '../../../complect/the-icon/icons/calendar-03';
 import { iconPackOfTeacher } from '../../../complect/the-icon/icons/teacher';
-import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../../models';
 import { useAuth, useIndexSchedules } from '../../index/molecules';
 import { RoutePhasePoint } from '../../router/Router.model';
 import { LeaderNavData, LeaderStoraged } from './Leader.model';

@@ -1,4 +1,4 @@
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { blockStyles } from '../../../../../col/com/block-styles/BlockStyles';
 import { StyleBlock } from '../../../../../col/com/block-styles/StyleBlock';
 import { INewExportableOrder } from '../../../../../col/com/order/Order.model';

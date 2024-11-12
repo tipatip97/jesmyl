@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { emptyFunc } from '../../../../../../back/complect/utils';
+import { CmComBindAttach } from 'shared/api';
+import { emptyFunc } from 'shared/utils';
 import DebouncedSearchInput from '../../../../../complect/DebouncedSearchInput';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
 import StrongEvaButton from '../../../../../complect/strong-control/StrongEvaButton';
@@ -10,7 +11,6 @@ import { IconCheckmarkSquare02StrokeRounded } from '../../../../../complect/the-
 import { IconMinusSignSquareStrokeRounded } from '../../../../../complect/the-icon/icons/minus-sign-square';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
 import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
-import { CmComBindAttach } from '../../../../../models';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';

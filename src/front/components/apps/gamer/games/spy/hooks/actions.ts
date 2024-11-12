@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { gamerExer } from '../../../gamerExer';
 import { useGamerPlayers } from '../../../complect/rooms/hooks/players';
 import { useGamerCurrentRoom } from '../../../complect/rooms/room/hooks/current-room';

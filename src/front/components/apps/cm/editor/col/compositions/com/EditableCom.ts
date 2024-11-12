@@ -1,6 +1,6 @@
-import { makeRegExp } from '../../../../../../../../back/complect/makeRegExp';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
-import { IExportableCom } from '../../../../../../../models';
+import { mylib } from 'front/utils';
+import { IExportableCom } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { chordDiezEquivalent, gSimpleBemoleChordReg } from '../../../../col/com/Com.complect';
 import { IExportableOrderMe } from '../../../../col/com/order/Order.model';
 import { EditableOrder } from '../complect/orders/EditableOrder';

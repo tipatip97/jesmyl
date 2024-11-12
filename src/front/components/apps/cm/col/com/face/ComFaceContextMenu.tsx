@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CmComWid } from '../../../../../../../back/apps/cm/Cm.enums';
+import { CmComWid } from '../../../../../../../shared/api/complect/apps/cm/complect/enums';
 import { useConfirm } from '../../../../../../complect/modal/confirm/useConfirm';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import { IconAddCircleHalfDotStrokeRounded } from '../../../../../../complect/the-icon/icons/add-circle-half-dot';

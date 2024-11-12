@@ -1,7 +1,6 @@
-import { ScheduleWidgetPhotoKey } from '../../models';
 import { JStorage } from '../JStorage';
 import { NavigationStorage } from '../nav-configurer/Navigation.model';
-import { IScheduleWidget, IScheduleWidgetUser } from './ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetUser, ScheduleWidgetPhotoKey } from 'shared/api';
 
 type Photos = Record<ScheduleWidgetPhotoKey, string>;
 

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ClientExecutionDict } from '../../../../../../complect/exer/Exer.model';
-import mylib, { MyLib } from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import SendButton from '../../../../../../complect/sends/send-button/SendButton';
 import { IconPlusSignStrokeRounded } from '../../../../../../complect/the-icon/icons/plus-sign';
 import { leaderExer } from '../../../leaderExer';

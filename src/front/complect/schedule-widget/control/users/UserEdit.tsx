@@ -1,13 +1,13 @@
-import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
 import {
-  ScheduleWidgetUserRoleRight,
+  IScheduleWidgetUser,
   packScheduleWidgetInviteLink,
   scheduleWidgetUserRights,
-} from '../../../../models';
+  ScheduleWidgetUserRoleRight,
+} from 'shared/api';
+import { makeAppActionLink } from '../../../../app/AppServiceActions';
+import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
-import { IScheduleWidgetUser } from '../../ScheduleWidget.model';
-import { makeAppActionLink } from '../../../../app/AppServiceActions';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import ScheduleWidgetRightControlList from '../RightControlList';
 

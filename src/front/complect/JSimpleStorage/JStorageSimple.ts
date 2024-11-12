@@ -1,4 +1,4 @@
-import Eventer, { EventerValueCallback, EventerValueListeners } from '../../../back/complect/Eventer';
+import { Eventer, EventerValueCallback, EventerValueListeners } from 'shared/utils';
 
 const keysSet = new Set();
 

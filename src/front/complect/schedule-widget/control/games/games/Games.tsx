@@ -1,4 +1,4 @@
-import { IScheduleWidgetTeamGame } from '../../../../../models';
+import { IScheduleWidgetTeamGame } from 'shared/api';
 import { contextCreator } from '../../../../contextCreator';
 import useIsExpand from '../../../../expand/useIsExpand';
 import { StrongComponentProps } from '../../../../strong-control/Strong.model';

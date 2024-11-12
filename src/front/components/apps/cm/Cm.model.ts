@@ -1,7 +1,7 @@
-import { CmComWid } from '../../../../back/apps/cm/Cm.enums';
-import { IExportableMeetings } from '../../../../back/apps/cm/Meetings.model';
+import { IExportableCols } from 'shared/api';
+import { CmComWid } from '../../../../shared/api/complect/apps/cm/complect/enums';
+import { IExportableMeetings } from '../../../../shared/api/complect/apps/cm/complect/Meetings';
 import { ClientExecutionDict } from '../../../complect/exer/Exer.model';
-import { IExportableCols } from '../../../models';
 import { EeStorageStoreType } from './base/ee-storage/EeStorage.model';
 import { IExportableSetts } from './col/com/block-styles/BlockStyles.model';
 import { ChordPack } from './col/com/chord-card/ChordCard.model';

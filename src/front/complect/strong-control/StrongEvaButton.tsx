@@ -1,4 +1,4 @@
-import { SokiServerEvent } from '../../models';
+import { SokiServerEvent } from 'shared/api';
 import EvaSendButton from '../sends/eva-send-button/EvaSendButton';
 import { EvaSendButtonProps } from '../sends/eva-send-button/EvaSendButton.model';
 import useToast from '../modal/useToast';

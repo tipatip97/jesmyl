@@ -1,5 +1,5 @@
 import { DOMAttributes, useEffect } from 'react';
-import mylib from '../my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useActualRef } from '../useActualRef';
 
 type Props = DOMAttributes<any> & {

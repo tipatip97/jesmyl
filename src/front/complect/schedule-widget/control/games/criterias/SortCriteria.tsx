@@ -1,16 +1,15 @@
+import { mylib } from 'front/utils';
 import { useMemo, useState } from 'react';
-import { IScheduleWidgetTeamCriteria } from '../../../../../models';
+import { IScheduleWidgetTeamCriteria, IScheduleWidgetUser } from 'shared/api';
 import TheButton from '../../../../Button';
 import DebouncedSearchInput from '../../../../DebouncedSearchInput';
 import { ExpandableContent } from '../../../../expand/ExpandableContent';
 import useFullContent from '../../../../fullscreen-content/useFullContent';
-import mylib from '../../../../my-lib/MyLib';
 import { StrongComponentProps } from '../../../../strong-control/Strong.model';
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
 import IconButton from '../../../../the-icon/IconButton';
 import { IconPencilEdit01StrokeRounded } from '../../../../the-icon/icons/pencil-edit-01';
 import { IconSortingAZ01StrokeRounded } from '../../../../the-icon/icons/sorting-a-z-01';
-import { IScheduleWidgetUser } from '../../../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
 import ScheduleWidgetRemovableUserFace from '../RemovableUserFace';
 import { checkIsUserPhotoable } from '../utils';

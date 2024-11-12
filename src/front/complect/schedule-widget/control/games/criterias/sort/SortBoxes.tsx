@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { IScheduleWidgetUser, IScheduleWidgetUserMi } from 'shared/api';
+import { emptyFunc } from 'shared/utils';
 import styled from 'styled-components';
-import { emptyFunc } from '../../../../../../../back/complect/utils';
-import { IScheduleWidgetUserMi } from '../../../../../../models';
 import IconButton from '../../../../../the-icon/IconButton';
 import { IconCheckmarkBadge01StrokeRounded } from '../../../../../the-icon/icons/checkmark-badge-01';
 import { IconMessageQuestionStrokeRounded } from '../../../../../the-icon/icons/message-question';
-import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../../../useScheduleWidget';
 import ScheduleWidgetTeamsCriteriaSorterScreenHistory from './History';
 import { ScheduleWidgetTeamsCriteriaSorterScreenSortBoxPhoto } from './SortBoxPhoto';

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { useAtom } from '../../../../../../../complect/atoms';
 import { IconArrowDown01StrokeRounded } from '../../../../../../../complect/the-icon/icons/arrow-down-01';
 import { useSecretChatContext } from '../../complect';

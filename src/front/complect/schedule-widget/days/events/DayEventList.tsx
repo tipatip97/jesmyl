@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { indexScheduleGetDayEventTimes, IScheduleWidgetDay } from 'shared/api';
 import styled from 'styled-components';
 import { IconArrowLeftDoubleStrokeRounded } from '../../../../complect/the-icon/icons/arrow-left-double';
 import { IconCropStrokeRounded } from '../../../../complect/the-icon/icons/crop';
@@ -10,11 +11,9 @@ import StrongDiv from '../../../strong-control/StrongDiv';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import { TheIconLoading } from '../../../the-icon/IconLoading';
 import useIsRedactArea from '../../../useIsRedactArea';
-import { IScheduleWidgetDay } from '../../ScheduleWidget.model';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import ScheduleWidgetEventList from '../../events/EventList';
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
-import { indexScheduleGetDayEventTimes } from '../../utils';
 import ScheduleWidgetDayEvent, { StyledScheduleWidgetDayEvent } from './DayEvent';
 import { ScheduleWidgetDayEventEventActions } from './EventActions';
 

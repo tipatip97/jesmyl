@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../complect/modal/useModal';
-import mylib from '../../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../../../complect/the-icon/IconCheckbox';
 import { IconCancel01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/cancel-01';

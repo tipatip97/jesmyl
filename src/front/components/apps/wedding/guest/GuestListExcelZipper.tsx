@@ -1,6 +1,6 @@
 import { ISettings } from 'json-as-xlsx';
 import { useState } from 'react';
-import { WedGuest, WedGuestWillBe } from '../../../../../back/apps/wed/model';
+import { WedGuest, WedGuestWillBe } from '../../../../../shared/api/complect/apps/wed/complect/model';
 import TheButton from '../../../../complect/Button';
 import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';

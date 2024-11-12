@@ -1,9 +1,9 @@
-import { makeRegExp } from '../../../../../back/complect/makeRegExp';
-import { isNIs } from '../../../../../back/complect/utils';
+import { makeRegExp } from 'shared/utils';
+import { isNIs } from 'shared/utils';
 import { IconLink02StrokeRounded } from '../../../../complect/the-icon/icons/link-02';
 import { IconViewStrokeRounded } from '../../../../complect/the-icon/icons/view';
 import { useIsRememberExpand } from '../../../expand/useIsRememberExpand';
-import mylib from '../../../my-lib/MyLib';
+import { mylib } from 'front/utils';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import { strongScopeKeyValueSeparator } from '../../../strong-control/useStrongControl';
 import TheIcon from '../../../the-icon/TheIcon';
@@ -15,7 +15,7 @@ import {
   ScheduleWidgetAttKey,
   ScheduleWidgetDayEventAttValue,
   ScheduleWidgetDayListItemTypeBox,
-} from '../../ScheduleWidget.model';
+} from 'shared/api';
 import ScheduleWidgetTopicTitle from '../../complect/TopicTitle';
 import {
   ScheduleWidgetScopePhase,

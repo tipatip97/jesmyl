@@ -1,6 +1,6 @@
-import { emptyFunc } from '../../../back/complect/utils';
+import { emptyFunc } from 'shared/utils';
 import { JStorage } from '../JStorage';
-import mylib from '../my-lib/MyLib';
+import { mylib } from 'front/utils';
 
 const storages: Record<string, JStorage<any>> = {};
 const registered = new Set<StringBySlash>();

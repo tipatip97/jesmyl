@@ -1,14 +1,14 @@
+import { mylib, MyLib } from 'front/utils';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LocalSokiAuth } from 'shared/api';
+import { itNNil } from 'shared/utils';
 import styled from 'styled-components';
-import { itNNil } from '../../../../../back/complect/utils';
 import TheButton from '../../../../complect/Button';
 import JesmylLogo from '../../../../complect/jesmyl-logo/JesmylLogo';
 import KeyboardInput from '../../../../complect/keyboard/KeyboardInput';
 import LoadIndicatedContent from '../../../../complect/load-indicated-content/LoadIndicatedContent';
-import mylib, { MyLib } from '../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
-import { LocalSokiAuth } from '../../../../models';
 import { soki } from '../../../../soki';
 import { AuthMode, ClientAuthorizationData, ClientRegisterData, ServerAuthorizeInSystem } from '../../Index.model';
 import { removePullRequisites, useSetAuth } from '../../molecules';

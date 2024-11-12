@@ -1,11 +1,19 @@
+import {
+  ActionBox,
+  ActionBoxOnFinalCallback,
+  ActionBoxValue,
+  IScheduleWidget,
+  IScheduleWidgetUser,
+  IScheduleWidgetUserCati,
+  makeTwiceKnownName,
+  NounPronsType,
+  scheduleWidgetRegTypeRights,
+  scheduleWidgetUserRights,
+  ScheduleWidgetUserRoleRight,
+  sokiWhenRejButTs,
+} from 'shared/api';
+import { smylib } from 'shared/utils';
 import { filer } from '../../../../complect/filer/Filer';
-import { ActionBox, ActionBoxOnFinalCallback, ActionBoxValue } from '../../../../models';
-import smylib from '../../../../shared/SMyLib';
-import { sokiWhenRejButTs } from '../../../../values';
-import { makeTwiceKnownName } from '../../complect/makeTwiceKnownName';
-import { IScheduleWidget, IScheduleWidgetUser, IScheduleWidgetUserCati } from '../../models/ScheduleWidget.model';
-import { NounPronsType } from '../../models/nounProns.model';
-import { scheduleWidgetRegTypeRights, scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from '../../rights';
 import { ScheduleWidgetOnCantReadExec } from '../filer-requirement';
 import { indexScheduleSetMessageInform } from '../tg-bot-inform/tg-inform';
 import { ScheduleWidgetActionBoxCleans } from './cleans';

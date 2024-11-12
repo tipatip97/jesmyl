@@ -1,4 +1,4 @@
-import { WedGuest } from '../../../../../back/apps/wed/model';
+import { WedGuest } from '../../../../../shared/api/complect/apps/wed/complect/model';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconMailRemove01StrokeRounded } from '../../../../complect/the-icon/icons/mail-remove-01';
 import { IconMailValidation01StrokeRounded } from '../../../../complect/the-icon/icons/mail-validation-01';

@@ -1,9 +1,8 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
+import { ServerStoreContent } from 'shared/api';
+import { Eventer, EventerValueListeners, itIt, retUnd } from 'shared/utils';
 import { IMoleculeFractionalStore } from '.';
-import Eventer, { EventerValueListeners } from '../../../back/complect/Eventer';
-import { ServerStoreContent } from '../../../back/complect/soki/parts/120-ServerStore';
-import { itIt, retUnd } from '../../../back/complect/utils';
-import mylib from '../my-lib/MyLib';
 
 export class FractionalServerStore<Key extends string | number, Value extends NonUndefined<any>>
   implements IMoleculeFractionalStore<Value>

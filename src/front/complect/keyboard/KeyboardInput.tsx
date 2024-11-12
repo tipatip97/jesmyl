@@ -1,5 +1,5 @@
 import React, { ReactNode, memo, useEffect, useMemo, useRef, useState } from 'react';
-import { makeRegExp } from '../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { IconArrowDown01StrokeRounded } from '../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowTurnBackwardStrokeRounded } from '../../complect/the-icon/icons/arrow-turn-backward';
 import { IconArrowUp03StrokeRounded } from '../../complect/the-icon/icons/arrow-up-03';

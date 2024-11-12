@@ -1,8 +1,8 @@
-import { AliasHelp } from '../AliasHelp';
+import { AliasCleans } from 'shared/api';
 import { useAliasRoomState } from './state';
 
 export const useAliasComputeScore = () => {
   const state = useAliasRoomState();
 
-  return state ? AliasHelp.computeGameScore(state.cor, state.inc, state.fix) : 0;
+  return state ? AliasCleans.computeGameScore(state.cor, state.inc, state.fix) : 0;
 };

@@ -7,12 +7,12 @@ import { IconEdit02StrokeRounded } from '../../../complect/the-icon/icons/edit-0
 import { IconSchoolReportCardStrokeRounded } from '../../../complect/the-icon/icons/school-report-card';
 import Dropdown from '../../dropdown/Dropdown';
 import useModal from '../../modal/useModal';
-import { MyLib } from '../../my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import StrongDiv from '../../strong-control/StrongDiv';
 import StrongDropdown from '../../strong-control/StrongDropdown';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import StrongClipboardPicker from '../../strong-control/field/clipboard/Picker';
-import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from '../ScheduleWidget.model';
+import { IScheduleWidget, ScheduleWidgetDayListItemTypeBox } from 'shared/api';
 import ScheduleWidgetBindAtts from '../atts/BindAtts';
 import { AttTranslatorType, attTranslatorTypes } from '../complect/attTranslatorType';
 import { takeStrongScopeMaker } from '../useScheduleWidget';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { IconLinkBackwardStrokeRounded } from '../../../../../the-icon/icons/link-backward';
 import { IconLinkForwardStrokeRounded } from '../../../../../the-icon/icons/link-forward';
-import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
+import { IScheduleWidgetUser } from 'shared/api';
 import { HistoryAdder } from './model';
 
 interface Props {

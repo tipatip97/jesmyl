@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { ChordVisibleVariant } from '../../../Cm.model';
 import { Com } from '../Com';
 import ComLine from '../line/ComLine';

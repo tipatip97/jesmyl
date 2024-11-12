@@ -1,12 +1,16 @@
-import { ExecutionDict } from '../../complect/executer/Executer.model';
+import {
+  IScheduleWidgetWid,
+  packScheduleWidgetInviteLink,
+  ScheduleStorage,
+  scheduleWidgetUserRights,
+  ScheduleWidgetUserRoleRight,
+} from 'shared/api';
+import { smylib } from 'shared/utils';
+import { SokiServiceCallback } from 'shared/api';
+import { ExecutionDict } from '../../../shared/api/complect/executer/model';
 import { filer } from '../../complect/filer/Filer';
 import sokiServer from '../../complect/soki/SokiServer';
-import { SokiServiceCallback } from '../../complect/soki/soki.model';
-import smylib from '../../shared/SMyLib';
 import { jesmylTgBot } from '../../sides/telegram-bot/bot';
-import { packScheduleWidgetInviteLink } from './complect';
-import { IScheduleWidgetWid, ScheduleStorage } from './models/ScheduleWidget.model';
-import { scheduleWidgetUserRights, ScheduleWidgetUserRoleRight } from './rights';
 
 export const indexService: SokiServiceCallback = (key, value, getCapsule, { client, eventData, requestId }) => {
   return new Promise(async (resolve, reject) => {

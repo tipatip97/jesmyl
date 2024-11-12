@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
+import { IExportableCols } from 'shared/api';
 import { useAtomValue } from '../../../../complect/atoms';
-import mylib from '../../../../complect/my-lib/MyLib';
-import { IExportableCols } from '../../../../models';
 import { cmMolecule } from '../molecules';
 import { Cols } from './Cols';
 

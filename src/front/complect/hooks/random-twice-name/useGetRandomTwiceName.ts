@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
+import { makeTwiceKnownName, NounPronsType } from 'shared/api';
 import { useIndexNounPronsWords } from '../../../components/index/molecules';
-import { NounPronsType, makeTwiceKnownName } from '../../../models';
-import mylib from '../../my-lib/MyLib';
 
 export const makeRandomTwiceName = (
   storage: NounPronsType | nil,

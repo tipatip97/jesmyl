@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { SecretChat } from '../../../../../../../../../back/apps/index/SecretChat.complect';
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { SecretChat } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { useAtomSet, useAtomValue } from '../../../../../../../../complect/atoms';
 import { isMobileDevice } from '../../../../../../../../complect/device-differences';
 import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../../complect/hookEffectPipe';
-import { MyLib } from '../../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useActualRef } from '../../../../../../../../complect/useActualRef';
 import { soki } from '../../../../../../../../soki';
 import { useDeviceId } from '../../../../../../complect/takeDeviceId';

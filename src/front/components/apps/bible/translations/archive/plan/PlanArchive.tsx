@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import {
   useBibleTranslationJoinAddressSetter,
   useGetterJoinedAddressMaxValues,

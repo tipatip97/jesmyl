@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { makeRegExp } from '../../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { IComLineProps } from '../order/Order.model';
 
 const insertDividedBits = (lettersText: string, chord: string | und) => {

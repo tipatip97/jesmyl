@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import { SokiSharedKey } from '../../../../../back/complect/soki/values';
-import { ScheduleWidgetPhotoKey } from '../../../../models';
 import { soki } from '../../../../soki';
 import Modal from '../../../modal/Modal/Modal';
-import mylib from '../../../my-lib/MyLib';
+import { mylib } from 'front/utils';
 import EvaSendButton from '../../../sends/eva-send-button/EvaSendButton';
 import IconButton from '../../../the-icon/IconButton';
 import { IconCloudDownloadStrokeRounded } from '../../../the-icon/icons/cloud-download';
@@ -13,6 +11,7 @@ import { getScheduleWidgetUserPhotoStorageKey, scheduleWidgetPhotosStorage } fro
 import { useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 import { ScheduleWidgetPhotoGalery } from './PhotoGalery';
 import { checkIsUserPhotoable } from './utils';
+import { ScheduleWidgetPhotoKey, SokiSharedKey } from 'shared/api';
 
 interface Props {
   prefix?: React.ReactNode;

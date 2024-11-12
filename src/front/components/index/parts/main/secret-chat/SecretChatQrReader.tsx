@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DeviceId } from '../../../../../../back/apps/index/Index.model';
+import { DeviceId } from 'shared/api';
 import { QrReader } from '../../../../../complect/qr-code/useQrReader';
 import { IconBubbleChatAddStrokeRounded } from '../../../../../complect/the-icon/icons/bubble-chat-add';
 import { secretChatingJoinerParse } from './complect';

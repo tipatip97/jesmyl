@@ -5,9 +5,7 @@ import {
   ScheduleWidgetAppAttBasic,
   ScheduleWidgetAttKey,
   ScheduleWidgetAttRef,
-} from '../../models';
-
-export * from '../../models';
+} from 'shared/api';
 
 export type ScheduleWidgetAttRefs = Record<ScheduleWidgetAttKey<AttKey>, ScheduleWidgetAttRef[]>;
 

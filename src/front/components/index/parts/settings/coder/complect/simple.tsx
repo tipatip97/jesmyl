@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { mylib } from 'front/utils';
 import { CoderResultNameStyled } from './styles';
 import CopyTextButton from '../../../../../../complect/CopyTextButton';
 

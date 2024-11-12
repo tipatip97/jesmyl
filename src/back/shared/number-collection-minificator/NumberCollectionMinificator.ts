@@ -1,5 +1,4 @@
-import { makeRegExp } from '../../complect/makeRegExp';
-import smylib from '../SMyLib';
+import { SMyLib, smylib, makeRegExp } from 'shared/utils';
 
 type InsideDigit = 1 | 2 | 3 | 4;
 

@@ -1,8 +1,7 @@
 import { useCallback, useState } from 'react';
-import { IScheduleWidgetTeamCriteria } from '../../../../../../models';
+import { IScheduleWidgetTeamCriteria, IScheduleWidgetUser } from 'shared/api';
 import { StrongComponentProps } from '../../../../../strong-control/Strong.model';
 import StrongButton from '../../../../../strong-control/StrongButton';
-import { IScheduleWidgetUser } from '../../../../ScheduleWidget.model';
 import { ScheduleWidgetTeamsCriteriaSorterScreenSortBoxes } from './SortBoxes';
 
 interface Props {

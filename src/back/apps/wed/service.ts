@@ -1,6 +1,6 @@
 import { filer } from '../../complect/filer/Filer';
-import smylib from '../../shared/SMyLib';
-import { WedGuest } from './model';
+import { SMyLib, smylib, makeRegExp } from 'shared/utils';
+import { WedGuest } from '../../../shared/api/complect/apps/wed/complect/model';
 
 export default function wedService(key: string, value: unknown) {
   return new Promise((resolve, reject) => {

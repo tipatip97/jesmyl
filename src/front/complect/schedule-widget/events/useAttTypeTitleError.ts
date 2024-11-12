@@ -1,5 +1,4 @@
-import ScheduleWidgetCleans from '../../../../back/apps/index/schedules/utils/Cleans';
-import { IScheduleWidget } from '../ScheduleWidget.model';
+import { IScheduleWidget, ScheduleWidgetCleans } from 'shared/api';
 
 export const useAttTypeTitleError = (value: string, schedule: IScheduleWidget, isRedact?: boolean, index?: number) => {
   if (!isRedact) return '';

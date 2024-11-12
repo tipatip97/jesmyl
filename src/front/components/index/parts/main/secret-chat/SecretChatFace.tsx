@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { SecretChat } from '../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { FaceItem } from '../../../../../complect/FaceItem';
-import { MyLib } from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { IconBubbleChatEditStrokeRounded } from '../../../../../complect/the-icon/icons/bubble-chat-edit';
 import { styledBadgeContainer } from './MarkUnreadSecretChatsPath';
 

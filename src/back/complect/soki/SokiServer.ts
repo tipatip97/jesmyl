@@ -4,11 +4,11 @@ import { scheduleWidgetMessageCatcher } from '../../apps/index/schedules/tg-bot-
 import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
 import { baseMessagesCatcher } from '../../sides/telegram-bot/message-catchers';
 import { ErrorCatcher } from '../ErrorCatcher';
-import { setServerPolyfills } from '../polyfills';
+import { setSharedPolyfills } from '../../../shared/utils/complect/polyfills';
 import { SokiServerOtherEvents } from './parts/130-OtherEvents';
-import { SokiClientEvent, SokiServerDoActionProps } from './soki.model';
+import { SokiClientEvent, SokiServerDoActionProps } from 'shared/api';
 
-setServerPolyfills();
+setSharedPolyfills();
 ErrorCatcher.logAllErrors();
 
 export class SokiServer extends SokiServerOtherEvents {

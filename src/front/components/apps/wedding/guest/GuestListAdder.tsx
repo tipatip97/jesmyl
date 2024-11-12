@@ -1,10 +1,14 @@
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { WedGuest, WedGuestConversation, WedGuestSex } from '../../../../../back/apps/wed/model';
+import {
+  WedGuest,
+  WedGuestConversation,
+  WedGuestSex,
+} from '../../../../../shared/api/complect/apps/wed/complect/model';
 import TheButton from '../../../../complect/Button';
 import Dropdown from '../../../../complect/dropdown/Dropdown';
 import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
-import mylib from '../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useGetExcelValueList } from '../../../../complect/useGetExcelValueList';
 import { wedExer } from '../exer';
 import { WedGuestFace } from './GuestFace';

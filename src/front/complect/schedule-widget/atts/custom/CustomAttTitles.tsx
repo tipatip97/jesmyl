@@ -1,7 +1,7 @@
-import { itIt } from '../../../../../back/complect/utils';
+import { itIt } from 'shared/utils';
 import { IconLeftToRightListBulletStrokeRounded } from '../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import IconButton from '../../../the-icon/IconButton';
-import { ScheduleWidgetAppAttCustomized } from '../../ScheduleWidget.model';
+import { ScheduleWidgetAppAttCustomized } from 'shared/api';
 
 export default function ScheduleWidgetCustomAttTitles({ tatt }: { tatt: ScheduleWidgetAppAttCustomized }) {
   return (

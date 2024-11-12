@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import TheButton from '../../../../../../complect/Button';
-import mylib from '../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { TeamGameImportable } from '../../../Leader.model';
 import { LeaderCleans } from '../../LeaderCleans';
 import LeaderCommentBlock from '../../comments/LeaderCommentBlock';

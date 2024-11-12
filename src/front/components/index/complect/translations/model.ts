@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { IScheduleWidget } from '../../../../complect/schedule-widget/ScheduleWidget.model';
-import { SokiClientSubData } from '../../../../models';
+import { IScheduleWidget } from 'shared/api';
+import { SokiClientSubData } from 'shared/api';
 
 export interface LiveTranslationAppProps {
   isCantTranslateLive: boolean;

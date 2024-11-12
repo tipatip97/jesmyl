@@ -6,8 +6,8 @@ import {
   MeetingsContextMap,
   MeetingsContext,
   IExportableMeetingsContextMap,
-} from '../../../../../../back/apps/cm/Meetings.model';
-import mylib, { MyLib } from '../../../../../complect/my-lib/MyLib';
+} from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
+import { MyLib, mylib } from 'front/utils';
 
 export class Meetings {
   event?: MeetingsEvent;

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { emptyFunc } from '../../../../../../back/complect/utils';
+import { CmComBindAttach } from 'shared/api';
+import { emptyFunc } from 'shared/utils';
 import StrongEvaButton from '../../../../../complect/strong-control/StrongEvaButton';
 import { IconArrowDataTransferVerticalStrokeRounded } from '../../../../../complect/the-icon/icons/arrow-data-transfer-vertical';
 import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 import { IconLinkBackwardStrokeRounded } from '../../../../../complect/the-icon/icons/link-backward';
-import { CmComBindAttach } from '../../../../../models';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';
 import { ComFaceList } from '../../col/com/face/list/ComFaceList';

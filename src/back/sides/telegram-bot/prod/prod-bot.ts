@@ -1,5 +1,5 @@
 import { SendMessageOptions } from 'node-telegram-bot-api';
-import environment from '../../../environments/environment';
+import { environment } from 'shared/api';
 import { jesmylTgBot } from '../bot';
 import { gul94iAdminTelegramBot, gul94iTelegramBot } from '../gul94i/gul94i-bot';
 import { jesmylChangesBot } from '../jesmylChangesBot';

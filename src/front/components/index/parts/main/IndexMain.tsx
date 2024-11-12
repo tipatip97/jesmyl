@@ -1,6 +1,6 @@
 import React, { Suspense, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
-import { itNNull } from '../../../../../back/complect/utils';
+import { itNNull } from 'shared/utils';
 import { appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { BottomPopup } from '../../../../complect/absolute-popup/bottom-popup/BottomPopup';

@@ -3,7 +3,7 @@ import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-po
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import mylib from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useAuth } from '../../../../index/molecules';
 import { GamerRoomMember } from '../../Gamer.model';

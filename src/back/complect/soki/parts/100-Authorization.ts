@@ -1,7 +1,7 @@
 import { tglogger } from '../../../sides/telegram-bot/log/log-bot';
 import { filer } from '../../filer/Filer';
 import { sokiAuther } from '../SokiAuther';
-import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
+import { SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
 import { SokiServerTelegram } from './90-Telegram';
 
 export class SokiServerAuthorization extends SokiServerTelegram implements SokiServerDoAction<'Authorization'> {

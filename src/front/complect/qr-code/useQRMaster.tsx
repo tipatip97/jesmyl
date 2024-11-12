@@ -1,12 +1,8 @@
-import { useCallback, useMemo, useState } from 'react';
-import { makeSharedLink } from '../../../back/complect/link-coder/linkMaker';
-import { makeRegExp } from '../../../back/complect/makeRegExp';
+import { useCallback, useMemo } from 'react';
+import { makeRegExp } from 'shared/utils';
 import { AppName, appNames } from '../../app/App.model';
-import useToast from '../modal/useToast';
 import { NavigationConfig } from '../nav-configurer/Navigation';
-import Portal from '../popups/[complect]/Portal';
 import { QRCodeReaderData, QRMasterConnectData, QRMasterControllerData } from './QRCodeMaster.model';
-import { QRCodeMasterApplication } from './QRCodeMasterApplication';
 
 export const qrCodePassphraseSign = ':J';
 export const qrCodeMasterContainerId = 'qr-code-master';
@@ -16,44 +12,44 @@ let controller: (data: QRMasterControllerData) => TimeOut = () => undefined;
 const hrefUrl = new URL(window.location.href);
 export const jesmylHostName = `${hrefUrl.protocol}//${hrefUrl.host}`;
 
-export const crossApplicationLinkCoder = makeSharedLink(jesmylHostName);
+// export const crossApplicationLinkCoder = makeSharedLink(jesmylHostName);
 
 export default function useQRMaster() {
-  const [qr, setQr] = useState<undefined>();
-  const [openError, setOpenError] = useState('');
-  const [toastNode, toast] = useToast();
+  // const [qr, setQr] = useState<undefined>();
+  // const [openError, setOpenError] = useState('');
+  // const [toastNode, toast] = useToast();
   const qrNode = useMemo(() => {
     return (
       <>
-        {toastNode}
+        {/* {toastNode}
         <Portal>
           <QRCodeMasterApplication
             controller={top => (controller = top)}
             openError={openError}
           />
-        </Portal>
+        </Portal> */}
       </>
     );
-  }, [openError, toastNode]);
+  }, []);
 
   const shareData = useCallback((appName: AppName, key: string, value: unknown, externalData?: boolean | string) => {
     try {
-      if (externalData) {
-        const link = crossApplicationLinkCoder.encode({
-          appName,
-          key,
-          value,
-        });
+      // if (externalData) {
+      //   const link = crossApplicationLinkCoder.encode({
+      //     appName,
+      //     key,
+      //     value,
+      //   });
 
-        controller({
-          ok: true,
-          type: 'showQRs',
-          value: [link],
-          linkValue: externalData === true ? null : externalData,
-          isExt: true,
-        });
-        return;
-      }
+      //   controller({
+      //     ok: true,
+      //     type: 'showQRs',
+      //     value: [link],
+      //     linkValue: externalData === true ? null : externalData,
+      //     isExt: true,
+      //   });
+      //   return;
+      // }
 
       const valueStr = JSON.stringify(value);
       const len = valueStr.length;
@@ -129,122 +125,119 @@ export default function useQRMaster() {
       }),
     );
     // qr?.stop();
-  }, [qr]);
+  }, []);
 
-  const read = useCallback(
-    <Data, Key extends keyof Data>(facingMode: 'user' | 'environment' = 'environment') => {
-      // controller({
-      //   ok: true,
-      //   type: 'openReader',
-      //   value: true,
+  const read = useCallback(<Data, Key extends keyof Data>(facingMode: 'user' | 'environment' = 'environment') => {
+    // controller({
+    //   ok: true,
+    //   type: 'openReader',
+    //   value: true,
+    // });
+    return new Promise<QRCodeReaderData<Data, Key>>(res => {
+      // const qr = new Html5Qrcode(qrCodeMasterContainerId);
+      // setQr(qr);
+      // const vmin = Math.min(window.innerHeight, window.innerWidth);
+      // const size = vmin * 0.5;
+      // let currAppName: AppName;
+      // let currKey: string;
+      // let currCount: number;
+      // let currConnectionNumber: number;
+      // let dataParts: string[] = [];
+      // let partsLoaded = 0;
+      // let partsToLoad = 0;
+      // qr.start(
+      //   { facingMode },
+      //   {
+      //     fps: 10,
+      //     qrbox: { width: size, height: size },
+      //   },
+      //   decodedText => {
+      //     try {
+      //       if (decodedText.startsWith(jesmylHostName)) {
+      //         const decoded = crossApplicationLinkCoder.decode(decodedText);
+      //         if (decoded) {
+      //           const { appName, value, key } = decoded;
+      //           res({
+      //             appName,
+      //             key,
+      //             value,
+      //             isExternalLink: true,
+      //           } as QRCodeReaderData<Data, Key>);
+      //         }
+      //         closeReader();
+      //         return;
+      //       }
+      //       const [passphrase, appName, key, connectionNumber, count, part, value]: QRMasterConnectData<unknown> =
+      //         JSON.parse(decodedText);
+      //       if (qrCodePassphraseSign !== passphrase) return;
+      //       if (partsToLoad === 0) {
+      //         partsToLoad = count;
+      //         controller({
+      //           ok: true,
+      //           type: 'partsToLoad',
+      //           value: count,
+      //         });
+      //       }
+      //       if (count === 1) {
+      //         res({
+      //           appName,
+      //           key,
+      //           value,
+      //         } as QRCodeReaderData<Data, Key>);
+      //         closeReader();
+      //       } else {
+      //         if (
+      //           currAppName !== appName ||
+      //           currKey !== key ||
+      //           currCount !== count ||
+      //           connectionNumber !== currConnectionNumber
+      //         ) {
+      //           currAppName = appName;
+      //           currConnectionNumber = connectionNumber;
+      //           currKey = key;
+      //           currCount = count;
+      //           dataParts = [];
+      //           partsToLoad = 0;
+      //         }
+      //         if (mylib.isStr(value)) {
+      //           if (dataParts[part] === undefined) {
+      //             partsLoaded++;
+      //             dataParts[part] = value;
+      //             controller({
+      //               ok: true,
+      //               type: 'partsLoaded',
+      //               value: partsLoaded,
+      //             });
+      //           }
+      //         }
+      //         if (dataParts.filter(data => data).length >= count) {
+      //           res({
+      //             appName,
+      //             key,
+      //             value: JSON.parse(dataParts.join('')),
+      //           } as QRCodeReaderData<Data, Key>);
+      //           closeReader();
+      //         }
+      //       }
+      //     } catch (error) {
+      //       console.error(error);
+      //       qr.stop();
+      //       if (!(error instanceof Error)) return;
+      //       setOpenError('' + (error.message || error));
+      //     }
+      //   },
+      //   error => {
+      //     console.error(error);
+      //     qr.stop();
+      //     setOpenError('' + error);
+      //   },
+      // ).catch(error => {
+      //   console.error(error);
+      //   qr.stop();
+      //   setOpenError('' + (error.message || error.stack || error));
       // });
-      return new Promise<QRCodeReaderData<Data, Key>>(res => {
-        // const qr = new Html5Qrcode(qrCodeMasterContainerId);
-        // setQr(qr);
-        // const vmin = Math.min(window.innerHeight, window.innerWidth);
-        // const size = vmin * 0.5;
-        // let currAppName: AppName;
-        // let currKey: string;
-        // let currCount: number;
-        // let currConnectionNumber: number;
-        // let dataParts: string[] = [];
-        // let partsLoaded = 0;
-        // let partsToLoad = 0;
-        // qr.start(
-        //   { facingMode },
-        //   {
-        //     fps: 10,
-        //     qrbox: { width: size, height: size },
-        //   },
-        //   decodedText => {
-        //     try {
-        //       if (decodedText.startsWith(jesmylHostName)) {
-        //         const decoded = crossApplicationLinkCoder.decode(decodedText);
-        //         if (decoded) {
-        //           const { appName, value, key } = decoded;
-        //           res({
-        //             appName,
-        //             key,
-        //             value,
-        //             isExternalLink: true,
-        //           } as QRCodeReaderData<Data, Key>);
-        //         }
-        //         closeReader();
-        //         return;
-        //       }
-        //       const [passphrase, appName, key, connectionNumber, count, part, value]: QRMasterConnectData<unknown> =
-        //         JSON.parse(decodedText);
-        //       if (qrCodePassphraseSign !== passphrase) return;
-        //       if (partsToLoad === 0) {
-        //         partsToLoad = count;
-        //         controller({
-        //           ok: true,
-        //           type: 'partsToLoad',
-        //           value: count,
-        //         });
-        //       }
-        //       if (count === 1) {
-        //         res({
-        //           appName,
-        //           key,
-        //           value,
-        //         } as QRCodeReaderData<Data, Key>);
-        //         closeReader();
-        //       } else {
-        //         if (
-        //           currAppName !== appName ||
-        //           currKey !== key ||
-        //           currCount !== count ||
-        //           connectionNumber !== currConnectionNumber
-        //         ) {
-        //           currAppName = appName;
-        //           currConnectionNumber = connectionNumber;
-        //           currKey = key;
-        //           currCount = count;
-        //           dataParts = [];
-        //           partsToLoad = 0;
-        //         }
-        //         if (mylib.isStr(value)) {
-        //           if (dataParts[part] === undefined) {
-        //             partsLoaded++;
-        //             dataParts[part] = value;
-        //             controller({
-        //               ok: true,
-        //               type: 'partsLoaded',
-        //               value: partsLoaded,
-        //             });
-        //           }
-        //         }
-        //         if (dataParts.filter(data => data).length >= count) {
-        //           res({
-        //             appName,
-        //             key,
-        //             value: JSON.parse(dataParts.join('')),
-        //           } as QRCodeReaderData<Data, Key>);
-        //           closeReader();
-        //         }
-        //       }
-        //     } catch (error) {
-        //       console.error(error);
-        //       qr.stop();
-        //       if (!(error instanceof Error)) return;
-        //       setOpenError('' + (error.message || error));
-        //     }
-        //   },
-        //   error => {
-        //     console.error(error);
-        //     qr.stop();
-        //     setOpenError('' + error);
-        //   },
-        // ).catch(error => {
-        //   console.error(error);
-        //   qr.stop();
-        //   setOpenError('' + (error.message || error.stack || error));
-        // });
-      });
-    },
-    [closeReader],
-  );
+    });
+  }, []);
 
   const readQR: <Ret>(callback?: (data: QRCodeReaderData<unknown, never>) => Ret | null) => Promise<Ret | null> =
     useCallback(
@@ -259,12 +252,12 @@ export default function useQRMaster() {
               }
             } else {
               reject();
-              toast('Ссылка на неизвестное приложение!', { mood: 'ko' });
+              // toast('Ссылка на неизвестное приложение!', { mood: 'ko' });
             }
           }),
         );
       },
-      [read, toast],
+      [read],
     );
 
   return useMemo(() => {

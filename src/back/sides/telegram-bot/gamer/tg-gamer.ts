@@ -1,5 +1,5 @@
 import TelegramBot from 'node-telegram-bot-api';
-import { GamerRoom, GamerRoomMemberStatus } from '../../../apps/gamer/gamer.model';
+import { GamerRoom, GamerRoomMemberStatus } from '../../../../shared/api/complect/apps/gamer/gamer.model';
 import { filer } from '../../../complect/filer/Filer';
 import { SokiAuther } from '../../../complect/soki/SokiAuther';
 import sokiServer from '../../../complect/soki/SokiServer';

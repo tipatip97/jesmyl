@@ -1,5 +1,5 @@
 import { Routes } from 'react-router-dom';
-import { MyLib } from '../../my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { makeAttStorage } from '../useScheduleWidget';
 import React from 'react';
 

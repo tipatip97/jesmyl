@@ -1,6 +1,5 @@
-import { SokiSharedKey } from '../../../back/complect/soki/values';
-import { SokiSharedDataValuesBox } from '../../models';
-import { MyLib } from '../my-lib/MyLib';
+import { MyLib } from 'front/utils';
+import { SokiSharedDataValuesBox, SokiSharedKey } from 'shared/api';
 import { scheduleWidgetPhotosStorage } from './storage';
 
 export const onGetSharedScheduleWidgetData: SokiSharedDataValuesBox = {

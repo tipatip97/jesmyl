@@ -7,7 +7,7 @@ import {
   WedGuestConversation,
   WedGuestSex,
   WedGuestWillBe,
-} from '../../../../../back/apps/wed/model';
+} from '../../../../../shared/api/complect/apps/wed/complect/model';
 import { useInitSoki } from '../../../../app/useInitSoki';
 import { useAtomValue } from '../../../../complect/atoms';
 import CopyTextButton from '../../../../complect/CopyTextButton';

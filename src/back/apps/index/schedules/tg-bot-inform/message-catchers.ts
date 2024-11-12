@@ -1,15 +1,12 @@
 /* eslint-disable no-throw-literal */
 import TelegramBot from 'node-telegram-bot-api';
-import { ExecutionDict } from '../../../../complect/executer/Executer.model';
+import { IScheduleWidget, IScheduleWidgetDay, ScheduleStorage, ScheduleWidgetCleans } from 'shared/api';
+import { itNNull, makeRegExp } from 'shared/utils';
+import { ExecutionDict } from '../../../../../shared/api/complect/executer/model';
 import { filer } from '../../../../complect/filer/Filer';
-import { makeRegExp } from '../../../../complect/makeRegExp';
 import { SokiAuther } from '../../../../complect/soki/SokiAuther';
 import sokiServer from '../../../../complect/soki/SokiServer';
 import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
-import { IScheduleWidget, IScheduleWidgetDay, ScheduleStorage } from '../../models/ScheduleWidget.model';
-import ScheduleWidgetCleans from '../utils/Cleans';
-import { ScheduleWidgetTgInformCleans } from './cleans';
-import { itNNull } from '../../../../complect/utils';
 
 export const makeScheduleWidgetJoinTitle = (
   schedule: IScheduleWidget,
@@ -26,13 +23,13 @@ export const makeScheduleWidgetJoinTitle = (
 
     const eventTimeMin = ScheduleWidgetCleans.takeEventTm(event, schedule.types[event.type]);
     const titleInner = schedule.types[event.type].title + (event.topic ? ': ' + event.topic : '');
-    const title = ScheduleWidgetTgInformCleans.putInTgTag('b', titleInner);
+    const title = ScheduleWidgetCleans.putInTgTag('b', titleInner);
 
     if (eventTimeMin === 0) check(eventi + 1);
 
     if (event.secret) {
       if (collectSecrets) collectSecrets.push(title);
-      else titles.unshift(ScheduleWidgetTgInformCleans.putInTgTag('tg-spoiler', title));
+      else titles.unshift(ScheduleWidgetCleans.putInTgTag('tg-spoiler', title));
 
       return;
     }
@@ -92,7 +89,7 @@ export const scheduleWidgetMessageCatcher = jesmylTgBot.catchMessages(async (mes
   if (!(await bot.getChatAdministrators(message.chat.id)).some(findAdmin, findAdminThis)) return;
 
   try {
-    const { head, text } = ScheduleWidgetTgInformCleans.text2PreparedText(message.text);
+    const { head, text } = ScheduleWidgetCleans.text2PreparedText(message.text);
 
     try {
       await bot.sendMessage(message.chat.id, `<code>${head}\n\n${text}</code>`, {
@@ -145,7 +142,7 @@ jesmylTgBot.catchCallbackQuery(async (query, bot, answer) => {
 
   if (!schedule.days[dayi]?.list.length) return ret('Для обновления расписания список событий должен быть пустым');
 
-  const { dayWup, list, newTatts } = ScheduleWidgetTgInformCleans.preparedText2DayList(query.message.text, schedule);
+  const { dayWup, list, newTatts } = ScheduleWidgetCleans.preparedText2DayList(query.message.text, schedule);
 
   const addAttTypesExecs = [
     {

@@ -1,5 +1,13 @@
 import { ReactNode, useState } from 'react';
-import { itIt, itNIt } from '../../../../../back/complect/utils';
+import {
+  CustomAttUseRights,
+  customAttUseRights,
+  customAttUseRightsTitles,
+  ScheduleWidgetAppAttCustomized,
+  scheduleWidgetUserRights,
+} from 'shared/api';
+import { ScheduleWidgetRightsCtrl } from 'shared/api/complect/schedule-widget/complect/rights-constructor';
+import { itIt, itNIt } from 'shared/utils';
 import { IconBookmark01StrokeRounded } from '../../../../complect/the-icon/icons/bookmark-01';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-square-02';
 import { IconEdit01StrokeRounded } from '../../../../complect/the-icon/icons/edit-01';
@@ -8,13 +16,6 @@ import { IconFile01StrokeRounded } from '../../../../complect/the-icon/icons/fil
 import { IconPencilEdit01StrokeRounded } from '../../../../complect/the-icon/icons/pencil-edit-01';
 import { IconPlusSignStrokeRounded } from '../../../../complect/the-icon/icons/plus-sign';
 import { IconSquareStrokeRounded } from '../../../../complect/the-icon/icons/square';
-import {
-  CustomAttUseRights,
-  ScheduleWidgetRightsCtrl,
-  customAttUseRights,
-  customAttUseRightsTitles,
-  scheduleWidgetUserRights,
-} from '../../../../models';
 import Modal from '../../../modal/Modal/Modal';
 import { ModalBody } from '../../../modal/Modal/ModalBody';
 import { ModalHeader } from '../../../modal/Modal/ModalHeader';
@@ -25,7 +26,6 @@ import StrongClipboardPicker from '../../../strong-control/field/clipboard/Picke
 import IconButton from '../../../the-icon/IconButton';
 import { theIconFromPack } from '../../../the-icon/TheIcon';
 import { TheIconType } from '../../../the-icon/model';
-import { ScheduleWidgetAppAttCustomized } from '../../ScheduleWidget.model';
 import ScheduleWidgetIconChange from '../../complect/IconChange';
 import ScheduleWidgetRightControlList from '../../control/RightControlList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';

@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { WedGuest, WedGuestConversation, WedGuestSex } from '../../../../../back/apps/wed/model';
+import {
+  WedGuest,
+  WedGuestConversation,
+  WedGuestSex,
+} from '../../../../../shared/api/complect/apps/wed/complect/model';
 import CopyTextButton from '../../../../complect/CopyTextButton';
 import Dropdown from '../../../../complect/dropdown/Dropdown';
 import Modal from '../../../../complect/modal/Modal/Modal';
 import { ModalBody } from '../../../../complect/modal/Modal/ModalBody';
 import { ModalFooter } from '../../../../complect/modal/Modal/ModalFooter';
 import { ModalHeader } from '../../../../complect/modal/Modal/ModalHeader';
-import mylib from '../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import EvaSendButton from '../../../../complect/sends/eva-send-button/EvaSendButton';
 import { IconCheckmarkCircle01StrokeRounded } from '../../../../complect/the-icon/icons/checkmark-circle-01';
 import { IconUserRemove02StrokeRounded } from '../../../../complect/the-icon/icons/user-remove-02';

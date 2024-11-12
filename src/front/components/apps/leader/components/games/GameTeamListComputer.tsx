@@ -1,10 +1,10 @@
+import { AddRestMode, mylib } from 'front/utils';
 import { useState } from 'react';
 import TheButton from '../../../../../complect/Button';
 import SourceBased from '../../../../../complect/SourceBased';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { useGetRandomTwiceName } from '../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import mylib, { AddRestMode } from '../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';

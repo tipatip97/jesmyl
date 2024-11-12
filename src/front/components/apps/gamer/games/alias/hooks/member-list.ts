@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { GamerAliasRoomState } from '../Alias.model';
 import { useAliasRoomState } from './state';
+import { GamerAliasRoomState } from 'shared/api';
 
 const initialMemberList: string[] = [];
 

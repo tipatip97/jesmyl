@@ -1,5 +1,5 @@
+import { ExecutionDict, ExecutionMethod, ShortRealRule, SokiServerEvent } from 'shared/api';
 import { CorrectsBox } from '../../components/apps/cm/editor/corrects-box/CorrectsBox';
-import { ExecutionDict, ExecutionMethod, ShortRealRule, SokiServerEvent } from '../../models';
 import { Exec } from './Exec';
 
 export interface ExecRule extends ShortRealRule {

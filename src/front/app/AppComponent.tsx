@@ -1,3 +1,4 @@
+import { MyLib } from 'front/utils';
 import { SetStateAction, useEffect, useMemo, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { contextCreator } from '../complect/contextCreator';
@@ -7,12 +8,11 @@ import { useGlobalFullscreenChanger } from '../complect/global-listeners/useGlob
 import { hookEffectPipe, setTimeoutPipe } from '../complect/hookEffectPipe';
 import JesmylLogo from '../complect/jesmyl-logo/JesmylLogo';
 import { KEYBOARD_FLASH } from '../complect/keyboard/KeyboardInput';
-import { MyLib } from '../complect/my-lib/MyLib';
 import { useCurrentApp } from '../components/index/molecules';
 import { IndexAdvertisingReminder } from '../components/index/parts/advertising/Reminder';
+import { useSecretChatMessagesListen } from '../components/index/parts/main/secret-chat/useSecretChatMessagesListen';
 import { useIsReadyRouter } from '../components/router/atoms';
 import './App.scss';
-import { useSecretChatMessagesListen } from '../components/index/parts/main/secret-chat/useSecretChatMessagesListen';
 
 const emptyArr: [] = [];
 const emptyDict = {};

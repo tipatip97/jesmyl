@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { BottomPopupItem } from '../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useAtom, useAtomSet } from '../../../../../../../complect/atoms';
 import CopyTextButton from '../../../../../../../complect/CopyTextButton';
-import { MyLib } from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { IconCopy01StrokeRounded } from '../../../../../../../complect/the-icon/icons/copy-01';
 import {
   IconDelete01BulkRounded,

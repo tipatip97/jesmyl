@@ -1,12 +1,12 @@
+import { MyLib } from 'front/utils';
 import { useEffect, useState } from 'react';
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { CmMp3Rule } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
-import { MyLib } from '../../../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../../../complect/the-icon/IconButton';
 import { IconGoogleStrokeRounded } from '../../../../../../../../complect/the-icon/icons/google';
 import { IconHelpCircleStrokeRounded } from '../../../../../../../../complect/the-icon/icons/help-circle';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../../../../complect/the-icon/icons/plus-sign-circle';
-import { CmMp3Rule } from '../../../../../../../../models';
 import ComPlayer from '../../../../../col/com/player/ComPlayer';
 import { EditableCom } from '../../com/EditableCom';
 import { useEditableCcom } from '../../useEditableCcom';

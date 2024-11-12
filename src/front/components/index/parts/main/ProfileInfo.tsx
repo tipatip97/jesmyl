@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { LocalSokiAuth } from 'shared/api';
 import styled from 'styled-components';
-import { LocalSokiAuth } from '../../../../models';
 
 export const IndexProfileInfo = ({ auth, onClick }: { auth: LocalSokiAuth; onClick: (event: unknown) => void }) => {
   const [isShowAva, setIsShowAva] = useState(true);

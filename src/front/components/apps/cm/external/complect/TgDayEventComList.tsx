@@ -1,15 +1,21 @@
+import { mylib } from 'front/utils';
 import { useMemo, useState } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
+import {
+  CmComBindAttach,
+  CmComWid,
+  CmMeetingEventWid,
+  IScheduleWidgetDayEventMi,
+  IScheduleWidgetWid,
+} from 'shared/api';
+import { itIt } from 'shared/utils';
 import styled from 'styled-components';
-import { makeCmScheduleWidgetComListUrl } from '../../../../../../back/apps/cm/attInformCm';
-import { CmComWid, CmMeetingEventWid } from '../../../../../../back/apps/cm/Cm.enums';
-import { itIt } from '../../../../../../back/complect/utils';
+import { makeCmScheduleWidgetComListUrl } from '../../../../../../shared/api/complect/apps/cm/complect/attInformCm';
 import { useInitSoki } from '../../../../../app/useInitSoki';
 import { BottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopup';
 import { BottomPopupItem } from '../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import CopyTextButton from '../../../../../complect/CopyTextButton';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
-import mylib from '../../../../../complect/my-lib/MyLib';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useGetScheduleOrPull } from '../../../../../complect/schedule-widget/general/useSetScheduleOrPull';
 import {
@@ -19,7 +25,6 @@ import {
 } from '../../../../../complect/schedule-widget/useScheduleWidget';
 import { IconCopy01StrokeRounded } from '../../../../../complect/the-icon/icons/copy-01';
 import { IconNoteEditStrokeRounded } from '../../../../../complect/the-icon/icons/note-edit';
-import { CmComBindAttach, IScheduleWidgetDayEventMi, IScheduleWidgetWid } from '../../../../../models';
 import { CmTranslationComListContext, CmTranslationComListContextValue } from '../../base/translations/context';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { Cat } from '../../col/cat/Cat';

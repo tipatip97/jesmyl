@@ -1,8 +1,8 @@
-import { ExecutionArgs } from '../../../complect/executer/Executer.model';
+import { ExecutionArgs } from '../../../../shared/api/complect/executer/model';
 import { filer } from '../../../complect/filer/Filer';
-import { ActionBox, ActionBoxOnFinalCallback } from '../../../models';
+import { ActionBox, ActionBoxOnFinalCallback } from 'shared/api';
 import { editRoomTelegramMessage } from '../../../sides/telegram-bot/gamer/tg-gamer';
-import { GamerRoom, GamerRoomMember } from '../gamer.model';
+import { GamerRoom, GamerRoomMember } from '../../../../shared/api/complect/apps/gamer/gamer.model';
 
 const getRooms = () => filer.contents.gamer.rooms?.data as GamerRoom[];
 

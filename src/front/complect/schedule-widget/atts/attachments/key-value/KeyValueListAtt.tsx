@@ -1,35 +1,32 @@
+import { mylib } from 'front/utils';
 import Markdown from 'markdown-to-jsx';
 import { ReactNode } from 'react';
+import {
+  CustomAttUseRights,
+  customAttUseRights,
+  CustomAttUseTaleId,
+  IScheduleWidgetListUnit,
+  IScheduleWidgetRole,
+  IScheduleWidgetTeamGame,
+  IScheduleWidgetUser,
+  ScheduleWidgetAppAttCustomizableValue,
+  ScheduleWidgetAppAttCustomizableValueItem,
+  ScheduleWidgetAppAttCustomized,
+  ScheduleWidgetCleans,
+  ScheduleWidgetRightsCtrl,
+} from 'shared/api';
+import { itIt, makeRegExp } from 'shared/utils';
 import styled, { css } from 'styled-components';
-import ScheduleWidgetCleans from '../../../../../../back/apps/index/schedules/utils/Cleans';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
-import { itIt } from '../../../../../../back/complect/utils';
 import { IconCheckmarkSquare02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-square-02';
 import { IconDelete02StrokeRounded } from '../../../../../complect/the-icon/icons/delete-02';
 import { IconLeftToRightListDashStrokeRounded } from '../../../../../complect/the-icon/icons/left-to-right-list-dash';
 import { IconPlusSignStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign';
 import { IconSquareStrokeRounded } from '../../../../../complect/the-icon/icons/square';
 import { IconTextStrokeRounded } from '../../../../../complect/the-icon/icons/text';
-import {
-  CustomAttUseRights,
-  CustomAttUseTaleId,
-  IScheduleWidgetTeamGame,
-  ScheduleWidgetAppAttCustomizableValueItem,
-  ScheduleWidgetRightsCtrl,
-  customAttUseRights,
-} from '../../../../../models';
 import { MoveListItemArrowIcon } from '../../../../MoveListItemArrowIcon';
-import mylib from '../../../../my-lib/MyLib';
 import StrongEvaButton from '../../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../../strong-control/field/StrongEditableField';
 import { IconBasketball01StrokeRounded } from '../../../../the-icon/icons/basketball-01';
-import {
-  IScheduleWidgetListUnit,
-  IScheduleWidgetRole,
-  IScheduleWidgetUser,
-  ScheduleWidgetAppAttCustomizableValue,
-  ScheduleWidgetAppAttCustomized,
-} from '../../../ScheduleWidget.model';
 import ScheduleWidgetRoleFace from '../../../control/roles/RoleFace';
 import ScheduleWidgetListUnitFace from '../../../lists/UnitFace';
 import {

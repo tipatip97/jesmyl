@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
 import Dropdown from '../../../../../../../complect/dropdown/Dropdown';
 import useFullContent from '../../../../../../../complect/fullscreen-content/useFullContent';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../../complect/the-icon/IconCheckbox';
 import { IconBook02StrokeRounded } from '../../../../../../../complect/the-icon/icons/book-02';

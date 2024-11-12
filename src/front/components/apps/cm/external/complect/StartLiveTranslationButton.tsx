@@ -1,9 +1,8 @@
+import { CmComBindAttach, IScheduleWidget } from 'shared/api';
 import { useSwitchCurrentTranslationTextApp } from '../../../+complect/translations/hooks/current-app';
-import { IScheduleWidget } from '../../../../../complect/schedule-widget/ScheduleWidget.model';
 import { useScheduleWidgetRightsContext } from '../../../../../complect/schedule-widget/useScheduleWidget';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconComputerStrokeRounded } from '../../../../../complect/the-icon/icons/computer';
-import { CmComBindAttach } from '../../../../../models';
 
 interface Props {
   value: CmComBindAttach;

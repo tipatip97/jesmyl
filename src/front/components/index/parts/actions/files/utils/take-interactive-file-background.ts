@@ -1,5 +1,5 @@
+import { MyFileType } from 'shared/api';
 import { BackgroundNameType } from '../complect/BackgroundSelector';
-import { MyFileType } from '../model';
 import { filesStorage } from './storage';
 
 export const takeInteractiveFileBackground = async (

@@ -1,6 +1,8 @@
+import { mylib } from 'front/utils';
 import { useEffect, useMemo, useState } from 'react';
+import { IScheduleWidget } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import styled from 'styled-components';
-import environment from '../../../back/environments/environment';
 import { IconArrowRight01StrokeRounded } from '../../complect/the-icon/icons/arrow-right-01';
 import { IconBookmark03StrokeRounded } from '../../complect/the-icon/icons/bookmark-03';
 import { IconCalendar03StrokeRounded } from '../../complect/the-icon/icons/calendar-03';
@@ -11,13 +13,11 @@ import { IconSchoolReportCardStrokeRounded } from '../../complect/the-icon/icons
 import { IconShapesStrokeRounded } from '../../complect/the-icon/icons/shapes';
 import { useAuth } from '../../components/index/molecules';
 import ShareEvaButton from '../ShareEvaButton';
-import mylib from '../my-lib/MyLib';
 import StrongButton from '../strong-control/StrongButton';
 import StrongControlDateTimeExtracter from '../strong-control/StrongDateTimeExtracter';
 import StrongEvaButton from '../strong-control/StrongEvaButton';
 import StrongEditableField from '../strong-control/field/StrongEditableField';
 import useIsRedactArea from '../useIsRedactArea';
-import { IScheduleWidget } from './ScheduleWidget.model';
 import ScheduleWidgetCustomAttachments from './atts/custom/CustomAttachments';
 import ScheduleWidgetStartTimeText from './complect/StartTimeText';
 import ScheduleWidgetTopicTitle from './complect/TopicTitle';
@@ -35,7 +35,7 @@ import {
   takeScheduleStrongScopeMaker,
   useScheduleWidgetRights,
 } from './useScheduleWidget';
-import { makeRegExp } from '../../../back/complect/makeRegExp';
+import { environment } from 'shared/api/complect/environments/environment';
 
 const msInMin = mylib.howMs.inMin;
 

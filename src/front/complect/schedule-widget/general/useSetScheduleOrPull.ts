@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
+import { IScheduleWidget, IScheduleWidgetWid } from 'shared/api';
 import { useIndexSchedules } from '../../../components/index/molecules';
-import { IScheduleWidgetWid } from '../../../models';
-import mylib from '../../my-lib/MyLib';
+import { mylib } from 'front/utils';
 import serviceMaster from '../../service/serviceMaster';
-import { IScheduleWidget } from '../ScheduleWidget.model';
 
 export const useGetScheduleOrPull = (scheduleInstance: string | IScheduleWidgetWid | NaN) => {
   const [schedule, setSchedule] = useState<IScheduleWidget | null>(null);

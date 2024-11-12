@@ -1,7 +1,7 @@
-import { SMyLib } from '../../../shared/SMyLib';
+import { SMyLib } from 'shared/utils';
 import { filer } from '../../filer/Filer';
-import { FilerAppConfig, FilerContentData, SimpleKeyValue } from '../../filer/Filer.model';
-import { itIt, retNull } from '../../utils';
+import { FilerAppConfig, FilerContentData } from '../../filer/Filer.model';
+import { itIt, retNull } from 'shared/utils';
 import {
   LocalSokiAuth,
   PullEventValue,
@@ -9,8 +9,9 @@ import {
   SokiClientUpdateCortage,
   SokiServerDoAction,
   SokiServerDoActionProps,
-} from '../soki.model';
+} from 'shared/api';
 import { SokiServerLiveTransfers } from './30-LiveTransfers';
+import { SimpleKeyValue } from 'shared/api';
 
 export class SokiServerFiles extends SokiServerLiveTransfers implements SokiServerDoAction<'PullData'> {
   constructor() {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useInitSoki } from '../../../app/useInitSoki';
 import { removePullRequisites, useAuthState } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
-import mylib from '../../my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { TelegramWebAppApiOr } from '../../tg-app/getTgApi';
 import { TelegramWebApp, TelegramWebAppInitData } from '../../tg-app/model';
 import { TheIconLoading } from '../../the-icon/IconLoading';

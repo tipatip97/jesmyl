@@ -1,7 +1,7 @@
 import { useAuth } from '../../../../components/index/molecules';
 import TheIcon from '../../../the-icon/TheIcon';
 import { IconGithubStrokeRounded } from '../../../../complect/the-icon/icons/github';
-import { IScheduleWidget, IScheduleWidgetRole } from '../../ScheduleWidget.model';
+import { IScheduleWidget, IScheduleWidgetRole } from 'shared/api';
 import { extractScheduleWidgetRoleUser } from '../../useScheduleWidget';
 
 export default function ScheduleWidgetRoleFace({

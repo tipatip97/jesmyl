@@ -1,5 +1,5 @@
-import { DeviceId } from '../../../../../../back/apps/index/Index.model';
-import { SecretChat } from '../../../../../../back/apps/index/SecretChat.complect';
+import { DeviceId } from 'shared/api';
+import { SecretChat } from 'shared/api';
 import { atom } from '../../../../../complect/atoms';
 import { contextCreator } from '../../../../../complect/contextCreator';
 import { iconPackOfWechat, IconWechatStrokeRounded } from '../../../../../complect/the-icon/icons/wechat';

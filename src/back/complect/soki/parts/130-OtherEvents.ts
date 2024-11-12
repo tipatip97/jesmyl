@@ -1,7 +1,7 @@
-import { DeviceId } from '../../../apps/index/Index.model';
-import { SecretChat } from '../../../apps/index/SecretChat.complect';
-import Eventer from '../../Eventer';
-import { SokiServerDoAction, SokiServerDoActionProps } from '../soki.model';
+import { DeviceId } from 'shared/api';
+import { SecretChat } from 'shared/api';
+import { Eventer } from 'shared/utils';
+import { SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
 import { SokiServerServerStore } from './120-ServerStore';
 
 export class SokiServerOtherEvents extends SokiServerServerStore implements SokiServerDoAction<'OtherEvents'> {

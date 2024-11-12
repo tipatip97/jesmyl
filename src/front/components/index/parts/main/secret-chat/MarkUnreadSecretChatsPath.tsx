@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAtomValue } from '../../../../../complect/atoms';
-import { MyLib } from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useSecretChatMessagesTssContext } from './complect';
 import { secretChatMessagesHashMapAtom, secretChatsLastReadTsAtom } from './molecule';
 

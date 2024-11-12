@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { CmComWid } from '../../../../../../../../back/apps/cm/Cm.enums';
-import { MyLib } from '../../../../../../../complect/my-lib/MyLib';
+import { CmComWid } from '../../../../../../../../shared/api/complect/apps/cm/complect/enums';
+import { MyLib, mylib } from 'front/utils';
 import { makePseudoElementCorrectContentText } from '../../../../../../../complect/utils';
 import { currentComwIdPrefix } from './_ComList';
 

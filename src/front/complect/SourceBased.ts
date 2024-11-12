@@ -1,4 +1,4 @@
-import mylib from './my-lib/MyLib';
+import { mylib } from 'front/utils';
 
 export default class SourceBased<T> {
   top: T;

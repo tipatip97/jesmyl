@@ -1,4 +1,4 @@
-import { IExportableOrder } from '../../../../../../../../models';
+import { IExportableOrder } from 'shared/api';
 import { cmExer } from '../../../../../CmExer';
 import { IExportableOrderMe, INewExportableOrder } from '../../../../../col/com/order/Order.model';
 import { EditableOrder } from '../../complect/orders/EditableOrder';

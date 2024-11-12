@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { SecretChat } from '../../../../../../../../back/apps/index/SecretChat.complect';
+import { SecretChat } from 'shared/api';
 import { StyledMessage, StyledMessagePlace, StyledMessageText } from './Message.styled';
 import { SecretChatReplyMessageHead } from './ReplyMessageHead';
 

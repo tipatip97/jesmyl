@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import mylib from '../../../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { useCurrentOfflineRoomUpdater } from '../../../../complect/rooms/offline-room/hooks/actions';
 import { useGamerOfflineRoomsPlayers } from '../../../../complect/rooms/offline-room/hooks/players';
 import { SpyRoomState } from '../../Spy.model';

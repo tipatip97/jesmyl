@@ -1,9 +1,4 @@
-import Eventer, {
-  EventerCallback,
-  EventerListeners,
-  EventerValueCallback,
-  EventerValueListeners,
-} from '../../../back/complect/Eventer';
+import { Eventer, EventerCallback, EventerListeners, EventerValueCallback, EventerValueListeners } from 'shared/utils';
 
 type ThrowEventKeyDownKey = 'Escape' | 'Enter';
 

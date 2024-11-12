@@ -1,7 +1,7 @@
-import { setServerPolyfills } from '../../back/complect/polyfills';
+import { setSharedPolyfills } from 'shared/utils';
 
 export const setPolyfills = () => {
-  setServerPolyfills();
+  setSharedPolyfills();
 
   const clearTimeouts = (param: TimeOut) => clearTimeout(param);
   const remListens = (param: any[]) => {

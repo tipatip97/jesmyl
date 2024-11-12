@@ -1,10 +1,10 @@
+import { mylib } from 'front/utils';
 import { useCallback, useMemo } from 'react';
-import mylib from '../../../../../../complect/my-lib/MyLib';
-import { GamerRoom, GamerRoomMember, GamerRoomMemberLogin } from '../../../Gamer.model';
-import { gamerExer } from '../../../gamerExer';
+import { AliasGameTeam, GamerAliasRoomState, StartAliasRoundProps } from 'shared/api';
 import { useGamerPlayers } from '../../../complect/rooms/hooks/players';
 import { useGamerCurrentRoom } from '../../../complect/rooms/room/hooks/current-room';
-import { AliasGameTeam, GamerAliasRoomState, StartAliasRoundProps } from '../Alias.model';
+import { GamerRoom, GamerRoomMember, GamerRoomMemberLogin } from '../../../Gamer.model';
+import { gamerExer } from '../../../gamerExer';
 import { useAliasCurrentTeamNaked } from './current-team';
 import { useAliasRoomState } from './state';
 

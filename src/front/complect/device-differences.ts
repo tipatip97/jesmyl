@@ -1,4 +1,4 @@
-import { makeRegExp } from '../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 
 export const isAndroid = navigator.userAgent && /android/i.test(navigator.userAgent);
 export const isIPhone =

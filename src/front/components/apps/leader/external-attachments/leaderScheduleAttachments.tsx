@@ -1,5 +1,5 @@
-import { ScheduleWidgetAppAtts } from '../../../../complect/schedule-widget/ScheduleWidget.model';
-import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from '../../../../models';
+import { ScheduleWidgetAppAtts } from 'front/complect/schedule-widget/ScheduleWidget.model';
+import { ScheduleWidgetUserRoleRight, scheduleWidgetUserRights } from 'shared/api';
 import LeaderTeamGameAttach from './LeaderTeamGameAttach';
 
 export interface LeaderResultBoardAttachValues {

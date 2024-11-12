@@ -1,7 +1,7 @@
 import { HTMLAttributes, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { WedGuest, WedGuestWillBe } from '../../../../../back/apps/wed/model';
+import { WedGuest, WedGuestWillBe } from '../../../../../shared/api/complect/apps/wed/complect/model';
 import useToast from '../../../../complect/modal/useToast';
 import serviceMaster from '../../../../complect/service/serviceMaster';
 import { WedCleans } from '../Cleans';

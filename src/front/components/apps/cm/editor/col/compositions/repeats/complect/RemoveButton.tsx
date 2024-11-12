@@ -1,12 +1,12 @@
-import { makeRegExp } from '../../../../../../../../../back/complect/makeRegExp';
+import { mylib } from 'front/utils';
+import { OrderRepeats } from 'shared/api';
+import { makeRegExp } from 'shared/utils';
 import { useConfirm } from '../../../../../../../../complect/modal/confirm/useConfirm';
 import useModal from '../../../../../../../../complect/modal/useModal';
-import mylib from '../../../../../../../../complect/my-lib/MyLib';
 import IconButton from '../../../../../../../../complect/the-icon/IconButton';
 import { IconDelete01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/delete-01';
 import { IconRefreshStrokeRounded } from '../../../../../../../../complect/the-icon/icons/refresh';
 import { IconUnavailableStrokeRounded } from '../../../../../../../../complect/the-icon/icons/unavailable';
-import { OrderRepeats } from '../../../../../../../../models';
 import { Order } from '../../../../../col/com/order/Order';
 import { EditableOrder } from '../../complect/orders/EditableOrder';
 

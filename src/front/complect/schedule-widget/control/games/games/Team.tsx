@@ -1,4 +1,4 @@
-import { IScheduleWidgetTeam } from '../../../../../models';
+import { IScheduleWidgetTeam } from 'shared/api';
 import { ExpandableContent } from '../../../../expand/ExpandableContent';
 import { useScheduleWidgetRightsContext } from '../../../useScheduleWidget';
 

@@ -1,5 +1,5 @@
-import { SokiStatistic } from '../../../../models';
-import { MyLib } from '../../../../complect/my-lib/MyLib';
+import { MyLib } from 'front/utils';
+import { SokiStatistic } from 'shared/api';
 import { Visitor } from './Visitor';
 
 export const Visits = ({ statistic }: { statistic: SokiStatistic }) => {

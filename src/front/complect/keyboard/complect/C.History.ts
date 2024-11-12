@@ -1,4 +1,4 @@
-import mylib from '../../my-lib/MyLib';
+import { mylib } from 'front/utils';
 import { KeyboardMemoryPoint, KeyboardMemoryPointAction } from '../Keyboard.model';
 import { KeyboardStorageSelect } from './B.Select';
 

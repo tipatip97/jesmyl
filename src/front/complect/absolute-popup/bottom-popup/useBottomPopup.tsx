@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useState } from 'react';
-import mylib from '../../my-lib/MyLib';
+import { mylib } from 'front/utils';
 import { BottomPopup } from './BottomPopup';
 import { bottomPopupContentPreparer } from './item-preparer';
 import { BottomPopupContenter } from './model';

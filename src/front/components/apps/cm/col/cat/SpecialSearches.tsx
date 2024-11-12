@@ -1,4 +1,4 @@
-import { MyLib } from '../../../../../complect/my-lib/MyLib';
+import { MyLib, mylib } from 'front/utils';
 import { CatSpecialSearches, catSpecialSearches } from './Cat.complect';
 
 interface Props {

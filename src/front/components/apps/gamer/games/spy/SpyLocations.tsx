@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { makeRegExp } from '../../../../../../back/complect/makeRegExp';
+import { makeRegExp } from 'shared/utils';
 import { useCheckIsAccessed } from '../../../../../complect/exer/hooks/check-is-accessed';
 import useIsExpand from '../../../../../complect/expand/useIsExpand';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';

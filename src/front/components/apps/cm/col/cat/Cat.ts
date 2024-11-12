@@ -1,5 +1,5 @@
-import mylib from '../../../../../complect/my-lib/MyLib';
-import { IExportableCat } from '../../../../../models';
+import { mylib } from 'front/utils';
+import { IExportableCat } from 'shared/api';
 import { BaseNamed } from '../../base/BaseNamed';
 import { Com } from '../com/Com';
 import { catTrackers } from './Cat.complect';
