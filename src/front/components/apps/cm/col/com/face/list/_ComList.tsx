@@ -1,7 +1,7 @@
+import { useListShownLimitsController } from 'front/complect/useListShownLimitsController';
+import { mylib } from 'front/utils';
 import { useRef } from 'react';
 import { FaceItem } from '../../../../../../../complect/FaceItem';
-import { MyLib, mylib } from 'front/utils';
-import { useListShownLimitsController } from '../../../../../../../complect/useListShownLimitsController';
 import { Com } from '../../Com';
 import { ListComFaceForSelectionsProps } from '../ComFace.model';
 import { ComListControlledContainer } from './ComListControlledContainer';
