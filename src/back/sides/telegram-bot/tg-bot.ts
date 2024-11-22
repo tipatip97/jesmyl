@@ -16,7 +16,7 @@ const botName = 'jesmylbot';
 const emptyAdmins = { 0: {} as never };
 const emojiesSet: Set<string> = new Set();
 
-export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
+export type FreeAnswerCallbackQueryOptions = OmitOwn<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
 
 export class JesmylTelegramBot {
   chatId: number;
@@ -184,12 +184,15 @@ export class JesmylTelegramBot {
   }
 
   postMessage(text: string, options?: TgBot.SendMessageOptions, chatId?: number) {
-    if (this.logAllAsJSON) this.logger.jsonCode({ message: text, options });
-
-    return this._bot.bot.sendMessage(chatId ?? this.chatId, text, {
+    const message = text.replace(makeRegExp('/<(anonymous>)/g'), '&lt;$1');
+    const messageOptions = {
       parse_mode: 'HTML',
       ...options,
-    });
+    } as const;
+
+    if (this.logAllAsJSON) this.logger.jsonCode({ message, options: messageOptions });
+
+    return this._bot.bot.sendMessage(chatId ?? this.chatId, message, messageOptions);
   }
 
   getUserData(id: number) {

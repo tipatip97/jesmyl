@@ -1,92 +1,98 @@
+import { MyLib } from 'front/utils';
 import { useEffect } from 'react';
-import { useAtomGet, useAtomSet } from '../../../../../complect/atoms';
+import { SecretChat } from 'shared/api';
+import { useAtom, useAtomGet, useAtomSet } from '../../../../../complect/atoms';
 import { soki } from '../../../../../soki';
 import { useDeviceId } from '../../../complect/takeDeviceId';
-import { secretChatMessagesHashMapAtom, secretChatsAtom, secretChatsLastReadTsAtom } from './molecule';
+import {
+  chatsMolecule,
+  secretChatFacesAtom,
+  secretChatsIsAlternativeMessageHashMapAtom,
+  secretChatsLastReadTsAtom,
+} from './molecule';
 
 export const useSecretChatMessagesListen = () => {
-  const setMessagesHashMap = useAtomSet(secretChatMessagesHashMapAtom);
   const setChatsLastReadTs = useAtomSet(secretChatsLastReadTsAtom);
-  const getChats = useAtomGet(secretChatsAtom);
-  const setChats = useAtomSet(secretChatsAtom);
+  const getChats = useAtomGet(secretChatFacesAtom);
+  const setChats = useAtomSet(secretChatFacesAtom);
   const myDeviceId = useDeviceId();
+  const [isAlternativeList, setIsAlternativeList] = useAtom(secretChatsIsAlternativeMessageHashMapAtom);
 
   useEffect(() => {
-    return soki.listenEvent('secretMessages', async secretMessages => {
-      if (secretMessages == null) return;
+    return soki.listenEvent('chatsData', async chatsData => {
+      if (chatsData == null) return;
 
-      secretMessages.forEach(secretMessage => {
-        const { message, chatId, chat } = secretMessage;
+      const { chats, messages, unreachedMessages, alternativeMessages } = chatsData;
 
-        if (chat != null && getChats()[chatId] == null) {
-          setChats(prev => ({ ...prev, [chatId]: chat }));
-          setChatsLastReadTs(prev => ({ ...prev, [chatId]: message.ts }));
-          setMessagesHashMap(prev => ({ ...prev, [chatId]: {} }));
-        }
+      if (chats?.length) {
+        setChats(prev => {
+          const newChats = { ...prev };
+          for (const chat of chats) newChats[chat.chatId] = chat;
+          return newChats;
+        });
+      }
 
-        setMessagesHashMap(prev => {
-          let newMessagesHash = { ...prev[chatId] };
+      if (unreachedMessages) {
+        fillMessagesHashMap(unreachedMessages, 'unreachedMessages', isAlternativeList);
+      }
 
-          if (message.type === 'edit') {
-            if (message.targetTs === undefined) return prev;
-            const targetMessage = newMessagesHash[message.targetTs];
+      if (alternativeMessages) {
+        fillMessagesHashMap(alternativeMessages, 'alternativeMessages', isAlternativeList);
+      }
 
-            if (targetMessage === undefined || targetMessage.text === message.text) {
-              return prev;
+      if (messages) {
+        setChats(prev => {
+          let newChats = { ...prev };
+          let isAdded = false;
+
+          for (const chatIdStr in messages) {
+            const chatId = chatIdStr as SecretChat.ChatId;
+
+            const message = messages[chatId]?.[0];
+
+            if (message !== undefined && !message.isRemoved) {
+              newChats = { ...newChats, [chatId]: { ...newChats[chatId]!, messages: [message] } };
+              isAdded = true;
             }
+          }
 
-            newMessagesHash[message.targetTs] = {
-              ...targetMessage,
-              text: message.text,
-              prevText: targetMessage.text,
-            };
-          } else if (message.type === 'delete') {
-            if (message.targetTs === undefined || newMessagesHash[message.targetTs] === undefined) {
-              return prev;
-            }
-
-            delete newMessagesHash[message.targetTs];
-          } else newMessagesHash[message.ts] = message;
-
-          return { ...prev, [chatId]: newMessagesHash };
+          return isAdded ? newChats : prev;
         });
 
-        if (message.type === 'chatRename') {
-          setChats(prev => ({ ...prev, [chatId]: { ...prev[chatId], title: message.text } }));
-        } else if (message.type === 'newMember') {
-          if (chat) {
-            setChats(prev => ({
-              ...prev,
-              [chatId]: {
-                ...prev[chatId],
-                users: {
-                  ...chat.users,
-                },
-              },
-            }));
-          }
-        } else if (message.type === 'senderRename') {
-          setChats(prev => {
-            const prevChat = prev[chatId];
-
-            if (prevChat == null) return prev;
-
-            return {
-              ...prev,
-              [chatId]: {
-                ...prevChat,
-                users: {
-                  ...prevChat.users,
-                  [message.senderId]: {
-                    ...prevChat.users[message.senderId],
-                    fio: message.text,
-                  },
-                },
-              },
-            };
-          });
-        }
-      });
+        fillMessagesHashMap(messages, 'chatMessages', isAlternativeList);
+      }
     });
-  }, [getChats, myDeviceId, setMessagesHashMap, setChats, setChatsLastReadTs]);
+  }, [getChats, isAlternativeList, myDeviceId, setChats, setChatsLastReadTs]);
+};
+
+const fillMessagesHashMap = (
+  messagesHashMap: Partial<Record<SecretChat.ChatId, SecretChat.ImportableMessage[]>>,
+  hashMapPrefix: 'chatMessages' | 'unreachedMessages' | 'alternativeMessages',
+  isAlternativeList: Partial<Record<SecretChat.ChatId, boolean>>,
+) => {
+  MyLib.entries(messagesHashMap).forEach(([chatId, chatMessages]) => {
+    if (chatMessages == null) return;
+
+    const atom = chatsMolecule.take(
+      `${
+        hashMapPrefix === 'chatMessages' && isAlternativeList[chatId] ? 'alternativeMessages' : hashMapPrefix
+      }/${chatId}`,
+    );
+    const newMessages = { ...atom.get() };
+    let isChanged = false;
+
+    for (const message of chatMessages) {
+      const savedMessage = newMessages[message.id];
+
+      if (message.isRemoved) {
+        delete newMessages[message.id];
+        isChanged = true;
+      } else if (savedMessage === undefined || savedMessage.text !== message.text) {
+        newMessages[message.id] = message;
+        isChanged = true;
+      }
+    }
+
+    if (isChanged) atom.set(newMessages);
+  });
 };

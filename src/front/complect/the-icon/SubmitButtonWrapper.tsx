@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const SubmitButtonWrapper = ({
   children,
   ...props
-}: { children: React.ReactNode } & Omit<HTMLAttributes<HTMLButtonElement>, 'onSubmit'>) => {
+}: { children: React.ReactNode } & OmitOwn<HTMLAttributes<HTMLButtonElement>, 'onSubmit'>) => {
   return (
     <Button
       {...props}

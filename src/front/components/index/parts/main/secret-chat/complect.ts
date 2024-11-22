@@ -1,11 +1,10 @@
-import { DeviceId } from 'shared/api';
-import { SecretChat } from 'shared/api';
+import { DeviceId, SecretChat } from 'shared/api';
 import { atom } from '../../../../../complect/atoms';
 import { contextCreator } from '../../../../../complect/contextCreator';
 import { iconPackOfWechat, IconWechatStrokeRounded } from '../../../../../complect/the-icon/icons/wechat';
 
-export const makeChatId = (chatIdScalar: string | und): SecretChat.ChatId | null =>
-  chatIdScalar ? (+chatIdScalar ? (chatIdScalar as never) : null) : null;
+// export const makeChatId = (chatIdScalar: string | und): SecretChat.ChatId | null =>
+//   chatIdScalar ? (+chatIdScalar ? (chatIdScalar as never) : null) : null;
 
 export const secretChatIconPack = iconPackOfWechat;
 export const SecretChatsIcon = IconWechatStrokeRounded;
@@ -25,20 +24,26 @@ export const secretChatingJoinerParse = (joinerStr: string): { deviceId: DeviceI
   return JSON.parse(joinerStr)[newMemberKey];
 };
 
-export const [SecretChatContext, useSecretChatContext] = contextCreator<SecretChat.ChatInfo>({
-  id: SecretChat.ChatId.def,
+export const [SecretChatContext, useSecretChatContext] = contextCreator<SecretChat.ChatMiniInfo>({
+  chatId: SecretChat.ChatId.def,
   title: '',
-  users: {} as never,
+  messages: [],
+  members: [],
 });
 
-export const secretChatMessageTsAsOpenContextAtom = atom<SecretChat.MessageTs | null>(null);
+export const secretChatMessageTsAsOpenContextAtom = atom<SecretChat.MessageId | null>(null);
 
 export const [SecretChatIdContext, useSecretChatIdContext] = contextCreator(SecretChat.ChatId.def);
-export const [SecretChatLastReadTsContext, useSecretChatLastReadTsContext] = contextCreator(SecretChat.MessageTs.def);
+export const [SecretChatLastReadTsContext, useSecretChatLastReadTsContext] = contextCreator<SecretChat.StrMessageId>(
+  `${SecretChat.MessageId.def}`,
+);
 
 export const [SecretChatMessagesHashContext, useSecretChatMessagesHashContext] =
   contextCreator<SecretChat.MessagesHashMap>({});
 
-export const [SecretChatMessagesTssContext, useSecretChatMessagesTssContext] = contextCreator<SecretChat.MessageTs[]>(
-  [],
-);
+export const [SecretChatUnreachedMessagesMessagesHashContext, useSecretChatUnreachedMessagesMessagesHashContext] =
+  contextCreator<SecretChat.MessagesHashMap | und>(undefined);
+
+export const [SecretChatMessagesTssContext, useSecretChatMessagesTssContext] = contextCreator<
+  SecretChat.StrMessageId[]
+>([]);

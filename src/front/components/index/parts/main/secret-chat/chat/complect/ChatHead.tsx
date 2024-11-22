@@ -1,20 +1,15 @@
 import { useState } from 'react';
 import { useAtomSet } from '../../../../../../../complect/atoms';
-import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
 import Modal from '../../../../../../../complect/modal/Modal/Modal';
 import { ModalBody } from '../../../../../../../complect/modal/Modal/ModalBody';
-import { ModalFooter } from '../../../../../../../complect/modal/Modal/ModalFooter';
 import { ModalHeader } from '../../../../../../../complect/modal/Modal/ModalHeader';
-import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
-import { IconCheckmarkBadge01StrokeRounded } from '../../../../../../../complect/the-icon/icons/checkmark-badge-01';
 import { IconDelete01StrokeRounded } from '../../../../../../../complect/the-icon/icons/delete-01';
 import { IconEdit02StrokeRounded } from '../../../../../../../complect/the-icon/icons/edit-02';
-import { soki } from '../../../../../../../soki';
 import { useDeviceId } from '../../../../../complect/takeDeviceId';
 import { useSecretChatContext } from '../../complect';
-import { secretChatMessagesHashMapAtom, secretChatsLastReadTsAtom } from '../../molecule';
-import { SecretChatQrReader } from '../../SecretChatQrReader';
+import { secretChatsLastReadTsAtom, useChatMessagesHashMapSet } from '../../molecule';
+import { Link } from 'react-router-dom';
 
 export const SecretChatHead = () => {
   const [isOpenRedact, setIsOpenRedact] = useState<unknown>(false);
@@ -22,11 +17,13 @@ export const SecretChatHead = () => {
   return (
     <>
       <span className="flex flex-gap">
-        <IconButton
-          Icon={IconEdit02StrokeRounded}
-          onClick={setIsOpenRedact}
-          className="padding-gap"
-        />
+        <Link to="manage">
+          <IconButton
+            Icon={IconEdit02StrokeRounded}
+            // onClick={setIsOpenRedact}
+            className="padding-gap"
+          />
+        </Link>
       </span>
       {isOpenRedact && <EditModal onClose={setIsOpenRedact} />}
     </>
@@ -34,18 +31,18 @@ export const SecretChatHead = () => {
 };
 
 const EditModal = ({ onClose }: { onClose: (isOpen: false) => void }) => {
-  const setSecretChatMessages = useAtomSet(secretChatMessagesHashMapAtom);
-  const setSecretChatLastReadTs = useAtomSet(secretChatsLastReadTsAtom);
   const chat = useSecretChatContext();
+  const setMessages = useChatMessagesHashMapSet(chat.chatId);
+  const setSecretChatLastReadTs = useAtomSet(secretChatsLastReadTsAtom);
   const myDeviceId = useDeviceId();
 
   const [newTitle, setNewTitle] = useState(chat.title);
 
-  const myUserData = chat.users[myDeviceId];
-  const myFio = myUserData?.fio ?? '';
-  const [newFio, setNewFio] = useState(myFio);
+  // const myUserData = chat.users[myDeviceId];
+  // const myFio = myUserData?.fio ?? '';
+  // const [newFio, setNewFio] = useState(myFio);
 
-  const isMeManager = myUserData?.role === 'admin' || myUserData?.role === 'creator';
+  // const isMeManager = myUserData?.role === 'admin' || myUserData?.role === 'creator';
 
   return (
     <Modal onClose={onClose}>
@@ -53,55 +50,55 @@ const EditModal = ({ onClose }: { onClose: (isOpen: false) => void }) => {
         <div className="full-width flex between">
           <span>Настройки чата</span>
           <span className="flex flex-gap">
-            {isMeManager && (
-              <SecretChatQrReader
-                onDeviceIdDetected={(deviceId, fio) => {
-                  if (chat.users[deviceId]) return;
+            {/* {isMeManager && (
+              // <SecretChatQrReader
+              //   onDeviceIdDetected={(deviceId, fio) => {
+              //     if (chat.users[deviceId]) return;
 
-                  soki
-                    .send(
-                      {
-                        secretMessage: {
-                          chat: {
-                            ...chat,
-                            users: {
-                              ...chat.users,
-                              [deviceId]: {
-                                id: deviceId,
-                                fio: fio || deviceId,
-                                role: 'user',
-                              },
-                            },
-                          },
-                          chatId: chat.id,
-                          targetIds: MyLib.keys(chat.users).concat(deviceId),
-                          body: {
-                            senderId: myDeviceId,
-                            text: fio || deviceId,
-                            type: 'newMember',
-                          },
-                        },
-                      },
-                      'index',
-                    )
-                    .on(() => onClose(false));
-                }}
-              />
-            )}
+              //     soki
+              //       .send(
+              //         {
+              //           chatMessage: {
+              //             chat: {
+              //               ...chat,
+              //               users: {
+              //                 ...chat.users,
+              //                 [deviceId]: {
+              //                   id: deviceId,
+              //                   fio: fio || deviceId,
+              //                   role: 'user',
+              //                 },
+              //               },
+              //             },
+              //             chatId: chat.id,
+              //             targetIds: MyLib.keys(chat.users).concat(deviceId),
+              //             body: {
+              //               senderId: myDeviceId,
+              //               text: fio || deviceId,
+              //               type: 'newMember',
+              //             },
+              //           },
+              //         },
+              //         'index',
+              //       )
+              //       .on(() => onClose(false));
+              //   }}
+              // />
+            )} */}
             <IconButton
               Icon={IconDelete01StrokeRounded}
               className="color--ko"
               confirm="Очистить переписку локально?"
-              onClick={() => {
-                setSecretChatMessages(prev => ({ ...prev, [chat.id]: {} }));
-                setSecretChatLastReadTs(prev => ({ ...prev, [chat.id]: undefined! }));
-              }}
+              // onClick={() => {
+              //   setSecretChatMessages(prev => ({ ...prev, [chat.id]: {} }));
+              //   setSecretChatLastReadTs(prev => ({ ...prev, [chat.id]: undefined! }));
+              // }}
             />
           </span>
         </div>
       </ModalHeader>
       <ModalBody>
-        {isMeManager && (
+        {/* {isMeManager && (
           <>
             <div>Название чата</div>
             <KeyboardInput
@@ -110,16 +107,16 @@ const EditModal = ({ onClose }: { onClose: (isOpen: false) => void }) => {
               onChange={setNewTitle}
             />
           </>
-        )}
+        )} */}
 
         <div>Моё имя</div>
-        <KeyboardInput
+        {/* <KeyboardInput
           value={newFio}
           withoutCloseButton
           onChange={setNewFio}
-        />
+        /> */}
       </ModalBody>
-      <ModalFooter>
+      {/* <ModalFooter>
         <IconButton
           Icon={IconCheckmarkBadge01StrokeRounded}
           postfix="Изменить"
@@ -133,7 +130,7 @@ const EditModal = ({ onClose }: { onClose: (isOpen: false) => void }) => {
               soki
                 .send(
                   {
-                    secretMessage: {
+                    chatMessage: {
                       chatId: chat.id,
                       targetIds: MyLib.keys(chat.users),
                       body: {
@@ -152,7 +149,7 @@ const EditModal = ({ onClose }: { onClose: (isOpen: false) => void }) => {
               soki
                 .send(
                   {
-                    secretMessage: {
+                    chatMessage: {
                       chatId: chat.id,
                       targetIds: MyLib.keys(chat.users),
                       body: {
@@ -168,7 +165,7 @@ const EditModal = ({ onClose }: { onClose: (isOpen: false) => void }) => {
             }
           }}
         />
-      </ModalFooter>
+      </ModalFooter> */}
     </Modal>
   );
 };

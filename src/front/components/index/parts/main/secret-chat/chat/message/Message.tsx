@@ -4,25 +4,32 @@ import { StyledMessage, StyledMessagePlace, StyledMessageText } from './Message.
 import { SecretChatReplyMessageHead } from './ReplyMessageHead';
 
 export const SecretChatMessage = memo(
-  ({ message, prevMessage }: { message: SecretChat.Message; prevMessage: SecretChat.Message | und }) => {
-    const date = new Date(+message.ts / 10);
-    const prevDate = prevMessage && new Date(+prevMessage.ts / 10);
+  ({
+    message,
+    prevMessage,
+  }: {
+    message: SecretChat.ImportableMessage;
+    prevMessage: SecretChat.ImportableMessage | und;
+  }) => {
+    const date = new Date(message.createdAt);
+    let attrDate: und | string = undefined;
 
-    const dateStr = date.toLocaleDateString('ru');
-    const prevDateStr = prevDate?.toLocaleDateString('ru');
+    if (prevMessage) {
+      const prevDateStr = prevMessage.createdAt.split('T')[0];
+      attrDate = prevDateStr && prevDateStr !== message.createdAt.split('T')[0] ? prevDateStr : undefined;
+    }
 
     return (
       <StyledMessagePlace
-        attr-date={prevDateStr && prevDateStr !== dateStr ? prevDateStr : undefined}
-        sent-ts={message.ts}
-        target-ts={message.targetTs}
-        sender-id={message.senderId}
+        attr-date={attrDate}
+        message-id={message.id}
+        sender-id={message.sentMemberId}
         message-type={message.type}
       >
         <StyledMessage>
           <div className="message-title color--7 margin-gap-b ellipsis full-width" />
 
-          {message.type === 'reply' && <SecretChatReplyMessageHead message={message} />}
+          {message.replyMessageId != null && <SecretChatReplyMessageHead message={message} />}
 
           <StyledMessageText>{message.text}</StyledMessageText>
           <span className="timestamp">

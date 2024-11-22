@@ -1,43 +1,41 @@
-import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { SecretChat } from 'shared/api';
+import styled from 'styled-components';
 import { FaceItem } from '../../../../../complect/FaceItem';
-import { MyLib, mylib } from 'front/utils';
 import { IconBubbleChatEditStrokeRounded } from '../../../../../complect/the-icon/icons/bubble-chat-edit';
 import { styledBadgeContainer } from './MarkUnreadSecretChatsPath';
 
 interface Props {
-  chat: SecretChat.ChatInfo;
-  messagesHash: SecretChat.MessagesHashMap | und;
-  lastReadTs: SecretChat.MessageTs | und;
+  chat: SecretChat.ChatMiniInfo;
 }
 
-export const SecretChatFace = ({ chat, messagesHash, lastReadTs }: Props) => {
-  const messageTss = useMemo(() => MyLib.reverseSort(MyLib.keys(messagesHash ?? {})), [messagesHash]);
-  if (messagesHash == null) return;
-
-  const lastMessage = messagesHash[messageTss[0]];
+export const SecretChatFace = ({ chat }: Props) => {
+  const lastMessage = chat.messages[0];
+  const lastMessageMember = chat.members.find(member => member.id === lastMessage.sentMemberId);
 
   return (
     <Link
-      to={chat.id}
+      to={chat.chatId}
       className="pointer"
     >
       <FaceItem>
         <StyledFaceLogo
           className="face-logo"
-          $withUnreadBadge={!!messageTss[0] && lastReadTs !== messageTss[0]}
+          $withUnreadBadge={false}
         >
           <IconBubbleChatEditStrokeRounded />
         </StyledFaceLogo>
         <StyledTextInfo className="face-title full-max-width">
-          <div className="ellipsis">{chat.title}</div>
+          <div>
+            <div className="ellipsis color--7">{chat.title}</div>
+            <br />
+            {lastMessageMember && <div className="ellipsis">{lastMessageMember.user.fio}</div>}
+          </div>
           {lastMessage && (
             <div className="fade-07 full-max-width">
               <StyledLastMessageText>{lastMessage.text}</StyledLastMessageText>
               {' • '}
-              {new Date(+lastMessage.ts / 10).toLocaleTimeString()}
+              {new Date(lastMessage.createdAt).toLocaleTimeString()}
             </div>
           )}
         </StyledTextInfo>

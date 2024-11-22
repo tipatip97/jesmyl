@@ -1,21 +1,28 @@
-import styled from 'styled-components';
 import { SecretChat } from 'shared/api';
-import { useSecretChatContext, useSecretChatMessagesHashContext } from '../../complect';
+import styled from 'styled-components';
+import {
+  useSecretChatContext,
+  useSecretChatMessagesHashContext,
+  useSecretChatUnreachedMessagesMessagesHashContext,
+} from '../../complect';
 
-export const SecretChatReplyMessageHead = ({ message }: { message: SecretChat.Message }) => {
+export const SecretChatReplyMessageHead = ({ message }: { message: SecretChat.ImportableMessage }) => {
   const chat = useSecretChatContext();
   const messagesHashMap = useSecretChatMessagesHashContext();
+  const replyTargets = useSecretChatUnreachedMessagesMessagesHashContext();
 
-  const targetMessage = message.targetTs ? messagesHashMap[message.targetTs] : undefined;
+  const targetMessage = message.replyMessageId
+    ? messagesHashMap[message.replyMessageId] ?? replyTargets?.[message.replyMessageId]
+    : undefined;
 
-  if (targetMessage === undefined) return null;
+  if (targetMessage === undefined || targetMessage.isRemoved) return null;
 
   return (
     <StyledMessageHead>
       <div className="vertical-border" />
       <div className="image" />
       <div className="info">
-        <div className="title">{chat.users[targetMessage.senderId]?.fio}</div>
+        <div className="title">{chat.members.find(member => member.id === targetMessage.sentMemberId)?.user.fio}</div>
         <div className="text">{targetMessage.text}</div>
       </div>
     </StyledMessageHead>

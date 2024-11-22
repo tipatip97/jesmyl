@@ -1,55 +1,78 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { IconEdit02StrokeRounded } from 'front/complect/the-icon/icons/edit-02';
+import { useAuth } from 'front/components/index/molecules';
+import { soki } from 'front/soki';
+import { useEffect, useState } from 'react';
 import { SecretChat } from 'shared/api';
+import styled from 'styled-components';
 import { BottomPopupItem } from '../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useAtom, useAtomSet } from '../../../../../../../complect/atoms';
 import CopyTextButton from '../../../../../../../complect/CopyTextButton';
-import { MyLib, mylib } from 'front/utils';
 import { IconCopy01StrokeRounded } from '../../../../../../../complect/the-icon/icons/copy-01';
 import {
   IconDelete01BulkRounded,
   IconDelete01StrokeRounded,
 } from '../../../../../../../complect/the-icon/icons/delete-01';
-import { IconEdit02StrokeRounded } from '../../../../../../../complect/the-icon/icons/edit-02';
 import { IconLinkBackwardStrokeRounded } from '../../../../../../../complect/the-icon/icons/link-backward';
 import { IconPinStrokeRounded } from '../../../../../../../complect/the-icon/icons/pin';
-import { soki } from '../../../../../../../soki';
-import { useDeviceId } from '../../../../../complect/takeDeviceId';
 import {
+  secretChatClassNamesDict,
   secretChatMessageTsAsOpenContextAtom,
   useSecretChatContext,
   useSecretChatMessagesHashContext,
 } from '../../complect';
-import { secretChatMessagesHashMapAtom, secretChatsDraftsAtom } from '../../molecule';
+import { secretChatsDraftsAtom, useChatMessagesHashMapSet } from '../../molecule';
 import { StyledSecretChatMessageContextMenu } from '../message/Message.styled';
 
-export const MessageContextMenu = () => {
-  const [messageTs, setMessageTs] = useAtom(secretChatMessageTsAsOpenContextAtom);
+export const MessageContextMenu = ({
+  listRef,
+  messageId,
+}: {
+  messageId: SecretChat.MessageId;
+  listRef: React.RefObject<HTMLDivElement>;
+}) => {
+  const setMessageTs = useAtomSet(secretChatMessageTsAsOpenContextAtom);
   const [isOpenDeleteContent, setIsOpenDeleteContent] = useState<unknown>(false);
   let content = null;
   const messagesHash = useSecretChatMessagesHashContext();
-  const setMessages = useAtomSet(secretChatMessagesHashMapAtom);
-  const [draftMessages, setDraftMessages] = useAtom(secretChatsDraftsAtom);
   const chat = useSecretChatContext();
-  const myDeviceId = useDeviceId();
+  const setMessages = useChatMessagesHashMapSet(chat.chatId);
+  const [draftMessages, setDraftMessages] = useAtom(secretChatsDraftsAtom);
+  const auth = useAuth();
 
-  if (messageTs === null || messagesHash[messageTs] === undefined) return null;
-  const message = messagesHash[messageTs];
+  useEffect(() => {
+    if (listRef.current === null) return;
 
-  const isMyMessage = message.senderId === myDeviceId;
+    const targetNode = listRef.current.querySelector(`[message-id='${messageId}']`);
+    if (targetNode === null) return;
+
+    targetNode.classList.add(secretChatClassNamesDict.messageOnContextMenu);
+
+    return () => {
+      targetNode.classList.remove(secretChatClassNamesDict.messageOnContextMenu);
+    };
+  }, [listRef, messageId]);
+
+  if (messagesHash[messageId] === undefined) return null;
+  const message = messagesHash[messageId];
+
+  const memberMe = auth.login ? chat.members.find(member => member.user.login === auth.login) : undefined;
+  const isMyMessage = message.sentMemberId === memberMe?.id;
   const isEditableMessage = SecretChat.editableMessageTypesSet.has(message.type);
 
   if (isOpenDeleteContent) {
+    const targetId = draftMessages[chat.chatId]?.replyId ?? draftMessages[chat.chatId]?.editId;
+
     const simplifyCurrentDraft =
-      draftMessages[chat.id]?.targetTs === messageTs
+      targetId === messageId
         ? () => {
             setDraftMessages(prev => ({
               ...prev,
-              [chat.id]: {
-                ...prev[chat.id],
-                text: prev[chat.id]?.text ?? '',
-                type: 'text',
-                targetTs: undefined,
+              [chat.chatId]: {
+                ...prev[chat.chatId],
+                text: prev[chat.chatId]?.prevSimpleMessageText ?? '',
+                editId: undefined,
+                replyId: undefined,
+                prevSimpleMessageText: '',
               },
             }));
           }
@@ -62,9 +85,9 @@ export const MessageContextMenu = () => {
           title="Удалить у меня"
           onClick={() => {
             setMessages(prev => {
-              const newMessagesHash = { ...messagesHash };
-              delete newMessagesHash[messageTs];
-              return { ...prev, [chat.id]: newMessagesHash };
+              const newMessagesHash = { ...prev };
+              newMessagesHash[messageId] = { ...newMessagesHash[messageId]!, isRemoved: true };
+              return newMessagesHash;
             });
             simplifyCurrentDraft?.();
             setMessageTs(null);
@@ -78,20 +101,13 @@ export const MessageContextMenu = () => {
             onClick={() => {
               const send = soki.send(
                 {
-                  secretMessage: {
-                    chatId: chat.id,
-                    targetIds: MyLib.keys(chat.users),
-                    body: {
-                      senderId: myDeviceId,
-                      text: '',
-                      type: 'delete',
-                      targetTs: messageTs,
-                    },
+                  chatFetch: {
+                    chatId: chat.chatId,
+                    removeMessages: [messageId],
                   },
                 },
                 'index',
               );
-
               if (simplifyCurrentDraft) send.on(simplifyCurrentDraft);
               setMessageTs(null);
             }}
@@ -108,11 +124,10 @@ export const MessageContextMenu = () => {
           onClick={() => {
             setDraftMessages(prev => ({
               ...prev,
-              [chat.id]: {
-                ...prev[chat.id],
-                text: prev[chat.id]?.text ?? '',
-                targetTs: messageTs,
-                type: 'reply',
+              [chat.chatId]: {
+                ...prev[chat.chatId]!,
+                editId: undefined,
+                replyId: messageId,
               },
             }));
             setMessageTs(null);
@@ -138,7 +153,13 @@ export const MessageContextMenu = () => {
                 onClick={() => {
                   setDraftMessages(prev => ({
                     ...prev,
-                    [chat.id]: { text: message.text, targetTs: messageTs, type: 'edit' },
+                    [chat.chatId]: {
+                      ...prev[chat.chatId]!,
+                      text: message.text,
+                      editId: messageId,
+                      replyId: undefined,
+                      prevSimpleMessageText: prev[chat.chatId]?.text ?? '',
+                    },
                   }));
                   setMessageTs(null);
                 }}

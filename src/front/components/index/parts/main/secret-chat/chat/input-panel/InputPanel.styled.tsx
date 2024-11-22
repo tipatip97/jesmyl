@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
 import { SecretChat } from 'shared/api';
+import styled, { css } from 'styled-components';
 import { isIPhone } from '../../../../../../../complect/device-differences';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 
@@ -23,7 +23,7 @@ export const StyledSecretChatMessageDraftHeader = styled.div.attrs({ className: 
   }
 
   ${props =>
-    props.$draft?.type === 'edit'
+    props.$draft?.editId
       ? css`
           .title::after {
             content: 'Редактирование';
@@ -69,7 +69,7 @@ export const StyledSecretChatMessageUnreadsCountBadge = styled.div`
 export const StyledSecretChatToDownButton = styled.div.attrs({
   className: 'to-down-button absolute color--3 bgcolor--1 padding-gap flex center',
 })`
-  container: to-down-button / inline-size;
+  ${`container: to-down-button / inline-size;`}
   top: -50px;
   right: calc((100vw - var(--stock-width)) / 2 + 7px);
   border-radius: 50%;

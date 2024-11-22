@@ -1,71 +1,65 @@
-import { DeviceId } from './enums';
+import { MessageType as PMessageType } from '@prisma/client';
 
 export namespace SecretChat {
-  export enum ChatId {
-    def = '00',
+  export const enum ChatId {
+    def = '',
   }
 
-  export enum MessageTs {
-    def = '00',
+  export const enum MessageId {
+    def = 0,
+    one = 1,
   }
 
-  export interface UserData {
-    id: DeviceId;
-    fio: string;
-    role: 'admin' | 'creator' | 'user';
+  export const enum MemberId {
+    def = 0,
   }
 
-  export type ChatInfo = {
-    title: string;
-    id: ChatId;
-    users: Partial<Record<DeviceId, UserData>>;
-  };
+  export const enum UserId {
+    def = 0,
+  }
+
+  export type StrMessageId = `${MessageId}`;
+
+  export type MessageType = PMessageType;
 
   export type MessageDraftType = 'text' | 'reply' | 'edit';
 
-  export type MessagesHashMap = Partial<Record<SecretChat.MessageTs, SecretChat.Message>>;
+  export type MessagesHashMap = Partial<Record<SecretChat.MessageId, SecretChat.ImportableMessage>>;
 
   export type MessageDraft = {
     text: string;
-    type: MessageDraftType;
-    targetTs?: MessageTs;
+    prevSimpleMessageText: string;
+    editId?: MessageId;
+    replyId?: MessageId;
   };
 
-  export interface Message extends ExportableMessageBody {
-    ts: MessageTs;
-  }
-
-  export interface ImportableMessage {
-    message: Message;
-    chatId: ChatId;
-    chat?: ChatInfo;
-  }
-
-  export type MessageType =
-    | 'text'
-    | 'bigText'
-    | 'senderRename'
-    | 'newMember'
-    | 'chatRename'
-    | 'chatCreate'
-    | 'delete'
-    | 'reply'
-    | 'edit';
-
-  export interface ExportableMessageBody {
-    text: string;
-    prevText?: string;
-    type: MessageType;
-    senderId: DeviceId;
-    targetTs?: MessageTs;
+  export interface ImportableMessage extends ExportableMessage {
+    id: MessageId;
+    createdAt: string;
+    sentMemberId: MemberId;
+    isRemoved?: boolean;
   }
 
   export interface ExportableMessage {
-    chat?: ChatInfo;
-    chatId: ChatId;
-    targetIds: DeviceId[];
-    body: ExportableMessageBody;
+    text: string;
+    prevText?: string | nil;
+    type: MessageType;
+    replyMessageId?: MessageId | nil;
+    editMessageId?: MessageId | nil;
   }
 
-  export const editableMessageTypesSet = new Set<MessageType>(['text', 'bigText', 'reply']);
+  export type ChatMemberUser = { fio: string; id: UserId; login: string };
+  export type ChatMember = { user: ChatMemberUser; id: MemberId };
+  export type UserMiniInfo = Pick<ChatMemberUser, 'fio'>;
+
+  export interface ChatMiniInfo {
+    chatId: ChatId;
+    title: string;
+    messages: ImportableMessage[];
+    members: ChatMember[];
+  }
+
+  export type ChatLastReadTimeStamp = { messageId: SecretChat.MessageId; chatId: SecretChat.ChatId };
+
+  export const editableMessageTypesSet = new Set<MessageType>(['BigText', 'Text']);
 }

@@ -12,12 +12,6 @@ setSharedPolyfills();
 ErrorCatcher.logAllErrors();
 
 export class SokiServer extends SokiServerOtherEvents {
-  constructor() {
-    super();
-
-    this.onInitOtherEvents();
-  }
-
   start() {
     new WebSocketServer({ port: 4446 }).on('connection', (client: WebSocket) => {
       this.sendStatistic();

@@ -1,32 +1,29 @@
+import { MessageType } from '@prisma/client';
+import KeyboardInput from 'front/complect/keyboard/KeyboardInput';
+import Modal from 'front/complect/modal/Modal/Modal';
+import { ModalBody } from 'front/complect/modal/Modal/ModalBody';
+import { ModalFooter } from 'front/complect/modal/Modal/ModalFooter';
+import { ModalHeader } from 'front/complect/modal/Modal/ModalHeader';
+import IconButton from 'front/complect/the-icon/IconButton';
+import { soki } from 'front/soki';
+import { MyLib } from 'front/utils';
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { SecretChat } from 'shared/api';
-import { itIt } from 'shared/utils';
-import { useAtomSet, useAtomValue } from '../../../../../complect/atoms';
-import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
-import { MyLib, mylib } from 'front/utils';
+import { useAtomValue } from '../../../../../complect/atoms';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
-import QRCode from '../../../../../complect/qr-code/QRCode';
-import { IconQrCodeStrokeRounded } from '../../../../../complect/the-icon/icons/qr-code';
-import { soki } from '../../../../../soki';
-import { useDeviceId } from '../../../complect/takeDeviceId';
-import { useAuth } from '../../../molecules';
+import { IconCheckmarkCircle03StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-03';
+import { IconMessageAdd01StrokeRounded } from '../../../../../complect/the-icon/icons/message-add-01';
 import { SecretChatFace } from './SecretChatFace';
-import { SecretChatQrReader } from './SecretChatQrReader';
 import { SecretChatPage } from './chat/SecretChat';
-import { secretChatingJoinerStringify } from './complect';
-import { secretChatMessagesHashMapAtom, secretChatsAtom, secretChatsLastReadTsAtom } from './molecule';
+import { secretChatFacesAtom } from './molecule';
 
 export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: boolean }) => {
-  const [isQrCodeOpen, setIsQrCodeOpen] = useState<unknown>(false);
-  const myDeviceId = useDeviceId();
-  const chats = useAtomValue(secretChatsAtom);
-  const chatsLastReadTs = useAtomValue(secretChatsLastReadTsAtom);
-  const chatMessagesHashMaps = useAtomValue(secretChatMessagesHashMapAtom);
-  const setChats = useAtomSet(secretChatsAtom);
-  const setChatMessages = useAtomSet(secretChatMessagesHashMapAtom);
-  const setChatsLastReadTs = useAtomSet(secretChatsLastReadTsAtom);
-  const auth = useAuth();
+  const [isNewChatOpen, setIsNewChatOpen] = useState<unknown>(false);
+  const chats = useAtomValue(secretChatFacesAtom);
+
+  const [newChatTitle, setNewChatTitle] = useState('');
+  const [isNewChatSending, setIsNewChatSending] = useState(false);
 
   return (
     <Routes>
@@ -39,81 +36,59 @@ export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: bo
             headTitle="Чаты"
             head={
               <span className="flex flex-gap">
-                <SecretChatQrReader
-                  onDeviceIdDetected={(deviceId, joinerFio) => {
-                    const chatId = `${Date.now()}${Math.random()}` as SecretChat.ChatId;
-                    const title = [auth.fio || myDeviceId, joinerFio || deviceId].filter(itIt).join(', ');
-
-                    const chat: SecretChat.ChatInfo = {
-                      id: chatId,
-                      title,
-                      users: {
-                        [myDeviceId]: {
-                          fio: auth.fio || myDeviceId,
-                          id: myDeviceId,
-                          role: 'creator',
-                        },
-                        [deviceId]: {
-                          fio: joinerFio || deviceId,
-                          id: deviceId,
-                          role: 'user',
-                        },
-                      },
-                    };
-
-                    setChats(prev => ({ ...prev, [chatId]: chat }));
-                    setChatMessages(prev => ({ ...prev, [chatId]: {} }));
-
-                    soki
-                      .send(
-                        {
-                          secretMessage: {
-                            chat,
-                            chatId: chat.id,
-                            targetIds: MyLib.keys(chat.users),
-                            body: {
-                              senderId: myDeviceId,
-                              text: title,
-                              type: 'chatCreate',
-                            },
-                          },
-                        },
-                        'index',
-                      )
-                      .on(({ secretMessage }) => {
-                        if (secretMessage == null) return;
-
-                        setChatsLastReadTs(prev => ({ ...prev, [chatId]: secretMessage.message.ts }));
-                      });
-                  }}
-                />
-                {myDeviceId && <IconQrCodeStrokeRounded onClick={setIsQrCodeOpen} />}
+                <IconMessageAdd01StrokeRounded onClick={setIsNewChatOpen} />
               </span>
             }
             content={
               <>
-                {MyLib.keys(chats).map(chatId => {
+                {MyLib.values(chats).map(chat => {
                   return (
                     <SecretChatFace
-                      key={chatId}
-                      chat={chats[chatId]!}
-                      messagesHash={chatMessagesHashMaps[chatId]}
-                      lastReadTs={chatsLastReadTs[chatId]}
+                      key={chat.chatId}
+                      chat={chat}
                     />
                   );
                 })}
-                {isQrCodeOpen && (
-                  <FullContent
-                    onClose={setIsQrCodeOpen}
-                    className=""
-                    containerClassName="flex center full-size"
-                    closable
-                  >
-                    <QRCode
-                      text={secretChatingJoinerStringify(myDeviceId, auth.fio)}
-                      className="full-width"
-                    />
-                  </FullContent>
+                {isNewChatOpen && (
+                  <Modal onClose={setIsNewChatOpen}>
+                    <ModalHeader>Новый чат</ModalHeader>
+                    <ModalBody>
+                      <KeyboardInput
+                        value={newChatTitle}
+                        onChange={setNewChatTitle}
+                      />
+                    </ModalBody>
+                    <ModalFooter>
+                      <IconButton
+                        Icon={IconCheckmarkCircle03StrokeRounded}
+                        className="color--ok"
+                        postfix="Создать"
+                        disabled={!newChatTitle}
+                        isLoading={isNewChatSending}
+                        onClick={() => {
+                          setIsNewChatSending(true);
+
+                          soki
+                            .send(
+                              {
+                                chatFetch: {
+                                  chatId: SecretChat.ChatId.def,
+                                  message: {
+                                    text: newChatTitle,
+                                    type: MessageType.ChatCreate,
+                                  },
+                                },
+                              },
+                              'index',
+                            )
+                            .on(() => {
+                              setIsNewChatSending(false);
+                              setIsNewChatOpen(false);
+                            });
+                        }}
+                      />
+                    </ModalFooter>
+                  </Modal>
                 )}
               </>
             }
@@ -122,7 +97,7 @@ export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: bo
       />
 
       <Route
-        path=":chatId"
+        path=":chatId/*"
         element={<SecretChatPage />}
       />
     </Routes>

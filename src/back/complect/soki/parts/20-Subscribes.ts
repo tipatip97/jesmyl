@@ -1,5 +1,3 @@
-import { WebSocket } from 'ws';
-import { EventerValueListeners } from 'shared/utils';
 import {
   SokiCapsule,
   SokiClientSubData,
@@ -8,6 +6,8 @@ import {
   SokiStatistic,
   SokiSubscribtionName,
 } from 'shared/api';
+import { EventerValueListeners } from 'shared/utils';
+import { WebSocket } from 'ws';
 import { SokiServerTransfers } from './10-Transfers';
 
 interface SubscribeCapsule {
@@ -32,7 +32,7 @@ export class SokiServerSubscribes extends SokiServerTransfers implements SokiSer
     },
   };
 
-  onCapsuleSetListeners: EventerValueListeners<SokiCapsule> = [];
+  onCapsuleSetValueListeners: EventerValueListeners<SokiCapsule> = [];
 
   statistic: SokiStatistic = {
     online: 0,

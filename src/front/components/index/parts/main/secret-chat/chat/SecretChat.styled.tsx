@@ -1,3 +1,4 @@
+import { SecretChat } from 'shared/api';
 import styled, { css, keyframes } from 'styled-components';
 import { IconLinkBackwardStrokeRounded } from '../../../../../../complect/the-icon/icons/link-backward';
 import { secretChatClassNamesDict } from '../complect';
@@ -15,7 +16,7 @@ export const StyledReplyFloatIconBox = styled.div.attrs({ className: 'absolute f
 
 export const StyledMessageInputPanel = styled(SecretChatMessageInputPanel)``;
 
-export const StyledMessagesList = styled.div<{ $lastReadTs: string }>`
+export const StyledMessagesList = styled.div<{ $lastReadMessageId?: SecretChat.StrMessageId; className: string }>`
   display: flex;
   flex-direction: column-reverse;
   max-height: 100%;
@@ -33,7 +34,7 @@ export const StyledMessagesList = styled.div<{ $lastReadTs: string }>`
   }
 
   ${props => css`
-    [sent-ts='${props.$lastReadTs}']:not(:first-child) {
+    [message-id='${props.$lastReadMessageId}']:not(:first-child) {
       padding-bottom: calc(var(--main-gap) * 6);
 
       &:before {
@@ -120,7 +121,7 @@ export const StyledSecretChat = styled.div.attrs({
 })`
   --stock-width: min(600px, 100vw);
 
-  container: chat / inline-size;
+  ${`container: chat / inline-size;`}
 
   .${secretChatClassNamesDict.messageOnDraft} {
     &.reply,

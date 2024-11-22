@@ -1,18 +1,16 @@
+import { MessageType } from '@prisma/client';
+import { useAuth } from 'front/components/index/molecules';
 import { memo } from 'react';
-import styled, { css, keyframes } from 'styled-components';
-import { DeviceId } from 'shared/api';
 import { SecretChat } from 'shared/api';
-import { MyLib, mylib } from 'front/utils';
-import { makePseudoElementCorrectContentText } from '../../../../../../../complect/utils';
-import { useDeviceId } from '../../../../../complect/takeDeviceId';
+import styled, { css, keyframes } from 'styled-components';
 import { secretChatClassNamesDict, useSecretChatContext } from '../../complect';
 import { StyledSecretChat } from '../SecretChat.styled';
 import { StyledMessage, StyledMessagePlace, StyledMessageText } from '../message/Message.styled';
 
-const inlineTypes: SecretChat.MessageType[] = ['chatRename', 'senderRename', 'chatCreate', 'newMember'];
+const inlineTypes: SecretChat.MessageType[] = ['ChatRename', 'ChatCreate', 'NewMember'];
 const inlineTypesSelectors = inlineTypes.map(type => `[message-type='${type}']`);
 
-const backgroundLessTypes: SecretChat.MessageType[] = [...inlineTypes, 'bigText'];
+const backgroundLessTypes: SecretChat.MessageType[] = [...inlineTypes, 'BigText'];
 const backgroundLessTypesSelector = backgroundLessTypes.map(type => `[message-type='${type}']`).join(',&');
 
 const markAsAccentMessageAnimation = keyframes`${css`
@@ -26,20 +24,23 @@ const markAsAccentMessageAnimation = keyframes`${css`
 `}`;
 
 export const CssSecretChatMessage = memo(() => {
-  const myDeviceId = useDeviceId();
   const chat = useSecretChatContext();
+  const auth = useAuth();
+  const memberMe = auth.login ? chat.members.find(member => member.user.login === auth.login) : null;
+
+  if (memberMe == null) return;
 
   return (
     <Styled
       $chat={chat}
-      $myDeviceId={myDeviceId}
+      $myId={memberMe.id}
     />
   );
 });
 
 const Styled = styled.div<{
-  $chat: SecretChat.ChatInfo;
-  $myDeviceId: DeviceId;
+  $chat: SecretChat.ChatMiniInfo;
+  $myId: number;
 }>`
   ~ ${StyledSecretChat} {
     ${props => css`
@@ -50,7 +51,7 @@ const Styled = styled.div<{
           }
         }
 
-        &[message-type='bigText'] {
+        &[message-type='${MessageType.BigText}'] {
           @starting-style {
             scale: 0;
           }
@@ -68,24 +69,16 @@ const Styled = styled.div<{
           }
         }
 
-        &[message-type='chatRename'] ${StyledMessageText}::before {
+        &[message-type='${MessageType.ChatRename}'] ${StyledMessageText}::before {
           content: ' переименовал(а) чат на ';
         }
 
-        &[message-type='chatCreate'] ${StyledMessageText}::before {
+        &[message-type='${MessageType.ChatCreate}'] ${StyledMessageText}::before {
           content: ' создал(а) чат ';
         }
 
-        &[message-type='newMember'] ${StyledMessageText}::before {
+        &[message-type='${MessageType.NewMember}'] ${StyledMessageText}::before {
           content: ' добавил(а) ';
-        }
-
-        &[message-type='senderRename'] {
-          ${StyledMessage} {
-            ${StyledMessageText}::before {
-              content: ' переименован(а) на ';
-            }
-          }
         }
 
         &${inlineTypesSelectors.join(',&')} {
@@ -114,20 +107,18 @@ const Styled = styled.div<{
         }
       }
 
-      ${MyLib.values(props.$chat.users).map(user => {
-        const senderIdSelector = makePseudoElementCorrectContentText(user.id);
-
+      ${props.$chat.members.map(member => {
         return css`
-          [sender-id='${senderIdSelector}'] .message-title {
+          [sender-id='${member.id}'] .message-title {
             &::before {
-              content: '${user.fio === user.id ? senderIdSelector : user.fio}';
+              content: '${member.user.fio}';
             }
 
-            ${props.$myDeviceId === user.id && `display: none;`}
+            ${props.$myId === member.id && `display: none;`}
           }
 
-          [sender-id='${senderIdSelector}']:not(:is(${inlineTypesSelectors.join(',')})):has(
-              + [sender-id='${senderIdSelector}']:not(:is(${inlineTypesSelectors.join(',')}))
+          [sender-id='${member.id}']:not(:is(${inlineTypesSelectors.join(',')})):has(
+              + [sender-id='${member.id}']:not(:is(${inlineTypesSelectors.join(',')}))
             ) {
             .message-title {
               display: none;
@@ -136,10 +127,10 @@ const Styled = styled.div<{
         `;
       })}
 
-      ${MyLib.values(props.$chat.users).map(user => {
-        const isOutgoingMessage = props.$myDeviceId === user.id;
+      ${props.$chat.members.map(member => {
+        const isOutgoingMessage = props.$myId === member.id;
         const selector = css`
-          ${StyledMessagePlace}[sender-id='${makePseudoElementCorrectContentText(user.id)}'] ${StyledMessage}
+          ${StyledMessagePlace}[sender-id='${member.id}'] ${StyledMessage}
         `;
 
         return isOutgoingMessage
