@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import { makeRegExp } from 'shared/utils';
-import { MyLib, mylib } from 'front/utils';
 import { EditableComOrders } from './20-Orders';
 
 const itTrim = (it: string) => it.trim();
