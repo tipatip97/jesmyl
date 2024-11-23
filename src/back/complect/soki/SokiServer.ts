@@ -7,6 +7,7 @@ import { ErrorCatcher } from '../ErrorCatcher';
 import { setSharedPolyfills } from '../../../shared/utils/complect/polyfills';
 import { SokiServerOtherEvents } from './parts/130-OtherEvents';
 import { SokiClientEvent, SokiServerDoActionProps } from 'shared/api';
+import { startCrTgAlarm } from 'back/apps/index/crTgAlarm';
 
 setSharedPolyfills();
 ErrorCatcher.logAllErrors();
@@ -68,3 +69,5 @@ startTgGamerListener();
 
 baseMessagesCatcher.register();
 scheduleWidgetMessageCatcher.register();
+
+startCrTgAlarm();

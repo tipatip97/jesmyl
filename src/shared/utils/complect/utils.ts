@@ -110,3 +110,4 @@ export const itNUnd = <It>(it: It) => it !== undefined;
 export const retNull = () => null;
 export const itNNull = <It>(it: It) => it !== null;
 export const itNNil = <It>(it: It) => it != null;
+export const itNNaN = (it: number) => !isNaN(it);

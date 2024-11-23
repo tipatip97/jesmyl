@@ -13,13 +13,13 @@ const config: FilerAppConfig = {
     },
     nounPronsWords: null,
     fileAssociations: null,
-    serverUserStore: {
-      level: 1000,
-    },
+    serverUserStore: { level: 1000 },
+    crAlarm: { level: 1000 },
   },
   actions: Executer.prepareActionList({
     '/schedules': indexSchedulesActionBox,
     '/serverUserStore': { expected: {}, action: 'init' },
+    '/crAlarm': { expected: [], action: 'init' },
   }),
 };
 

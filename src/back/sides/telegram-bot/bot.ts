@@ -9,4 +9,8 @@ jesmylTgBot.setCommands([
     command: '/start',
     description: 'Старт бота',
   },
+  {
+    command: '/do',
+    description: 'Действия',
+  },
 ]);
