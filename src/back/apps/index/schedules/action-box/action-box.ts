@@ -64,7 +64,7 @@ const cmComsListSetters: ActionBox = {
     '<move>': {
       scopeNode: 'move',
       U: {
-        method: 'insert_beforei',
+        method: 'move_beforei',
       },
     },
   },
@@ -830,7 +830,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
               },
             },
             U: {
-              method: 'insert_beforei',
+              method: 'move_beforei',
               value: {
                 find: ['mi', '===', '{eventMi}'],
                 beforei: '{value}',
@@ -1025,7 +1025,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
                     '<move>': {
                       scopeNode: 'move',
                       U: {
-                        method: 'insert_beforei',
+                        method: 'move_beforei',
                         value: {
                           find: [2, '===', '{key}'],
                           beforei: '{value}',
@@ -1064,7 +1064,7 @@ export const indexSchedulesActionBox: ActionBox<IScheduleWidget[]> = {
                           '<move>': {
                             scopeNode: 'move',
                             U: {
-                              method: 'insert_beforei',
+                              method: 'move_beforei',
                               value: {
                                 find: '{find}',
                                 beforei: '{value}',

@@ -1,3 +1,4 @@
+import { Executer } from 'back/complect/executer/Executer';
 import { IExportableOrder } from 'shared/api';
 import { cmExer } from '../../../../../CmExer';
 import { IExportableOrderMe, INewExportableOrder } from '../../../../../col/com/order/Order.model';
@@ -20,6 +21,7 @@ export class EditableComOrders extends EditableComCorrects {
   }
 
   afterOrderChange() {
+    delete this._ords;
     this.setOrders();
     this.resetChordLabels();
   }
@@ -29,12 +31,14 @@ export class EditableComOrders extends EditableComCorrects {
     this.afterOrderChange();
   }
 
-  addOrder(topOrd: INewExportableOrder, refresh = true) {
+  addOrder(topOrd: INewExportableOrder, refresh = true, insertBeforeOrdw?: number) {
     const w = this.getNextOrdWid();
 
-    this.exec({
+    const findAfterOrder = insertBeforeOrdw == null ? null : ['w', '===', insertBeforeOrdw];
+
+    const exec = {
       action: 'comAddOrderBlock',
-      method: 'push',
+      method: 'insert_before_item_or_push',
       args: {
         ordw: w,
         texti: topOrd.t,
@@ -42,8 +46,12 @@ export class EditableComOrders extends EditableComCorrects {
         chordsi: topOrd.c,
         anchor: topOrd.a,
         uniq: topOrd.u,
+        positions: topOrd.p,
+        findAfterOrder,
       },
-    });
+    } as const;
+
+    this.exec(exec);
 
     const ord: IExportableOrderMe = { top: { w }, header: this.emptyOrderHeader };
 
@@ -51,7 +59,14 @@ export class EditableComOrders extends EditableComCorrects {
       if (topOrd[key as never] != null) ord.top[key] = topOrd[key as never];
     });
 
-    this.ords.push(ord);
+    Executer.doIt({
+      method: 'insert_before_item_or_push',
+      value: { insertValue: { ...topOrd, w }, findAfterItem: findAfterOrder },
+      lastTrace: 'o',
+      penultimate: this.top,
+      target: this.top.o,
+    });
+
     if (refresh) this.afterOrderChange();
   }
 
@@ -161,7 +176,7 @@ export class EditableComOrders extends EditableComCorrects {
   }
 
   getNextOrdWid() {
-    return (this.ords?.reduce((w, ord) => (ord.top.w == null || ord.top.w < w ? w : ord.top.w), -1) ?? -1) - -1;
+    return (this.top.o?.reduce((w, ord) => (ord.w == null || ord.w < w ? w : ord.w), -1) ?? -1) - -1;
   }
 
   addOrderAnchor(ord: EditableOrder) {

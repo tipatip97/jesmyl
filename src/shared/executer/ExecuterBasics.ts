@@ -539,7 +539,7 @@ export class ExecuterBasics {
               if (itemi > -1) target.splice(itemi, 1);
               else target?.push(smylib.clone(value));
               break;
-            case 'insert_beforei': {
+            case 'move_beforei': {
               if (!smylib.isArr(target) || value == null) break;
               const { find, beforei } = value;
               if (!smylib.isArr(find) || !smylib.isNum(beforei)) break;
@@ -549,6 +549,25 @@ export class ExecuterBasics {
               spreadTarget.splice(beforei, 0, item);
 
               penultimate[lastTrace] = spreadTarget.filter(insertBeforeiItIt);
+              break;
+            }
+            case 'insert_before_item_or_push': {
+              if (!smylib.isArr(target) || value == null) break;
+              const { findAfterItem, insertValue } = value;
+              console.log({ target, value, penultimate, lastTrace });
+
+              if (smylib.isArr(findAfterItem)) {
+                const spreadTarget = [...target];
+                const index = spreadTarget.findIndex(item => this.isExpected(item, findAfterItem));
+
+                if (index < 0) break;
+
+                spreadTarget.splice(index, 0, insertValue);
+                penultimate[lastTrace] = spreadTarget;
+              } else {
+                penultimate[lastTrace].push(insertValue);
+              }
+
               break;
             }
             case 'concat':

@@ -16,6 +16,7 @@ interface Props {
   chordVisibleVariant: ChordVisibleVariant;
   showInvisibles?: boolean;
   specialClassId?: string;
+  isHideRepeats?: boolean;
 }
 
 export default function TheOrder(props: Props) {
@@ -107,7 +108,7 @@ export default function TheOrder(props: Props) {
     );
   }
 
-  const lines = (orderUnit.repeatedText() || '').split(makeRegExp('/\\n/'));
+  const lines = (props.isHideRepeats ? orderUnit.text : orderUnit.repeatedText() || '').split(makeRegExp('/\\n/'));
 
   return (
     <div

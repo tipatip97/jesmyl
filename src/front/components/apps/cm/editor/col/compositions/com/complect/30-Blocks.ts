@@ -1,3 +1,4 @@
+import { Order } from 'front/components/apps/cm/col/com/order/Order';
 import { mylib } from 'front/utils';
 import { makeRegExp } from 'shared/utils';
 import { EditableComOrders } from './20-Orders';
@@ -88,19 +89,131 @@ export class EditableComBlocks extends EditableComOrders {
   }
 
   insertBlocks(coln: 'texts' | 'chords', coli: number, value = '', prev = '...') {
-    if (coli === (this[coln]?.length || 0) - 1) {
-      this.add(coln, '', true);
-    } else {
-      this[coln]?.concat(value).forEach((_, ccoli, ccola) => {
-        if (ccoli <= coli) return;
-        const val = ccoli - 1 === coli ? value : ccoli === coli ? prev : '' + ccola[ccoli - 1];
+    this[coln]?.concat(value).forEach((_, ccoli, ccola) => {
+      if (ccoli <= coli) return;
+      const val = ccoli - 1 === coli ? value : ccoli === coli ? prev : '' + ccola[ccoli - 1];
 
-        this.changeBlock(coln, ccoli, val, true);
-      });
+      this.changeBlock(coln, ccoli, val, true);
+    });
 
-      this.updateOrderSticks(coln, coli, 1);
-    }
+    this.updateOrderSticks(coln, coli, 1);
 
     if (coln === 'chords') this.resetChordLabels();
   }
+
+  verticalDivideBlockRender = (() => {
+    type Attrs = Partial<{ disabledReason: string; disabled: boolean; confirm: string; onClick: () => void }>;
+    type Render = <Elem>(render: (isCanShow: boolean, attrs?: Attrs) => Elem) => Elem;
+    const splitter = '\n\n';
+
+    return (exec: <Value>(value?: Value) => Value | und, txti: number): Render => {
+      const texts = this.texts;
+
+      if (!texts) return render => render(false);
+
+      const text = texts[txti]?.trim();
+
+      if (!text?.includes(splitter)) return render => render(false);
+
+      const textOrder = this.ords.find(ord => ord.top.t === txti);
+      const attrs: Attrs = { disabled: true };
+      const textSplittedBlockLengths = text.split(splitter).map(block => block.split('\n').length);
+      const linesCount = textSplittedBlockLengths.reduce((acc, count) => acc + count, 0);
+
+      do {
+        if (textOrder === undefined) {
+          attrs.disabledReason = 'Текст не прикреплён ни к одному блоку';
+          break;
+        }
+
+        if (this.ords.reduce((acc, ord) => acc + (ord.top.t === txti ? 1 : 0), 0) > 1) {
+          attrs.disabledReason = 'Текст должен быть прикреплён только к одному блоку';
+          break;
+        }
+
+        if (
+          this.ords.some(
+            ord =>
+              ord.top.c === textOrder.top.c &&
+              ord.top.t != null &&
+              ord.top.t !== textOrder.top.t &&
+              texts[ord.top.t].split('\n').length !== linesCount,
+          )
+        ) {
+          attrs.confirm =
+            'Не все аналогичные тексты (с такими же аккордами) имеют такое же количество строк. Продолжить?';
+        }
+
+        attrs.disabled = false;
+      } while (false);
+
+      if (!attrs.disabled && textOrder?.top.c != null && textOrder.top.t != null) {
+        const chordi = textOrder.top.c;
+
+        attrs.onClick = () => {
+          const splitBlock = (text: string | nil) => {
+            const textLines = text?.split(makeRegExp('/\n+/')) ?? [];
+            let addedLinesCount = 0;
+
+            const blockLines = textSplittedBlockLengths.map(linesCount => {
+              addedLinesCount += linesCount;
+
+              return textLines.slice(addedLinesCount - linesCount, addedLinesCount);
+            });
+
+            blockLines[blockLines.length - 1]?.push(...textLines.slice(addedLinesCount));
+
+            return blockLines;
+          };
+
+          splitBlock(this.chords?.[chordi]).forEach((blockLines, blockLinesi) => {
+            if (!blockLines.length) return;
+            const block = blockLines.join('\n').trim();
+
+            if (blockLinesi === 0) this.changeBlock('chords', chordi, block);
+            else this.insertBlocks('chords', chordi + blockLinesi - 1, block);
+          });
+
+          this.ords.forEach((ord, ordi, orda) => {
+            if (ord.top.t == null || ord.top.c !== chordi) return;
+            const texti = ord.top.t;
+            const textBlocks = splitBlock(Order.makeRepeatedText(texts[ord.top.t], ord.top.r));
+            const nextOrder = orda[ordi + 1];
+            let startSlicePositionsLinei = textBlocks[0].length;
+
+            textBlocks.forEach((blockLines, blockLinesi, blockLinesa) => {
+              if (!blockLines.length) return;
+              const block = blockLines.join('\n').trim().replace(makeRegExp('/&nbsp;/g'), '');
+
+              if (blockLinesi === 0) this.changeBlock('texts', texti, block);
+              else {
+                const txti = texti + blockLinesi;
+                this.insertBlocks('texts', txti - 1, block);
+
+                this.addOrder(
+                  {
+                    t: txti,
+                    c: chordi + blockLinesi,
+                    s: '++',
+                    p:
+                      blockLinesa.length - 1 === blockLinesi
+                        ? ord.top.p?.slice(startSlicePositionsLinei)
+                        : ord.top.p?.slice(startSlicePositionsLinei, (startSlicePositionsLinei += blockLines.length)),
+                  },
+                  true,
+                  nextOrder?.top?.w,
+                );
+              }
+            });
+          });
+
+          exec();
+
+          console.log(this);
+        };
+      }
+
+      return render => render(true, attrs);
+    };
+  })();
 }
