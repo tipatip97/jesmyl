@@ -110,6 +110,7 @@ if (~process.argv.indexOf('--push-back')) {
       platform: 'node',
       format: 'cjs',
       outfile: 'src/back/back.index.js',
+      external: ['node-schedule', 'ws'],
     });
     archive(false);
   })();

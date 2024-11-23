@@ -35,7 +35,7 @@ export class MyLib extends SMyLib {
 
   constructor() {
     super();
-    (window as any).MyLib = this;
+    if (typeof window !== 'undefined') (window as any).MyLib = this;
   }
 
   def(...args: any[]): any {
@@ -593,4 +593,4 @@ export class MyLib extends SMyLib {
 
 export const mylib = new MyLib();
 
-(window as any).mylib = mylib;
+if (typeof window !== 'undefined') (window as any).mylib = mylib;
