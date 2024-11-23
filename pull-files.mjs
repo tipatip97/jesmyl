@@ -11,8 +11,8 @@ import fetch from 'node-fetch';
   ['apps/cm', 'mp3Rules'],
   ['apps/cm', 'chords'],
   ['apps/cm', 'chordTracks'],
-  ['apps/leader', 'people'],
-  ['apps/leader', 'contexts'],
+  // ['apps/leader', 'people'],
+  // ['apps/leader', 'contexts'],
 ].forEach(([path, name, ext = 'json']) => {
   const fileExt = ext === null ? '' : `.${ext}`;
   const filePath = `${path}/${name}${fileExt}`;
