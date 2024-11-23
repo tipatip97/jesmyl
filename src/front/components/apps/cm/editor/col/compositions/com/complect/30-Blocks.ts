@@ -208,8 +208,6 @@ export class EditableComBlocks extends EditableComOrders {
           });
 
           exec();
-
-          console.log(this);
         };
       }
 

@@ -554,7 +554,6 @@ export class ExecuterBasics {
             case 'insert_before_item_or_push': {
               if (!smylib.isArr(target) || value == null) break;
               const { findAfterItem, insertValue } = value;
-              console.log({ target, value, penultimate, lastTrace });
 
               if (smylib.isArr(findAfterItem)) {
                 const spreadTarget = [...target];
