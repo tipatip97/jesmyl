@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { emptyFunc } from 'shared/utils';
 import { JStorage } from '../JStorage';
-import { mylib } from 'front/utils';
 
 const storages: Record<string, JStorage<any>> = {};
 const registered = new Set<StringBySlash>();

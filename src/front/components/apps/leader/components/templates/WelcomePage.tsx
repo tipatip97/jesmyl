@@ -1,4 +1,4 @@
-import { MyLib, mylib } from 'front/utils';
+import { mylib } from 'front/utils';
 import PrintableTemplate from './PrintableTemplate';
 
 const name = '$name{{$name}{????????}}';

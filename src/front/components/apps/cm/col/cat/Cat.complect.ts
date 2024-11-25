@@ -1,6 +1,5 @@
-import { makeRegExp } from 'shared/utils';
-import { itIt } from 'shared/utils';
 import { MyLib, mylib } from 'front/utils';
+import { itIt, makeRegExp } from 'shared/utils';
 import { Com } from '../com/Com';
 import { Cat } from './Cat';
 import { CatTracker } from './Cat.model';

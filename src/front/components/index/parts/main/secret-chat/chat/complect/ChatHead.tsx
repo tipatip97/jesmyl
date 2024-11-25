@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAtomSet } from '../../../../../../../complect/atoms';
 import Modal from '../../../../../../../complect/modal/Modal/Modal';
 import { ModalBody } from '../../../../../../../complect/modal/Modal/ModalBody';
@@ -9,7 +10,6 @@ import { IconEdit02StrokeRounded } from '../../../../../../../complect/the-icon/
 import { useDeviceId } from '../../../../../complect/takeDeviceId';
 import { useSecretChatContext } from '../../complect';
 import { secretChatsLastReadTsAtom, useChatMessagesHashMapSet } from '../../molecule';
-import { Link } from 'react-router-dom';
 
 export const SecretChatHead = () => {
   const [isOpenRedact, setIsOpenRedact] = useState<unknown>(false);

@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { makeRegExp } from 'shared/utils';
 import { useExerExec } from '../../../../../../../../complect/exer/hooks/useExer';
-import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../../../../complect/the-icon/IconButton';
 import { IconCancel01StrokeRounded } from '../../../../../../../../complect/the-icon/icons/cancel-01';
 import { IconGridStrokeRounded } from '../../../../../../../../complect/the-icon/icons/grid';

@@ -1,4 +1,3 @@
-import { MyLib } from 'front/utils';
 import { memo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAtomValue } from '../../../../../complect/atoms';

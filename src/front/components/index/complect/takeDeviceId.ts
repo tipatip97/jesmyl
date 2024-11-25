@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
 import { DeviceId } from 'shared/api';
 import { atom, useAtomValue } from '../../../complect/atoms';
 import { makeRandomTwiceName } from '../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
-import { MyLib, mylib } from 'front/utils';
 import { indexMolecule } from '../molecules';
 
 export const deviceIdAtom = atom(DeviceId.def, 'index', 'deviceId');

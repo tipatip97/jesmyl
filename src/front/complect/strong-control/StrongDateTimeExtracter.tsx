@@ -1,11 +1,9 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
-import { makeRegExp } from 'shared/utils';
-import { itIt } from 'shared/utils';
-import { MyLib, mylib } from 'front/utils';
+import { itIt, makeRegExp } from 'shared/utils';
 import { TheIconType } from '../the-icon/model';
 import { StrongControlProps } from './Strong.model';
 import StrongEditableField from './field/StrongEditableField';
-
 type TakeDateComponent = 'NO' | 'year' | 'month' | 'day';
 type TakeTimeComponent = 'hour' | 'min' | 'sec' | 'ms';
 type TakeTimeDiapason = 'NO' | `${TakeTimeComponent}-${TakeTimeComponent}`;

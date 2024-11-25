@@ -1,10 +1,10 @@
 import { ReactNode, useState } from 'react';
+import { CmMp3Rule } from 'shared/api';
 import { useAtomValue } from '../../../../../complect/atoms';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconEdit02StrokeRounded } from '../../../../../complect/the-icon/icons/edit-02';
-import { CmMp3Rule } from 'shared/api';
 import { cmMolecule } from '../../molecules';
 
 const mp3RulesAtom = cmMolecule.select(s => s.mp3Rules);

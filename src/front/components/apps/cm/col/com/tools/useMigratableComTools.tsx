@@ -1,9 +1,9 @@
+import { MyLib } from 'front/utils';
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { useAtom, useAtomValue } from '../../../../../../complect/atoms';
 import propsOfClicker from '../../../../../../complect/clicker/propsOfClicker';
 import { contextCreator } from '../../../../../../complect/contextCreator';
-import { MyLib, mylib } from 'front/utils';
 import { cmMolecule } from '../../../molecules';
 import { Com } from '../Com';
 import { MigratableComToolName } from '../Com.model';
@@ -18,7 +18,7 @@ import { OpenPlayerTool } from './complect/OpenPlayerTool';
 import { RedactComTool } from './complect/RedactComTool';
 import { SelectedToggleTool } from './complect/SelectedToggleTool';
 import { TranslationTool } from './complect/TranslationTool';
-import { IsComToolIconItemsContext, ComToolItemAttrsContext } from './ComTool';
+import { ComToolItemAttrsContext, IsComToolIconItemsContext } from './ComTool';
 
 const comTopToolsAtom = cmMolecule.select(s => s.comTopTools);
 

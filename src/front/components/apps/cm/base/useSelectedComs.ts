@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
 import { useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CmComWid } from '../../../../../shared/api/complect/apps/cm/complect/enums';
 import { atom, useAtom } from '../../../../complect/atoms';
-import { mylib } from 'front/utils';
 import { Com } from '../col/com/Com';
 import { useCols } from '../cols/useCols';
 

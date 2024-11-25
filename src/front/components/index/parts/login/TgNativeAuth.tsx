@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { SokiServerEvent, TelegramNativeAuthUserData } from 'shared/api';
 import styled from 'styled-components';
 import { Script } from '../../../../complect/tags/Script';
-import { SokiServerEvent, TelegramNativeAuthUserData } from 'shared/api';
 import { soki } from '../../../../soki';
 
 const funcName = 'onTelegramNativeAuth';

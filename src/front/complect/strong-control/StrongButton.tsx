@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import SendButton from '../sends/send-button/SendButton';
 import useToast from '../modal/useToast';
+import SendButton from '../sends/send-button/SendButton';
 import { StrongControlProps } from './Strong.model';
 import { strongPrepareArgsAndSend, useStrongExerContext } from './useStrongControl';
 

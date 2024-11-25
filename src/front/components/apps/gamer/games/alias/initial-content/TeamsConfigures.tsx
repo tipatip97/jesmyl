@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
 import { useGetRandomTwiceName } from '../../../../../../complect/hooks/random-twice-name/useGetRandomTwiceName';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
-import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../../../complect/the-icon/IconCheckbox';
 import { IconUserStrokeRounded } from '../../../../../../complect/the-icon/icons/user';

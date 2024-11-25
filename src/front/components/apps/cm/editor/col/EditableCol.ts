@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { makeRegExp } from 'shared/utils';
 import { ExecArgs, FreeExecDict } from '../../../../../complect/exer/Exer.model';
-import { MyLib, mylib } from 'front/utils';
 import { BaseNamed, BaseNamedExportables } from '../../base/BaseNamed';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
 import { cmExer } from '../../CmExer';

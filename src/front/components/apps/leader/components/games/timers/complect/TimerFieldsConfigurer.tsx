@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import { useMemo, useState } from 'react';
-import { MyLib, mylib } from 'front/utils';
 import SendButton from '../../../../../../../complect/sends/send-button/SendButton';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 import { IconArrowDown02StrokeRounded } from '../../../../../../../complect/the-icon/icons/arrow-down-02';

@@ -1,7 +1,7 @@
 import { SokiServerEvent } from 'shared/api';
+import useToast from '../modal/useToast';
 import EvaSendButton from '../sends/eva-send-button/EvaSendButton';
 import { EvaSendButtonProps } from '../sends/eva-send-button/EvaSendButton.model';
-import useToast from '../modal/useToast';
 import { StrongControlProps } from './Strong.model';
 import { strongPrepareArgsAndSend, useStrongExerContext } from './useStrongControl';
 

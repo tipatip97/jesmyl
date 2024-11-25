@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import { ScreenTranslationControlPanel } from '../../+complect/translations/controls/ControllPanel';
+import { useInitSoki } from '../../../../app/useInitSoki';
 import { useAtomInkrement } from '../../../../complect/atoms';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useBibleSlideSyncInkrementer } from '../hooks/slide-sync';
@@ -10,7 +11,6 @@ import BibleTranslationControlledBottomPanel from './BottomPanel';
 import { BibleTranslationControlledTopPanel } from './TopPanel';
 import { bibleVerseiAtom } from './lists/atoms';
 import BibleSearchPanel from './search/Panel';
-import { useInitSoki } from '../../../../app/useInitSoki';
 
 interface Props {
   head: ReactNode;

@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { useEffect } from 'react';
 import { useAtomSet } from '../../../../../../complect/atoms';
-import { MyLib, mylib } from 'front/utils';
 import { useBibleTranslationJoinAddress, useBibleTranslationJoinAddressSetter } from '../../../hooks/address/address';
 import { useBibleAddressVersei } from '../../../hooks/address/verses';
 import { useBibleTranslationSlideSyncContentSetter } from '../../../hooks/slide-sync';

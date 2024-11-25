@@ -1,8 +1,8 @@
-import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import { IScheduleWidget } from 'shared/api';
 import { IconNotification01StrokeRounded } from '../../../complect/the-icon/icons/notification-01';
 import { IconNotificationOff01StrokeRounded } from '../../../complect/the-icon/icons/notification-off-01';
+import StrongEvaButton from '../../strong-control/StrongEvaButton';
 import { takeStrongScopeMaker, useScheduleWidgetRights } from '../useScheduleWidget';
-import { IScheduleWidget } from 'shared/api';
 
 export const ScheduleWidgetMyUserTgInform = ({ scope, schedule }: { scope: string; schedule: IScheduleWidget }) => {
   const rights = useScheduleWidgetRights(schedule);

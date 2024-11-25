@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { makeRegExp } from 'shared/utils';
+import styled from 'styled-components';
 
 interface Props {
   onError: (error: Error) => void;

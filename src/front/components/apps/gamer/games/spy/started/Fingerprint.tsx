@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { MyLib, mylib } from 'front/utils';
 import { makeWid } from '../../../../../../complect/useWid';
 import { FingerprintSVG } from '../resources/fingerprint.svg';
 

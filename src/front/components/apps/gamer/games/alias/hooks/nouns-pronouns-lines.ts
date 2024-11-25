@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import { useMemo } from 'react';
-import { MyLib, mylib } from 'front/utils';
 import { useIndexNounPronsWords } from '../../../../../index/molecules';
 
 export const useNounsPronounsLines = () => {

@@ -1,8 +1,8 @@
 import { useSearchParams } from 'react-router-dom';
+import { IScheduleWidget } from 'shared/api';
 import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
 import { FullContent } from '../../fullscreen-content/FullContent';
 import IconButton from '../../the-icon/IconButton';
-import { IScheduleWidget } from 'shared/api';
 import { ScheduleWidgetLiveTranslation } from './Live';
 
 const queryKey = 'follow';

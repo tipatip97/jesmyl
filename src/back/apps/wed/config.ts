@@ -1,7 +1,7 @@
+import { WedGuest } from '../../../shared/api/complect/apps/wed/complect/model';
 import { Executer } from '../../complect/executer/Executer';
 import { FilerAppConfig } from '../../complect/filer/Filer.model';
 import { jesmylTgBot } from '../../sides/telegram-bot/bot';
-import { WedGuest } from '../../../shared/api/complect/apps/wed/complect/model';
 
 const config: FilerAppConfig = {
   title: 'Свадьбы',

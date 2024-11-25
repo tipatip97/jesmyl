@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import propsOfClicker from '../clicker/propsOfClicker';
 import { IconCancel01StrokeRounded } from '../../complect/the-icon/icons/cancel-01';
 import { IconViewStrokeRounded } from '../../complect/the-icon/icons/view';
 import { IconViewOffSlashStrokeRounded } from '../../complect/the-icon/icons/view-off-slash';
+import propsOfClicker from '../clicker/propsOfClicker';
 import { TheIconType } from '../the-icon/model';
 import { KeyboardStorageCallbacks } from './complect/F.Callbacks';
 import {

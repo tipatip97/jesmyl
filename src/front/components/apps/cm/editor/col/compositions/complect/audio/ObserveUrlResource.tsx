@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
+import { CmMp3ContainsPageResult } from 'shared/api';
 import { useAtomValue } from '../../../../../../../../complect/atoms';
 import KeyboardInput from '../../../../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../../../../complect/sends/send-button/SendButton';
 import serviceMaster from '../../../../../../../../complect/service/serviceMaster';
-import { CmMp3ContainsPageResult } from 'shared/api';
 import { cmMolecule } from '../../../../../molecules';
 
 const mp3RulesAtom = cmMolecule.select(s => s.mp3Rules);

@@ -1,3 +1,4 @@
+import { MyLib, mylib } from 'front/utils';
 import React, { Suspense, useEffect, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { itIt } from 'shared/utils';
@@ -5,7 +6,6 @@ import { AppName, appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { useAtom, useAtomValue } from '../../../../complect/atoms';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
-import { MyLib, mylib } from 'front/utils';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import IconCheckbox from '../../../../complect/the-icon/IconCheckbox';

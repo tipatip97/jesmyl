@@ -1,9 +1,9 @@
+import { mylib } from 'front/utils';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useInitSoki } from '../../../app/useInitSoki';
 import { removePullRequisites, useAuthState } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
-import { MyLib, mylib } from 'front/utils';
 import { TelegramWebAppApiOr } from '../../tg-app/getTgApi';
 import { TelegramWebApp, TelegramWebAppInitData } from '../../tg-app/model';
 import { TheIconLoading } from '../../the-icon/IconLoading';

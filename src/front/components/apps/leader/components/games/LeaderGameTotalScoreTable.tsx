@@ -1,7 +1,7 @@
+import { MyLib } from 'front/utils';
 import { useMemo, useState } from 'react';
 import { itIt } from 'shared/utils';
 import useFullContent from '../../../../../complect/fullscreen-content/useFullContent';
-import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrowDown01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-down-01';
 import { IconArrowUp01StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-up-01';

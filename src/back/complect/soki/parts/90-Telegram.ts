@@ -1,8 +1,8 @@
 import { User } from 'node-telegram-bot-api';
+import { SokiServerDoAction, SokiServerDoActionProps, TelegramNativeAuthUserData } from 'shared/api';
 import { tglogger } from '../../../sides/telegram-bot/log/log-bot';
 import { supportTelegramAuthorizations } from '../../../sides/telegram-bot/prod/authorize';
 import { SokiAuther } from '../SokiAuther';
-import { SokiServerDoAction, SokiServerDoActionProps, TelegramNativeAuthUserData } from 'shared/api';
 import { SokiServerServices } from './80-Services';
 
 export class SokiServerTelegram extends SokiServerServices implements SokiServerDoAction<`${'Telegram'}${'Auth'}`> {

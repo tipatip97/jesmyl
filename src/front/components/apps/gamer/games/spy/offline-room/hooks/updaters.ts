@@ -1,11 +1,11 @@
+import { mylib } from 'front/utils';
 import { useCallback } from 'react';
-import { MyLib, mylib } from 'front/utils';
 import { useCurrentOfflineRoomUpdater } from '../../../../complect/rooms/offline-room/hooks/actions';
 import { useGamerOfflineRoomsPlayers } from '../../../../complect/rooms/offline-room/hooks/players';
+import { useJoinedOfflineGame } from '../../../../molecules';
 import { SpyRoomState } from '../../Spy.model';
 import { secretSpyRole, unsecretSpyRole, useSpyActualLocationsNaked } from '../../hooks/locations';
 import { useSpyOfflineCurrentRoomState } from './state';
-import { useJoinedOfflineGame } from '../../../../molecules';
 
 export default function useSpyOfflineRoomStateUpdaters() {
   const players = useGamerOfflineRoomsPlayers();

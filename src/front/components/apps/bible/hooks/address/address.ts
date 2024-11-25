@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { useCallback } from 'react';
 import { useAtomSet, useAtomValue } from '../../../../../complect/atoms';
-import { MyLib, mylib } from 'front/utils';
 import { BibleBooki, BibleChapteri, BibleTranslationJoinAddress, BibleVersei } from '../../model';
 import { bibleMolecule } from '../../molecules';
 import { useBibleSingleAddressSetter } from '../../translations/lists/atoms';

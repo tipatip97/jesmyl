@@ -3,6 +3,7 @@ import { ScreenTranslateConfigurationBackground } from '../../+complect/translat
 import { ScreenTranslateConfigurationColor } from '../../+complect/translations/complect/Color';
 import { ScreenTranslateConfigurationDisplay } from '../../+complect/translations/complect/Display';
 import { ScreenTranslateConfigurationFontFamily } from '../../+complect/translations/complect/FontFamily';
+import { ScreenTranslateConfigurationFontStyle } from '../../+complect/translations/complect/FontStyle';
 import { ScreenTranslateConfigurationFontWeight } from '../../+complect/translations/complect/FontWeight';
 import { ScreenTranslateConfigurationNameChanger } from '../../+complect/translations/complect/NameChanger';
 import { ScreenTranslateConfigurationOpacity } from '../../+complect/translations/complect/Opacity';
@@ -12,7 +13,6 @@ import { useActualRef } from '../../../../complect/useActualRef';
 import { useDebounceAction } from '../../../../complect/useDebounceAction';
 import { useUpdateBibleCurrentTranslationConfig } from './hooks/update-config';
 import { BibleTranslationScreenConfig } from './model';
-import { ScreenTranslateConfigurationFontStyle } from '../../+complect/translations/complect/FontStyle';
 
 interface Props {
   currentConfig: BibleTranslationScreenConfig;

@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
+import { LeaderCleans } from '../LeaderCleans';
 import { GameTeamImportable } from './teams/GameTeams.model';
 import { RateSortedItem } from './timers/GameTimer.model';
 import TimerScreen from './timers/complect/TimerScreen';
 import useGames from './useGames';
-import { LeaderCleans } from '../LeaderCleans';
 
 export default function TotalScoreTable({ selectedTimers }: { selectedTimers: number[] }) {
   const [openScores, updateOpenScores] = useState<number[]>([]);

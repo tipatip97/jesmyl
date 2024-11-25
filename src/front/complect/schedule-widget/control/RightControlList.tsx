@@ -1,9 +1,9 @@
-import styled from 'styled-components';
 import { ScheduleWidgetRightTexts, ScheduleWidgetRightsCtrl } from 'shared/api';
-import { StrongControlProps } from '../../strong-control/Strong.model';
-import StrongEvaButton from '../../strong-control/StrongEvaButton';
+import styled from 'styled-components';
 import { IconToggleOffStrokeRounded } from '../../../complect/the-icon/icons/toggle-off';
 import { IconToggleOnStrokeRounded } from '../../../complect/the-icon/icons/toggle-on';
+import { StrongControlProps } from '../../strong-control/Strong.model';
+import StrongEvaButton from '../../strong-control/StrongEvaButton';
 
 export default function ScheduleWidgetRightControlList({
   R,

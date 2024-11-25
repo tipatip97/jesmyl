@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
-import { CmComWid } from '../../../../../shared/api/complect/apps/cm/complect/enums';
 import { itNUnd } from 'shared/utils';
-import { MyLib, mylib } from 'front/utils';
+import { CmComWid } from '../../../../../shared/api/complect/apps/cm/complect/enums';
 import PhaseContainerConfigurer from '../../../../complect/phase-container/PhaseContainerConfigurer';
 import { IconCancel01SolidRounded } from '../../../../complect/the-icon/icons/cancel-01';
 import { CmTranslationComListContext } from '../base/translations/context';

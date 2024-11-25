@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
+import { CmComBindAttach } from 'shared/api';
 import { itIt } from 'shared/utils';
 import { FullContent } from '../../../../../complect/fullscreen-content/FullContent';
-import { CmComBindAttach } from 'shared/api';
 import { ChordVisibleVariant } from '../../Cm.model';
 import { useCcat } from '../../col/cat/useCcat';
 import { Com } from '../../col/com/Com';

@@ -1,4 +1,4 @@
-import { MyLib, mylib } from 'front/utils';
+import { mylib } from 'front/utils';
 import { LeaderCleans } from '../../LeaderCleans';
 import PrintableTemplate from '../../templates/PrintableTemplate';
 import useGames from '../useGames';

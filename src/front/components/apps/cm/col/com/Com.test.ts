@@ -1,5 +1,5 @@
-import { CmComWid } from '../../../../../../shared/api/complect/apps/cm/complect/enums';
 import { IExportableCom } from 'shared/api';
+import { CmComWid } from '../../../../../../shared/api/complect/apps/cm/complect/enums';
 import { Com } from './Com';
 
 describe('Com', () => {

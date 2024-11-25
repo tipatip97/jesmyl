@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { SokiAppName } from 'shared/api';
 import { makeRegExp, SMyLib, smylib } from 'shared/utils';
 import admin from '../../apps/admin/config';
 import bible from '../../apps/bible/config';
@@ -7,9 +8,8 @@ import gamer from '../../apps/gamer/config/gamer-config';
 import index from '../../apps/index/config';
 import leader from '../../apps/leader/config';
 import wed from '../../apps/wed/config';
-import { SokiAppName } from 'shared/api';
-import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContents, FilerWatcher } from './Filer.model';
 import { rootDirective } from './Filer.complect';
+import { FilerAppRequirement, FilerAppStore, FilerContent, FilerContents, FilerWatcher } from './Filer.model';
 
 export class Filer {
   contents = {} as FilerContents;

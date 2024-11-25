@@ -1,10 +1,10 @@
 import styled from 'styled-components';
+import { useBibleTextContentContext } from '../../../texts/AddressContentContext';
 import { verseTranslateTitleCssClassName, verseTranslateTitleCssVariableName } from '../../complect';
 import { useBibleScreenTranslationFontSizeScreenAdapter } from '../../hooks/font-size-adapter/screen-adapter';
 import { useGetBibleScreenTranslationScreenStyle } from '../../hooks/styles/screen-style';
 import { BibleTranslationScreenConfig } from '../../model';
 import './Content.scss';
-import { useBibleTextContentContext } from '../../../texts/AddressContentContext';
 
 interface Props {
   screeni: number | und;

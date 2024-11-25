@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { CmMp3Rule } from 'shared/api';
 import { useAtomValue } from '../../../../../complect/atoms';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconHelpCircleStrokeRounded } from '../../../../../complect/the-icon/icons/help-circle';
 import { IconPlusSignCircleStrokeRounded } from '../../../../../complect/the-icon/icons/plus-sign-circle';
-import { CmMp3Rule } from 'shared/api';
 import { cmExer } from '../../CmExer';
 import { cmMolecule } from '../../molecules';
 import PhaseCmEditorContainer from '../phase-editor-container/PhaseCmEditorContainer';

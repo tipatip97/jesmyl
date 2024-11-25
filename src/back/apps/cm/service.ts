@@ -1,7 +1,7 @@
 import https from 'https';
+import { CmMp3Rule } from 'shared/api';
 import { smylib } from 'shared/utils';
 import { filer } from '../../complect/filer/Filer';
-import { CmMp3Rule } from 'shared/api';
 
 const fetch = (url: string) => {
   return new Promise<string>((resolve, reject) => {

@@ -1,9 +1,9 @@
 import { useBottomPopup } from '../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import BrutalItem from '../../../complect/brutal-item/BrutalItem';
+import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
 import { IconGameController03StrokeRounded } from '../../../complect/the-icon/icons/game-controller-03';
 import { IconUserStrokeRounded } from '../../../complect/the-icon/icons/user';
 import { IconUserGroupStrokeRounded } from '../../../complect/the-icon/icons/user-group';
-import PhaseContainerConfigurer from '../../../complect/phase-container/PhaseContainerConfigurer';
 import { useLeaderCcontext } from './components/contexts/useContexts';
 import { CurrentContextSelectPage } from './components/CurrentContextSelectPage';
 import { GeneralMoreContenter } from './GeneralMore';

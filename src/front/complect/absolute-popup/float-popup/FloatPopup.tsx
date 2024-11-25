@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { ThrowEvent } from '../../eventer/ThrowEvent';
 import Portal from '../../popups/[complect]/Portal';
 import useMountTransition from '../../popups/useMountTransition';
-import { ThrowEvent } from '../../eventer/ThrowEvent';
 
 export const useFloatPopupCoords = <Additions,>(initState: ({ x: number; y: number } & Additions) | null = null) =>
   useState(initState);

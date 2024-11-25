@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { ReactNode, useMemo, useState } from 'react';
 import { useAtomValue } from '../../../../../complect/atoms';
-import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconArrowRight02StrokeRounded } from '../../../../../complect/the-icon/icons/arrow-right-02';
 import { IconCalendar03StrokeRounded } from '../../../../../complect/the-icon/icons/calendar-03';

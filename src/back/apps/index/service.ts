@@ -4,9 +4,9 @@ import {
   ScheduleStorage,
   scheduleWidgetUserRights,
   ScheduleWidgetUserRoleRight,
+  SokiServiceCallback,
 } from 'shared/api';
 import { smylib } from 'shared/utils';
-import { SokiServiceCallback } from 'shared/api';
 import { ExecutionDict } from '../../../shared/api/complect/executer/model';
 import { filer } from '../../complect/filer/Filer';
 import sokiServer from '../../complect/soki/SokiServer';

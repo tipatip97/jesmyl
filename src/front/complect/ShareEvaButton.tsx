@@ -1,8 +1,8 @@
+import { mylib } from 'front/utils';
 import { ReactNode } from 'react';
-import useModal from './modal/useModal';
-import { MyLib, mylib } from 'front/utils';
-import IconButton from './the-icon/IconButton';
 import { IconShare08StrokeRounded } from '../complect/the-icon/icons/share-08';
+import useModal from './modal/useModal';
+import IconButton from './the-icon/IconButton';
 
 type PrepareResult = {
   url?: string;

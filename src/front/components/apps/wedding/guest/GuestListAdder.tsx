@@ -1,3 +1,4 @@
+import { mylib } from 'front/utils';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import {
@@ -8,7 +9,6 @@ import {
 import TheButton from '../../../../complect/Button';
 import Dropdown from '../../../../complect/dropdown/Dropdown';
 import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
-import { MyLib, mylib } from 'front/utils';
 import { useGetExcelValueList } from '../../../../complect/useGetExcelValueList';
 import { wedExer } from '../exer';
 import { WedGuestFace } from './GuestFace';

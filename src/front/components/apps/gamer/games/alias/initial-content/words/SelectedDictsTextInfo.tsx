@@ -1,4 +1,4 @@
-import { MyLib, mylib } from 'front/utils';
+import { mylib } from 'front/utils';
 import { useNounsPronounsLines } from '../../hooks/nouns-pronouns-lines';
 import { useAliasPacks } from '../../molecules';
 

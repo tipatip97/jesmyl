@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { emptyFunc } from 'shared/utils';
+import styled from 'styled-components';
 import JesmylLogo from '../../../../../../complect/jesmyl-logo/JesmylLogo';
 import IconButton from '../../../../../../complect/the-icon/IconButton';
 import { IconPauseStrokeRounded } from '../../../../../../complect/the-icon/icons/pause';

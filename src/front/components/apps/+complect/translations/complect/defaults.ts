@@ -1,10 +1,10 @@
-import { ScreenTranslateCurrentConfigTypeTextAlign } from './TextAlign';
 import { ScreenTranslateConfigTypeFontWeight } from './FontWeight';
 import {
   ScreenTranslationBackgroundConfigs,
   ScreenTranslationPositionConfig,
   ScreenTranslationTextConfig,
 } from './model';
+import { ScreenTranslateCurrentConfigTypeTextAlign } from './TextAlign';
 
 export const defaultScreenTranslationPositionConfig: ScreenTranslationPositionConfig = {
   left: 5,

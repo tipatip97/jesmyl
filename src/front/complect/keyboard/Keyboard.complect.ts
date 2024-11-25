@@ -1,5 +1,5 @@
+import { MyLib } from 'front/utils';
 import { createContext, ReactNode } from 'react';
-import { MyLib, mylib } from 'front/utils';
 import { KeyboardKeyDict, KeyboardKeyTranslateCase, KeyboardKeyTranslateLanguage } from './Keyboard.model';
 
 export const languagedKeys: Record<

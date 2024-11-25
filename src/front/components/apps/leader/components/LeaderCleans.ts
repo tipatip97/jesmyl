@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
 import { makeRegExp } from 'shared/utils';
 import SourceBased from '../../../../complect/SourceBased';
 import { ClientExecutionDict } from '../../../../complect/exer/Exer.model';
-import { MyLib, mylib } from 'front/utils';
 import { TeamGameImportable } from '../Leader.model';
 import { leaderExer } from '../leaderExer';
 import { LeaderContextCreatable, LeaderContextImportable } from './contexts/Contexts.model';

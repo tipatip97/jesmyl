@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import Dropdown from '../../../../../../../complect/dropdown/Dropdown';
-import { MyLib, mylib } from 'front/utils';
 import { GameTeamImportable } from '../../teams/GameTeams.model';
 
 const dropdownTeamList = [

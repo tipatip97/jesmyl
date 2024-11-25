@@ -1,14 +1,13 @@
 import { useState } from 'react';
+import { IScheduleWidgetListCat, IScheduleWidgetListUnit, IScheduleWidgetUserCati } from 'shared/api';
 import styled from 'styled-components';
 import { IconEdit02StrokeRounded } from '../../../complect/the-icon/icons/edit-02';
 import { IconFile02StrokeRounded } from '../../../complect/the-icon/icons/file-02';
-import { IScheduleWidgetUserCati } from 'shared/api';
 import { ExpandableContent } from '../../expand/ExpandableContent';
 import Modal from '../../modal/Modal/Modal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
 import StrongEditableField from '../../strong-control/field/StrongEditableField';
 import IconButton from '../../the-icon/IconButton';
-import { IScheduleWidgetListCat, IScheduleWidgetListUnit } from 'shared/api';
 import ScheduleWidgetUserList from '../control/users/UserList';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetListUnitRedactor from './UnitRedactor';

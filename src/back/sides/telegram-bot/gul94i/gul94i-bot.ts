@@ -1,7 +1,7 @@
 import { jesmylTgBot } from '../bot';
+import { tgBotUrlController } from '../complect/url-controller';
 import { tglogger } from '../log/log-bot';
 import { JesmylTelegramBot } from '../tg-bot';
-import { tgBotUrlController } from '../complect/url-controller';
 
 export const gul94iTelegramBot = new JesmylTelegramBot({
   bot: jesmylTgBot,

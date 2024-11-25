@@ -1,9 +1,9 @@
+import { MyLib } from 'front/utils';
 import { CSSProperties, useMemo } from 'react';
 import { useScreenTranslationPositionsStyles } from '../../../../+complect/translations/complect/hooks/position-styles';
 import { useScreenTranslationTextStyles } from '../../../../+complect/translations/complect/hooks/text-styles';
-import { BibleTranslationScreenConfig } from '../../model';
-import { MyLib, mylib } from 'front/utils';
 import { verseTranslateTitleCssVariableName } from '../../complect';
+import { BibleTranslationScreenConfig } from '../../model';
 
 export const screenGridArea = 'screen-grid-area';
 

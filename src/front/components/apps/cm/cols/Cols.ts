@@ -1,5 +1,5 @@
-import SourceBased from '../../../../complect/SourceBased';
 import { IExportableCols, IExportableCom } from 'shared/api';
+import SourceBased from '../../../../complect/SourceBased';
 import { Cat } from '../col/cat/Cat';
 import { Com } from '../col/com/Com';
 import { ICols } from './Cols.model';
