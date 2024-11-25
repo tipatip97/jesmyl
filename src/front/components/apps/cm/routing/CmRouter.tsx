@@ -1,7 +1,7 @@
+import { MyLib } from 'front/utils';
 import React, { Suspense, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useAtom } from '../../../../complect/atoms';
-import { MyLib, mylib } from 'front/utils';
 import TheCat from '../col/cat/TheCat';
 import { useTakeActualComw } from '../col/com/useCcom';
 import Lists from '../lists/Lists';

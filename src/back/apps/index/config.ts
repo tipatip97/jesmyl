@@ -1,5 +1,5 @@
-import { rootDirective } from '../../complect/filer/Filer.complect';
 import { Executer } from '../../complect/executer/Executer';
+import { rootDirective } from '../../complect/filer/Filer.complect';
 import { FilerAppConfig } from '../../complect/filer/Filer.model';
 import { indexSchedulesActionBox } from './schedules/action-box/action-box';
 import { indexSchedulesConfig } from './schedules/filer-requirement';

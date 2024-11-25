@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { LocalSokiAuth } from 'shared/api';
 import {
   FreeRoutePath,
   RoutePath,
@@ -6,7 +7,6 @@ import {
   RoutePhase,
   RoutePhasePoint,
 } from '../../components/router/Router.model';
-import { LocalSokiAuth } from 'shared/api';
 import { Exer } from '../exer/Exer';
 import { ExerStorage } from '../exer/Exer.model';
 import { ToastModalConfig } from '../modal/useToast';

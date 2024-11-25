@@ -1,7 +1,7 @@
 import { CSSProperties, useMemo } from 'react';
+import { useScreenTranslationPositionsStyles } from '../../../../+complect/translations/complect/hooks/position-styles';
 import { useScreenTranslationTextStyles } from '../../../../+complect/translations/complect/hooks/text-styles';
 import { BibleTranslationScreenConfig } from '../../model';
-import { useScreenTranslationPositionsStyles } from '../../../../+complect/translations/complect/hooks/position-styles';
 
 export const useGetBibleScreenTranslationAddressTextWrapperStyle = (
   currentConfig: BibleTranslationScreenConfig | und,

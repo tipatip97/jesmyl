@@ -1,16 +1,16 @@
+import { MyLib } from 'front/utils';
 import { ReactNode } from 'react';
-import styled from 'styled-components';
+import { IScheduleWidgetDayEvent } from 'shared/api';
 import { itNNull } from 'shared/utils';
+import styled from 'styled-components';
 import { IconFavouriteStrokeRounded } from '../../../../complect/the-icon/icons/favourite';
 import { IconHeartbreakStrokeRounded } from '../../../../complect/the-icon/icons/heartbreak';
 import { IconHelpCircleStrokeRounded } from '../../../../complect/the-icon/icons/help-circle';
 import { IconMessage01StrokeRounded } from '../../../../complect/the-icon/icons/message-01';
 import useIsExpand from '../../../expand/useIsExpand';
-import { MyLib, mylib } from 'front/utils';
 import { StrongComponentProps } from '../../../strong-control/Strong.model';
 import StrongEvaButton from '../../../strong-control/StrongEvaButton';
 import StrongEditableField from '../../../strong-control/field/StrongEditableField';
-import { IScheduleWidgetDayEvent } from 'shared/api';
 import { takeStrongScopeMaker, useScheduleWidgetRightsContext } from '../../useScheduleWidget';
 
 const ratePoints = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];

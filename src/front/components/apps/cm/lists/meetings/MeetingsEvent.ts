@@ -1,8 +1,8 @@
-import { MyLib, mylib } from 'front/utils';
+import { mylib } from 'front/utils';
+import { IExportableMeetingsEvent } from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
 import { BaseNamed } from '../../base/BaseNamed';
 import { Com } from '../../col/com/Com';
 import { Cols } from '../../cols/Cols';
-import { IExportableMeetingsEvent } from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
 
 export class MeetingsEvent extends BaseNamed<IExportableMeetingsEvent> {
   coms?: Com[];

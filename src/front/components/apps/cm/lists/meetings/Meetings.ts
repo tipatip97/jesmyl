@@ -1,13 +1,13 @@
+import { MyLib, mylib } from 'front/utils';
+import {
+  IExportableMeetings,
+  IExportableMeetingsContextMap,
+  IExportableMeetingsEvent,
+  MeetingsContext,
+  MeetingsContextMap,
+} from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
 import { Cols } from '../../cols/Cols';
 import { MeetingsEvent } from './MeetingsEvent';
-import {
-  IExportableMeetingsEvent,
-  IExportableMeetings,
-  MeetingsContextMap,
-  MeetingsContext,
-  IExportableMeetingsContextMap,
-} from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
-import { MyLib, mylib } from 'front/utils';
 
 export class Meetings {
   event?: MeetingsEvent;

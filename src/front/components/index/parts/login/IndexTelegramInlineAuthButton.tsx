@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { Link } from 'react-router-dom';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
-import { MyLib, mylib } from 'front/utils';
 import { TelegramWebAppApiOr } from '../../../../complect/tg-app/getTgApi';
 import IconButton from '../../../../complect/the-icon/IconButton';
 import { IconAuthorizedStrokeRounded } from '../../../../complect/the-icon/icons/authorized';

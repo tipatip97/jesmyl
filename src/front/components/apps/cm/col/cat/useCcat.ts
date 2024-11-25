@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { useParams } from 'react-router-dom';
 import { CmCatWid } from '../../../../../../shared/api/complect/apps/cm/complect/enums';
-import { MyLib, mylib } from 'front/utils';
 import { useCols } from '../../cols/useCols';
 import { Cat } from './Cat';
 

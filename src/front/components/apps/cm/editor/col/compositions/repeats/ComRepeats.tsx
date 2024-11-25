@@ -1,4 +1,5 @@
 import { CSSProperties, useCallback, useEffect, useState } from 'react';
+import { OrderRepeats } from 'shared/api';
 import styled from 'styled-components';
 import { useExerExec } from '../../../../../../../complect/exer/hooks/useExer';
 import { useConfirm } from '../../../../../../../complect/modal/confirm/useConfirm';
@@ -6,7 +7,6 @@ import { IconCancel01StrokeRounded } from '../../../../../../../complect/the-ico
 import { IconFlag03StrokeRounded } from '../../../../../../../complect/the-icon/icons/flag-03';
 import { IconLinkBackwardStrokeRounded } from '../../../../../../../complect/the-icon/icons/link-backward';
 import { IconPinStrokeRounded } from '../../../../../../../complect/the-icon/icons/pin';
-import { OrderRepeats } from 'shared/api';
 import { ChordVisibleVariant } from '../../../../Cm.model';
 import ComLine from '../../../../col/com/line/ComLine';
 import TheOrder from '../../../../col/com/order/TheOrder';

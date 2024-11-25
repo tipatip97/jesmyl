@@ -1,7 +1,6 @@
+import { mylib } from 'front/utils';
 import { memo, useEffect, useState } from 'react';
-import { makeRegExp } from 'shared/utils';
-import { itIt } from 'shared/utils';
-import { MyLib, mylib } from 'front/utils';
+import { itIt, makeRegExp } from 'shared/utils';
 import { bibleMolecule } from '../../../bible/molecules';
 import { eeStorage } from '../../base/ee-storage/EeStorage';
 import { useEditableCols } from '../col/useEditableCols';

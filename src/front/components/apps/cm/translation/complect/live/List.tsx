@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
-import styled from 'styled-components';
 import { makeRegExp } from 'shared/utils';
+import styled from 'styled-components';
 import RollControled from '../../../base/RolledContent';
 import { useChordVisibleVariant } from '../../../base/useChordVisibleVariant';
 import { Com } from '../../../col/com/Com';

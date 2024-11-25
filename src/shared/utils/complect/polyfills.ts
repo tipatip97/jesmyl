@@ -74,6 +74,10 @@ export const setSharedPolyfills = () => {
   Array.prototype.sort = function (compareFunction) {
     return smylib.sort(this, compareFunction);
   };
+
+  (BigInt.prototype as any).toJSON = function () {
+    return +('' + this);
+  };
 };
 
 declare global {

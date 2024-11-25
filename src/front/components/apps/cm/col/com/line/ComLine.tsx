@@ -1,15 +1,19 @@
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
 import { makeRegExp } from 'shared/utils';
+import styled from 'styled-components';
 import { IComLineProps } from '../order/Order.model';
+
+const consonantLettersStr = '[йцкнгшщзхъфвпрлджчсмтьб]';
+const splitLettersReg = makeRegExp(`/([а-яё](?:${consonantLettersStr}(?=${consonantLettersStr}{2}))?[?!,.)-:;]?)/`);
 
 const insertDividedBits = (lettersText: string, chord: string | und) => {
   if (chord == null || chord.length < 2) return <span dangerouslySetInnerHTML={{ __html: lettersText }} />;
 
-  const text = lettersText.split(makeRegExp('/([а-яё][?!,.)-:;]?)/'));
+  const text = lettersText.split(splitLettersReg);
   const nodes = [];
 
   for (let txti = 0; txti < text.length; txti++) {
+    if (text[txti] === ' ') break;
     if (!text[txti]) continue;
 
     nodes.push(
@@ -203,7 +207,7 @@ const Line = styled.div`
     white-space: pre;
 
     &.space-word {
-      top: -1em;
+      /* top: -1em; */
     }
 
     &.pre,
@@ -302,11 +306,14 @@ const Line = styled.div`
     }
   }
 
-  .whole-word {
+  .whole-word,
+  .spaced-word {
     .dash-divider {
       display: none;
     }
+  }
 
+  .whole-word {
     [attr-chord] {
       &:has(+ [attr-chord]) {
         .fragment {
@@ -325,8 +332,28 @@ const Line = styled.div`
         }
       }
 
-      + [attr-chord]:before {
-        color: var(--color--7);
+      + [attr-chord] {
+        &:before {
+          color: var(--color--3);
+        }
+
+        + [attr-chord] {
+          &:before {
+            color: var(--text-color);
+          }
+
+          + [attr-chord] {
+            &:before {
+              color: var(--color--3);
+            }
+
+            + [attr-chord] {
+              &:before {
+                color: var(--text-color);
+              }
+            }
+          }
+        }
       }
     }
   }

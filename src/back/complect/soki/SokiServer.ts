@@ -1,24 +1,18 @@
 /* eslint-disable no-throw-literal */
+import { startCrTgAlarm } from 'back/apps/index/crTgAlarm';
+import { SokiClientEvent, SokiServerDoActionProps } from 'shared/api';
 import WebSocket, { WebSocketServer } from 'ws';
+import { setSharedPolyfills } from '../../../shared/utils/complect/polyfills';
 import { scheduleWidgetMessageCatcher } from '../../apps/index/schedules/tg-bot-inform/message-catchers';
 import { startTgGamerListener } from '../../sides/telegram-bot/gamer/tg-gamer';
 import { baseMessagesCatcher } from '../../sides/telegram-bot/message-catchers';
 import { ErrorCatcher } from '../ErrorCatcher';
-import { setSharedPolyfills } from '../../../shared/utils/complect/polyfills';
 import { SokiServerOtherEvents } from './parts/130-OtherEvents';
-import { SokiClientEvent, SokiServerDoActionProps } from 'shared/api';
-import { startCrTgAlarm } from 'back/apps/index/crTgAlarm';
 
 setSharedPolyfills();
 ErrorCatcher.logAllErrors();
 
 export class SokiServer extends SokiServerOtherEvents {
-  constructor() {
-    super();
-
-    this.onInitOtherEvents();
-  }
-
   start() {
     new WebSocketServer({ port: 4446 }).on('connection', (client: WebSocket) => {
       this.sendStatistic();

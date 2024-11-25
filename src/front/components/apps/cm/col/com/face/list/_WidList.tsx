@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
+import { itNNil } from 'shared/utils';
 import { CmComWid } from '../../../../../../../../shared/api/complect/apps/cm/complect/enums';
-import { itNNull } from 'shared/utils';
 import { useCols } from '../../../../cols/useCols';
 import { Com } from '../../Com';
 import { ListComFaceForSelectionsProps } from '../ComFace.model';
@@ -25,7 +25,7 @@ export const ComFaceListWidList = ({ list, ...comProps }: Props) => {
   return (
     cols && (
       <ComFaceListComList
-        list={list.map(comw => comsHashMap[comw]).filter(itNNull)}
+        list={list.map(comw => comsHashMap[comw]).filter(itNNil)}
         {...comProps}
       />
     )

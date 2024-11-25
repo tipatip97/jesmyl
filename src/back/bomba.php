@@ -91,18 +91,26 @@ function updateEdited(&$updated, &$created, $tmpPath, $workPath = '.')
     $workFilepath = $workPath . '/' . $tmpName;
 
     if (is_dir($tmpFilepath)) {
-      if (!is_dir($workFilepath)) {
-        mkdir($workFilepath);
-        $created[] = $workFilepath . '/';
-      }
+      // if ($workFilepath === './prisma/migrations') {
+      //   deleteForced($workFilepath);
+      //   rename($tmpFilepath, $workFilepath);
+      //   $updated[] = $workFilepath . '/...';
+      // } else {
+        if (!is_dir($workFilepath)) {
+          mkdir($workFilepath, 0755);
+          $created[] = $workFilepath . '/';
+        }
 
-      updateEdited($updated, $created, $tmpFilepath, $workFilepath);
+        updateEdited($updated, $created, $tmpFilepath, $workFilepath);
+      // }
     } elseif (is_file($tmpFilepath)) {
       if (!is_file($workFilepath) || md5(file_get_contents($tmpFilepath)) !== md5(file_get_contents($workFilepath))) {
-        if (is_file($workFilepath)) $updated[] = $workFilepath;
-        else $created[] = $workFilepath;
-
+        $isThereFile = is_file($workFilepath);
+        
         rename($tmpFilepath, $workFilepath);
+
+        if ($isThereFile) $updated[] = $workFilepath;
+        else $created[] = $workFilepath;
       }
     }
   }

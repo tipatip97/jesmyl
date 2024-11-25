@@ -1,9 +1,9 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
 import { atom, useAtom } from '../../../../complect/atoms';
 import Modal from '../../../../complect/modal/Modal/Modal';
 import { useActualRef } from '../../../../complect/useActualRef';
 import { IndexAdvertisingReminderModalContent } from './ReminderModal';
-import { MyLib, mylib } from 'front/utils';
 
 const lastRemindTsAtom = atom(0, 'index', 'lastRemindTs');
 const remindIntervalTs = mylib.howMs.inDay * 12;

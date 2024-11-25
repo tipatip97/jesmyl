@@ -17,12 +17,12 @@ import {
   ScheduleWidgetUserRoleRight,
 } from 'shared/api';
 import { convertMd2HTMLMaker, SMyLib, smylib } from 'shared/utils';
+import { attInformStorage } from '../../../../../shared/api/complect/schedule-widget/complect/attInformStorage';
 import { filer } from '../../../../complect/filer/Filer';
 import { SokiAuther } from '../../../../complect/soki/SokiAuther';
 import sokiServer from '../../../../complect/soki/SokiServer';
 import { jesmylTgBot } from '../../../../sides/telegram-bot/bot';
 import { tglogger } from '../../../../sides/telegram-bot/log/log-bot';
-import { attInformStorage } from '../../../../../shared/api/complect/schedule-widget/complect/attInformStorage';
 
 import { makeScheduleWidgetJoinTitle } from './message-catchers';
 

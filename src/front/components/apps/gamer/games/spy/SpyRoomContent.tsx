@@ -1,9 +1,9 @@
+import { mylib } from 'front/utils';
 import { useState } from 'react';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
-import { MyLib, mylib } from 'front/utils';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';
 import { useAuth } from '../../../../index/molecules';
 import { GamerRoomMember } from '../../Gamer.model';
@@ -22,8 +22,8 @@ import { useSpyActualLocationsNaked } from './hooks/locations';
 import { useSpyMyRole } from './hooks/my-role';
 import { useGamerCurrentRoomSpies } from './hooks/spies';
 import { useSpyRoomState } from './hooks/state';
-import SpyRoomStartedGame from './started/StartedGame';
 import { useSpyLocations } from './molecules';
+import SpyRoomStartedGame from './started/StartedGame';
 
 const defRoundTm = 480;
 const roundTms = [300, defRoundTm, 600, 720].map((id): DropdownItem<number> => {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import SendButton from '../../../../../../complect/sends/send-button/SendButton';
 import KeyboardInput from '../../../../../../complect/keyboard/KeyboardInput';
+import SendButton from '../../../../../../complect/sends/send-button/SendButton';
 import useIsRedactArea from '../../../../../../complect/useIsRedactArea';
 import { leaderExer } from '../../../leaderExer';
 import { LeaderCleans } from '../../LeaderCleans';

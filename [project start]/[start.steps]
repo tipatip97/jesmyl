@@ -15,6 +15,7 @@ a2enmod rewrite # for .htaccess work
 fuser -k 4446/tcp 
 
 apt install npm
+cd /var/www/jesmyl.ru/
 npm install
 npm install -g typescript
 npm i -g ts-node
@@ -22,9 +23,30 @@ npm i core-js
 npm i --save-dev @types/ws
 npm i -D tslib @types/node
 
+
 # open port 
 iptables -I INPUT -p tcp -m tcp --dport 4446 -j ACCEPT
 netstat -na | grep :4446
+
+
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+
+// on local
+sudo docker run -d --name testPostgresDB -e POSTGRES_PASSWORD=test -e POSTGRES_USER=jesmyl -e POSTGRES_DB=tjdb -p 3627:5432 postgres
+// on SSH
+sudo docker run -d --name postgresDB -e POSTGRES_PASSWORD=??????? -e POSTGRES_USER=jesmyl -e POSTGRES_DB=jdb -p 5432:5432 postgres
+
+npm i node-schedule
+npm i @prisma/client
+npx prisma generate
+npx prisma migrate dev
+nano .env
+/////////////// .env:
+GENERATE_SOURCEMAP=false
+DATABASE_URL="postgresql://jesmyl:????@localhost:5432/jdb"
+/////////////// .env
 
 nano /etc/systemd/system/jesmyl_soki.service
 

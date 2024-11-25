@@ -1,4 +1,4 @@
-import { SMyLib, smylib, makeRegExp } from 'shared/utils';
+import { makeRegExp, SMyLib, smylib } from 'shared/utils';
 
 const objMarker = '*';
 

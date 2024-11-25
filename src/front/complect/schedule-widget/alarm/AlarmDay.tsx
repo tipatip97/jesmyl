@@ -3,7 +3,7 @@ import { ScheduleWidgetDay, ScheduleWidgetDayProps } from '../days/Day';
 import ScheduleWidgetContextWrapper from '../general/ContextWrapper';
 import { takeScheduleStrongScopeMaker } from '../useScheduleWidget';
 
-export default function ScheduleAlarmDay(props: Omit<ScheduleWidgetDayProps, 'scope'>) {
+export default function ScheduleAlarmDay(props: OmitOwn<ScheduleWidgetDayProps, 'scope'>) {
   const scope = takeScheduleStrongScopeMaker(props.schedule.w);
 
   return (

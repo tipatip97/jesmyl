@@ -1,13 +1,11 @@
+import { isMobileDevice } from 'front/complect/device-differences';
+import { addEventListenerPipe, hookEffectPipe } from 'front/complect/hookEffectPipe';
 import { useEffect, useState } from 'react';
 import { SecretChat } from 'shared/api';
 import { makeRegExp } from 'shared/utils';
 import { useAtomSet, useAtomValue } from '../../../../../../../../complect/atoms';
-import { isMobileDevice } from '../../../../../../../../complect/device-differences';
-import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../../complect/hookEffectPipe';
-import { MyLib, mylib } from 'front/utils';
 import { useActualRef } from '../../../../../../../../complect/useActualRef';
 import { soki } from '../../../../../../../../soki';
-import { useDeviceId } from '../../../../../../complect/takeDeviceId';
 import {
   useSecretChatContext,
   useSecretChatLastReadTsContext,
@@ -21,16 +19,15 @@ export const useSecretChatSendMessageControl = (
   onMessageSent: (message: SecretChat.ImportableMessage) => void,
 ) => {
   const [isSending, setIsSending] = useState(false);
-  const myDeviceId = useDeviceId();
   const chat = useSecretChatContext();
   const setDraftMessages = useAtomSet(secretChatsDraftsAtom);
   const draftMessages = useAtomValue(secretChatsDraftsAtom);
-  const draft = draftMessages[chat.id];
+  const draft = draftMessages[chat.chatId];
   const messagesHashMap = useSecretChatMessagesHashContext();
   const chatLastReadTs = useSecretChatLastReadTsContext();
   const messageTss = useSecretChatMessagesTssContext();
 
-  const draftTargetTs = draft?.targetTs;
+  const draftTargetTs = draft?.replyId ?? draft?.editId;
   const draftTargetMessage = draftTargetTs ? messagesHashMap[draftTargetTs] : undefined;
 
   const sendMessageRef = useActualRef(() => {
@@ -46,22 +43,19 @@ export const useSecretChatSendMessageControl = (
     soki
       .send(
         {
-          secretMessage: {
-            chatId: chat.id,
-            targetIds: MyLib.keys(chat.users),
-            body: {
+          chatFetch: {
+            chatId: chat.chatId,
+            message: {
               text,
-              type: draftTargetTs
-                ? draft.type
-                : text.match(
-                      makeRegExp(
-                        '/^(\\p{RI}\\p{RI}|\\p{Emoji}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?(\\u{200D}\\p{Emoji}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?)+|\\p{EPres}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?|\\p{Emoji}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F}))$/u',
-                      ),
-                    )
-                  ? 'bigText'
-                  : 'text',
-              senderId: myDeviceId,
-              targetTs: draftTargetTs || undefined,
+              type: text.match(
+                makeRegExp(
+                  '/^(\\p{RI}\\p{RI}|\\p{Emoji}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?(\\u{200D}\\p{Emoji}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?)+|\\p{EPres}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F})?|\\p{Emoji}(\\p{EMod}+|\\u{FE0F}\\u{20E3}?|[\\u{E0020}-\\u{E007E}]+\\u{E007F}))$/u',
+                ),
+              )
+                ? 'BigText'
+                : 'Text',
+              replyMessageId: draft?.replyId,
+              editMessageId: draft?.editId,
             },
           },
         },
@@ -70,7 +64,7 @@ export const useSecretChatSendMessageControl = (
       .on(event => {
         setIsSending(false);
 
-        if (event.secretMessage == null) return;
+        if (event.chatsData == null) return;
         const node = inputRef.current;
 
         if (node) {
@@ -83,10 +77,18 @@ export const useSecretChatSendMessageControl = (
 
         setDraftMessages(prev => ({
           ...prev,
-          [chat.id]: { text: '', targetTs: undefined, type: 'text' },
+          [chat.chatId]: {
+            ...prev[chat.chatId],
+            text: prev[chat.chatId]?.prevSimpleMessageText ?? '',
+            editId: undefined,
+            replyId: undefined,
+            prevSimpleMessageText: '',
+          },
         }));
         setValue('');
-        onMessageSent(event.secretMessage);
+
+        const newMessage = event.chatsData.messages?.[chat.chatId]?.[0];
+        if (newMessage) onMessageSent(newMessage);
       });
   });
 
@@ -104,9 +106,8 @@ export const useSecretChatSendMessageControl = (
             saveDraftTimeout = setTimeout(() => {
               setDraftMessages(prev => ({
                 ...prev,
-                [chat.id]: {
-                  ...prev[chat.id],
-                  type: prev[chat.id]?.type ?? 'text',
+                [chat.chatId]: {
+                  ...prev[chat.chatId]!,
                   text: inputNode.value,
                 },
               }));
@@ -121,7 +122,7 @@ export const useSecretChatSendMessageControl = (
         }),
       )
       .effect();
-  }, [chat.id, inputRef, sendMessageRef, setDraftMessages]);
+  }, [chat.chatId, inputRef, sendMessageRef, setDraftMessages]);
 
   let unreadsCount = 0;
 
@@ -130,5 +131,11 @@ export const useSecretChatSendMessageControl = (
     unreadsCount++;
   }
 
-  return { isSending, sendMessageRef, draftTargetMessage, unreadsCount, messagesHashMap };
+  return {
+    isSending,
+    sendMessageRef,
+    draftTargetMessage,
+    unreadsCount,
+    messagesHashMap,
+  };
 };

@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
 import { mylib } from 'front/utils';
+import { useCallback } from 'react';
 import { LocalSokiAuth } from 'shared/api';
 
 export const useCheckIsAccessed = (auth: LocalSokiAuth) => {

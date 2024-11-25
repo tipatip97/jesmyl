@@ -1,8 +1,8 @@
+import { TBUsers } from 'back/db/Users';
+import { LocalSokiAuth, SokiCapsule, SokiClientEvent, SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
+import { Eventer, smylib } from 'shared/utils';
 import { WebSocket } from 'ws';
-import { SMyLib, smylib, makeRegExp } from 'shared/utils';
-import { Eventer } from 'shared/utils';
 import { SokiAuther, sokiAuther } from '../SokiAuther';
-import { LocalSokiAuth, SokiCapsule, SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
 import { SokiServerVisits } from './60-Visits';
 
 export class SokiServerConnection extends SokiServerVisits implements SokiServerDoAction<'Connect'> {
@@ -18,29 +18,42 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
 
     if (isDeleted && disconnecter) {
       this.capsulesByDeviceId.delete(disconnecter.deviceId);
+
+      if (disconnecter.auth?.login) {
+        this.capsulesByLogin.get(disconnecter.auth.login)?.delete(disconnecter);
+      }
       console.info(`DISCONNECTED: ${disconnecter.auth?.fio || 'Unknown'}`);
     } else {
       console.info('Disconnected Unknown client');
     }
   }
 
+  private setCapsule = async (client: WebSocket, auth: LocalSokiAuth | null, eventData: SokiClientEvent) => {
+    const capsule: SokiCapsule = {
+      auth,
+      deviceId: eventData.deviceId,
+      version: eventData.version,
+      urls: eventData.urls,
+      client,
+    };
+    this.capsules.set(client, capsule);
+    Eventer.invokeValue(this.onCapsuleSetValueListeners, capsule);
+
+    this.capsulesByDeviceId.set(capsule.deviceId, capsule);
+    if (capsule.auth?.login) {
+      const prev = this.capsulesByLogin.get(capsule.auth.login);
+      if (prev === undefined) {
+        this.capsulesByLogin.set(capsule.auth.login, new Set([capsule]));
+      } else {
+        prev.add(capsule);
+      }
+    }
+  };
+
   async doOnConnect({ appName, client, eventBody, eventData, requestId }: SokiServerDoActionProps) {
     if (eventBody.connect === undefined) return false;
 
     let auth: LocalSokiAuth | null;
-    const setCapsule = () => {
-      const capsule: SokiCapsule = {
-        auth,
-        deviceId: eventData.deviceId,
-        version: eventData.version,
-        urls: eventData.urls,
-        client,
-      };
-      this.capsules.set(client, capsule);
-      Eventer.invokeValue(this.onCapsuleSetListeners, capsule);
-
-      this.capsulesByDeviceId.set(capsule.deviceId, capsule);
-    };
 
     if (eventData.auth === undefined) {
       this.setVisit({
@@ -53,7 +66,7 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
 
       this.send({ authorized: false, appName: eventData.appName }, client);
 
-      setCapsule();
+      this.setCapsule(client, null, eventData);
       return true;
     }
 
@@ -90,6 +103,9 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
     }
 
     if (auth) {
+      if (auth.fio && auth.login && auth.nick)
+        TBUsers.setLastVisitOrCreate(auth.fio, auth.login, auth.nick, auth.tgAva, eventData.auth.tgId);
+
       if (auth.level < 100 && auth.nick !== undefined)
         this.setVisit({
           version: eventData.version,
@@ -101,7 +117,7 @@ export class SokiServerConnection extends SokiServerVisits implements SokiServer
           urls: eventData.urls,
         });
 
-      setCapsule();
+      this.setCapsule(client, auth, eventData);
 
       this.clients.set(eventData.deviceId, client);
 

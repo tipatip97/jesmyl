@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
+import StrongControlDateTimeExtracter from '../../../../../../../complect/strong-control/StrongDateTimeExtracter';
 import IconButton from '../../../../../../../complect/the-icon/IconButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../../../../../../../complect/the-icon/icons/checkmark-circle-02';
 import { IconEdit01StrokeRounded } from '../../../../../../../complect/the-icon/icons/edit-01';
-import StrongControlDateTimeExtracter from '../../../../../../../complect/strong-control/StrongDateTimeExtracter';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTeamImportable } from '../../teams/GameTeams.model';

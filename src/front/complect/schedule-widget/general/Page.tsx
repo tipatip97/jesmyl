@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { IndexScheduleWidgetTranslations } from '../../../components/index/complect/translations/LiveTranslations';
 import { useAuth, useIndexSchedules } from '../../../components/index/molecules';

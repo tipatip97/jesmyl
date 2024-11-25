@@ -1,6 +1,5 @@
-import { knownIconNames } from 'shared/values';
 import { LocalSokiAuth, SokiAppName, sokiWhenRejButTs } from 'shared/api';
-import { actionBoxSetSystems } from 'shared/values';
+import { actionBoxSetSystems, knownIconNames } from 'shared/values';
 
 export type ExecutionMethod =
   | 'formula'
@@ -277,6 +276,9 @@ declare global {
   type doubleStr = `${intStr}.${number}`;
   type numberStr = `${intStr}${`.${number}` | ''}`;
   type StringBySlash = `${string}/${string}`;
+
+  type OmitOwn<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+  type WithRewrites<T, P> = Pick<T, Exclude<keyof T, keyof P>> & Pick<P, keyof P>;
 
   type NaN = NotANumber;
   type NaNumber = number | NotANumber;

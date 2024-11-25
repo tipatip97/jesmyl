@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import { makeRegExp } from 'shared/utils';
-import { MyLib, mylib } from 'front/utils';
 import { CoderResultComponent } from './model';
 import { CoderResultValue } from './value';
 import { CoderValueExpandable } from './value-expandable';

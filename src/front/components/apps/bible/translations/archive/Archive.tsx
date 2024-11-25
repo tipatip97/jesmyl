@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import { memo } from 'react';
-import { MyLib, mylib } from 'front/utils';
 import IconButton from '../../../../../complect/the-icon/IconButton';
 import { IconDelete01StrokeRounded } from '../../../../../complect/the-icon/icons/delete-01';
 import {

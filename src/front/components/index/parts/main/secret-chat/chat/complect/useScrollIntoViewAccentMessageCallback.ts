@@ -1,30 +1,43 @@
+import { useAtom } from 'front/complect/atoms';
 import { useCallback } from 'react';
 import { SecretChat } from 'shared/api';
-import { ActualRef } from '../../../../../../../complect/useActualRef';
-import { ListSlicerLimits } from '../../../../../../../complect/useListShownLimitsController';
-import { secretChatClassNamesDict } from '../../complect';
+import { ActualRef, useActualRef } from '../../../../../../../complect/useActualRef';
+import { ListSlicerLimits } from '../../../../../../../complect/useListInfiniteScrollController';
+import { secretChatClassNamesDict, useSecretChatIdContext } from '../../complect';
+import { secretChatsIsAlternativeMessageHashMapAtom, useChatAlternativeMessagesHashMapValue } from '../../molecule';
 
-let markAsAccentClickTimeoutDict: Partial<Record<SecretChat.MessageTs, TimeOut>> = {};
+let markAsAccentClickTimeoutDict: Partial<Record<SecretChat.MessageId, TimeOut>> = {};
 
 export const useScrollIntoViewAccentMessageCallback = (
-  messageTssRef: ActualRef<SecretChat.MessageTs[]>,
+  messageIdsRef: ActualRef<`${SecretChat.MessageId}`[]>,
   limits: ListSlicerLimits,
   setLimits: (start: number | nil, finish: number | nil) => void,
+  loadMessagesNearId: (
+    messageId: SecretChat.MessageId,
+    scrollToMessage: (messageId?: SecretChat.MessageId) => void,
+  ) => void,
 ) => {
-  return useCallback(
-    (targetMessage: SecretChat.Message) => {
-      const findNode = () => document.querySelector(`[sent-ts='${targetMessage.ts}']`);
-      let targetMessageNode = findNode();
-      const targetTsi = messageTssRef.current.indexOf(targetMessage.ts);
+  const loadMessagesNearIdRef = useActualRef(loadMessagesNearId);
+  const chatId = useSecretChatIdContext();
+  const alternativeMessagesHashMap = useChatAlternativeMessagesHashMapValue(chatId);
+  const [isAlternativeList, setIsAlternativeList] = useAtom(secretChatsIsAlternativeMessageHashMapAtom);
 
-      const makeAccent = () => {
+  return useCallback(
+    (messageId: SecretChat.MessageId) => {
+      const findNode = () => document.querySelector(`[message-id='${messageId}']`);
+      let targetMessageNode = findNode();
+      const targetMessageIdi = messageIdsRef.current.indexOf(`${messageId}`);
+
+      const makeAccent = (id = messageId) => {
         targetMessageNode ??= findNode();
         if (targetMessageNode === null) return;
 
         targetMessageNode.scrollIntoView({ block: 'center' });
+
+        console.log(targetMessageNode);
         targetMessageNode.classList.add(secretChatClassNamesDict.markAsAccent);
 
-        clearTimeout(markAsAccentClickTimeoutDict[targetMessage.ts]);
+        clearTimeout(markAsAccentClickTimeoutDict[messageId]);
 
         if (targetMessageNode.classList.contains(secretChatClassNamesDict.markAsAccent)) {
           targetMessageNode?.classList.remove(secretChatClassNamesDict.markAsAccent);
@@ -32,28 +45,44 @@ export const useScrollIntoViewAccentMessageCallback = (
             targetMessageNode?.classList.add(secretChatClassNamesDict.markAsAccent);
           }, 50);
         }
-
-        markAsAccentClickTimeoutDict[targetMessage.ts] = setTimeout(() => {
-          targetMessageNode?.classList.remove(secretChatClassNamesDict.markAsAccent);
-        }, 3000);
       };
 
       if (targetMessageNode === null) {
-        if (targetTsi < 0) return;
+        console.log(targetMessageIdi, alternativeMessagesHashMap, messageId);
+        if (targetMessageIdi < 0) {
+          if (alternativeMessagesHashMap?.[messageId]) {
+            if (isAlternativeList[chatId]) loadMessagesNearIdRef.current(messageId, makeAccent);
+            else {
+              setIsAlternativeList(prev => ({ ...prev, [chatId]: true }));
+              setTimeout(makeAccent, 500);
+            }
+          } else loadMessagesNearIdRef.current(messageId, makeAccent);
+          return;
+        }
 
-        setLimits(targetTsi - 30, targetTsi + 30);
-        setTimeout(makeAccent, 10);
+        setLimits(targetMessageIdi - 20, targetMessageIdi + 20);
+        setTimeout(makeAccent, 500);
 
         return;
       }
 
-      const startLimit = targetTsi - limits.start < 30 ? targetTsi - 30 : null;
-      const finishLimit = limits.finish - targetTsi < 30 ? targetTsi + 30 : null;
+      const startLimit = targetMessageIdi - limits.start < 30 ? targetMessageIdi - 30 : null;
+      const finishLimit = limits.finish - targetMessageIdi < 30 ? targetMessageIdi + 30 : null;
 
       setLimits(startLimit, finishLimit);
 
-      makeAccent();
+      setTimeout(makeAccent, 100);
     },
-    [limits.finish, limits.start, messageTssRef, setLimits],
+    [
+      alternativeMessagesHashMap,
+      chatId,
+      isAlternativeList,
+      limits.finish,
+      limits.start,
+      loadMessagesNearIdRef,
+      messageIdsRef,
+      setIsAlternativeList,
+      setLimits,
+    ],
   );
 };

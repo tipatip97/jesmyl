@@ -1,9 +1,9 @@
+import { mylib } from 'front/utils';
 import { useReducer, useRef } from 'react';
-import { MyLib, mylib } from 'front/utils';
+import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 import { useIndexFileAssociations } from '../../../molecules';
 import { MyFilesTypeBox } from './complect/MyFilesTypeBox';
 import { useAddMyFileOnDrop, useAddMyFileOnFileChange } from './hooks/on-add-file';
-import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
 
 const onDragOver: CallbackPreventer = event => event.preventDefault();
 const forceUpdater = (it: number) => it + 1;

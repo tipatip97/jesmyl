@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
 import { IScheduleWidget, IScheduleWidgetWid } from 'shared/api';
 import { useIndexSchedules } from '../../../components/index/molecules';
-import { mylib } from 'front/utils';
 import serviceMaster from '../../service/serviceMaster';
 
 export const useGetScheduleOrPull = (scheduleInstance: string | IScheduleWidgetWid | NaN) => {

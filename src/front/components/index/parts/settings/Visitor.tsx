@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { SokiVisitor } from 'shared/api';
 import { isNIs } from 'shared/utils';
 import { useDeviceId } from '../../complect/takeDeviceId';
 import { TgLinkOrFio } from './TgLinkOrFio';
-import { SokiVisitor } from 'shared/api';
 
 export const Visitor = ({ visitor }: { visitor: SokiVisitor }) => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,6 +1,7 @@
+import { MyLib } from 'front/utils';
 import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { MyLib, mylib } from 'front/utils';
+import { hookEffectPipe, setTimeoutPipe } from '../../../../../complect/hookEffectPipe';
 import { useBibleTranslationJoinAddress, useGetterJoinedAddressMaxValues } from '../../hooks/address/address';
 import { useBibleAddressBooki } from '../../hooks/address/books';
 import { useBibleAddressChapteri } from '../../hooks/address/chapters';
@@ -10,7 +11,6 @@ import BibleTranslatesContextProvider, { useBibleTranslatesContext } from '../..
 import BibleBookList, { bookiIdPrefix } from './books/BookList';
 import BibleChapterList, { chapteriIdPrefix } from './chapters/ChapterList';
 import BibleVerseList, { verseiIdPrefix } from './verses/VerseList';
-import { hookEffectPipe, setTimeoutPipe } from '../../../../../complect/hookEffectPipe';
 
 const scrollIntoViewBookAndChapterOptions = { block: 'center' } as const;
 const scrollIntoViewVerseOptions = { block: 'center', behavior: 'smooth' } as const;

@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
 import { useBottomPopup } from '../../../../../complect/absolute-popup/bottom-popup/useBottomPopup';
+import { FaceItem } from '../../../../../complect/FaceItem';
 import { IconAlien02StrokeRounded } from '../../../../../complect/the-icon/icons/alien-02';
 import { IconFlowerPotStrokeRounded } from '../../../../../complect/the-icon/icons/flower-pot';
 import { IconMoreVerticalCircle01StrokeRounded } from '../../../../../complect/the-icon/icons/more-vertical-circle-01';
 import { useLeaderCcontext } from '../contexts/useContexts';
 import { HumanMoreContenter } from './HumanMore';
 import { HumanImportable } from './People.model';
-import { FaceItem } from '../../../../../complect/FaceItem';
 
 export default function HumanFace({
   human,

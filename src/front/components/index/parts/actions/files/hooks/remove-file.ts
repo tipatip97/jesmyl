@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { filesStorage } from '../utils/storage';
 import { MyFileType } from 'shared/api';
+import { filesStorage } from '../utils/storage';
 
 export const useRemoveMyFile = (type: MyFileType) => {
   return useCallback(

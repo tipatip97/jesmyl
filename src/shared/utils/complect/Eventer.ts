@@ -124,9 +124,10 @@ export class Eventer {
     onEachInvoke?: (ret: Return) => void,
   ): Value => {
     if (Array.isArray(listeners))
-      for (let i = listeners.length - 1; i > -1; i--) {
-        if (onEachInvoke === undefined) listeners[i](value);
-        else onEachInvoke(listeners[i](value));
+      if (onEachInvoke === undefined) {
+        for (let i = listeners.length - 1; i > -1; i--) listeners[i](value);
+      } else {
+        for (let i = listeners.length - 1; i > -1; i--) onEachInvoke(listeners[i](value));
       }
     else listeners.forEach(cb => cb(value));
 

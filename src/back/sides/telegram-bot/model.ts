@@ -2,7 +2,7 @@ import TgBot, { CallbackQuery } from 'node-telegram-bot-api';
 import { JesmylTelegramBot } from './tg-bot';
 import { JesmylTelegramBotWrapper } from './tg-bot-wrapper';
 
-export type FreeAnswerCallbackQueryOptions = Omit<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
+export type FreeAnswerCallbackQueryOptions = OmitOwn<Partial<TgBot.AnswerCallbackQueryOptions>, 'callback_query_id'>;
 export type JTgBotCallbackQueryWithoutBot = (
   query: CallbackQuery,
   answer: (options: string | FreeAnswerCallbackQueryOptions) => void,

@@ -1,11 +1,11 @@
-import { ClientExecutionDict } from '../../../../../complect/exer/Exer.model';
-import { MyLib, mylib } from 'front/utils';
-import { cmExer } from '../../CmExer';
+import { mylib } from 'front/utils';
+import { CmComWid } from '../../../../../../shared/api/complect/apps/cm/complect/enums';
 import { IExportableMeetingsEvent } from '../../../../../../shared/api/complect/apps/cm/complect/Meetings';
+import { ClientExecutionDict } from '../../../../../complect/exer/Exer.model';
+import { cmExer } from '../../CmExer';
 import { MeetingsEvent } from '../../lists/meetings/MeetingsEvent';
 import { EditableCom } from '../col/compositions/com/EditableCom';
 import { EditableCols } from '../col/EditableCols';
-import { CmComWid } from '../../../../../../shared/api/complect/apps/cm/complect/enums';
 
 export class EditableMeetingsEvent extends MeetingsEvent {
   initialName = this.name;

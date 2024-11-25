@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { makeRegExp } from 'shared/utils';
-import { itNNull } from 'shared/utils';
+import { itNNull, makeRegExp } from 'shared/utils';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import KeyboardInput from '../../../../../complect/keyboard/KeyboardInput';
 import SendButton from '../../../../../complect/sends/send-button/SendButton';

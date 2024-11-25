@@ -1,9 +1,9 @@
 import archiver from 'archiver';
 import { exec } from 'child_process';
+import { build } from 'esbuild';
 import FormData from 'form-data';
 import file_system from 'fs';
 import fetch from 'node-fetch';
-import { build } from 'esbuild';
 
 const isBuildFront = true;
 
@@ -57,14 +57,25 @@ const archive = (isFront, onError, versionNum) => {
 
   archive.pipe(file_system.createWriteStream(filename));
   if (isFront) archive.directory('build', false);
-  else
+  else {
     archive.directory('src/back', false, file => {
-      if (!file.name.includes('/+') && (file.name.endsWith('.json') || file.name.endsWith('.js'))) {
+      if (
+        !file.name.includes('/+') &&
+        (file.name.endsWith('.json') || file.name.endsWith('.js') || file.name.endsWith('.php'))
+      )
+        return file;
+
+      return false;
+    });
+
+    archive.directory('prisma', 'prisma', file => {
+      if (file.name.endsWith('.prisma') || file.name.endsWith('.sql') || file.name.endsWith('.toml')) {
         return file;
       }
 
       return false;
     });
+  }
   archive.finalize();
 };
 
@@ -110,7 +121,9 @@ if (~process.argv.indexOf('--push-back')) {
       platform: 'node',
       format: 'cjs',
       outfile: 'src/back/back.index.js',
-      external: ['node-schedule', 'ws'],
+      // minifyWhitespace: true,
+      charset: 'utf8',
+      external: ['node-schedule', 'ws', '@prisma/client', '.prisma/client'],
     });
     archive(false);
   })();

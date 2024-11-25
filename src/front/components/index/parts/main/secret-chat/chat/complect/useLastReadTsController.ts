@@ -1,19 +1,20 @@
+import { addEventListenerPipe, hookEffectPipe } from 'front/complect/hookEffectPipe';
 import { useEffect } from 'react';
 import { SecretChat } from 'shared/api';
 import { useAtomSet } from '../../../../../../../complect/atoms';
-import { addEventListenerPipe, hookEffectPipe } from '../../../../../../../complect/hookEffectPipe';
 import { ActualRef } from '../../../../../../../complect/useActualRef';
 import { secretChatMessageTsAsOpenContextAtom } from '../../complect';
 import { secretChatsDraftsAtom, secretChatsLastReadTsAtom } from '../../molecule';
 import { addChildrenSwipeHookPipes } from './complect';
 
 export const useLastReadTsController = (
+  chatRef: React.RefObject<HTMLDivElement>,
   listRef: React.RefObject<HTMLDivElement>,
-  chat: SecretChat.ChatInfo,
-  messageTssRef: ActualRef<SecretChat.MessageTs[]>,
-  initialLastReadTs: SecretChat.MessageTs,
-  setInitialLastReadTs: React.Dispatch<React.SetStateAction<SecretChat.MessageTs>>,
   replyFloatIconBoxRef: React.RefObject<HTMLDivElement>,
+  chat: SecretChat.ChatMiniInfo,
+  messageTssRef: ActualRef<SecretChat.StrMessageId[]>,
+  initialLastReadTs: SecretChat.StrMessageId,
+  setInitialLastReadTs: React.Dispatch<React.SetStateAction<SecretChat.StrMessageId>>,
 ) => {
   const setChatsLastReadTs = useAtomSet(secretChatsLastReadTsAtom);
   const setDraftMessages = useAtomSet(secretChatsDraftsAtom);
@@ -21,19 +22,28 @@ export const useLastReadTsController = (
 
   useEffect(() => {
     if (listRef.current === null) return;
+    const node = document.querySelector(`:has( + [message-id='${initialLastReadTs}'])`);
+
+    if (node === null) return;
+
+    node.scrollIntoView({ block: 'start' });
+    listRef.current.scrollTop -= 40;
+  }, [initialLastReadTs, listRef]);
+
+  useEffect(() => {
+    if (listRef.current === null) return;
 
     const listNode = listRef.current;
 
-    const setChatLastTs = (ts?: SecretChat.MessageTs) => {
-      setChatsLastReadTs(prev => {
-        const lastReadTs = ts ?? messageTssRef.current[0];
-        if (lastReadTs == null || lastReadTs <= prev[chat.id]) return prev;
-
-        return {
-          ...prev,
-          [chat.id]: lastReadTs,
-        };
-      });
+    const setChatLastTs = (ts?: SecretChat.MessageId) => {
+      // setChatsLastReadTs(prev => {
+      //   const lastReadTs = ts ?? messageTssRef.current[0];
+      //   if (lastReadTs == null || lastReadTs <= prev[chat.chatId]) return prev;
+      //   return {
+      //     ...prev,
+      //     [chat.id]: lastReadTs,
+      //   };
+      // });
     };
 
     const setLastReadTsIfScrollBottom = () => {
@@ -75,21 +85,22 @@ export const useLastReadTsController = (
       .pipe(
         ...addChildrenSwipeHookPipes<HTMLDivElement>(listNode, 'message-place', (action, messageNode, progress) => {
           if (action === 'context') {
-            const ts = messageNode.getAttribute('sent-ts');
-            if (ts) setContextOfMessageTs(ts as never);
+            const messageIdStr = messageNode.getAttribute('message-id');
+            if (messageIdStr) setContextOfMessageTs(+messageIdStr);
             return;
           }
 
           const reply = () => {
-            const ts = messageNode.getAttribute('sent-ts');
-            if (ts)
+            const messageIdStr = messageNode.getAttribute('message-id');
+
+            if (messageIdStr)
               setDraftMessages(prev => ({
                 ...prev,
-                [chat.id]: {
-                  ...prev[chat.id],
-                  text: prev[chat.id]?.text ?? '',
-                  type: 'reply',
-                  targetTs: ts as never,
+                [chat.chatId]: {
+                  ...prev[chat.chatId]!,
+                  editId: undefined,
+                  replyId: +messageIdStr,
+                  prevSimpleMessageText: '',
                 },
               }));
           };
@@ -101,7 +112,7 @@ export const useLastReadTsController = (
           if (replyFloatIconBoxRef.current === null) return;
 
           if (action === 'progressEnd') {
-            listNode.appendChild(replyFloatIconBoxRef.current);
+            chatRef.current?.appendChild(replyFloatIconBoxRef.current);
             isReplyFloatIconInMessage = false;
             if (progress > 0.9) reply();
           } else if (action === 'progress') {
@@ -122,13 +133,13 @@ export const useLastReadTsController = (
             const inputScrollTop = listNode.scrollTop + listNode.clientHeight;
 
             for (const child of childs) {
-              const sentTs = child.getAttribute('sent-ts') as SecretChat.MessageTs;
-              if (sentTs >= prevSettedLastReadTs) break;
+              const sentTs = +child.getAttribute('message-id')! as SecretChat.MessageId;
+              if (!sentTs || sentTs >= +prevSettedLastReadTs) break;
 
               if (child.offsetTop < inputScrollTop && child.offsetTop + child.clientHeight > inputScrollTop) {
                 if (sentTs) {
                   setChatLastTs(sentTs);
-                  prevSettedLastReadTs = sentTs;
+                  prevSettedLastReadTs = '' + sentTs;
                 }
 
                 break;
@@ -139,7 +150,7 @@ export const useLastReadTsController = (
       )
       .effect();
   }, [
-    chat.id,
+    chat.chatId,
     setChatsLastReadTs,
     initialLastReadTs,
     messageTssRef,
@@ -148,5 +159,6 @@ export const useLastReadTsController = (
     setInitialLastReadTs,
     replyFloatIconBoxRef,
     setContextOfMessageTs,
+    chatRef,
   ]);
 };

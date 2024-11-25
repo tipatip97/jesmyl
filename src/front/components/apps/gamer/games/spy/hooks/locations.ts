@@ -1,9 +1,9 @@
+import { mylib } from 'front/utils';
 import { useMemo } from 'react';
-import { MyLib, mylib } from 'front/utils';
+import { makeRegExp } from 'shared/utils';
 import { useSpyLocations } from '../molecules';
 import { SpyRoomState } from '../Spy.model';
 import { useSpyRoomStateNaked } from './state';
-import { makeRegExp } from 'shared/utils';
 
 export const SPY_ROLE = '<SPY>';
 

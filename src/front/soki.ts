@@ -55,7 +55,7 @@ export class SokiTrip {
   isConnected = false;
   authListeners: EventerListeners<boolean> = [];
   eventListeners: EventerValueListeners<SokiEvent<any>> = [];
-  eventValuesOnDelay: Record<string, unknown> = {};
+  eventValuesOnDelay: Partial<Record<keyof SokiServerEvent, unknown>> = {};
 
   private responseWaiters: ResponseWaiter[] = [];
   private subscriptions: Partial<Record<SokiSubscribtionName, SokiClientEventBody>> = {};
@@ -190,14 +190,12 @@ export class SokiTrip {
             }
           }
 
-          if (event.secretMessage || event.secretMessages) {
-            this.eventValuesOnDelay['secretMessages'] = event.secretMessage
-              ? [event.secretMessage]
-              : event.secretMessages;
+          if (event.chatsData) {
+            this.eventValuesOnDelay['chatsData'] = event.chatsData;
 
             Eventer.invokeValue(this.eventListeners, {
-              key: 'secretMessages',
-              value: this.eventValuesOnDelay['secretMessages'],
+              key: 'chatsData',
+              value: this.eventValuesOnDelay['chatsData'],
             });
           }
         }

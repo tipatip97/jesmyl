@@ -1,4 +1,3 @@
-import { NounPronsType } from 'shared/api/complect/noun-pronoun/complect/model';
 import {
   IScheduleWidgetWid,
   LocalSokiAuth,
@@ -8,6 +7,7 @@ import {
   SokiClientSubData,
   SokiStatistic,
 } from 'shared/api';
+import { NounPronsType } from 'shared/api/complect/noun-pronoun/complect/model';
 import { AppName } from '../../app/App.model';
 import { ExecRule } from '../../complect/exer/Exer.model';
 import { BibleTranslationScreenConfig } from '../apps/bible/translations/model';

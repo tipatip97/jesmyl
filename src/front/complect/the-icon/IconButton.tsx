@@ -2,8 +2,9 @@ import { FunctionComponent, HTMLAttributes, ReactNode } from 'react';
 import styled from 'styled-components';
 import { ConfirmContent } from '../modal/confirm/ConfirmContent';
 import useToast from '../modal/useToast';
-import { TheIconType } from './model';
 import { mylib } from '../my-lib';
+import { StyledLoadingSpinner } from './IconLoading';
+import { TheIconType } from './model';
 
 interface Props {
   Icon: TheIconType;
@@ -14,21 +15,24 @@ interface Props {
   postfix?: ReactNode;
   className?: string;
   iconClassName?: string;
+  isLoading?: boolean;
   onClick?: (event: React.MouseEvent<HTMLOrSVGElement, MouseEvent> | KeyboardEvent) => void;
 }
 
 const IconButton = <P extends Props = Props>(
   props: (P['prefix'] extends nil
     ? P['postfix'] extends nil
-      ? Omit<HTMLAttributes<HTMLOrSVGElement>, 'prefix'>
-      : Omit<HTMLAttributes<HTMLSpanElement>, 'prefix'>
-    : Omit<HTMLAttributes<HTMLSpanElement>, 'prefix'>) &
+      ? OmitOwn<HTMLAttributes<HTMLOrSVGElement>, 'prefix'>
+      : OmitOwn<HTMLAttributes<HTMLSpanElement>, 'prefix'>
+    : OmitOwn<HTMLAttributes<HTMLSpanElement>, 'prefix'>) &
     P,
 ) => {
   const isClickable = !props.disabled && props.onClick ? true : undefined;
   const className = `${props.className || ''}${isClickable || props.disabledReason ? ' pointer' : ''}${
     props.disabled ? ' disabled' + (props.disabledReason ? ' clickable' : '') : ''
   }`;
+
+  const Icon = props.isLoading ? StyledLoadingSpinner : props.Icon;
 
   return (
     <ConfirmContent
@@ -38,7 +42,7 @@ const IconButton = <P extends Props = Props>(
           <>
             {props.prefix === undefined && props.postfix === undefined ? (
               <DisabledReasonContained
-                Comp={props.Icon}
+                Comp={Icon}
                 className={className}
                 disabledReason={props.disabledReason}
                 disabled={props.disabled}
@@ -67,7 +71,7 @@ const IconButton = <P extends Props = Props>(
                 }
               >
                 {props.prefix}
-                <props.Icon className={props.iconClassName} />
+                <Icon className={props.iconClassName} />
                 {props.postfix}
               </DisabledReasonContained>
             )}

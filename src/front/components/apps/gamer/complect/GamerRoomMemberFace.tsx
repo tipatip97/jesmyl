@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
+import { FaceItem } from '../../../../complect/FaceItem';
 import { IconUserStrokeRounded } from '../../../../complect/the-icon/icons/user';
 import { IconUserBlock01StrokeRounded } from '../../../../complect/the-icon/icons/user-block-01';
 import { GamerRoomMember, GamerRoomMemberStatus } from '../Gamer.model';
-import { FaceItem } from '../../../../complect/FaceItem';
 
 interface Props {
   member: GamerRoomMember;

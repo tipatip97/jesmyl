@@ -1,5 +1,5 @@
+import { mylib } from 'front/utils';
 import { useCallback } from 'react';
-import { MyLib, mylib } from 'front/utils';
 import { useGamerOfflineRoomsContext } from '../../../../complect/rooms/offline-room/hooks/context';
 import { useGamerOfflineRoom } from '../../../../complect/rooms/offline-room/hooks/current-room';
 import { useGamerOfflineRoomsPassport } from '../../../../complect/rooms/offline-room/hooks/passport';

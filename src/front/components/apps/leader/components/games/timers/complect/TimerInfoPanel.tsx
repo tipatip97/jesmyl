@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import Dropdown from '../../../../../../../complect/dropdown/Dropdown';
-import IconButton from '../../../../../../../complect/the-icon/IconButton';
-import { IconLeftToRightListBulletStrokeRounded } from '../../../../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import KeyboardInput from '../../../../../../../complect/keyboard/KeyboardInput';
+import IconButton from '../../../../../../../complect/the-icon/IconButton';
+import { IconEdit01StrokeRounded } from '../../../../../../../complect/the-icon/icons/edit-01';
+import { IconLeftToRightListBulletStrokeRounded } from '../../../../../../../complect/the-icon/icons/left-to-right-list-bullet';
 import { TeamGameImportable } from '../../../../Leader.model';
 import { LeaderCleans } from '../../../LeaderCleans';
 import { GameTimerImportable, GameTimerMode, GameTimerSortDirection } from '../GameTimer.model';
 import TimerCompetitionsSelector from './TimerCompetitionsSelector';
 import TimerModeSelector from './TimerModeSelector';
 import TimerSortRatingVariantSelector from './TimerSortRatingVariantSelector';
-import { IconEdit01StrokeRounded } from '../../../../../../../complect/the-icon/icons/edit-01';
 
 export default function TimerInfoPanel({
   onNameChange,

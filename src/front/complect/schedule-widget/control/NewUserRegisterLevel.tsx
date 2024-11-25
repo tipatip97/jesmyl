@@ -1,8 +1,8 @@
 import { scheduleWidgetUserRights } from 'shared/api';
-import IconButton from '../../the-icon/IconButton';
 import { IconArrowRight01StrokeRounded } from '../../../complect/the-icon/icons/arrow-right-01';
 import useModal from '../../modal/useModal';
 import { StrongComponentProps } from '../../strong-control/Strong.model';
+import IconButton from '../../the-icon/IconButton';
 import { useScheduleWidgetRightsContext } from '../useScheduleWidget';
 import ScheduleWidgetRightControlList from './RightControlList';
 

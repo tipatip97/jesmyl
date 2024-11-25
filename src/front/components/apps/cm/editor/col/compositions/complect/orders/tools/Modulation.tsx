@@ -1,7 +1,7 @@
+import { mylib } from 'front/utils';
 import { BottomPopupItem } from '../../../../../../../../../complect/absolute-popup/bottom-popup/BottomPopupItem';
 import { useExerExec } from '../../../../../../../../../complect/exer/hooks/useExer';
 import useModal from '../../../../../../../../../complect/modal/useModal';
-import { MyLib, mylib } from 'front/utils';
 import IconCheckbox from '../../../../../../../../../complect/the-icon/IconCheckbox';
 import { IconFlashStrokeRounded } from '../../../../../../../../../complect/the-icon/icons/flash';
 import { ChordVisibleVariant } from '../../../../../../Cm.model';

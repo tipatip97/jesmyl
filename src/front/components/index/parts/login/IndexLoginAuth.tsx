@@ -55,7 +55,7 @@ export default function IndexLoginAuth() {
     soki.onConnect();
   };
 
-  const registerInSystem = (state: Omit<ClientRegisterData, 'login'>) => {
+  const registerInSystem = (state: OmitOwn<ClientRegisterData, 'login'>) => {
     const nick = state.nick.trim();
 
     return sendData('register', {

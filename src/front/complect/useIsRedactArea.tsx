@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import IconButton from './the-icon/IconButton';
 import { IconCheckmarkCircle02StrokeRounded } from '../complect/the-icon/icons/checkmark-circle-02';
 import { IconEdit02StrokeRounded } from '../complect/the-icon/icons/edit-02';
+import IconButton from './the-icon/IconButton';
 
 type booleanOrNil = boolean | nil;
 type OnEditStart = ((isSelfRedact: boolean) => void) | nil;

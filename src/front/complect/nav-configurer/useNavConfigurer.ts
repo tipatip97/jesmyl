@@ -1,3 +1,4 @@
+import { mylib } from 'front/utils';
 import { useCallback, useRef } from 'react';
 import { AppName } from '../../app/App.model';
 import { routerMolecule } from '../../components/router/molecules';
@@ -9,7 +10,6 @@ import {
   RoutePlaceVariated,
 } from '../../components/router/Router.model';
 import { useAtom, useAtomSet, useAtomValue } from '../atoms';
-import { MyLib, mylib } from 'front/utils';
 import { useFullScreen } from '../useFullscreen';
 import { NavigationConfig } from './Navigation';
 import { NavigationStorage, UseNavAction } from './Navigation.model';

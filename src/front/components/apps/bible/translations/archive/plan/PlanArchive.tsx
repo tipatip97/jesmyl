@@ -1,6 +1,6 @@
+import { mylib } from 'front/utils';
 import { memo, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { MyLib, mylib } from 'front/utils';
 import {
   useBibleTranslationJoinAddressSetter,
   useGetterJoinedAddressMaxValues,

@@ -58,8 +58,16 @@ export interface SokiServerEvent {
   sharedData?: SokiSharedData;
   freshUserContents?: ServerStoreContent[];
   pullFreshUserContentsByTs?: number;
-  secretMessage?: SecretChat.ImportableMessage;
-  secretMessages?: SecretChat.ImportableMessage[];
+  chatsData?: ChatsData;
+}
+
+export interface ChatsData {
+  chats?: SecretChat.ChatMiniInfo[];
+  messageLastReads?: SecretChat.ChatLastReadTimeStamp[];
+  messages?: Partial<Record<SecretChat.ChatId, SecretChat.ImportableMessage[]>>;
+  unreachedMessages?: Partial<Record<SecretChat.ChatId, SecretChat.ImportableMessage[]>>;
+  alternativeMessages?: Partial<Record<SecretChat.ChatId, SecretChat.ImportableMessage[]>>;
+  users?: SecretChat.ChatMemberUser[];
 }
 
 export type SokiSharedData = {
@@ -78,7 +86,7 @@ export type SokiClientUpdateCortage = [
   string | nil, // app short rules JSON md5
 ];
 
-export interface TelegramNativeAuthUserData extends Omit<User, 'language_code' | 'is_bot'> {
+export interface TelegramNativeAuthUserData extends OmitOwn<User, 'language_code' | 'is_bot'> {
   auth_date?: number;
   photo_url?: string | null;
   hash?: string;
@@ -109,7 +117,23 @@ export interface SokiClientEventBody {
   };
   serverUserContents?: ServerStoreContent[];
   pullFreshUserContentsByTs?: number;
-  secretMessage?: SecretChat.ExportableMessage;
+  chatFetch?: {
+    chatId: SecretChat.ChatId;
+    pullMessages?:
+      | true
+      | {
+          messageId: SecretChat.MessageId;
+          isMessageStart: boolean;
+          fetchCount?: number;
+        };
+    pullAlternativeMessagesNearId?: SecretChat.MessageId;
+    message?: SecretChat.ExportableMessage;
+    newMember?: { userLogin: string };
+    removeMessages?: SecretChat.MessageId[];
+  };
+  chatsFetch?: {
+    users?: true;
+  };
 }
 
 export type SokiClientSubData<

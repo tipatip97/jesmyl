@@ -181,12 +181,18 @@ export class Molecule<
     };
   }
 
-  set = <Key extends keyof T>(key: Key, value: T[Key]) =>
-    (this.atoms[key] === undefined ? this.newAtom(key) : this.atoms[key]).set(value as never);
+  set = <Key extends keyof T>(key: Key, value: T[Key]) => {
+    try {
+      this.atoms[key].set(value as never);
+    } catch (error) {
+      (this.atoms[key] === undefined ? this.newAtom(key) : this.atoms[key]).set(value as never);
+    }
+  };
 
   get = <Key extends keyof T>(key: Key): T[Key] => this.atoms[key]?.get() as never;
 
-  take = <Key extends keyof T>(key: Key): NonUndefined<Atoms[Key]> => this.atoms[key] as never;
+  take = <Key extends keyof T>(key: Key): NonUndefined<Atoms[Key]> =>
+    (this.atoms[key] === undefined ? this.newAtom(key) : this.atoms[key]) as never;
 
   select = <Value>(selector: (atoms: Atoms) => Atom<Value>): NonUndefined<Atom<Value>> => selector(this.atoms);
 

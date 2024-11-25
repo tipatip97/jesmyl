@@ -1,6 +1,6 @@
 import { User } from 'node-telegram-bot-api';
-import { smylib } from 'shared/utils';
 import { LocalSokiAuth, SokiAuth, SokiClientEventBody } from 'shared/api';
+import { smylib } from 'shared/utils';
 import { controlTelegramBot } from '../../sides/telegram-bot/control/control-bot';
 import { prodTelegramBot } from '../../sides/telegram-bot/prod/prod-bot';
 import { supportTelegramBot } from '../../sides/telegram-bot/support/support-bot';

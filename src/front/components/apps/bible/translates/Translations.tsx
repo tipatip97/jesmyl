@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import BibleModulesTranslationsRedactButton from './Add';
-import { useBibleMyTranslates, useBibleShowTranslates } from './hooks';
-import { translateFilter } from './complect';
 import { useBibleBooki } from '../translations/lists/atoms';
+import BibleModulesTranslationsRedactButton from './Add';
+import { translateFilter } from './complect';
+import { useBibleMyTranslates, useBibleShowTranslates } from './hooks';
 
 export const BibleModulesTranslations = memo(function BibleModules({
   isHideEmptyBook,

@@ -1,17 +1,16 @@
+import { mylib } from 'front/utils';
 import { useEffect, useState } from 'react';
+import { IScheduleWidget } from 'shared/api';
 import { IconComputerStrokeRounded } from '../../../complect/the-icon/icons/computer';
 import { ScreenTranslationControlPanelShowMdButton } from '../../../components/apps/+complect/translations/controls/ShowMdButton';
 import BibleTranslationSlide from '../../../components/apps/bible/translations/BibleTranslationSlide';
 import BibleTranslationSlideMiniInfo from '../../../components/apps/bible/translations/BibleTranslationSlideMiniInfo';
 import { CmTranslationSlideMiniInfo } from '../../../components/apps/cm/translation/complect/live/MiniInfo';
 import { CmLiveTranslationScreen } from '../../../components/apps/cm/translation/complect/live/Screen';
-import { useAuth } from '../../../components/index/molecules';
 import { IndexStateSchLiveData, ScheduleWidgetTranslationLiveDataKey } from '../../../components/index/Index.model';
-import { useIndexLiveData } from '../../../components/index/molecules';
+import { useAuth, useIndexLiveData } from '../../../components/index/molecules';
 import { soki } from '../../../soki';
 import BrutalItem from '../../brutal-item/BrutalItem';
-import { mylib } from 'front/utils';
-import { IScheduleWidget } from 'shared/api';
 import { ScheduleWidgetMarkdownLiveTranslation } from './MarkdownLive';
 
 interface Props {

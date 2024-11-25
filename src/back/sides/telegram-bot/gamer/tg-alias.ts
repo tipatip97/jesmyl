@@ -1,17 +1,17 @@
 import TelegramBot from 'node-telegram-bot-api';
+import { LocalSokiAuth } from 'shared/api';
+import { Eventer } from 'shared/utils';
+import {
+  GamerAliasRoomState,
+  GamerAliasRoomStatePhase,
+} from '../../../../shared/api/complect/apps/gamer/alias/alias.model';
+import { AliasCleans } from '../../../../shared/api/complect/apps/gamer/alias/AliasCleans';
 import {
   GamerRoom,
   GamerRoomMember,
   GamerRoomMemberStatus,
 } from '../../../../shared/api/complect/apps/gamer/gamer.model';
-import { AliasCleans } from '../../../../shared/api/complect/apps/gamer/alias/AliasCleans';
 import { AliasGameActions } from '../../../apps/gamer/games/alias/alias.config';
-import {
-  GamerAliasRoomState,
-  GamerAliasRoomStatePhase,
-} from '../../../../shared/api/complect/apps/gamer/alias/alias.model';
-import { Eventer } from 'shared/utils';
-import { LocalSokiAuth } from 'shared/api';
 import { editRoomTelegramMessage, gamerTgQueryParts, makeTgGamerTgQueryData } from './tg-gamer';
 
 export const aliasTgGameActions = {

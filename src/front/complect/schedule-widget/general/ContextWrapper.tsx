@@ -1,7 +1,7 @@
 import { ReactNode, useMemo } from 'react';
+import { IScheduleWidget } from 'shared/api';
 import { indexExer } from '../../../components/index/IndexExer';
 import { useStrongExerContent } from '../../strong-control/useStrongControl';
-import { IScheduleWidget } from 'shared/api';
 import {
   ScheduleWidgetAppAttsContext,
   ScheduleWidgetRights,

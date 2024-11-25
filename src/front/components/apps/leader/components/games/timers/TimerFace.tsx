@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { FaceItem } from '../../../../../../complect/FaceItem';
 import useFullContent from '../../../../../../complect/fullscreen-content/useFullContent';
 import { IconClock01StrokeRounded } from '../../../../../../complect/the-icon/icons/clock-01';
 import { IconMessage01StrokeRounded } from '../../../../../../complect/the-icon/icons/message-01';
@@ -7,7 +8,6 @@ import { LeaderCleans } from '../../LeaderCleans';
 import { GameTimerMode } from './GameTimer.model';
 import LeaderGameTimerMaster from './GameTimerMaster';
 import useGameTimer from './useGameTimer';
-import { FaceItem } from '../../../../../../complect/FaceItem';
 
 export default function LeaderGameTimerFace({
   timerw,

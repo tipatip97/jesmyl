@@ -9,11 +9,11 @@ import { IconStarStrokeRounded } from '../../../../complect/the-icon/icons/star'
 import useSelectedComs from '../base/useSelectedComs';
 import TheCat from '../col/cat/TheCat';
 import { useCols } from '../cols/useCols';
+import ExternalList from './ExternalList';
 import './Lists.scss';
 import Marks from './marks/Marks';
 import TheMeetings from './meetings/TheMeetings';
 import SelectedComs from './selected-coms/SelectedComs';
-import ExternalList from './ExternalList';
 
 export default function Lists() {
   const cols = useCols();

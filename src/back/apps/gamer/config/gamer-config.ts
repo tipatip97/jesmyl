@@ -1,9 +1,9 @@
+import { GamerAliasRoomState } from '../../../../shared/api/complect/apps/gamer/alias/alias.model';
+import { AliasCleans } from '../../../../shared/api/complect/apps/gamer/alias/AliasCleans';
+import { GamerRoom } from '../../../../shared/api/complect/apps/gamer/gamer.model';
 import { Executer } from '../../../complect/executer/Executer';
 import { FilerAppConfig } from '../../../complect/filer/Filer.model';
-import { GamerRoom } from '../../../../shared/api/complect/apps/gamer/gamer.model';
-import { AliasCleans } from '../../../../shared/api/complect/apps/gamer/alias/AliasCleans';
 import { aliasGameConfig } from '../games/alias/alias.config';
-import { GamerAliasRoomState } from '../../../../shared/api/complect/apps/gamer/alias/alias.model';
 import { spyGameConfig } from '../games/spy/spy.config';
 import { gamerMemberConfig } from './member';
 

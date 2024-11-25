@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
+import { IExportableOrder, IExportableOrderFieldValues, OrderRepeats } from 'shared/api';
 import { StyleBlock } from '../block-styles/StyleBlock';
 import { Com } from '../Com';
 import { Order } from './Order';
-import { IExportableOrder, IExportableOrderFieldValues, OrderRepeats } from 'shared/api';
 
-export type INewExportableOrder = Omit<IExportableOrder, 'w'>;
+export type INewExportableOrder = OmitOwn<IExportableOrder, 'w'>;
 
 export type EditableOrderRegion<Ord extends Order> = {
   count: number;

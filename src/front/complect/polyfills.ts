@@ -128,7 +128,7 @@ declare global {
     reverse: () => string;
   }
 
-  interface OnMessageEvent extends Omit<Event, 'currentTarget' | 'target' | 'srcElement'> {
+  interface OnMessageEvent extends OmitOwn<Event, 'currentTarget' | 'target' | 'srcElement'> {
     data: string;
     origin: '';
     lastEventId: '';

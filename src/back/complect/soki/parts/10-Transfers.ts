@@ -4,6 +4,7 @@ import { WebSocket } from 'ws';
 export class SokiServerTransfers {
   capsules = new Map<WebSocket, SokiCapsule>();
   capsulesByDeviceId = new Map<DeviceId, SokiCapsule>();
+  capsulesByLogin = new Map<string, Set<SokiCapsule>>();
   clients = new Map<string, WebSocket>();
 
   actionWithCapsule(client: WebSocket, cb: (capsule: SokiCapsule) => void, triesCount = 10) {

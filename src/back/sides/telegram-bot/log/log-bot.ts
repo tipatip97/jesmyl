@@ -36,7 +36,7 @@ export class TgLogger {
 
   private replyToScope(
     scope: keyof typeof this.replyMessages,
-    options?: Omit<SendMessageOptions, 'reply_to_message_id'>,
+    options?: OmitOwn<SendMessageOptions, 'reply_to_message_id'>,
   ) {
     if (!this.replyMessages[scope]) return undefined;
 

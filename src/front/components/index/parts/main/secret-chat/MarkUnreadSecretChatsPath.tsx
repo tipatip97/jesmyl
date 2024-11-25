@@ -1,26 +1,26 @@
 import { memo } from 'react';
 import styled, { css } from 'styled-components';
 import { useAtomValue } from '../../../../../complect/atoms';
-import { MyLib, mylib } from 'front/utils';
-import { useSecretChatMessagesTssContext } from './complect';
-import { secretChatMessagesHashMapAtom, secretChatsLastReadTsAtom } from './molecule';
+import { useSecretChatIdContext, useSecretChatMessagesTssContext } from './complect';
+import { secretChatsLastReadTsAtom, useChatMessagesHashMapValue } from './molecule';
 
 export const MarkUnreadSecretChatsPath = memo(
   ({ children, containerSelector }: { children?: React.ReactNode; containerSelector: string }) => {
-    const messagesHash = useAtomValue(secretChatMessagesHashMapAtom);
+    const chatId = useSecretChatIdContext();
+    const messagesHash = useChatMessagesHashMapValue(chatId);
     const chatLastReadTs = useAtomValue(secretChatsLastReadTsAtom);
     const messagesTss = useSecretChatMessagesTssContext();
 
-    const isThereUnreadMessages = MyLib.keys(messagesHash).some(chatId => {
-      const lastReadTs = chatLastReadTs[chatId] ?? '';
+    // const isThereUnreadMessages = MyLib.keys(messagesHash ?? {}).some(chatId => {
+    //   const lastReadTs = chatLastReadTs[chatId] ?? '';
 
-      return messagesTss[0] && lastReadTs < messagesTss[0];
-    });
+    //   return messagesTss[0] && lastReadTs < messagesTss[0];
+    // });
 
     return (
       <>
         <StyledPathItem
-          $withBadge={isThereUnreadMessages}
+          $withBadge={false}
           $containerSelector={containerSelector}
         />
         {children}

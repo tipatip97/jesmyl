@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { makeRegExp } from 'shared/utils';
+import styled from 'styled-components';
 import { useDebounceValue } from '../../../../../complect/useDebounceValue';
 import { useBibleTranslationJoinAddressSetter } from '../../hooks/address/address';
 import { useBibleAddressBooki } from '../../hooks/address/books';

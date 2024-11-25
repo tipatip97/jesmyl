@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { mylib } from 'front/utils';
-import { CoderResultNameStyled } from './styles';
+import styled from 'styled-components';
 import CopyTextButton from '../../../../../../complect/CopyTextButton';
+import { CoderResultNameStyled } from './styles';
 
 export const CoderResultSimple = ({ name, value }: { value: unknown; name?: string | number }) => (
   <span className="flex flex-gap">

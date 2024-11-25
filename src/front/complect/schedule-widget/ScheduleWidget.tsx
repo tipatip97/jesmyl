@@ -1,6 +1,7 @@
 import { mylib } from 'front/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { IScheduleWidget } from 'shared/api';
+import { environment } from 'shared/api/complect/environments/environment';
 import { makeRegExp } from 'shared/utils';
 import styled from 'styled-components';
 import { IconArrowRight01StrokeRounded } from '../../complect/the-icon/icons/arrow-right-01';
@@ -35,7 +36,6 @@ import {
   takeScheduleStrongScopeMaker,
   useScheduleWidgetRights,
 } from './useScheduleWidget';
-import { environment } from 'shared/api/complect/environments/environment';
 
 const msInMin = mylib.howMs.inMin;
 

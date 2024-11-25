@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { makeRegExp } from 'shared/utils';
-import { itIt } from 'shared/utils';
+import { itIt, makeRegExp } from 'shared/utils';
 import TheButton from '../../../../../complect/Button';
 import Dropdown from '../../../../../complect/dropdown/Dropdown';
 import { DropdownItem } from '../../../../../complect/dropdown/Dropdown.model';
