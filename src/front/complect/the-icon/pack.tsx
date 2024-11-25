@@ -53,6 +53,7 @@ import { iconPackOfCheckList } from './icons/check-list';
 import { iconPackOfCheckmarkBadge01 } from './icons/checkmark-badge-01';
 import { iconPackOfCheckmarkCircle01 } from './icons/checkmark-circle-01';
 import { iconPackOfCheckmarkCircle02 } from './icons/checkmark-circle-02';
+import { iconPackOfCheckmarkCircle03 } from './icons/checkmark-circle-03';
 import { iconPackOfCheckmarkSquare02 } from './icons/checkmark-square-02';
 import { iconPackOfCheckmarkSquare04 } from './icons/checkmark-square-04';
 import { iconPackOfCircle } from './icons/circle';
@@ -124,6 +125,7 @@ import { iconPackOfMapsLocation02 } from './icons/maps-location-02';
 import { iconPackOfMapsOff } from './icons/maps-off';
 import { iconPackOfMenu01 } from './icons/menu-01';
 import { iconPackOfMessage01 } from './icons/message-01';
+import { iconPackOfMessageAdd01 } from './icons/message-add-01';
 import { iconPackOfMessageQuestion } from './icons/message-question';
 import { iconPackOfMinusSign } from './icons/minus-sign';
 import { iconPackOfMinusSignCircle } from './icons/minus-sign-circle';
@@ -253,6 +255,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   CheckmarkBadge01: iconPackOfCheckmarkBadge01,
   CheckmarkCircle01: iconPackOfCheckmarkCircle01,
   CheckmarkCircle02: iconPackOfCheckmarkCircle02,
+  CheckmarkCircle03: iconPackOfCheckmarkCircle03,
   CheckmarkSquare02: iconPackOfCheckmarkSquare02,
   CheckmarkSquare04: iconPackOfCheckmarkSquare04,
   Circle: iconPackOfCircle,
@@ -324,6 +327,7 @@ export const theIconKnownPack: Record<KnownIconNameForPack, TheIconSelfPack> = {
   MapsOff: iconPackOfMapsOff,
   Menu01: iconPackOfMenu01,
   Message01: iconPackOfMessage01,
+  MessageAdd01: iconPackOfMessageAdd01,
   MessageQuestion: iconPackOfMessageQuestion,
   MinusSign: iconPackOfMinusSign,
   MinusSignCircle: iconPackOfMinusSignCircle,

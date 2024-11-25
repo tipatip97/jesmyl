@@ -1,4 +1,4 @@
-import { useListShownLimitsController } from 'front/complect/useListShownLimitsController';
+import { useListInfiniteScrollController } from 'front/complect/useListInfiniteScrollController';
 import { mylib } from 'front/utils';
 import { useRef } from 'react';
 import { FaceItem } from '../../../../../../../complect/FaceItem';
@@ -18,7 +18,7 @@ export const faceItemDescriptionClassName = 'face-item-description';
 
 export const ComFaceListComList = (props: ComFaceListProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const { limits } = useListShownLimitsController(listRef, props.list, com => com.wid === props.ccomw, !!props.titles);
+  const { limits } = useListInfiniteScrollController(listRef, props.list, 'face-item', com => com.wid === props.ccomw);
 
   const isSetWids = !(props.titles && mylib.keys(props.titles).length);
   const setComDescription = props.comDescription
@@ -30,9 +30,7 @@ export const ComFaceListComList = (props: ComFaceListProps) => {
       {...props}
       listRef={listRef}
     >
-      {props.list.map((com, comi) => {
-        if (limits.start > comi || limits.finish < comi) return null;
-
+      {props.list.slice(limits.start, limits.finish).map((com, comi) => {
         return (
           <FaceItem
             key={isSetWids ? com.wid : comi}

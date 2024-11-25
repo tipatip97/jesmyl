@@ -10,39 +10,49 @@ interface Props {
 }
 
 export const SecretChatFace = ({ chat }: Props) => {
-  const lastMessage = chat.messages[0];
-  const lastMessageMember = chat.members.find(member => member.id === lastMessage.sentMemberId);
+  try {
+    const lastMessage = chat.messages[0];
+    const lastMessageMember = chat.members.find(member => member.id === lastMessage.sentMemberId);
 
-  return (
-    <Link
-      to={chat.chatId}
-      className="pointer"
-    >
-      <FaceItem>
-        <StyledFaceLogo
-          className="face-logo"
-          $withUnreadBadge={false}
-        >
-          <IconBubbleChatEditStrokeRounded />
-        </StyledFaceLogo>
-        <StyledTextInfo className="face-title full-max-width">
-          <div>
-            <div className="ellipsis color--7">{chat.title}</div>
-            <br />
-            {lastMessageMember && <div className="ellipsis">{lastMessageMember.user.fio}</div>}
-          </div>
-          {lastMessage && (
-            <div className="fade-07 full-max-width">
-              <StyledLastMessageText>{lastMessage.text}</StyledLastMessageText>
-              {' • '}
-              {new Date(lastMessage.createdAt).toLocaleTimeString()}
+    return (
+      <Link
+        to={chat.chatId}
+        className="pointer"
+      >
+        <StyledFaceItem>
+          <StyledFaceLogo
+            className="face-logo"
+            $withUnreadBadge={false}
+          >
+            <IconBubbleChatEditStrokeRounded />
+          </StyledFaceLogo>
+          <StyledTextInfo className="face-title full-max-width">
+            <div>
+              <div className="ellipsis color--7">{chat.title}</div>
+              <br />
+              {lastMessageMember && <div className="ellipsis">{lastMessageMember.user.fio}</div>}
             </div>
-          )}
-        </StyledTextInfo>
-      </FaceItem>
-    </Link>
-  );
+            {lastMessage && (
+              <div className="fade-07 full-max-width">
+                <StyledLastMessageText>{lastMessage.text}</StyledLastMessageText>
+                {' • '}
+                {new Date(lastMessage.createdAt).toLocaleTimeString()}
+              </div>
+            )}
+          </StyledTextInfo>
+        </StyledFaceItem>
+      </Link>
+    );
+  } catch (error) {}
 };
+
+const StyledFaceItem = styled(FaceItem)`
+  font-size: 0.8em;
+  padding-bottom: 30px;
+  padding-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: solid 1px var(--color--2);
+`;
 
 const StyledFaceLogo = styled.div.attrs({ className: 'with strong class name' })<{ $withUnreadBadge: boolean }>`
   &.with.strong.class.name {
