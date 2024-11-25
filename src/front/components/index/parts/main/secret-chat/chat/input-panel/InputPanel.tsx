@@ -8,7 +8,6 @@ import { secretChatsDraftsAtom } from '../../molecule';
 import {
   StyledSecretChatMessageControlContainer,
   StyledSecretChatMessageInputStockBlock,
-  StyledSecretChatMessageUnreadsCountBadge,
   StyledSecretChatToDownButton,
 } from './InputPanel.styled';
 import { SecretChatMessageDraftHeader } from './complect/DraftHeader';
@@ -85,9 +84,9 @@ export const SecretChatMessageInputPanel = ({
           setTimeout(() => listNode.scrollTo({ top: 0, behavior: 'smooth' }));
         }}
       >
-        {!unreadsCount || (
+        {/* {!unreadsCount || (
           <StyledSecretChatMessageUnreadsCountBadge>{unreadsCount}</StyledSecretChatMessageUnreadsCountBadge>
-        )}
+        )} */}
         <IconArrowDown01StrokeRounded />
       </StyledSecretChatToDownButton>
 
