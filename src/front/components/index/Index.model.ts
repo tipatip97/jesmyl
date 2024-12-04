@@ -17,6 +17,7 @@ import { FileAssociations } from './parts/actions/files/complect/MyFilesTypeBox'
 export interface IndexState {
   currentApp: AppName;
   appVersion: number;
+  values: IndexValues;
   auth: Auth;
   schedules: ScheduleStorage;
   statistic: SokiStatistic | null;
@@ -57,6 +58,10 @@ export type IndexStateSchLiveData = Record<ScheduleWidgetTranslationLiveDataKey,
 export interface IndexStateError {
   message?: string | nil;
   scope?: IndexErrorScope;
+}
+
+export interface IndexValues {
+  chatUrl?: string;
 }
 
 export interface IndexStorage extends IndexState {

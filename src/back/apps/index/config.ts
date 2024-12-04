@@ -11,6 +11,9 @@ const config: FilerAppConfig = {
     appVersion: {
       watch: [`${rootDirective}/+version.json`, content => JSON.parse(content).num],
     },
+    values: {
+      watch: [`${rootDirective}/values.json`, content => JSON.parse(content)],
+    },
     nounPronsWords: null,
     fileAssociations: null,
     serverUserStore: { level: 1000 },

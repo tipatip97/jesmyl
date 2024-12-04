@@ -29,6 +29,7 @@ export const indexMolecule = new Molecule<IndexState>(
     fileAssociations: {} as never,
     nounPronsWords: null,
     updateRequisites: {},
+    values: {},
   },
   'index',
 );
@@ -38,6 +39,8 @@ export const useIndexSchedules = () => useAtomValue(schedulesAtom);
 export const useIndexFileAssociations = () => useAtomValue(indexMolecule.take('fileAssociations'));
 export const useIndexNounPronsWords = () => useAtomValue(indexMolecule.take('nounPronsWords'));
 export const useIndexLiveData = () => useAtomValue(indexMolecule.take('liveData'));
+
+export const useIndexValues = () => useAtomValue(indexMolecule.take('values'));
 
 const authAtom = indexMolecule.select(s => s.auth);
 

@@ -10,7 +10,7 @@ import SendButton from '../../../../complect/sends/send-button/SendButton';
 import { IconTelegramStrokeRounded } from '../../../../complect/the-icon/icons/telegram';
 import { useActualRef } from '../../../../complect/useActualRef';
 import { soki } from '../../../../soki';
-import { useSetAuth } from '../../molecules';
+import { useIndexValues, useSetAuth } from '../../molecules';
 import useConnectionState from '../../useConnectionState';
 import { LoginIndex } from './IndexLoginAuth';
 import { TgNativeAuth } from './TgNativeAuth';
@@ -21,6 +21,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
   const [isLoading, setIsLoading] = useState(false);
   const [isSendTgCode, setIsSendTgCode] = useState(false);
   const setAuth = useSetAuth();
+  const values = useIndexValues();
 
   const connectionNode = useConnectionState();
   const [errors] = useAuthErrors();
@@ -83,7 +84,7 @@ export default function IndexTelegramAuth({ onLoginAuth }: { onLoginAuth: () => 
                     Состоять в канале
                     <span className="margin-gap">
                       <a
-                        href="https://t.me/jesmyl_space"
+                        href={values.chatUrl}
                         className="children-middle"
                       >
                         <IconTelegramStrokeRounded />

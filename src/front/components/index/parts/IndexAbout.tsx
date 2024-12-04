@@ -4,12 +4,13 @@ import { useAtomValue } from '../../../complect/atoms';
 import QRCode from '../../../complect/qr-code/QRCode';
 import { IconDelete01StrokeRounded } from '../../../complect/the-icon/icons/delete-01';
 import { IconTelegramStrokeRounded } from '../../../complect/the-icon/icons/telegram';
-import { indexMolecule } from '../molecules';
+import { indexMolecule, useIndexValues } from '../molecules';
 
 const appVersionAtom = indexMolecule.select(s => s.appVersion);
 
 export default function IndexAbout() {
   const appVersion = useAtomValue(appVersionAtom);
+  const values = useIndexValues();
 
   return (
     <div className="flex center">
@@ -17,13 +18,15 @@ export default function IndexAbout() {
         className="flex custom-align-items column"
         onClick={event => event.stopPropagation()}
       >
-        <div className="padding-giant-gap">
-          <QRCode text="https://t.me/jesmyl_space" />
-          <div className="flex center">
-            <IconTelegramStrokeRounded />
-            <a href="https://t.me/jesmyl_space">@jesmyl_space</a>
+        {values.chatUrl && (
+          <div className="padding-giant-gap">
+            <QRCode text={values.chatUrl} />
+            <div className="flex center">
+              <IconTelegramStrokeRounded />
+              <a href={values.chatUrl}>@jesmyl space</a>
+            </div>
           </div>
-        </div>
+        )}
         <div className="padding-giant-gap">
           <QRCode text="https://t.me/danikpon" />
           <div className="flex center">
