@@ -116,14 +116,20 @@ if (~process.argv.indexOf('--push-back')) {
   (async () => {
     await build({
       entryPoints: ['src/back/back.index.ts'],
+      outfile: 'src/back/back.index.js',
       bundle: true,
       minify: false,
       platform: 'node',
       format: 'cjs',
-      outfile: 'src/back/back.index.js',
+      keepNames: true,
       // minifyWhitespace: true,
+      // minifyIdentifiers: true,
+      treeShaking: true,
+
       charset: 'utf8',
-      external: ['node-schedule', 'ws', '@prisma/client', '.prisma/client'],
+      external: ['node-schedule', 'ws', '@prisma/client', '.prisma/client', 'MyLib'],
+      drop: ['console', 'debugger'],
+      dropLabels: ['DEV', 'TEST'],
     });
     archive(false);
   })();
