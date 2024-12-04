@@ -273,8 +273,8 @@ declare global {
   type ArrayCb<T> = (box: T, boxi: number, boxa: T[]) => any;
   type TimeOut = ReturnType<typeof setTimeout> | und | number;
   type intStr = `${'-' | ''}${number}`;
-  type doubleStr = `${intStr}.${number}`;
-  type numberStr = `${intStr}${`.${number}` | ''}`;
+  type doubleStr = `${'-' | ''}${intStr}.${number}`;
+  type numberStr = `${'-' | ''}${intStr}${`.${number}` | ''}`;
   type StringBySlash = `${string}/${string}`;
 
   type OmitOwn<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
