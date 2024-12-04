@@ -28,6 +28,10 @@ npm i -D tslib @types/node
 iptables -I INPUT -p tcp -m tcp --dport 4446 -j ACCEPT
 netstat -na | grep :4446
 
+iptables -I INPUT -p tcp -m tcp --dport 3359 -j ACCEPT
+sudo ufw allow 3359/tcp
+netstat -na | grep :3359
+
 
 sudo apt install -y docker.io
 sudo systemctl start docker
@@ -49,6 +53,7 @@ DATABASE_URL="postgresql://jesmyl:????@localhost:5432/jdb"
 /////////////// .env
 
 nano /etc/systemd/system/jesmyl_soki.service
+nano /etc/systemd/system/jmsg.service
 
 nano /etc/php/7.4/apache2/php.ini
 
@@ -77,4 +82,5 @@ nano /etc/ssl/certificate.key
 systemctl restart nginx
 systemctl restart apache2
 systemctl restart jesmyl_soki
+systemctl restart jmsg
 netstat -tlpn
