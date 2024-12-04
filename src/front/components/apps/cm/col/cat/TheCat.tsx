@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { emptyFunc } from 'shared/utils';
 import styled from 'styled-components';
 import DebouncedSearchInput, { useIsNumberSearch } from '../../../../../complect/DebouncedSearchInput';
 import { hookEffectPipe, setTimeoutPipe } from '../../../../../complect/hookEffectPipe';
 import LoadIndicatedContent from '../../../../../complect/load-indicated-content/LoadIndicatedContent';
 import PhaseContainerConfigurer from '../../../../../complect/phase-container/PhaseContainerConfigurer';
+import { SetComListLimitsExtracterContext } from '../../base/SetComListLimitsExtracterContext';
 import CmTranslationComListContextInCat from '../../base/translations/InCat';
 import CmTranslationComListContextInZeroCat from '../../base/translations/InZeroCat';
 import useLaterComList from '../../base/useLaterComList';
@@ -24,6 +26,12 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
   const [mapper, setMapper] = useState<CatSpecialSearches['map'] | null>(null);
   const [term, setTerm] = useState(cat?.term ?? '');
   const [filteredComs, setFilteredComs] = useState<null | Com[]>(null);
+  const setComListLimitsExtracterRef = useRef<(start: number | nil, finish: number | nil) => void>(emptyFunc);
+
+  useEffect(() => {
+    if (term.length !== 1) return;
+    setComListLimitsExtracterRef.current(0, 50);
+  }, [term.length]);
 
   useEffect(() => {
     if (cat == null) return;
@@ -122,7 +130,9 @@ export default function TheCat({ all }: { all?: boolean; catWid?: number }) {
                       )}
                     </div>
                     <div className="com-list">
-                      <ComFaceList list={limitedComs} />
+                      <SetComListLimitsExtracterContext.Provider value={setComListLimitsExtracterRef}>
+                        <ComFaceList list={limitedComs} />
+                      </SetComListLimitsExtracterContext.Provider>
                     </div>
                   </>
                 )

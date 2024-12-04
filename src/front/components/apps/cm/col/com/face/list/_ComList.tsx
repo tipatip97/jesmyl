@@ -1,4 +1,5 @@
 import { useListInfiniteScrollController } from 'front/complect/useListInfiniteScrollController';
+import { useSetComListLimitsExtracterContext } from 'front/components/apps/cm/base/SetComListLimitsExtracterContext';
 import { mylib } from 'front/utils';
 import { useRef } from 'react';
 import { FaceItem } from '../../../../../../../complect/FaceItem';
@@ -18,7 +19,14 @@ export const faceItemDescriptionClassName = 'face-item-description';
 
 export const ComFaceListComList = (props: ComFaceListProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const { limits } = useListInfiniteScrollController(listRef, props.list, 'face-item', com => com.wid === props.ccomw);
+  const { limits, updateLimits } = useListInfiniteScrollController(
+    listRef,
+    props.list,
+    'face-item',
+    com => com.wid === props.ccomw,
+  );
+
+  useSetComListLimitsExtracterContext().current = updateLimits;
 
   const isSetWids = !(props.titles && mylib.keys(props.titles).length);
   const setComDescription = props.comDescription
