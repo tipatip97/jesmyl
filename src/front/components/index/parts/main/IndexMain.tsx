@@ -4,7 +4,6 @@ import { itNNull } from 'shared/utils';
 import { appNames } from '../../../../app/App.model';
 import { routingApps } from '../../../../app/routing-apps';
 import { BottomPopup } from '../../../../complect/absolute-popup/bottom-popup/BottomPopup';
-import { useAtomValue } from '../../../../complect/atoms';
 import BrutalItem from '../../../../complect/brutal-item/BrutalItem';
 import BrutalScreen from '../../../../complect/brutal-screen/BrutalScreen';
 import { FullContent } from '../../../../complect/fullscreen-content/FullContent';
@@ -25,9 +24,6 @@ import { IndexTelegramInlineAuthButton } from '../login/IndexTelegramInlineAuthB
 import IndexSettings from '../settings/Settings';
 import { AppFace } from './AppFace';
 import { IndexProfileInfo } from './ProfileInfo';
-import { SecretChatsIcon } from './secret-chat/complect';
-import { MarkUnreadSecretChatsPath } from './secret-chat/MarkUnreadSecretChatsPath';
-import { isSecretChatsShowInBottomMenuAtom } from './secret-chat/molecule';
 import { IndexSecretChats } from './secret-chat/SecretChats';
 import { UserMore } from './UserMore';
 
@@ -38,7 +34,7 @@ export default function IndexMain() {
 
   const [isUserMoreOpen, setIsUserMoreOpen] = useState<unknown>(false);
   const [isAboutOpen, setIsAboutOpen] = useState<unknown>(false);
-  const isShowSecretChatsInBottom = useAtomValue(isSecretChatsShowInBottomMenuAtom);
+  // const isShowSecretChatsInBottom = useAtomValue(isSecretChatsShowInBottomMenuAtom);
 
   const auth = useAuth();
   const connectionNode = useConnectionState();
@@ -79,13 +75,13 @@ export default function IndexMain() {
                         onClick={setIsUserMoreOpen}
                       />
                     )}
-                    {!isShowSecretChatsInBottom && (
+                    {/* {!isShowSecretChatsInBottom && (
                       <MarkUnreadSecretChatsPath containerSelector="a">
                         <Link to="chats">
                           <SecretChatsIcon />
                         </Link>
                       </MarkUnreadSecretChatsPath>
-                    )}
+                    )} */}
                   </div>
                 </div>
               }

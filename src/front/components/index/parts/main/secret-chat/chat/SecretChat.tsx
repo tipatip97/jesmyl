@@ -22,7 +22,6 @@ import {
 import {
   secretChatFacesAtom,
   secretChatsIsAlternativeMessageHashMapAtom,
-  secretChatsLastReadTsAtom,
   useChatAlternativeMessagesHashMapValue,
   useChatMessagesHashMapValue,
   useChatUnreachedMessagesHashMapValue,
@@ -121,6 +120,8 @@ const PageChatInContexts = () => {
 
   useChatListInteractiveListener(listRef, scrollToAccentMessage, messagesHash);
 
+  if (1) return null;
+
   return (
     <Routes>
       <Route
@@ -188,7 +189,7 @@ const PageChatInContexts = () => {
 export const SecretChatPage = () => {
   const chatId = (useParams().chatId as SecretChat.ChatId) ?? SecretChat.ChatId.def;
   const chat = useAtomValue(secretChatFacesAtom)[chatId ?? SecretChat.ChatId.def];
-  const chatLastReadTs = useAtomValue(secretChatsLastReadTsAtom)[chatId ?? SecretChat.ChatId.def];
+  // const chatLastReadTs = useAtomValue(secretChatsLastReadTsAtom)[chatId ?? SecretChat.ChatId.def];
   const isAlternativeListUse = useAtomValue(secretChatsIsAlternativeMessageHashMapAtom)[
     chatId ?? SecretChat.ChatId.def
   ];

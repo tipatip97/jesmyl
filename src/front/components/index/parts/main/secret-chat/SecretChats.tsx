@@ -25,6 +25,8 @@ export const IndexSecretChats = ({ withoutBackButton }: { withoutBackButton?: bo
   const [newChatTitle, setNewChatTitle] = useState('');
   const [isNewChatSending, setIsNewChatSending] = useState(false);
 
+  if (1) return null;
+
   return (
     <Routes>
       <Route
