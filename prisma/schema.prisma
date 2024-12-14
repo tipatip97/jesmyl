@@ -97,3 +97,23 @@ enum ChatMemberRights {
 }
 
 //////////////////////////////////////////// CHATS;
+
+model InviteGuest {
+  id     Int @id @unique @default(autoincrement())
+  meetId Int
+
+  isCome Int
+  name   String
+
+  meet InviteMeeting @relation(fields: [meetId], references: [id])
+}
+
+model InviteMeeting {
+  id     Int    @id @unique @default(autoincrement())
+  meetId String @unique @default(cuid())
+  chatId BigInt
+
+  title String
+
+  guests InviteGuest[]
+}
