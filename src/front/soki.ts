@@ -151,6 +151,9 @@ export class SokiTrip {
             mylib.values(this.subscriptions).forEach(body => body && this.sendForce(body, appName));
           }
 
+          if (event.appName === 'external') return;
+          const appName = event.appName;
+
           const molecule = this.molecules[event.appName];
 
           if (event.execs && event.appName) {
@@ -161,7 +164,7 @@ export class SokiTrip {
               .then(fixes => {
                 if (molecule !== undefined) fixes.forEach(fix => molecule.set(fix, contents[fix]));
 
-                this.setLastUpdates(event.appName!, [null, null, execs.lastUpdate, null]);
+                this.setLastUpdates(appName!, [null, null, execs.lastUpdate, null]);
               })
               .catch();
           }

@@ -12,7 +12,7 @@ import { ExecutionDict, ExecutionReal } from './executer/model';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible', 'wed'] as const;
 export const sokiAppNamesSet = new Set(sokiAppNames);
-export type SokiAppName = (typeof sokiAppNames)[number] | 'external';
+export type SokiAppName = (typeof sokiAppNames)[number];
 
 export enum SokiSharedKey {
   ScheduleWidgetPhotos = 'ScheduleWidgetPhotos',
@@ -33,7 +33,7 @@ export interface SokiCapsule {
 }
 
 export interface SokiServerEvent {
-  appName: SokiAppName;
+  appName: SokiAppName | 'external';
   requestId?: string;
   unregister?: true;
   pong?: true;
@@ -143,7 +143,7 @@ export interface SokiClientEventBody {
     users?: true;
   };
 
-  inviteGuestData: {
+  inviteGuestData?: {
     guestId: number;
     meetId: string;
 
