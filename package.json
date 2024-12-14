@@ -65,7 +65,7 @@
   },
   "main": "deploy.js",
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^6.0.1",
     "@types/archiver": "^5.3.1",
     "@types/jasmine": "^4.3.1",
     "@types/jest": "^29.5.11",
@@ -87,7 +87,7 @@
     "nyc": "^15.1.0",
     "postcss": "^8.4.32",
     "prettier": "^3.1.1",
-    "prisma": "^5.22.0",
+    "prisma": "^6.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.6.3"
   },
