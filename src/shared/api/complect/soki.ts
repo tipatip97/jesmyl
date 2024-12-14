@@ -1,11 +1,18 @@
 import { User } from 'node-telegram-bot-api';
 import WebSocket from 'ws';
-import { DeviceId, ScheduleWidgetPhotoKey, SecretChat, ServerStoreContent, SimpleKeyValue } from '..';
+import {
+  DeviceId,
+  IsInvitedGuestCome,
+  ScheduleWidgetPhotoKey,
+  SecretChat,
+  ServerStoreContent,
+  SimpleKeyValue,
+} from '..';
 import { ExecutionDict, ExecutionReal } from './executer/model';
 
 export const sokiAppNames = ['index', 'cm', 'tuner', 'admin', 'gamer', 'leader', 'bible', 'wed'] as const;
 export const sokiAppNamesSet = new Set(sokiAppNames);
-export type SokiAppName = (typeof sokiAppNames)[number];
+export type SokiAppName = (typeof sokiAppNames)[number] | 'external';
 
 export enum SokiSharedKey {
   ScheduleWidgetPhotos = 'ScheduleWidgetPhotos',
@@ -59,6 +66,7 @@ export interface SokiServerEvent {
   freshUserContents?: ServerStoreContent[];
   pullFreshUserContentsByTs?: number;
   chatsData?: ChatsData;
+  invitedGuest?: { name: string; isCome: IsInvitedGuestCome };
 }
 
 export interface ChatsData {
@@ -133,6 +141,14 @@ export interface SokiClientEventBody {
   };
   chatsFetch?: {
     users?: true;
+  };
+
+  inviteGuestData: {
+    guestId: number;
+    meetId: string;
+
+    getData?: true;
+    setIsCome?: IsInvitedGuestCome;
   };
 }
 

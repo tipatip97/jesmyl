@@ -1,5 +1,6 @@
 /* eslint-disable no-throw-literal */
 import { startCrTgAlarm } from 'back/apps/index/crTgAlarm';
+import { invitesTgBotListener } from 'back/sides/telegram-bot/invites/invites.bot';
 import { SokiClientEvent, SokiServerDoActionProps } from 'shared/api';
 import WebSocket, { WebSocketServer } from 'ws';
 import { setSharedPolyfills } from '../../../shared/utils/complect/polyfills';
@@ -65,3 +66,4 @@ baseMessagesCatcher.register();
 scheduleWidgetMessageCatcher.register();
 
 startCrTgAlarm();
+invitesTgBotListener();

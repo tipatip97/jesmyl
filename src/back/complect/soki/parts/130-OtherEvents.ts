@@ -1,6 +1,8 @@
 import { TBChats } from 'back/db/TBChats';
+import { TBInvites } from 'back/db/TBInvites';
 import { TBMessages } from 'back/db/TBMessages';
 import { TBUsers } from 'back/db/Users';
+import { jesmylTgBot } from 'back/sides/telegram-bot/bot';
 import { ChatsData, SokiAppName, SokiCapsule, SokiServerDoAction, SokiServerDoActionProps } from 'shared/api';
 import { Eventer } from 'shared/utils';
 import { WebSocket } from 'ws';
@@ -205,6 +207,56 @@ export class SokiServerOtherEvents extends SokiServerServerStore implements Soki
   }
 
   async doOnOtherEvents(event: SokiServerDoActionProps) {
+    if (event.eventBody.inviteGuestData) {
+      const { meetId, guestId } = event.eventBody.inviteGuestData;
+
+      if (event.eventBody.inviteGuestData.getData) {
+        const guest = await TBInvites.tb.inviteGuest.findFirst({
+          where: { meet: { meetId }, id: TBInvites.unsecretGuestId(guestId) },
+          select: { isCome: true, name: true },
+        });
+
+        if (guest) {
+          this.send(
+            {
+              appName: event.appName,
+              invitedGuest: guest,
+              requestId: event.requestId,
+            },
+            event.client,
+          );
+        }
+      }
+
+      if (event.eventBody.inviteGuestData.setIsCome != null) {
+        const isCome = event.eventBody.inviteGuestData.setIsCome;
+        const meet = await TBInvites.tb.inviteMeeting.findFirst({ where: { meetId } });
+
+        if (meet !== null) {
+          const guest = await TBInvites.tb.inviteGuest.findFirst({
+            where: { meet: { meetId }, id: TBInvites.unsecretGuestId(guestId) },
+          });
+
+          if (guest !== null) {
+            await TBInvites.tb.inviteGuest.update({ data: { isCome }, where: { id: guest.id } });
+
+            jesmylTgBot.bot.sendMessage(Number(meet.chatId), `Гость <code>${guest.name}</code> будет присутствовать`, {
+              parse_mode: 'HTML',
+            });
+
+            this.send(
+              {
+                appName: event.appName,
+                invitedGuest: { isCome, name: guest.name },
+                requestId: event.requestId,
+              },
+              event.client,
+            );
+          }
+        }
+      }
+    }
+
     try {
       await this.doOnChatFetchMessageData(event);
       return false;
