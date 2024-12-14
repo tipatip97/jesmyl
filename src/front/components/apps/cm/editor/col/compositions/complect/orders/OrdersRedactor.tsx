@@ -93,8 +93,8 @@ export default function OrdersRedactor() {
             />
             {ccom.isImpossibleToMigrateOrder(ord, ordi, orda) || (
               <IconArrowDataTransferVerticalStrokeRounded
-                className={`pointer ${ccom.isCantMigrateOrder(ord, ordi) ? 'disabled' : ''}`}
-                onClick={() => exec(ccom.migrateOrder(ord))}
+                className={`pointer ${ccom.isCantResortOrder(ord, ordi) ? 'disabled' : ''}`}
+                onClick={() => exec(ccom.resortOrder(ord))}
               />
             )}
           </div>

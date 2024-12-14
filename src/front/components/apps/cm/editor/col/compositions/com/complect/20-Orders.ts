@@ -118,7 +118,7 @@ export class EditableComOrders extends EditableComCorrects {
     );
   }
 
-  isCantMigrateOrder(ord: EditableOrder, ordi: number) {
+  isCantResortOrder(ord: EditableOrder, ordi: number) {
     return (
       (!ordi && ord.me.isNextInherit) ||
       ord.me.isNextAnchorOrd ||
@@ -129,7 +129,7 @@ export class EditableComOrders extends EditableComCorrects {
     );
   }
 
-  migrateOrder(topOrd: EditableOrder) {
+  resortOrder(topOrd: EditableOrder) {
     const orders = this.ords;
 
     if (!orders) return;
@@ -140,6 +140,7 @@ export class EditableComOrders extends EditableComCorrects {
     [orders[basei], orders[basei + 1]] = [orders[basei + 1], orders[basei]];
 
     const value = orders.map(ord => ord.top.w);
+    this.top.o?.sort((a, b) => value.indexOf(a.w) - value.indexOf(b.w));
 
     this.exec({
       value,
