@@ -17,9 +17,10 @@ node -v
 # Check npm version
 npm -v
 # Install dependencies
-npm ci
+npm install --force
+npm ci --force
 # Build application
-npm build
+npm run build
 # Move build to the www folder
 cp -rf /root/<your-project-name>/dist/* /var/www/default
 # Remove repo
